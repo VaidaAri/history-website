@@ -5,13 +5,15 @@ import com.example.demo.repos.AdministratorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AdministratorService {
     @Autowired
     AdministratorRepository administratorRepository;
 
-    public AdministratorRepository getAllAdministrators() {
-        return administratorRepository;
+    public List<Administrator> getAllAdministrators() {
+        return administratorRepository.findAll();
     }
 
     public void createAdministrator(Administrator newAdministrator){

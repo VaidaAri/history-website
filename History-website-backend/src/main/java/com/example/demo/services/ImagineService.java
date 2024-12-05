@@ -5,13 +5,15 @@ import com.example.demo.repos.ImagineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ImagineService {
     @Autowired
     ImagineRepository imagineRepository;
 
-    public ImagineRepository getAllImages(){
-        return imagineRepository;
+    public List<Imagine> getAllImages(){
+        return imagineRepository.findAll();
     }
 
     public void createImage(Imagine newImage){

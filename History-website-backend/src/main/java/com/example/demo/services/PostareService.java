@@ -3,8 +3,10 @@ package com.example.demo.services;
 import com.example.demo.models.Postare;
 import com.example.demo.repos.PostareRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -12,8 +14,8 @@ public class PostareService {
     @Autowired
     PostareRepository postareRepository;
 
-    public PostareRepository getAllPosts(){
-        return postareRepository;
+    public List<Postare> getAllPosts(){
+        return postareRepository.findAll();
     }
 
     public void createPost(Postare newPost){

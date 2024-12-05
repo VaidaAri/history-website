@@ -5,13 +5,15 @@ import com.example.demo.repos.RezervareRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class RezervareService {
     @Autowired
     RezervareRepository rezervareRepository;
 
-    public RezervareRepository getAllBookings(){
-        return rezervareRepository;
+    public List<Rezervare> getAllBookings(){
+        return rezervareRepository.findAll();
     }
 
     public void createBooking(Rezervare newBooking){

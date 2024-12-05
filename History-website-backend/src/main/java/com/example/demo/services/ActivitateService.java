@@ -5,6 +5,7 @@ import com.example.demo.repos.ActivitateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -12,19 +13,19 @@ public class ActivitateService {
     @Autowired
     ActivitateRepository activitateRepository;
 
-    public ActivitateRepository getAllActivities() {
-        return activitateRepository;
+    public List<Activitate> getAllActivities() {
+        return activitateRepository.findAll();
     }
 
-    public void CreateActivitate(Activitate newActivity){
+    public void createActivitate(Activitate newActivity){
         activitateRepository.save(newActivity);
     }
 
-    public void UpdateActivitate(Activitate newActivity){
+    public void updateActivitate(Activitate newActivity){
         activitateRepository.save(newActivity);
     }
 
-    public void DeleteActivitate(Integer activityId){
+    public void deleteActivitate(Integer activityId){
         activitateRepository.deleteById(activityId);
     }
 
