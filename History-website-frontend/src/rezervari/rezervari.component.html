@@ -1,2 +1,36 @@
 <app-meniu></app-meniu>
-Rezervari
+<div>
+    <div>
+        <h2>Add New Booking</h2>
+        <form (ngSubmit)="addBooking()" #bookingForm="ngForm">
+            <label for="datetime">Date and Time:</label>
+            <input type="datetime-local" id="datetime" name="datetime" [(ngModel)]="newBooking.datetime" required>
+            
+            <label for="numberOfPersons">Number of Persons:</label>
+            <input type="number" id="numberOfPersons" name="numberOfPersons" [(ngModel)]="newBooking.numberOfPersons" required>
+            
+            <button type="submit">Add Booking</button>
+        </form>
+    </div>
+
+    <table>
+        <thead>
+            <h2>Booking list</h2>
+            <tr>
+                <th>Id</th>
+                <th>Date and Time</th>
+                <th>Number of persons</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let booking of bookings">
+                <td>{{booking.id}}</td>
+                <td>{{ booking.datetime | date: 'yyyy-MM-dd HH:mm' }}</td>
+                <td>{{booking.numberOfPersons}}</td>
+                <td>
+                    <button (click)="deleteBooking(booking.id)">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
