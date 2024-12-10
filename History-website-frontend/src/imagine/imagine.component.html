@@ -1,1 +1,6 @@
-<p>imagine works!</p>
+<div class="image-gallery">
+    <div class="image-card" *ngFor="let image of images">
+      <img [src]="image.path" [alt]="image.description" />
+      <p>{{ image.description }}</p>
+    </div>
+  </div>
