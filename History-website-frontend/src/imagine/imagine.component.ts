@@ -1,17 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-imagine',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './imagine.component.html',
   styleUrl: './imagine.component.css'
 })
-export class ImagineComponent implements OnInit{
 
+export class ImagineComponent implements OnInit{
   images: any[] = []; 
+  selectedFile: File | null = null;
+  description: string = '';
 
   constructor(private http: HttpClient) {}
 
@@ -23,11 +26,38 @@ fetchImages() {
   this.http.get<any[]>('http://localhost:8080/api/images').subscribe({
     next: (data) => {
       this.images = data;
-      console.log('Images fetched:', this.images);
+      console.info('Images fetched:', this.images);
     },
     error: (err) => {
       console.error('Error fetching images:', err);
     }
   });
 }
+
+onFileChange(event: any): void {
+  this.selectedFile = event.target.files[0];
+}
+
+uploadImage() {
+  if (this.selectedFile && this.description) {
+    const formData = new FormData();
+    formData.append('image', this.selectedFile); 
+    formData.append('description', this.description); 
+    this.uploadFileToStaticDirectory(formData);
+  }
+}
+
+uploadFileToStaticDirectory(formData: FormData) {
+  const uploadUrl = 'http://localhost:8080/api/images/upload-image';
+  this.http.post(uploadUrl, formData).subscribe({
+    next: (response: any) => {
+      console.info('Image successfully uploaded.');
+      const imagePath = response.imagePath;
+          this.fetchImages(); 
+        },
+        error: (err) => {
+          console.error('Error saving image path:', err);
+        }
+      });
+  }
 }
