@@ -3,6 +3,9 @@ package com.example.demo.controllers;
 import com.example.demo.models.Imagine;
 import com.example.demo.services.ImagineService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -53,14 +56,16 @@ public class ImagineController {
     @PostMapping("/upload-image")
     public ResponseEntity<Map<String, String>> uploadImage(@RequestParam("image") MultipartFile file, @RequestParam("description") String description) {
         try {
-            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+            String fileName = file.getOriginalFilename();
             Path uploadPath = Paths.get(UPLOAD_DIR);
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
             }
+            assert fileName != null;
+            System.out.println("HERE " + uploadPath.resolve(fileName));
             Files.copy(file.getInputStream(), uploadPath.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
             Imagine image = new Imagine();
-            image.setPath("/uploads/" + fileName);
+            image.setPath(fileName);
             image.setDescription(description);
             imagineService.createImage(image);
 
@@ -72,4 +77,26 @@ public class ImagineController {
         }
     }
 
+    @GetMapping("/uploads/{filename}")
+    public ResponseEntity<Resource> getImage(@PathVariable String filename) {
+        try {
+            // Resolve the file path
+            Path filePath = Paths.get("uploads/").resolve(filename).normalize();
+            Resource resource = new UrlResource(filePath.toUri());
+
+            // Check if file exists and is readable
+            if (resource.exists() && resource.isReadable()) {
+                // Detect the file's content type (e.g., image/png, image/jpeg)
+                String contentType = Files.probeContentType(filePath);
+
+                return ResponseEntity.ok()
+                        .header(HttpHeaders.CONTENT_TYPE, contentType != null ? contentType : "application/octet-stream")
+                        .body(resource);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
 }
