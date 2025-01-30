@@ -6,6 +6,8 @@ import { RezervariComponent } from '../rezervari/rezervari.component';
 import { TarifeComponent } from '../tarife/tarife.component';
 import { EvenimenteComponent } from '../evenimente/evenimente.component';
 import { ImagineComponent } from '../imagine/imagine.component';
+import { AdministratorLoginComponent } from '../administrator-login/administrator-login.component';
+import { PublicatiiComponent } from '../publicatii/publicatii.component';
 
 export const routes: Routes = [{path:'', component: AcasaComponent},
     {path:'istoric', component: IstoricComponent },
@@ -13,5 +15,7 @@ export const routes: Routes = [{path:'', component: AcasaComponent},
     {path:'rezervari', component: RezervariComponent},
     {path:'tarife', component: TarifeComponent},
     {path:'evenimente', component: EvenimenteComponent},
-    {path:'imagine', component:ImagineComponent}
+    {path:'imagine', component:ImagineComponent},
+    {path:'administrator-login', component: AdministratorLoginComponent},
+    {path:'publicatii', component: PublicatiiComponent}
 ];
