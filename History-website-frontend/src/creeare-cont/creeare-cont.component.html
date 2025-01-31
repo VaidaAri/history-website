@@ -1,1 +1,40 @@
-<p>creeare-cont works!</p>
+<h2>Creare cont administrator</h2>
+<form (ngSubmit)="registerAdmin()">
+  <label for="firstName">Prenume:</label>
+  <input type="text" id="firstName" [(ngModel)]="newAdmin.firstName" name="firstName" required />
+
+  <label for="lastName">Nume:</label>
+  <input type="text" id="lastName" [(ngModel)]="newAdmin.lastName" name="lastName" required />
+
+  <label for="username">Nume de utilizator:</label>
+  <input type="text" id="username" [(ngModel)]="newAdmin.username" name="username" required />
+
+  <label for="password">Parolă:</label>
+  <input type="password" id="password" [(ngModel)]="newAdmin.password" name="password" required />
+
+  <button type="submit">Creare cont</button>
+</form>
+
+<h2>Lista administratorilor</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Prenume</th>
+      <th>Nume</th>
+      <th>Username</th>
+      <th>Acțiuni</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let admin of admins">
+      <td>{{ admin.id }}</td>
+      <td>{{ admin.firstName }}</td>
+      <td>{{ admin.lastName }}</td>
+      <td>{{ admin.username }}</td>
+      <td>
+        <button (click)="deleteAdmin(admin.id)">Șterge</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
