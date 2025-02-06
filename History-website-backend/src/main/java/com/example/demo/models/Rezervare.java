@@ -27,4 +27,6 @@ public class Rezervare {
     private LocalDateTime datetime;
 
     private Integer numberOfPersons;
+
+    private boolean guideRequired;
 }

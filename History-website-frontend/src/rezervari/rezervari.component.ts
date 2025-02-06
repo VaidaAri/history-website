@@ -18,7 +18,8 @@ export class RezervariComponent {
 
   newBooking = {
     datetime: '',
-    numberOfPersons: 0
+    numberOfPersons: 0,
+    guideRequired: false
   };
 
   constructor(private http: HttpClient) {}

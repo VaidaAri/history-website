@@ -9,6 +9,9 @@
             <label for="numberOfPersons">Number of Persons:</label>
             <input type="number" id="numberOfPersons" name="numberOfPersons" [(ngModel)]="newBooking.numberOfPersons" required>
             
+            <label for="guideRequired">Guide Required?</label>
+            <input type="checkbox" id="guideRequired" name="guideRequired" [(ngModel)]="newBooking.guideRequired">
+
             <button type="submit">Add Booking</button>
         </form>
     </div>
@@ -20,6 +23,8 @@
                 <th>Id</th>
                 <th>Date and Time</th>
                 <th>Number of persons</th>
+                <th>Guide</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -27,6 +32,7 @@
                 <td>{{booking.id}}</td>
                 <td>{{ booking.datetime | date: 'yyyy-MM-dd HH:mm' }}</td>
                 <td>{{booking.numberOfPersons}}</td>
+                <td>{{ booking.guideRequired ? 'Yes' : 'No' }}</td>
                 <td>
                     <button (click)="deleteBooking(booking.id)">Delete</button>
                 </td>
