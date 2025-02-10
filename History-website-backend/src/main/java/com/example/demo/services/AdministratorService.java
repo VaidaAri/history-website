@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AdministratorService {
@@ -33,5 +34,10 @@ public class AdministratorService {
                 .orElseThrow(()
                         -> new RuntimeException("Nu s-a gasit administrator cu ID-ul:" + administratorId));
 
+    }
+
+    public boolean authenticate(String username, String password) {
+        Optional<Administrator> admin = administratorRepository.findByUsername(username);
+        return admin.isPresent() && admin.get().getPassword().equals(password);
     }
 }

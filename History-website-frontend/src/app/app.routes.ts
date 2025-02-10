@@ -9,6 +9,7 @@ import { ImagineComponent } from '../imagine/imagine.component';
 import { AdministratorLoginComponent } from '../administrator-login/administrator-login.component';
 import { PublicatiiComponent } from '../publicatii/publicatii.component';
 import { CreeareContComponent } from '../creeare-cont/creeare-cont.component';
+import { AdministratorComponent } from '../administrator/administrator.component';
 
 export const routes: Routes = [{path:'', component: AcasaComponent},
     {path:'istoric', component: IstoricComponent },
@@ -19,5 +20,6 @@ export const routes: Routes = [{path:'', component: AcasaComponent},
     {path:'imagine', component:ImagineComponent},
     {path:'administrator-login', component: AdministratorLoginComponent},
     {path:'publicatii', component: PublicatiiComponent},
-    {path:'creeare-cont', component: CreeareContComponent}
+    {path:'creeare-cont', component: CreeareContComponent},
+    {path: 'administrator', component: AdministratorComponent}
 ];
