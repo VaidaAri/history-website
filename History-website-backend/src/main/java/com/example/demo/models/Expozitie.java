@@ -1,4 +1,4 @@
 package com.example.demo.models;
 
-public class Orar {
+public class Expozitie {
 }
