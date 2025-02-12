@@ -17,9 +17,8 @@ public class Postare {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    //@OneToMany
-   // @JoinColumn(name = "postare_id")
-    //private List<Imagine> images;
+    @OneToMany
+    @JoinColumn(name = "postare_id")
+    private List<Imagine> images;
     private String description;
 }

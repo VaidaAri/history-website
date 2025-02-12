@@ -1,4 +1,4 @@
 package com.example.demo.models;
 
-public class Expozitie {
+public class Expozitie extends Eveniment{
 }
