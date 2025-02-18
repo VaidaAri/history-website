@@ -20,8 +20,8 @@ public class RezervareService {
         rezervareRepository.save(newBooking);
     }
 
-    public void updateBooking(Rezervare newBooking){
-        rezervareRepository.save(newBooking);
+    public void updateBooking(Rezervare updatedBooking){
+        rezervareRepository.save(updatedBooking);
     }
 
     public void deleteBooking(Integer bookingId){

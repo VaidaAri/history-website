@@ -22,8 +22,8 @@ public class PostareService {
         postareRepository.save(newPost);
     }
 
-    public void updatePost(Postare newPost){
-        postareRepository.save(newPost);
+    public void updatePost(Postare updatedPost){
+        postareRepository.save(updatedPost);
     }
 
     public void deletePost(Integer postId){

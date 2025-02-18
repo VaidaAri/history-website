@@ -20,8 +20,8 @@ public class ImagineService {
         imagineRepository.save(newImage);
     }
 
-    public void updateImage(Imagine newImage){
-        imagineRepository.save(newImage);
+    public void updateImage(Imagine updatedImage){
+        imagineRepository.save(updatedImage);
     }
 
     public void deleteImage(Integer imageId){

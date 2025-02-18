@@ -13,5 +13,7 @@ public class Eveniment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
-    private LocalDateTime datetime;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
+    private String location;
 }

@@ -21,8 +21,8 @@ public class AdministratorService {
         administratorRepository.save(newAdministrator);
     }
 
-    public void updateAdministrator(Administrator newAdministrator){
-        administratorRepository.save(newAdministrator);
+    public void updateAdministrator(Administrator updatedAdministrator){
+        administratorRepository.save(updatedAdministrator);
     }
 
     public void deleteAdministrator(Integer administratorId){

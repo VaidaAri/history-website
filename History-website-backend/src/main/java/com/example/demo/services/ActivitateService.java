@@ -21,8 +21,8 @@ public class ActivitateService {
         activitateRepository.save(newActivity);
     }
 
-    public void updateActivitate(Activitate newActivity){
-        activitateRepository.save(newActivity);
+    public void updateActivitate(Activitate updatedActivity){
+        activitateRepository.save(updatedActivity);
     }
 
     public void deleteActivitate(Integer activityId){
