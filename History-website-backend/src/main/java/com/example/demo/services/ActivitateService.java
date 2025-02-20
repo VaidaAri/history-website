@@ -17,15 +17,15 @@ public class ActivitateService {
         return activitateRepository.findAll();
     }
 
-    public void createActivitate(Activitate newActivity){
+    public void createActivity(Activitate newActivity){
         activitateRepository.save(newActivity);
     }
 
-    public void updateActivitate(Activitate updatedActivity){
+    public void updateActivity(Activitate updatedActivity){
         activitateRepository.save(updatedActivity);
     }
 
-    public void deleteActivitate(Integer activityId){
+    public void deleteActivity(Integer activityId){
         activitateRepository.deleteById(activityId);
     }
 

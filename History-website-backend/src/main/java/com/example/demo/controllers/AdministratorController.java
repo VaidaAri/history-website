@@ -37,7 +37,7 @@ public class AdministratorController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteActivity(@PathVariable Integer id){
+    public void deleteAdministrator(@PathVariable Integer id){
         administratorService.deleteAdministrator(id);
     }
 

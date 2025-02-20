@@ -26,16 +26,16 @@ public class ActivitateController {
 
     @PostMapping
     public void createActivity(@RequestBody Activitate newActivity) {
-        activitateService.createActivitate(newActivity);
+        activitateService.createActivity(newActivity);
     }
 
     @PutMapping
     public void updateActivity(@RequestBody Activitate updatedActivity) {
-        activitateService.updateActivitate(updatedActivity);
+        activitateService.updateActivity(updatedActivity);
     }
 
     @DeleteMapping("/{id}")
     public void deleteActivity(@PathVariable Integer id) {
-        activitateService.deleteActivitate(id);
+        activitateService.deleteActivity(id);
     }
 }
