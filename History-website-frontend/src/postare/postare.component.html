@@ -1,1 +1,12 @@
-<p>postare works!</p>
+<div class="post">
+    <p>{{ post.description }}</p>
+
+    <div *ngIf="post.images?.length > 0">
+        <h4>Imagini:</h4>
+        <div class="image-container">
+          <img *ngFor="let image of post.images" [src]="image.url" alt="Post Image" />
+        </div>
+      </div>
+          
+    <button *ngIf="post.allowDelete" (click)="post.onDelete(post.id)">Șterge</button>
+  </div>

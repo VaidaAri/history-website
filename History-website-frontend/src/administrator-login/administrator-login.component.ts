@@ -21,15 +21,17 @@ export class AdministratorLoginComponent {
 
   login() {
     const credentials = { username: this.username, password: this.password };
-
+  
     this.http.post('http://localhost:8080/api/administrators/login', credentials, { responseType: 'text' })
       .subscribe({
-        next: () => {
-          this.router.navigate(['/administrator']); // Redirecționează la pagina de administrator
+        next: (token) => {
+          localStorage.setItem('adminToken', token); // Salvăm token-ul
+          this.router.navigate(['/administrator']);
         },
         error: () => {
           this.errorMessage = 'Autentificare eșuată! Verificați datele introduse.';
         }
       });
   }
+  
 }

@@ -1,2 +1,27 @@
-<p>Pagina de administrator</p>
-<button class="register-btn" routerLink="/administrator-login">Log out</button>
+<h2>Panou Administrator</h2>
+
+<div>
+  <textarea [(ngModel)]="description" placeholder="Scrie o postare..."></textarea>
+  
+  <div>
+    <input [(ngModel)]="imageUrl" placeholder="URL Imagine">
+    <button (click)="addImage()">Adaugă Imagine</button>
+  </div>
+
+  <div *ngIf="images.length > 0">
+    <h4>Imagini selectate:</h4>
+    <div class="image-container">
+      <img *ngFor="let image of images" [src]="image.url" alt="Preview" />
+    </div>
+  </div>
+
+  <button (click)="createPost()">Adaugă Postare</button>
+</div>
+
+<h3>Postări existente</h3>
+<div *ngFor="let post of posts">
+  <app-postare [post]="post"></app-postare>
+  <button (click)="deletePost(post.id)">Șterge</button>
+</div>
+
+<button (click)="logout()">Logout</button>
