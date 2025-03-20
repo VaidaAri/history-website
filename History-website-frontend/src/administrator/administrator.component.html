@@ -19,9 +19,12 @@
 </div>
 
 <h3>Postări existente</h3>
+
 <div *ngFor="let post of posts">
   <app-postare [post]="post"></app-postare>
   <button (click)="deletePost(post.id)">Șterge</button>
 </div>
+
+<button routerLink="">Mergi la pagina Acasă</button>
 
 <button (click)="logout()">Logout</button>
