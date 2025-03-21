@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MeniuComponent } from '../meniu/meniu.component';
 import { ImagineComponent } from '../imagine/imagine.component';
-import { CalendarComponent } from '../calendar/calendar.component';
 import { PostareComponent } from '../postare/postare.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
@@ -14,8 +13,7 @@ import { FormsModule } from '@angular/forms';
   imports: [
     RouterModule, 
     MeniuComponent, 
-    ImagineComponent, 
-    CalendarComponent, 
+    ImagineComponent,  
     PostareComponent, 
     CommonModule, 
     FormsModule, 
@@ -48,6 +46,17 @@ export class AcasaComponent {
     if (this.imageUrl.trim()) {
       this.images.push({ url: this.imageUrl });
       this.imageUrl = ''; 
+    }
+  }
+
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.images.push({ url: reader.result as string }); 
+      };
+      reader.readAsDataURL(file); 
     }
   }
 

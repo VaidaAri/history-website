@@ -2,7 +2,7 @@
     <app-meniu></app-meniu>
     Pagina Principala
     <app-imagine></app-imagine>
-    <app-calendar></app-calendar>
+    <!-- <app-calendar></app-calendar> -->
 
     <div *ngFor="let post of posts">
         <app-postare [post]="post"></app-postare>
@@ -15,7 +15,7 @@
   <textarea [(ngModel)]="description" placeholder="Scrie o postare..."></textarea>
   
   <div>
-    <input [(ngModel)]="imageUrl" placeholder="URL Imagine">
+    <input type="file" (change)="onFileSelected($event)">
     <button (click)="addImage()">Adaugă Imagine</button>
   </div>
 

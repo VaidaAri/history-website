@@ -37,7 +37,6 @@ public class AdministratorService {
     }
 
     public boolean authenticate(String username, String password) {
-        Optional<Administrator> admin = administratorRepository.findByUsername(username);
-        return admin.isPresent() && admin.get().getPassword().equals(password);
+        return administratorRepository.findByUsernameAndPassword(username, password).isPresent();
     }
 }
