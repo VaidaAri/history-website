@@ -3,29 +3,31 @@
     Pagina Principala
     <app-imagine></app-imagine>
     <!-- <app-calendar></app-calendar> -->
+     <app-cadran></app-cadran>
 
-    <div *ngFor="let post of posts">
+    <!--<div *ngFor="let post of posts">
         <app-postare [post]="post"></app-postare>
       </div>
+      <div *ngIf="isAdmin">
+        <h3>Adaugă o postare:</h3>
+        <textarea [(ngModel)]="description" placeholder="Scrie o postare..."></textarea>
+        
+        <div>
+          <input type="file" (change)="onFileSelected($event)">
+          <button (click)="addImage()">Adaugă Imagine</button>
+        </div>
+      
+        <div *ngIf="images.length > 0">
+          <h4>Imagini selectate:</h4>
+          <div class="image-container">
+            <img *ngFor="let image of images" [src]="image.url" alt="Preview" />
+          </div>
+        </div>
+      
+        <button (click)="createPost()">Adaugă Postare</button>
+      </div>-->
       
 </main>
 
-<div *ngIf="isAdmin">
-  <h3>Adaugă o postare:</h3>
-  <textarea [(ngModel)]="description" placeholder="Scrie o postare..."></textarea>
-  
-  <div>
-    <input type="file" (change)="onFileSelected($event)">
-    <button (click)="addImage()">Adaugă Imagine</button>
-  </div>
 
-  <div *ngIf="images.length > 0">
-    <h4>Imagini selectate:</h4>
-    <div class="image-container">
-      <img *ngFor="let image of images" [src]="image.url" alt="Preview" />
-    </div>
-  </div>
-
-  <button (click)="createPost()">Adaugă Postare</button>
-</div>
 

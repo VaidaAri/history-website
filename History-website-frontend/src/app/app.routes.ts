@@ -10,6 +10,7 @@ import { AdministratorLoginComponent } from '../administrator-login/administrato
 import { PublicatiiComponent } from '../publicatii/publicatii.component';
 import { CreeareContComponent } from '../creeare-cont/creeare-cont.component';
 import { AdministratorComponent } from '../administrator/administrator.component';
+import { CadranComponent } from '../cadran/cadran.component';
 
 export const routes: Routes = [{path:'', component: AcasaComponent},
     {path:'istoric', component: IstoricComponent },
@@ -21,5 +22,6 @@ export const routes: Routes = [{path:'', component: AcasaComponent},
     {path:'administrator-login', component: AdministratorLoginComponent},
     {path:'publicatii', component: PublicatiiComponent},
     {path:'creeare-cont', component: CreeareContComponent},
-    {path: 'administrator', component: AdministratorComponent}
+    {path: 'administrator', component: AdministratorComponent},
+    {path: 'cadran', component: CadranComponent}
 ];

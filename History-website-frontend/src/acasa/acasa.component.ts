@@ -6,19 +6,23 @@ import { PostareComponent } from '../postare/postare.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { CadranComponent } from "../cadran/cadran.component";
 
 @Component({
   selector: 'app-acasa',
   standalone: true,
   imports: [
-    RouterModule, 
-    MeniuComponent, 
-    ImagineComponent,  
-    PostareComponent, 
-    CommonModule, 
-    FormsModule, 
+    RouterModule,
+    MeniuComponent,
+    ImagineComponent,
+    PostareComponent,
+    CadranComponent,
+    CommonModule,
+    FormsModule,
     HttpClientModule // <-- Adăugat aici
-  ],
+    ,
+    CadranComponent
+],
   templateUrl: './acasa.component.html',
   styleUrl: './acasa.component.css'
 })
