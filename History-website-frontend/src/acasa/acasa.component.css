@@ -1,7 +1,11 @@
-main {
-    background-color: #0D0A1A; /* Sau una dintre celelalte nuanțe */
-    color: #EAD196; /* Text într-o nuanță caldă, pentru contrast */
+.main {
+    background-color: #0D0A1A;
+    color: #EAD196;
     font-family: 'Merriweather', serif;
     margin: 0;
     padding: 0;
+    position: relative; /* Permite poziționarea absolută a cadranului în interior */
+    height: 100vh; /* Setează înălțimea pe toată înălțimea ferestrei */
+    display: flex; /* Permite poziționarea flexibilă a conținutului */
+    flex-direction: column; /* Aranjează elementele pe verticală */
 }
