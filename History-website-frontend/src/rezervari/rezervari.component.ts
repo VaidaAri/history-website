@@ -4,11 +4,12 @@ import { MeniuComponent } from '../meniu/meniu.component';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { CadranComponent } from '../cadran/cadran.component';
 
 @Component({
   selector: 'app-rezervari',
   standalone: true,
-  imports: [RouterModule, MeniuComponent, CommonModule, FormsModule],
+  imports: [RouterModule, MeniuComponent, CommonModule, FormsModule, CadranComponent],
   templateUrl: './rezervari.component.html',
   styleUrls: ['./rezervari.component.css']
 })
