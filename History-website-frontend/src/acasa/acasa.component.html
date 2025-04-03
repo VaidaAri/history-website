@@ -1,36 +1,60 @@
 <main class="main">
     <app-meniu></app-meniu>
-
     
-     <app-cadran>
-      Pagina Principala
-      <app-imagine></app-imagine>
+    <app-cadran>
+        <div class="home-container">
+            <div class="welcome-section">
+                <h2>Bine ați venit la <span class="title-accent">Muzeul Grăniceresc Năsăudean</span></h2>
+                <p class="welcome-description">Explorați istoria fascinantă a graniței năsăudene prin colecțiile și expozițiile noastre.</p>
+            </div>
+            
+            <!-- Secțiunea de postări -->
+            <div class="posts-section">
+                <div class="posts-header">
+                    <h3>Noutăți și Articole</h3>
+                    
+                    <!-- Formular de adăugare postare vizibil doar pentru admin -->
+                    <div *ngIf="isAdmin" class="add-post-form">
+                        <h4>Adaugă o postare nouă</h4>
+                        <div class="post-form-container">
+                            <textarea [(ngModel)]="description" placeholder="Scrie o postare..." class="post-textarea"></textarea>
+                            
+                            <div class="file-upload-container">
+                                <label for="file-upload" class="file-upload-label">
+                                    <span class="file-icon">📷</span>
+                                    <span>Selectează imagini</span>
+                                </label>
+                                <input type="file" id="file-upload" (change)="onFileSelected($event)" accept="image/*" multiple class="file-input">
+                            </div>
+                            
+                            <div *ngIf="images.length > 0" class="selected-images">
+                                <h5>Imagini selectate ({{ images.length }}):</h5>
+                                <div class="image-previews">
+                                    <div *ngFor="let image of images; let i = index" class="image-preview-container">
+                                        <img [src]="image.url" alt="Preview" class="image-preview" />
+                                        <button (click)="removeImage(i)" class="remove-image-btn" title="Elimină imaginea">×</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button (click)="createPost()" [disabled]="!description.trim()" class="create-post-btn">Publică Postarea</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Lista de postări -->
+                <div class="posts-list">
+                    <div *ngIf="posts.length === 0" class="no-posts">
+                        <p>Nu există postări momentan.</p>
+                    </div>
+                    
+                    <div *ngFor="let post of posts" class="post-item">
+                        <app-postare [post]="post"></app-postare>
+                        <button *ngIf="isAdmin" (click)="deletePost(post.id)" class="delete-post-btn">Șterge postarea</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </app-cadran>
-
-     <!-- <app-calendar></app-calendar> -->
-    <!--<div *ngFor="let post of posts">
-        <app-postare [post]="post"></app-postare>
-      </div>
-      <div *ngIf="isAdmin">
-        <h3>Adaugă o postare:</h3>
-        <textarea [(ngModel)]="description" placeholder="Scrie o postare..."></textarea>
-        
-        <div>
-          <input type="file" (change)="onFileSelected($event)">
-          <button (click)="addImage()">Adaugă Imagine</button>
-        </div>
-      
-        <div *ngIf="images.length > 0">
-          <h4>Imagini selectate:</h4>
-          <div class="image-container">
-            <img *ngFor="let image of images" [src]="image.url" alt="Preview" />
-          </div>
-        </div>
-      
-        <button (click)="createPost()">Adaugă Postare</button>
-      </div>-->
-      
 </main>
-
-
 
