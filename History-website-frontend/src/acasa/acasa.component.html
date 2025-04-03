@@ -13,32 +13,23 @@
                 <div class="posts-header">
                     <h3>Noutăți și Articole</h3>
                     
-                    <!-- Formular de adăugare postare vizibil doar pentru admin -->
-                    <div *ngIf="isAdmin" class="add-post-form">
-                        <h4>Adaugă o postare nouă</h4>
-                        <div class="post-form-container">
-                            <textarea [(ngModel)]="description" placeholder="Scrie o postare..." class="post-textarea"></textarea>
-                            
-                            <div class="file-upload-container">
-                                <label for="file-upload" class="file-upload-label">
-                                    <span class="file-icon">📷</span>
-                                    <span>Selectează imagini</span>
-                                </label>
-                                <input type="file" id="file-upload" (change)="onFileSelected($event)" accept="image/*" multiple class="file-input">
-                            </div>
-                            
-                            <div *ngIf="images.length > 0" class="selected-images">
-                                <h5>Imagini selectate ({{ images.length }}):</h5>
-                                <div class="image-previews">
-                                    <div *ngFor="let image of images; let i = index" class="image-preview-container">
-                                        <img [src]="image.url" alt="Preview" class="image-preview" />
-                                        <button (click)="removeImage(i)" class="remove-image-btn" title="Elimină imaginea">×</button>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <button (click)="createPost()" [disabled]="!description.trim()" class="create-post-btn">Publică Postarea</button>
+                    <!-- Componenta de administrare postări - vizibilă doar pentru administratori -->
+                    <app-post-manager 
+                        *ngIf="isAdmin" 
+                        (postCreated)="onPostCreated()"
+                    ></app-post-manager>
+                    
+                    <!-- Indicator pentru administrator logat -->
+                    <div *ngIf="isAdmin" class="admin-indicator">
+                        <div class="admin-badge">
+                            <span class="admin-icon">👑</span> Sunteți autentificat ca administrator
                         </div>
+                        <button (click)="logout()" class="logout-btn">Deconectare</button>
+                    </div>
+                    
+                    <!-- Link pentru autentificare administrator (vizibil doar dacă nu ești autentificat) -->
+                    <div *ngIf="!isAdmin" class="login-link-container">
+                        <a (click)="goToLogin()" class="admin-login-link">Autentificare administrator</a>
                     </div>
                 </div>
                 
@@ -50,7 +41,9 @@
                     
                     <div *ngFor="let post of posts" class="post-item">
                         <app-postare [post]="post"></app-postare>
-                        <button *ngIf="isAdmin" (click)="deletePost(post.id)" class="delete-post-btn">Șterge postarea</button>
+                        <button *ngIf="isAdmin" (click)="deletePost(post.id)" class="delete-post-btn">
+                            <span class="delete-icon">🗑️</span> Șterge postarea
+                        </button>
                     </div>
                 </div>
             </div>

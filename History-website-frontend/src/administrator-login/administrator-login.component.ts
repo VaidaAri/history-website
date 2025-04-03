@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-administrator-login',
@@ -12,26 +13,30 @@ import { RouterModule } from '@angular/router';
   templateUrl: './administrator-login.component.html',
   styleUrls: ['./administrator-login.component.css'],
 })
-export class AdministratorLoginComponent {
+export class AdministratorLoginComponent implements OnInit {
   username: string = '';
   password: string = '';
   errorMessage: string = '';
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {}
+
+  ngOnInit() {
+    // Dacă utilizatorul este deja autentificat, redirecționează la pagina principală
+    if (this.authService.isAuthenticated()) {
+      this.router.navigate(['/']);
+    }
+  }
 
   login() {
     const credentials = { username: this.username, password: this.password };
   
-    this.http.post('http://localhost:8080/api/administrators/login', credentials, { responseType: 'text' })
-      .subscribe({
-        next: (token) => {
-          localStorage.setItem('adminToken', token); // Salvăm token-ul
-          this.router.navigate(['/administrator']);
-        },
-        error: () => {
-          this.errorMessage = 'Autentificare eșuată! Verificați datele introduse.';
-        }
-      });
+    this.authService.login(credentials).subscribe({
+      next: () => {
+        this.router.navigate(['/']);
+      },
+      error: () => {
+        this.errorMessage = 'Autentificare eșuată! Verificați datele introduse.';
+      }
+    });
   }
-  
 }
