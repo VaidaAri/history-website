@@ -9,3 +9,178 @@
     display: flex;
     flex-direction: column;
 }
+
+/* Stiluri pentru container principal */
+.rezervari-container {
+    padding: 25px;
+}
+
+.form-section, .table-section {
+    margin-bottom: 30px;
+}
+
+/* Stiluri pentru formular */
+form {
+    background-color: #F8F4E3;
+    border-radius: 12px;
+    padding: 25px;
+    max-width: 500px;
+    margin: 0 auto;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    border: 2px solid #EAD196;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+}
+
+h2 {
+    color: #5D4037;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.8em;
+    border-bottom: 2px solid #EAD196;
+    padding-bottom: 10px;
+}
+
+label {
+    display: block;
+    margin: 0 0 5px 0;
+    color: #5D4037;
+    font-weight: bold;
+}
+
+.checkbox-group label {
+    margin: 0;
+    margin-right: 10px;
+}
+
+input[type="datetime-local"], 
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #EAD196;
+    border-radius: 6px;
+    background-color: #FFF9E6;
+    font-family: 'Merriweather', serif;
+    font-size: 1em;
+    box-sizing: border-box;
+}
+
+input[type="checkbox"] {
+    margin-left: 5px;
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+button {
+    background-color: #7D5A50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 20px;
+    margin-top: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    width: 100%;
+    font-family: 'Merriweather', serif;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+    background-color: #5D4037;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Stiluri pentru tabel */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #F8F4E3;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    border: 2px solid #EAD196;
+    font-size: 0.95em;
+}
+
+thead {
+    background-color: #EAD196;
+}
+
+th {
+    padding: 15px;
+    text-align: left;
+    color: #5D4037;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.9em;
+    letter-spacing: 0.5px;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #FFF9E6;
+}
+
+tbody tr:hover {
+    background-color: #EFE3C8;
+}
+
+td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #E6D3A3;
+    color: #5D4037;
+}
+
+.empty-table {
+    text-align: center;
+    padding: 30px 0;
+    font-style: italic;
+    color: #888;
+}
+
+/* Stiluri pentru butonul de ștergere din tabel */
+td button {
+    background-color: #C14953;
+    padding: 8px 15px;
+    width: auto;
+    font-size: 0.85em;
+    margin-top: 0;
+}
+
+td button:hover {
+    background-color: #A13842;
+}
+
+/* Stiluri responsive */
+@media (max-width: 768px) {
+    .rezervari-container {
+        padding: 15px;
+    }
+    
+    form {
+        padding: 15px;
+    }
+    
+    table {
+        font-size: 0.85em;
+    }
+    
+    th, td {
+        padding: 10px;
+    }
+}

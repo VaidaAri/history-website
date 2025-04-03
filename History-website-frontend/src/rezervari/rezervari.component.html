@@ -1,46 +1,57 @@
-<main class = rezervari>
+<main class="rezervari">
 <app-meniu></app-meniu>
 <app-cadran>
-<div>
-    <div>
-        <h2>Add New Booking</h2>
-        <form (ngSubmit)="addBooking()" #bookingForm="ngForm">
-            <label for="datetime">Date and Time:</label>
-            <input type="datetime-local" id="datetime" name="datetime" [(ngModel)]="newBooking.datetime" required>
-            
-            <label for="numberOfPersons">Number of Persons:</label>
-            <input type="number" id="numberOfPersons" name="numberOfPersons" [(ngModel)]="newBooking.numberOfPersons" required>
-            
-            <label for="guideRequired">Guide Required?</label>
-            <input type="checkbox" id="guideRequired" name="guideRequired" [(ngModel)]="newBooking.guideRequired">
+    <div class="rezervari-container">
+        <div class="form-section">
+            <h2>Adaugă o Rezervare Nouă</h2>
+            <form (ngSubmit)="addBooking()" #bookingForm="ngForm">
+                <div class="form-group">
+                    <label for="datetime">Data și Ora:</label>
+                    <input type="datetime-local" id="datetime" name="datetime" [(ngModel)]="newBooking.datetime" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="numberOfPersons">Număr de Persoane:</label>
+                    <input type="number" id="numberOfPersons" name="numberOfPersons" [(ngModel)]="newBooking.numberOfPersons" required min="1">
+                </div>
+                
+                <div class="form-group checkbox-group">
+                    <label for="guideRequired">Doriți ghid? </label>
+                    <input type="checkbox" id="guideRequired" name="guideRequired" [(ngModel)]="newBooking.guideRequired">
+                </div>
 
-            <button type="submit">Add Booking</button>
-        </form>
+                <button type="submit" [disabled]="!bookingForm.form.valid">Adaugă Rezervare</button>
+            </form>
+        </div>
+
+        <div class="table-section">
+            <h2>Lista Rezervărilor</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Data și Ora</th>
+                        <th>Persoane</th>
+                        <th>Ghid</th>
+                        <th>Acțiuni</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let booking of bookings">
+                        <td>{{booking.id}}</td>
+                        <td>{{ booking.datetime | date: 'dd MMM yyyy, HH:mm' }}</td>
+                        <td>{{booking.numberOfPersons}}</td>
+                        <td>{{ booking.guideRequired ? 'Da' : 'Nu' }}</td>
+                        <td>
+                            <button (click)="deleteBooking(booking.id)">Șterge</button>
+                        </td>
+                    </tr>
+                    <tr *ngIf="bookings.length === 0">
+                        <td colspan="5" class="empty-table">Nu există rezervări momentan</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-
-    <table>
-        <thead>
-            <h2>Booking list</h2>
-            <tr>
-                <th>Id</th>
-                <th>Date and Time</th>
-                <th>Number of persons</th>
-                <th>Guide</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let booking of bookings">
-                <td>{{booking.id}}</td>
-                <td>{{ booking.datetime | date: 'yyyy-MM-dd HH:mm' }}</td>
-                <td>{{booking.numberOfPersons}}</td>
-                <td>{{ booking.guideRequired ? 'Yes' : 'No' }}</td>
-                <td>
-                    <button (click)="deleteBooking(booking.id)">Delete</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
 </app-cadran>
 </main>
