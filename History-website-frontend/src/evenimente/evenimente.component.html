@@ -1,6 +1,35 @@
-<main class = evenimente>
+<main class="evenimente">
 <app-meniu></app-meniu>
 <app-cadran>
-<app-calendar></app-calendar>
+  <div class="evenimente-container">
+    <div class="evenimente-header">
+      <h2>Calendar <span class="title-accent">Evenimente</span></h2>
+      <p class="events-description">Descoperiți evenimentele organizate de Muzeul Grăniceresc Năsăudean. Click pe o dată pentru a adăuga un eveniment nou sau click pe un eveniment existent pentru a-l gestiona.</p>
+    </div>
+    
+    <div class="calendar-container">
+      <app-calendar></app-calendar>
+    </div>
+    
+    <div class="events-info">
+      <div class="event-info-box">
+        <div class="event-icon">📅</div>
+        <h3>Vizitați-ne</h3>
+        <p>Programul de vizitare este zilnic între orele 9:00 - 17:00, cu excepția zilei de luni.</p>
+      </div>
+      
+      <div class="event-info-box">
+        <div class="event-icon">🎭</div>
+        <h3>Evenimente speciale</h3>
+        <p>Urmăriți calendarul pentru expoziții temporare, ateliere și alte activități culturale.</p>
+      </div>
+      
+      <div class="event-info-box">
+        <div class="event-icon">🔔</div>
+        <h3>Anunțuri</h3>
+        <p>Verificați periodic pentru noutăți și anunțuri importante legate de programul muzeului.</p>
+      </div>
+    </div>
+  </div>
 </app-cadran>
 </main>

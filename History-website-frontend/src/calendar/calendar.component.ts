@@ -39,7 +39,7 @@ export class CalendarComponent implements OnInit {
         title: event.name,
         start: event.startDate,
         end: event.endDate,
-        color: 'blue'
+        color: '#7D5A50'
       }));
       this.updateCalendar();
     });

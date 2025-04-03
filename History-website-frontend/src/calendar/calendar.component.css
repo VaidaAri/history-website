@@ -1,0 +1,162 @@
+/* Stiluri pentru calendar */
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+}
+
+::ng-deep .fc {
+  font-family: 'Merriweather', serif;
+  height: 100%;
+}
+
+/* Header calendar (lun, an, butoane) */
+::ng-deep .fc-header-toolbar {
+  margin-bottom: 1.5em !important;
+  background-color: rgba(93, 64, 55, 0.08);
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+::ng-deep .fc-toolbar-title {
+  font-size: 1.5em !important;
+  font-weight: bold;
+  color: #5D4037;
+  text-transform: capitalize;
+}
+
+/* Butoane */
+::ng-deep .fc-button-primary {
+  background-color: #7D5A50 !important;
+  border-color: #7D5A50 !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+::ng-deep .fc-button-primary:hover {
+  background-color: #5D4037 !important;
+  border-color: #5D4037 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+::ng-deep .fc-button-primary:disabled {
+  background-color: #ccc !important;
+  border-color: #ccc !important;
+  opacity: 0.7;
+}
+
+/* Zilele sptmânii */
+::ng-deep .fc-col-header-cell {
+  background-color: #EAD196;
+  padding: 10px 0;
+}
+
+::ng-deep .fc-col-header-cell-cushion {
+  color: #5D4037;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.85em;
+  letter-spacing: 0.05em;
+  padding: 8px;
+  text-decoration: none !important;
+}
+
+/* Celule zile */
+::ng-deep .fc-daygrid-day {
+  transition: background-color 0.2s ease;
+}
+
+::ng-deep .fc-daygrid-day:hover {
+  background-color: rgba(234, 209, 150, 0.2);
+}
+
+::ng-deep .fc-daygrid-day-frame {
+  min-height: 70px;
+}
+
+::ng-deep .fc-daygrid-day-number {
+  color: #3E2723;
+  font-weight: bold;
+  padding: 5px 8px !important;
+  text-decoration: none !important;
+}
+
+/* Zile din alte luni */
+::ng-deep .fc-day-other .fc-daygrid-day-number {
+  color: #999;
+  opacity: 0.7;
+}
+
+/* Ziua de azi */
+::ng-deep .fc-day-today {
+  background-color: rgba(234, 209, 150, 0.3) !important;
+}
+
+::ng-deep .fc-day-today .fc-daygrid-day-number {
+  background-color: #7D5A50;
+  color: white;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 5px;
+}
+
+/* Evenimente */
+::ng-deep .fc-event {
+  background-color: #7D5A50 !important;
+  border: none !important;
+  border-radius: 5px !important;
+  padding: 3px 5px !important;
+  font-size: 0.9em !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+::ng-deep .fc-event:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+::ng-deep .fc-event-time,
+::ng-deep .fc-event-title {
+  color: white !important;
+  font-weight: 500;
+}
+
+/* Stiluri pentru eveniment selectat */
+::ng-deep .fc-event-selected {
+  box-shadow: 0 0 0 2px #EAD196 !important;
+}
+
+/* Stiluri pentru evenimentele mai lungi (multiple zile) */
+::ng-deep .fc-event-main-frame {
+  display: flex;
+  align-items: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  ::ng-deep .fc-header-toolbar {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  ::ng-deep .fc-toolbar-title {
+    font-size: 1.2em !important;
+  }
+  
+  ::ng-deep .fc-button {
+    font-size: 0.8em !important;
+    padding: 0.3em 0.6em !important;
+  }
+  
+  ::ng-deep .fc-col-header-cell-cushion {
+    font-size: 0.75em;
+  }
+}

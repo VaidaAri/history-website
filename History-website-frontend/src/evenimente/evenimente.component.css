@@ -9,3 +9,129 @@
     display: flex;
     flex-direction: column;
 }
+
+.evenimente-container {
+    padding: 15px 20px;
+}
+
+.evenimente-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+h2 {
+    color: #5D4037;
+    font-size: 2em;
+    margin-bottom: 15px;
+    position: relative;
+    padding-bottom: 15px;
+    display: inline-block;
+}
+
+h2:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70px;
+    height: 3px;
+    background-color: #EAD196;
+}
+
+.title-accent {
+    color: #7D5A50;
+}
+
+.events-description {
+    color: #3E2723;
+    font-size: 1.05em;
+    max-width: 800px;
+    margin: 0 auto 25px auto;
+    line-height: 1.6;
+}
+
+.calendar-container {
+    background-color: rgba(248, 244, 227, 0.98);
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    margin-bottom: 25px;
+    border: 1px solid rgba(234, 209, 150, 0.5);
+    overflow: hidden;
+    height: 60vh;
+}
+
+/* Cartonașe informative sub calendar */
+.events-info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.event-info-box {
+    flex: 1;
+    min-width: 200px;
+    max-width: 300px;
+    background-color: #F8F4E3;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(234, 209, 150, 0.3);
+}
+
+.event-info-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.event-icon {
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+.event-info-box h3 {
+    color: #5D4037;
+    margin: 0 0 10px 0;
+    font-size: 1.2em;
+}
+
+.event-info-box p {
+    color: #3E2723;
+    margin: 0;
+    font-size: 0.95em;
+    line-height: 1.5;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .evenimente-container {
+        padding: 10px;
+    }
+    
+    h2 {
+        font-size: 1.6em;
+    }
+    
+    .events-description {
+        font-size: 0.95em;
+        padding: 0 10px;
+    }
+    
+    .events-info {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .event-info-box {
+        width: 90%;
+        max-width: none;
+    }
+    
+    .calendar-container {
+        height: 50vh;
+    }
+}
