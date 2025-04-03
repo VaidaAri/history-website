@@ -15,17 +15,16 @@
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease; 
   margin: 20px auto;
-  display:block;
+  display: block;
   float: left;
   margin-right: 25px;
-  
 }
 
 .standard-image:hover {
   transform: scale(1.05);
 }
 
-.istoric{
+.istoric {
   background-color: #0D0A1A;
   color: #000000;
   font-family: 'Merriweather', serif;
@@ -37,26 +36,139 @@
   flex-direction: column;
 }
 
-p{
+p {
   text-align: justify;
-  line-height: 1.8;
-  margin: 20px 0;
-  padding: 0 15px;
+  line-height: 1.9;
+  margin: 25px 0;
+  padding: 0 20px;
   overflow: auto;
+  color: #3E2723;
+  font-size: 1.05em;
+  letter-spacing: 0.02em;
+  text-indent: 1.5em;
+  position: relative;
+  font-family: 'Georgia', serif;
 }
 
-h4{
-  color: #000000;
+h2 {
+  color: #5D4037;
   text-align: center;
-  margin: 25px 0 15px 0;
-  font-size: 1.4em;
+  font-size: 2.2em;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #EAD196;
+  letter-spacing: 0.05em;
+  position: relative;
 }
 
-ul{
-  margin-left: 30px;
-  line-height: 1.6;
+h2:after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70px;
+  height: 3px;
+  background-color: #7D5A50;
 }
 
-li{
-  margin-bottom: 10px;
+h4 {
+  color: #5D4037;
+  text-align: center;
+  margin: 30px 0 20px 0;
+  font-size: 1.5em;
+  position: relative;
+  font-family: 'Merriweather', serif;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+h4:after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 2px;
+  background-color: #EAD196;
+}
+
+ul {
+  margin: 25px 0 25px 40px;
+  line-height: 1.8;
+  color: #3E2723;
+}
+
+li {
+  margin-bottom: 12px;
+  position: relative;
+  padding-left: 10px;
+  font-family: 'Georgia', serif;
+}
+
+li:before {
+  content: '•';
+  position: absolute;
+  left: -15px;
+  color: #7D5A50;
+  font-size: 1.2em;
+}
+
+/* Stilizare pentru butonul de publicații */
+.register-btn {
+  background-color: #7D5A50;
+  color: #FFF9E6;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 25px;
+  font-size: 1.1em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: block;
+  margin: 20px auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Merriweather', serif;
+}
+
+.register-btn:hover {
+  background-color: #5D4037;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Adaugă stilizare de animație pentru afișarea treptată a textului */
+p, h4, li {
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .standard-image {
+    width: 200px;
+    height: 280px;
+    float: none;
+    margin: 20px auto;
+  }
+  
+  p {
+    text-align: left;
+    text-indent: 1em;
+    padding: 0 15px;
+  }
+  
+  h2 {
+    font-size: 1.8em;
+  }
+  
+  h4 {
+    font-size: 1.3em;
+  }
 }
