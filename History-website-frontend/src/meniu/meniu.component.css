@@ -37,8 +37,8 @@ h1 {
 h1::after {
     content: '';
     display: block;
-    width: 70px;
-    height: 2px;
+    width: 180px;
+    height: 1px;
     background-color: #EAD196;
     position: absolute;
     bottom: -7px;
