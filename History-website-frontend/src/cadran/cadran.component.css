@@ -1,22 +1,88 @@
 .cadran {
     position: absolute;
-    top: calc(50% + 70px);
+    top: calc(50% + 80px);
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 90%;
-    max-width: 1200px; 
-    height: 550px;
-    background: rgba(230, 229, 236, 0.9);
-    border-radius: 20px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    width: 88%;
+    max-width: 1250px; 
+    height: 700px;
+    background: rgba(248, 244, 227, 0.98);
+    border-radius: 15px;
+    box-shadow: 0px 8px 30px rgba(0, 0, 0, 0.35);
     overflow: hidden;
-    
+    border: 1px solid rgba(234, 209, 150, 0.3);
+    transition: all 0.3s ease;
+}
+
+.cadran::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(to right, #5D4037, #7D5A50, #EAD196, #7D5A50, #5D4037);
+    border-radius: 15px 15px 0 0;
 }
 
 .cadran-content {
     height: 100%;
     overflow-y: auto;
-    padding: 20px;
-    color: #000000;
+    padding: 25px 30px;
+    color: #3E2723;
     font-family: 'Merriweather', serif;
+    scrollbar-width: thin;
+    scrollbar-color: #7D5A50 #EFE3C8;
+}
+
+/* Stilizare scrollbar pentru webkit (Chrome, Safari, etc.) */
+.cadran-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.cadran-content::-webkit-scrollbar-track {
+    background: #EFE3C8;
+    border-radius: 10px;
+}
+
+.cadran-content::-webkit-scrollbar-thumb {
+    background-color: #7D5A50;
+    border-radius: 10px;
+    border: 2px solid #EFE3C8;
+}
+
+.cadran-content::-webkit-scrollbar-thumb:hover {
+    background-color: #5D4037;
+}
+
+/* Responsive design */
+@media (max-height: 900px) {
+    .cadran {
+        height: 650px;
+    }
+}
+
+@media (max-height: 800px) {
+    .cadran {
+        height: 600px;
+        top: calc(50% + 70px);
+    }
+}
+
+@media (max-width: 768px) {
+    .cadran {
+        width: 92%;
+        top: calc(50% + 60px);
+    }
+    
+    .cadran-content {
+        padding: 20px;
+    }
+}
+
+@media (max-height: 700px) {
+    .cadran {
+        height: 550px;
+        top: calc(50% + 60px);
+    }
 }
