@@ -1,19 +1,41 @@
-<h3>Pagina de logare pentru administrator:</h3>
-<div class="login-container">
-    <h2>Logare</h2>
-    <form (submit)="login()">
-        <div class="input-group">
-            <label for="username">Username:</label>
-            <input type="text" id="username" [(ngModel)]="username" name="username" required>
+<main class="login-page">
+    <div class="login-card">
+        <div class="login-header">
+            <div class="logo-container">
+                <div class="logo-icon">🏛️</div>
+            </div>
+            <h2>Autentificare <span class="title-accent">Administrator</span></h2>
+            <p class="login-subtitle">Introduceți datele de autentificare pentru a accesa panoul de administrare</p>
         </div>
-        <div class="input-group">
-            <label for="password">Parolă:</label>
-            <input type="password" id="password" [(ngModel)]="password" name="password" required>
+        
+        <form (submit)="login()" class="login-form">
+            <div class="input-group">
+                <label for="username">Nume de utilizator</label>
+                <div class="input-container">
+                    <span class="input-icon">👤</span>
+                    <input type="text" id="username" [(ngModel)]="username" name="username" placeholder="Introduceți numele de utilizator" required>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label for="password">Parolă</label>
+                <div class="input-container">
+                    <span class="input-icon">🔒</span>
+                    <input type="password" id="password" [(ngModel)]="password" name="password" placeholder="Introduceți parola" required>
+                </div>
+            </div>
+            
+            <div class="alert-box" *ngIf="errorMessage">
+                <div class="alert-icon">⚠️</div>
+                <p class="error-message">{{ errorMessage }}</p>
+            </div>
+            
+            <button type="submit" class="login-btn">Autentificare</button>
+        </form>
+        
+        <div class="form-footer">
+            <p>Aveți nevoie de un cont nou?</p>
+            <button class="register-btn" routerLink="/creeare-cont">Creare cont administrator</button>
         </div>
-        <button type="submit" class="login-btn">Login</button>
-    </form>
-
-    <button class="register-btn" routerLink="/creeare-cont">Create an account</button>
-
-    <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
-</div>
+    </div>
+</main>

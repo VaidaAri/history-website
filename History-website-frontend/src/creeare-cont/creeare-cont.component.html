@@ -1,41 +1,93 @@
-<h2>Creare cont administrator</h2>
-<form (ngSubmit)="registerAdmin()">
-  <label for="firstName">Prenume:</label>
-  <input type="text" id="firstName" [(ngModel)]="newAdmin.firstName" name="firstName" required />
-
-  <label for="lastName">Nume:</label>
-  <input type="text" id="lastName" [(ngModel)]="newAdmin.lastName" name="lastName" required />
-
-  <label for="username">Nume de utilizator:</label>
-  <input type="text" id="username" [(ngModel)]="newAdmin.username" name="username" required />
-
-  <label for="password">Parolă:</label>
-  <input type="password" id="password" [(ngModel)]="newAdmin.password" name="password" required />
-
-  <button type="submit">Creare cont</button>
-</form>
-
-<h2>Lista administratorilor</h2>
-<table>
-  <thead>
-    <tr>
-      <th>Id</th>
-      <th>Prenume</th>
-      <th>Nume</th>
-      <th>Username</th>
-      <th>Acțiuni</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let admin of admins">
-      <td>{{ admin.id }}</td>
-      <td>{{ admin.firstName }}</td>
-      <td>{{ admin.lastName }}</td>
-      <td>{{ admin.username }}</td>
-      <td>
-        <button (click)="deleteAdmin(admin.id)">Șterge</button>
-      </td>
-    </tr>
-  </tbody>
-  <button class="register-btn" routerLink="/administrator-login">Inapoi la login</button>
-</table>
+<main class="register-page">
+  <div class="admin-container">
+    <!-- Card pentru crearea contului -->
+    <div class="admin-card register-card">
+      <div class="card-header">
+        <div class="header-icon">👤</div>
+        <h2>Creare <span class="title-accent">Cont Administrator</span></h2>
+        <p class="card-subtitle">Completați datele pentru a crea un cont nou de administrator</p>
+      </div>
+      
+      <form (ngSubmit)="registerAdmin()" class="admin-form">
+        <div class="form-row">
+          <div class="input-group">
+            <label for="firstName">Prenume</label>
+            <div class="input-container">
+              <span class="input-icon">📝</span>
+              <input type="text" id="firstName" [(ngModel)]="newAdmin.firstName" name="firstName" placeholder="Introduceți prenumele" required />
+            </div>
+          </div>
+          
+          <div class="input-group">
+            <label for="lastName">Nume</label>
+            <div class="input-container">
+              <span class="input-icon">📝</span>
+              <input type="text" id="lastName" [(ngModel)]="newAdmin.lastName" name="lastName" placeholder="Introduceți numele" required />
+            </div>
+          </div>
+        </div>
+        
+        <div class="input-group">
+          <label for="username">Nume de utilizator</label>
+          <div class="input-container">
+            <span class="input-icon">👤</span>
+            <input type="text" id="username" [(ngModel)]="newAdmin.username" name="username" placeholder="Alegeți un nume de utilizator" required />
+          </div>
+        </div>
+        
+        <div class="input-group">
+          <label for="password">Parolă</label>
+          <div class="input-container">
+            <span class="input-icon">🔒</span>
+            <input type="password" id="password" [(ngModel)]="newAdmin.password" name="password" placeholder="Introduceți o parolă puternică" required />
+          </div>
+        </div>
+        
+        <button type="submit" class="submit-btn">Creare cont</button>
+      </form>
+      
+      <div class="card-footer">
+        <button class="back-btn" routerLink="/administrator-login">
+          <span class="back-icon">←</span> Înapoi la pagina de autentificare
+        </button>
+      </div>
+    </div>
+    
+    <!-- Card pentru lista administratorilor -->
+    <div class="admin-card admin-list-card">
+      <div class="card-header">
+        <div class="header-icon">👥</div>
+        <h2>Lista <span class="title-accent">Administratorilor</span></h2>
+        <p class="card-subtitle">Vizualizați și gestionați administratorii înregistrați</p>
+      </div>
+      
+      <div class="table-container">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nume complet</th>
+              <th>Utilizator</th>
+              <th>Acțiuni</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let admin of admins">
+              <td>{{ admin.id }}</td>
+              <td>{{ admin.firstName }} {{ admin.lastName }}</td>
+              <td>{{ admin.username }}</td>
+              <td>
+                <button class="delete-btn" (click)="deleteAdmin(admin.id)" title="Șterge administrator">
+                  <span class="delete-icon">🗑️</span>
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="admins.length === 0">
+              <td colspan="4" class="no-data">Nu există administratori înregistrați</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</main>
