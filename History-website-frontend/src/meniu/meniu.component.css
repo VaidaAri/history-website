@@ -21,6 +21,7 @@ nav ul {
     display: flex;
     justify-content: center;
     gap: 30px;
+    margin-top: -20px
 }
 
 nav li {
@@ -37,6 +38,8 @@ nav a {
     border-radius: 6px;
     transition: all 0.3s ease-in-out;
     position: relative;
+    transform: translateY(-5px);
+    display: inline-block;
 }
 
 nav a::after {
