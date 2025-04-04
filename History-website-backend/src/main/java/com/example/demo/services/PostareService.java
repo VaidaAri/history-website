@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +20,10 @@ public class PostareService {
     }
 
     public void createPost(Postare newPost){
+        // Asigurăm că createdAt e setat
+        if (newPost.getCreatedAt() == null) {
+            newPost.setCreatedAt(LocalDateTime.now());
+        }
         postareRepository.save(newPost);
     }
 

@@ -19,7 +19,7 @@ public class Postare {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "postare_id")
     private List<Imagine> images;
     

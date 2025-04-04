@@ -265,9 +265,12 @@ export class PostManagerComponent implements OnInit {
 
     const newPost = { 
       description: this.description, 
-      images: this.images,
-      createdAt: new Date().toISOString()
+      images: this.images
     };
+
+    // Afișăm un indicator de încărcare sau un mesaj
+    const loadingMessage = 'Se încarcă postarea...';
+    console.log(loadingMessage);
 
     this.postService.addPost(newPost).subscribe({
       next: () => {
