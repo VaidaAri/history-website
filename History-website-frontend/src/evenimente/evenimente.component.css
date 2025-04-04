@@ -51,6 +51,81 @@ h2:after {
     line-height: 1.6;
 }
 
+.admin-desc {
+    background-color: rgba(125, 90, 80, 0.1);
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 500;
+    color: #5D4037;
+    border: 1px dashed rgba(125, 90, 80, 0.3);
+}
+
+/* Admin Indicator */
+.admin-indicator-events {
+    margin: 15px 0;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.admin-badge-events {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: rgba(125, 90, 80, 0.1);
+    color: #7D5A50;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.95em;
+    font-weight: 600;
+}
+
+.admin-icon {
+    font-size: 1.2em;
+}
+
+.logout-btn-events {
+    background-color: #C14953;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 15px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Merriweather', serif;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.logout-btn-events:hover {
+    background-color: #A13842;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.login-link-container-events {
+    margin: 15px 0;
+    text-align: center;
+}
+
+.admin-login-link-events {
+    color: #7D5A50;
+    text-decoration: none;
+    font-size: 0.95em;
+    padding: 5px 10px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.admin-login-link-events:hover {
+    background-color: rgba(125, 90, 80, 0.1);
+    text-decoration: underline;
+}
+
 .calendar-container {
     background-color: rgba(248, 244, 227, 0.98);
     border-radius: 10px;

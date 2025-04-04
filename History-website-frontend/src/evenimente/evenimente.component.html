@@ -4,7 +4,25 @@
   <div class="evenimente-container">
     <div class="evenimente-header">
       <h2>Calendar <span class="title-accent">Evenimente</span></h2>
-      <p class="events-description">Descoperiți evenimentele organizate de Muzeul Grăniceresc Năsăudean. Click pe o dată pentru a adăuga un eveniment nou sau click pe un eveniment existent pentru a-l gestiona.</p>
+      <p *ngIf="isAdmin" class="events-description admin-desc">
+        Sunteți autentificat ca administrator. Puteți adăuga evenimente noi făcând click pe o dată în calendar sau puteți șterge evenimente existente făcând click pe ele.
+      </p>
+      <p *ngIf="!isAdmin" class="events-description">
+        Descoperiți evenimentele organizate de Muzeul Grăniceresc Năsăudean. Faceți click pe un eveniment pentru a vedea detaliile.
+      </p>
+      
+      <!-- Indicator pentru administrator logat și button pentru deconectare -->
+      <div *ngIf="isAdmin" class="admin-indicator-events">
+        <div class="admin-badge-events">
+          <span class="admin-icon">👑</span> Administrare evenimente
+        </div>
+        <button (click)="logout()" class="logout-btn-events">Deconectare</button>
+      </div>
+      
+      <!-- Link pentru autentificare administrator (vizibil doar dacă nu ești autentificat) -->
+      <div *ngIf="!isAdmin" class="login-link-container-events">
+        <a (click)="goToLogin()" class="admin-login-link-events">Autentificare administrator</a>
+      </div>
     </div>
     
     <div class="calendar-container">

@@ -5,6 +5,7 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-calendar',
@@ -15,21 +16,41 @@ import interactionPlugin from '@fullcalendar/interaction';
 })
 export class CalendarComponent implements OnInit {
   events: any[] = [];
-
+  isAdmin: boolean = false;
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin, interactionPlugin],
     initialView: 'dayGridMonth',
-    selectable: true, // Permite selectarea datelor
+    selectable: false, // Va fi setat în funcție de autentificare
     selectMirror: true,
     events: [], // Inițial gol
     eventClick: this.handleEventClick.bind(this),
     select: this.handleDateSelect.bind(this) // Adăugăm event listener pentru selectare
   };
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   ngOnInit() {
     this.loadEvents();
+    
+    // Verificăm dacă utilizatorul este administrator
+    this.isAdmin = this.authService.isAuthenticated();
+    
+    // Actualizăm opțiunile calendarului în funcție de starea de autentificare
+    this.updateCalendarPermissions();
+    
+    // Abonăm pentru a detecta schimbări în starea de autentificare
+    this.authService.isAuthenticated$.subscribe(isAuthenticated => {
+      this.isAdmin = isAuthenticated;
+      this.updateCalendarPermissions();
+    });
+  }
+
+  updateCalendarPermissions() {
+    this.calendarOptions = { 
+      ...this.calendarOptions, 
+      selectable: this.isAdmin, // Doar admin poate selecta date
+      events: this.events
+    };
   }
 
   loadEvents() {
@@ -46,10 +67,20 @@ export class CalendarComponent implements OnInit {
   }
 
   updateCalendar() {
-    this.calendarOptions = { ...this.calendarOptions, events: this.events };
+    this.calendarOptions = { 
+      ...this.calendarOptions, 
+      events: this.events 
+    };
   }
 
   handleEventClick(info: any) {
+    if (!this.isAdmin) {
+      // Dacă nu este admin, se afișează doar detaliile evenimentului
+      alert(`Eveniment: ${info.event.title}\nDată: ${new Date(info.event.start).toLocaleDateString()}`);
+      return;
+    }
+    
+    // Dacă este admin, se oferă opțiunea de ștergere
     const confirmDelete = confirm(`Sigur vrei să ștergi evenimentul: ${info.event.title}?`);
     if (confirmDelete) {
       const eventToDelete = this.events.find(event => event.title === info.event.title);
@@ -67,6 +98,10 @@ export class CalendarComponent implements OnInit {
   }
 
   handleDateSelect(selectInfo: any) {
+    if (!this.isAdmin) {
+      return; // Dacă nu este admin, nu se întâmplă nimic
+    }
+    
     const eventName = prompt('Introdu numele evenimentului:');
     if (eventName) {
       const newEvent = {
