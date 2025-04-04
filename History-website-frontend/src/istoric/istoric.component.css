@@ -109,6 +109,7 @@ ul {
   margin: 25px 0 25px 40px;
   line-height: 1.8;
   color: #3E2723;
+  list-style-type: none; /* Eliminăm bulinele standard */
 }
 
 li {
@@ -118,6 +119,7 @@ li {
   font-family: 'Georgia', serif;
 }
 
+/* Eliminăm bulinele generate prin pseudo-element
 li:before {
   content: '•';
   position: absolute;
@@ -125,6 +127,7 @@ li:before {
   color: #7D5A50;
   font-size: 1.2em;
 }
+*/
 
 /* Stilizare pentru butonul de publicații */
 .register-btn {
