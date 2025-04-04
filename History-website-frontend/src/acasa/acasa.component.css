@@ -329,12 +329,13 @@
 }
 
 .post-item {
-    background-color: #F8F4E3;
-    border-radius: 12px;
-    padding: 25px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(234, 209, 150, 0.5);
     position: relative;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease;
+}
+
+.post-item:hover {
+    transform: translateY(-5px);
 }
 
 .delete-post-btn {

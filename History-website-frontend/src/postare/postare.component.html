@@ -4,7 +4,7 @@
     <div *ngIf="post.images?.length > 0">
         <h4>Imagini:</h4>
         <div class="image-container">
-          <img *ngFor="let image of post.images" [src]="image.url" alt="Post Image" />
+          <img *ngFor="let image of post.images" [src]="getImageUrl(image.path)" alt="{{ image.description || 'Imagine postare' }}" />
         </div>
       </div>
           
