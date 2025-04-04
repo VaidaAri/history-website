@@ -21,7 +21,7 @@
       
       <!-- Link pentru autentificare administrator (vizibil doar dacă nu ești autentificat) -->
       <div *ngIf="!isAdmin" class="login-link-container-events">
-        <a (click)="goToLogin()" class="admin-login-link-events">Autentificare administrator</a>
+        <a [routerLink]="['/administrator-login']" class="admin-login-link-events">Autentificare administrator</a>
       </div>
     </div>
     

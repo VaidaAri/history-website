@@ -36,6 +36,6 @@ export class EvenimenteComponent implements OnInit {
 
   // Metoda pentru redirecționare către pagina de autentificare
   goToLogin() {
-    this.router.navigate(['/admin-login']);
+    this.router.navigate(['/administrator-login']);
   }
 }
