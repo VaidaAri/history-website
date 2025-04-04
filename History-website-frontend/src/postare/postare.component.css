@@ -1,11 +1,11 @@
 .post {
-  margin: 0 auto 30px auto;
-  padding: 20px;
+  margin: 0 auto 35px auto;
+  padding: 30px;
   background-color: #F8F4E3;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
   border: 1px solid rgba(234, 209, 150, 0.5);
-  max-width: 600px;
+  max-width: 850px;
   width: 100%;
 }
 
@@ -30,9 +30,9 @@
 
 .post p {
   color: #3E2723;
-  font-size: 1.05em;
-  line-height: 1.8;
-  margin-bottom: 15px;
+  font-size: 1.15em;
+  line-height: 1.9;
+  margin-bottom: 20px;
   white-space: pre-line;
   text-align: justify;
 }
@@ -40,17 +40,17 @@
 /* Stiluri pentru carusel */
 .carousel-container {
   position: relative;
-  margin: 20px 0;
+  margin: 25px 0;
   overflow: hidden;
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
 }
 
 .carousel-wrapper {
   position: relative;
   width: 100%;
   overflow: hidden;
-  aspect-ratio: 4/3;
+  aspect-ratio: 16/9;
 }
 
 .carousel-slides {
