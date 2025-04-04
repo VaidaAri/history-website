@@ -1,11 +1,39 @@
 <div class="post">
+  <div class="post-header">
+    <div class="post-date">
+      {{ post.createdAt | date:'dd MMMM yyyy' }}
+    </div>
+  </div>
+  
+  <div class="post-content">
     <p>{{ post.description }}</p>
+  </div>
 
-    <div *ngIf="post.images?.length > 0">
-        <h4>Imagini:</h4>
-        <div class="image-container">
-          <img *ngFor="let image of post.images" [src]="getImageUrl(image.path)" alt="{{ image.description || 'Imagine postare' }}" />
+  <!-- Carusel imagini -->
+  <div *ngIf="post.images?.length > 0" class="carousel-container">
+    <div class="carousel-wrapper">
+      <div class="carousel-slides" [ngStyle]="{'transform': 'translateX(' + (-currentImageIndex * 100) + '%)'}">
+        <div *ngFor="let image of post.images" class="carousel-slide">
+          <img [src]="getImageUrl(image.path)" alt="{{ image.description || 'Imagine postare' }}" (click)="openFullImage(image)" />
         </div>
       </div>
-          
+      
+      <!-- Butoane navigare -->
+      <button *ngIf="post.images.length > 1" (click)="prevImage()" class="carousel-btn carousel-btn-prev" [ngClass]="{'disabled': currentImageIndex === 0}">
+        <span>❮</span>
+      </button>
+      <button *ngIf="post.images.length > 1" (click)="nextImage()" class="carousel-btn carousel-btn-next" [ngClass]="{'disabled': currentImageIndex === post.images.length - 1}">
+        <span>❯</span>
+      </button>
+    </div>
+    
+    <!-- Indicator imagini -->
+    <div *ngIf="post.images.length > 1" class="carousel-dots">
+      <span *ngFor="let image of post.images; let i = index" 
+            class="carousel-dot" 
+            [ngClass]="{'active': i === currentImageIndex}"
+            (click)="goToImage(i)">
+      </span>
+    </div>
   </div>
+</div>
