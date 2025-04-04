@@ -16,8 +16,18 @@
   transition: transform 0.3s ease; 
   margin: 20px auto;
   display: block;
+}
+
+.standard-image.left {
   float: left;
   margin-right: 25px;
+  clear: left;
+}
+
+.standard-image.right {
+  float: right;
+  margin-left: 25px;
+  clear: right;
 }
 
 .standard-image:hover {
@@ -151,11 +161,14 @@ p, h4, li {
 
 /* Responsive design */
 @media (max-width: 768px) {
-  .standard-image {
+  .standard-image, 
+  .standard-image.left, 
+  .standard-image.right {
     width: 200px;
     height: 280px;
     float: none;
     margin: 20px auto;
+    display: block;
   }
   
   p {
