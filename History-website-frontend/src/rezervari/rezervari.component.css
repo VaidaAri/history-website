@@ -72,6 +72,34 @@ input[type="number"] {
     box-sizing: border-box;
 }
 
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #EAD196;
+    border-radius: 6px;
+    background-color: #FFF9E6 !important;
+    font-family: 'Merriweather', serif;
+    font-size: 1em;
+    box-sizing: border-box;
+    color: #5D4037;
+}
+
+/* Stilizare specifică pentru input-uri text completate */
+input[type="text"]:focus {
+    outline: none;
+    border-color: #EAD196;
+    box-shadow: 0 0 4px rgba(234, 209, 150, 0.6);
+}
+
+/* Anulează culoarea de fundal implicită pentru autocompletare */
+input[type="text"]:-webkit-autofill,
+input[type="text"]:-webkit-autofill:hover, 
+input[type="text"]:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0px 1000px #FFF9E6 inset !important;
+    -webkit-text-fill-color: #5D4037 !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
 input[type="checkbox"] {
     margin-left: 5px;
     transform: scale(1.2);

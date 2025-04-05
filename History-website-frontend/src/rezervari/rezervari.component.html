@@ -6,12 +6,12 @@
             <h2>Adaugă o Rezervare Nouă</h2>
             <form (ngSubmit)="addBooking()" #bookingForm="ngForm">
                 <div class="form-group">
-                    <label for="nume">Nume:</label>
+                    <label for="nume">Nume reprezentant:</label>
                     <input type="text" id="nume" name="nume" [(ngModel)]="newBooking.nume" required>
                 </div>
                 
                 <div class="form-group">
-                    <label for="prenume">Prenume:</label>
+                    <label for="prenume">Prenume reprezentant:</label>
                     <input type="text" id="prenume" name="prenume" [(ngModel)]="newBooking.prenume" required>
                 </div>
                 
@@ -40,8 +40,8 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Nume</th>
-                        <th>Prenume</th>
+                        <th>Nume reprezentant</th>
+                        <th>Prenume reprezentant</th>
                         <th>Data și Ora</th>
                         <th>Persoane</th>
                         <th>Ghid</th>
