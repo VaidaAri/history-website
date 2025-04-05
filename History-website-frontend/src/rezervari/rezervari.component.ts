@@ -18,6 +18,8 @@ export class RezervariComponent {
   bookings: any = [];
 
   newBooking = {
+    nume: '',
+    prenume: '',
     datetime: '',
     numberOfPersons: 0,
     guideRequired: false

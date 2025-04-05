@@ -23,6 +23,10 @@ public class Rezervare {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    private String nume;
+    
+    private String prenume;
+
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime datetime;
 

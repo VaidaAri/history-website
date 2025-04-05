@@ -6,6 +6,16 @@
             <h2>Adaugă o Rezervare Nouă</h2>
             <form (ngSubmit)="addBooking()" #bookingForm="ngForm">
                 <div class="form-group">
+                    <label for="nume">Nume:</label>
+                    <input type="text" id="nume" name="nume" [(ngModel)]="newBooking.nume" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="prenume">Prenume:</label>
+                    <input type="text" id="prenume" name="prenume" [(ngModel)]="newBooking.prenume" required>
+                </div>
+                
+                <div class="form-group">
                     <label for="datetime">Data și Ora:</label>
                     <input type="datetime-local" id="datetime" name="datetime" [(ngModel)]="newBooking.datetime" required>
                 </div>
@@ -30,6 +40,8 @@
                 <thead>
                     <tr>
                         <th>ID</th>
+                        <th>Nume</th>
+                        <th>Prenume</th>
                         <th>Data și Ora</th>
                         <th>Persoane</th>
                         <th>Ghid</th>
@@ -39,6 +51,8 @@
                 <tbody>
                     <tr *ngFor="let booking of bookings">
                         <td>{{booking.id}}</td>
+                        <td>{{booking.nume}}</td>
+                        <td>{{booking.prenume}}</td>
                         <td>{{ booking.datetime | date: 'dd MMM yyyy, HH:mm' }}</td>
                         <td>{{booking.numberOfPersons}}</td>
                         <td>{{ booking.guideRequired ? 'Da' : 'Nu' }}</td>
@@ -47,7 +61,7 @@
                         </td>
                     </tr>
                     <tr *ngIf="bookings.length === 0">
-                        <td colspan="5" class="empty-table">Nu există rezervări momentan</td>
+                        <td colspan="7" class="empty-table">Nu există rezervări momentan</td>
                     </tr>
                 </tbody>
             </table>
