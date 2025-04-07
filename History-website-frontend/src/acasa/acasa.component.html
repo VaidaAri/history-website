@@ -27,10 +27,7 @@
                         <button (click)="logout()" class="logout-btn">Deconectare</button>
                     </div>
                     
-                    <!-- Link pentru autentificare administrator (vizibil doar dacă nu ești autentificat) -->
-                    <div *ngIf="!isAdmin" class="login-link-container">
-                        <a (click)="goToLogin()" class="admin-login-link">Autentificare administrator</a>
-                    </div>
+                    <!-- Am eliminat butonul de autentificare administrator de aici -->
                 </div>
                 
                 <!-- Lista de postări -->
@@ -49,5 +46,10 @@
             </div>
         </div>
     </app-cadran>
+    
+    <!-- Footer cu link de autentificare administrator -->
+    <div *ngIf="!isAdmin" class="admin-footer">
+        <a (click)="goToLogin()" class="admin-login-link">Autentificare administrator</a>
+    </div>
 </main>
 

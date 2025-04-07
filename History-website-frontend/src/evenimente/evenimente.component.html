@@ -19,10 +19,7 @@
         <button (click)="logout()" class="logout-btn-events">Deconectare</button>
       </div>
       
-      <!-- Link pentru autentificare administrator (vizibil doar dacă nu ești autentificat) -->
-      <div *ngIf="!isAdmin" class="login-link-container-events">
-        <a [routerLink]="['/administrator-login']" class="admin-login-link-events">Autentificare administrator</a>
-      </div>
+      <!-- Am eliminat butonul de autentificare administrator de pe pagina de evenimente -->
     </div>
     
     <div class="calendar-container">

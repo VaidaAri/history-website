@@ -131,15 +131,25 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-.login-link-container {
-    margin: 15px 0;
+.admin-footer {
     text-align: center;
+    margin-top: auto;
+    padding: 10px 0;
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+}
+
+.admin-footer:hover {
+    opacity: 1;
 }
 
 .admin-login-link {
     color: #7D5A50;
     text-decoration: none;
-    font-size: 0.95em;
+    font-size: 0.85em;
     padding: 5px 10px;
     border-radius: 20px;
     transition: all 0.3s ease;
@@ -384,5 +394,11 @@
     
     .post-item {
         padding: 20px;
+    }
+    
+    .admin-footer {
+        position: relative;
+        margin-top: 30px;
+        bottom: auto;
     }
 }
