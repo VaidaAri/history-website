@@ -37,10 +37,27 @@
                     </div>
                     
                     <div *ngFor="let post of posts" class="post-item">
-                        <app-postare [post]="post"></app-postare>
-                        <button *ngIf="isAdmin" (click)="deletePost(post.id)" class="delete-post-btn">
-                            <span class="delete-icon">🗑️</span> Șterge postarea
-                        </button>
+                        <!-- Arată postarea în mod normal dacă nu este în modul de editare -->
+                        <div *ngIf="editingPostId !== post.id">
+                            <app-postare [post]="post"></app-postare>
+                            <div *ngIf="isAdmin" class="post-admin-actions">
+                                <button (click)="editPost(post)" class="edit-post-btn">
+                                    <span class="edit-icon">✏️</span> Editează
+                                </button>
+                                <button (click)="deletePost(post.id)" class="delete-post-btn">
+                                    <span class="delete-icon">🗑️</span> Șterge
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Arată formularul de editare dacă postarea este în mod de editare -->
+                        <div *ngIf="editingPostId === post.id">
+                            <app-post-editor 
+                                [postId]="post.id" 
+                                (editCancelled)="cancelEdit()"
+                                (postUpdated)="onPostUpdated()">
+                            </app-post-editor>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -349,11 +349,16 @@
     transform: translateY(-5px);
 }
 
-.delete-post-btn {
+.post-admin-actions {
     position: absolute;
     top: 15px;
     right: 15px;
-    background-color: #C14953;
+    display: flex;
+    gap: 10px;
+}
+
+.edit-post-btn, .delete-post-btn {
+    background-color: rgba(125, 90, 80, 0.9);
     color: white;
     border: none;
     border-radius: 6px;
@@ -366,11 +371,21 @@
     gap: 5px;
 }
 
-.delete-post-btn:hover {
-    background-color: #A13842;
+.edit-post-btn:hover {
+    background-color: #5D4037;
+    transform: translateY(-2px);
 }
 
-.delete-icon {
+.delete-post-btn {
+    background-color: #C14953;
+}
+
+.delete-post-btn:hover {
+    background-color: #A13842;
+    transform: translateY(-2px);
+}
+
+.edit-icon, .delete-icon {
     margin-right: 2px;
 }
 

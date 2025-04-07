@@ -21,6 +21,11 @@ export class PostService {
     return this.http.get<any[]>(this.apiUrl);
   }
 
+  // Obține o postare specifică după ID
+  getPostById(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${id}`);
+  }
+
   // Adaugă o postare nouă cu imagini
   addPost(postData: any): Observable<any> {
     // Verificăm dacă există imagini de încărcat
@@ -87,6 +92,79 @@ export class PostService {
     } catch (error) {
       console.error('Eroare în procesul de încărcare a imaginilor:', error);
       // Returnăm un Observable de eroare
+      throw error;
+    }
+  }
+
+  // Actualizează o postare existentă
+  updatePost(postId: number, postData: any): Observable<any> {
+    // Verificăm dacă există imagini noi de încărcat
+    const newImages = postData.images.filter((img: any) => img.file);
+    
+    if (newImages.length === 0) {
+      // Dacă nu există imagini noi, actualizăm direct postarea
+      const updatedPost = {
+        id: postId,
+        description: postData.description,
+        createdAt: postData.createdAt, // Păstrăm data originală
+        images: postData.existingImages || [] // Imagini existente
+      };
+      return this.http.put<any>(this.apiUrl, updatedPost);
+    }
+    
+    try {
+      // Încărcăm noile imagini
+      const imageUploads: Observable<ImageUploadResponse>[] = newImages.map((imageObj: any) => {
+        // Creăm un form data pentru upload
+        const formData = new FormData();
+        formData.append('image', imageObj.file);
+        formData.append('description', 'Imagine pentru postare');
+        
+        // Trimitem fiecare imagine la server
+        return this.http.post<ImageUploadResponse>(this.imageUploadUrl, formData);
+      });
+      
+      // Dacă nu există imagini noi, continuăm cu un array gol
+      if (imageUploads.length === 0) {
+        const updatedPost = {
+          id: postId,
+          description: postData.description,
+          createdAt: postData.createdAt, // Păstrăm data originală
+          images: postData.existingImages || [] // Doar imagini existente
+        };
+        return this.http.put<any>(this.apiUrl, updatedPost);
+      }
+      
+      // Așteptăm încărcarea imaginilor noi
+      return forkJoin<ImageUploadResponse[]>(imageUploads).pipe(
+        switchMap((responses: ImageUploadResponse[]) => {
+          // Filtrăm răspunsurile valide
+          const validResponses = responses.filter(resp => resp && resp.imagePath);
+          
+          // Extragem referințele la imaginile încărcate
+          const newImageReferences = validResponses.map(response => {
+            return { 
+              path: response.imagePath,
+              description: 'Imagine pentru postare'
+            };
+          });
+          
+          // Combinăm imaginile existente cu cele noi
+          const allImages = [...(postData.existingImages || []), ...newImageReferences];
+          
+          // Actualizăm postarea cu toate imaginile
+          const updatedPost = {
+            id: postId,
+            description: postData.description,
+            createdAt: postData.createdAt, // Păstrăm data originală
+            images: allImages
+          };
+          
+          return this.http.put<any>(this.apiUrl, updatedPost);
+        })
+      );
+    } catch (error) {
+      console.error('Eroare în procesul de actualizare a postării:', error);
       throw error;
     }
   }

@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CadranComponent } from "../cadran/cadran.component";
 import { PostManagerComponent } from '../components/post-manager/post-manager.component';
+import { PostEditorComponent } from '../components/post-editor/post-editor.component';
 import { AuthService } from '../services/auth.service';
 import { PostService } from '../services/post.service';
 
@@ -21,7 +22,8 @@ import { PostService } from '../services/post.service';
     CommonModule,
     FormsModule,
     HttpClientModule,
-    PostManagerComponent
+    PostManagerComponent,
+    PostEditorComponent
   ],
   templateUrl: './acasa.component.html',
   styleUrl: './acasa.component.css'
@@ -29,6 +31,7 @@ import { PostService } from '../services/post.service';
 export class AcasaComponent implements OnInit {
   posts: any[] = [];
   isAdmin: boolean = false;
+  editingPostId: number | null = null;
 
   constructor(
     private authService: AuthService,
@@ -82,6 +85,27 @@ export class AcasaComponent implements OnInit {
         }
       });
     }
+  }
+
+  // Începe editarea unei postări
+  editPost(post: any) {
+    if (!this.isAdmin) {
+      alert('Trebuie să fiți autentificat ca administrator pentru a edita o postare!');
+      return;
+    }
+    
+    this.editingPostId = post.id;
+  }
+
+  // Anulează editarea
+  cancelEdit() {
+    this.editingPostId = null;
+  }
+
+  // Actualizează postarea după modificare
+  onPostUpdated() {
+    this.editingPostId = null;
+    this.loadPosts();
   }
 
   // Gestionează evenimentul de creare a postării din componenta PostManager
