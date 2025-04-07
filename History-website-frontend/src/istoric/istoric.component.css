@@ -7,15 +7,31 @@
 }
 
 .standard-image {
-  width: 250px; 
-  height: 350px; 
-  object-fit: cover;
   border: 3px solid #EAD196; 
   border-radius: 12px;
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease; 
   margin: 20px auto;
   display: block;
+  background-color: #f9f5e8;
+  object-fit: contain;
+}
+
+/* Format vertical pentru portrete */
+.standard-image[src*="Florian Porcius"],
+.standard-image[src*="Iulian Martian"],
+.standard-image[src*="Virgil Sotropa"],
+.standard-image[src*="Iuliu Moisil"],
+.standard-image[src*="Arhiva Somesana"] {
+  width: 280px;
+  height: 420px;
+}
+
+/* Format orizontal pentru clădiri și alte imagini landscape */
+.standard-image[src*="cladire veche muz"],
+.standard-image[src*="bust Vasile Nascu"] {
+  width: 420px;
+  height: 300px;
 }
 
 .standard-image.left {
@@ -162,11 +178,26 @@ p, h4, li {
   .standard-image, 
   .standard-image.left, 
   .standard-image.right {
-    width: 200px;
-    height: 280px;
     float: none;
     margin: 20px auto;
     display: block;
+  }
+  
+  /* Format vertical pentru portrete în versiunea mobilă */
+  .standard-image[src*="Florian Porcius"],
+  .standard-image[src*="Iulian Martian"],
+  .standard-image[src*="Virgil Sotropa"],
+  .standard-image[src*="Iuliu Moisil"],
+  .standard-image[src*="Arhiva Somesana"] {
+    width: 240px;
+    height: 360px;
+  }
+  
+  /* Format orizontal pentru imagini landscape în versiunea mobilă */
+  .standard-image[src*="cladire veche muz"],
+  .standard-image[src*="bust Vasile Nascu"] {
+    width: 320px;
+    height: 240px;
   }
   
   p {
