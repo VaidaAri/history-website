@@ -55,13 +55,20 @@ export class CalendarComponent implements OnInit {
 
   loadEvents() {
     this.http.get<any[]>('http://localhost:8080/api/events').subscribe(data => {
-      this.events = data.map(event => ({
-        id: event.id,
-        title: event.name,
-        start: event.startDate,
-        end: event.endDate,
-        color: '#7D5A50'
-      }));
+      this.events = data.map(event => {
+        // Creăm un obiect Date din string-ul ISO
+        const startDate = new Date(event.startDate);
+        const endDate = new Date(event.endDate);
+        
+        return {
+          id: event.id,
+          title: event.name,
+          start: startDate,
+          end: endDate,
+          color: '#7D5A50',
+          allDay: true // Setăm evenimentele ca fiind "all day" pentru a evita afișarea orei
+        };
+      });
       this.updateCalendar();
     });
   }
