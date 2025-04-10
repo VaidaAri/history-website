@@ -61,15 +61,33 @@ export class RezervariComponent implements OnInit {
   addBooking() { 
     this.http.post("http://localhost:8080/api/bookings", this.newBooking).subscribe({
       next: (response) => {
-        alert("Booking added successfully!");
-     console.log("New booking data: ", this.newBooking);
-        this.fetchBookings(); 
+        alert("Rezervare adăugată cu succes!");
+        console.log("New booking data: ", this.newBooking);
+        
+        // Resetăm formularul după adăugarea cu succes
+        this.resetBookingForm();
+        
+        // Reîncărcăm lista de rezervări doar dacă utilizatorul este admin
+        if (this.isAdmin) {
+          this.fetchBookings();
+        }
       },
       error: (err) => {
         console.error("Error adding booking:", err);
-        alert("Failed to add booking. Please try again.");
+        alert("Eroare la adăugarea rezervării. Vă rugăm să încercați din nou.");
       }
     });
+  }
+  
+  // Metodă pentru resetarea formularului
+  resetBookingForm() {
+    this.newBooking = {
+      nume: '',
+      prenume: '',
+      datetime: '',
+      numberOfPersons: 0,
+      guideRequired: false
+    };
   }
 
   deleteBooking(bookingId: number) {
