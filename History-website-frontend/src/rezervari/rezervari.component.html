@@ -2,6 +2,14 @@
 <app-meniu></app-meniu>
 <app-cadran>
     <div class="rezervari-container">
+        <!-- Indicator pentru administrator logat și button pentru deconectare -->
+        <div *ngIf="isAdmin" class="admin-indicator">
+            <div class="admin-badge">
+                <span class="admin-icon">👑</span> Administrare rezervări
+            </div>
+            <button (click)="logout()" class="logout-btn">Deconectare</button>
+        </div>
+        
         <div class="form-section">
             <h2>Adaugă o Rezervare Nouă</h2>
             <form (ngSubmit)="addBooking()" #bookingForm="ngForm">
@@ -34,7 +42,8 @@
             </form>
         </div>
 
-        <div class="table-section">
+        <!-- Lista rezervărilor - vizibilă doar pentru administratori -->
+        <div class="table-section" *ngIf="isAdmin">
             <h2>Lista Rezervărilor</h2>
             <table>
                 <thead>
@@ -65,6 +74,12 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+        
+        <!-- Mesaj de confirmare pentru utilizatorii normali după rezervare -->
+        <div *ngIf="!isAdmin" class="confirmation-message">
+            <p>După trimiterea formularului, rezervarea va fi procesată de administrația muzeului.</p>
+            <p>Pentru modificări sau anulări, vă rugăm să contactați muzeuul la numărul de telefon afișat pe pagina de contact.</p>
         </div>
     </div>
 </app-cadran>

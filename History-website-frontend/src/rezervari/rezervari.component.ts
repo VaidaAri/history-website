@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { RouterModule, Router } from '@angular/router';
 import { MeniuComponent } from '../meniu/meniu.component';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CadranComponent } from '../cadran/cadran.component';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-rezervari',
@@ -13,8 +14,8 @@ import { CadranComponent } from '../cadran/cadran.component';
   templateUrl: './rezervari.component.html',
   styleUrls: ['./rezervari.component.css']
 })
-export class RezervariComponent {
-
+export class RezervariComponent implements OnInit {
+  isAdmin: boolean = false;
   bookings: any = [];
 
   newBooking = {
@@ -25,10 +26,30 @@ export class RezervariComponent {
     guideRequired: false
   };
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient, 
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
-    this.fetchBookings();
+    // Verificăm dacă utilizatorul este administrator
+    this.isAdmin = this.authService.isAuthenticated();
+    
+    // Abonăm pentru a detecta schimbări în starea de autentificare
+    this.authService.isAuthenticated$.subscribe(isAuthenticated => {
+      this.isAdmin = isAuthenticated;
+    });
+    
+    // Încărcăm lista rezervărilor doar dacă utilizatorul este admin
+    if (this.isAdmin) {
+      this.fetchBookings();
+    }
+  }
+  
+  // Metoda pentru deconectare
+  logout() {
+    this.authService.logout();
   }
 
   fetchBookings() {

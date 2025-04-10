@@ -13,6 +13,67 @@
 /* Stiluri pentru container principal */
 .rezervari-container {
     padding: 25px;
+    position: relative;
+}
+
+/* Stiluri pentru indicator administrator și buton deconectare */
+.admin-indicator {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #EAD196;
+    padding: 10px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.admin-badge {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    color: #5D4037;
+}
+
+.admin-icon {
+    margin-right: 8px;
+    font-size: 1.2em;
+}
+
+.logout-btn {
+    background-color: #7D5A50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    width: auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 0;
+}
+
+.logout-btn:hover {
+    background-color: #5D4037;
+    transform: translateY(-2px);
+}
+
+/* Stiluri pentru mesajul de confirmare */
+.confirmation-message {
+    background-color: #F8F4E3;
+    border: 2px solid #EAD196;
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 30px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.confirmation-message p {
+    color: #5D4037;
+    margin: 10px 0;
+    line-height: 1.5;
 }
 
 .form-section, .table-section {
