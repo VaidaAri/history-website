@@ -128,15 +128,16 @@
 .gallery-content {
   position: relative;
   z-index: 1002;
-  width: 90%;
-  max-width: 1200px;
-  max-height: 90vh;
+  width: 95%;
+  max-width: 1600px;
+  height: 90vh;
   display: flex;
   flex-direction: column;
   background-color: #222;
   border-radius: 8px;
   padding: 20px;
   box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
 }
 
 .gallery-close {
@@ -179,17 +180,22 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
   margin: 10px 0;
-  min-height: 300px;
-  max-height: 70vh;
+  min-height: 400px;
+  max-height: 75vh;
+  position: relative;
+  overflow: hidden;
 }
 
 .gallery-image {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
+  display: block;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  width: auto;
+  height: auto;
+  min-height: 90%;
 }
 
 .gallery-controls {
@@ -198,6 +204,23 @@
   align-items: center;
   margin-top: 15px;
   padding: 0 40px;
+}
+
+.controls-left, .controls-right {
+  flex: 1;
+}
+
+.controls-center {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.controls-right {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .gallery-nav {
@@ -223,6 +246,41 @@
 .gallery-counter {
   color: #ccc;
   font-size: 1rem;
+  margin-bottom: 5px;
+}
+
+.zoom-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+.zoom-level {
+  color: #ccc;
+  font-size: 0.9rem;
+  min-width: 50px;
+  text-align: center;
+}
+
+.zoom-button {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  width: 30px;
+  height: 30px;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.zoom-button:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
 
 /* Responsive adjustments */

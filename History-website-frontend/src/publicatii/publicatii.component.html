@@ -49,14 +49,38 @@
         <h3>{{ getCurrentImageTitle() }}</h3>
       </div>
       
-      <div class="gallery-image-container">
-        <img *ngIf="currentImage" [src]="currentImage.url" [alt]="currentImage.filename" class="gallery-image" />
+      <div class="gallery-image-container" 
+           (mousedown)="startDrag($event)" 
+           (mousemove)="onDrag($event)" 
+           (mouseup)="stopDrag()" 
+           (mouseleave)="stopDrag()">
+        <img *ngIf="currentImage" 
+             [src]="currentImage.url" 
+             [alt]="currentImage.filename" 
+             class="gallery-image" 
+             [ngStyle]="getImageStyle()" 
+             draggable="false" />
       </div>
       
       <div class="gallery-controls">
-        <button class="gallery-nav prev" (click)="prevImage()">❮</button>
-        <span class="gallery-counter">{{ currentImageIndex + 1 }} / {{ currentImages.length }}</span>
-        <button class="gallery-nav next" (click)="nextImage()">❯</button>
+        <div class="controls-left">
+          <button class="gallery-nav prev" (click)="prevImage()">❮</button>
+        </div>
+        
+        <div class="controls-center">
+          <span class="gallery-counter">{{ currentImageIndex + 1 }} / {{ currentImages.length }}</span>
+          
+          <div class="zoom-controls">
+            <button class="zoom-button" (click)="zoomOut()" title="Micșorează">−</button>
+            <span class="zoom-level">{{ (zoomLevel * 100).toFixed(0) }}%</span>
+            <button class="zoom-button" (click)="zoomIn()" title="Mărește">+</button>
+            <button class="zoom-button" (click)="resetZoom()" title="Resetează zoom">↺</button>
+          </div>
+        </div>
+        
+        <div class="controls-right">
+          <button class="gallery-nav next" (click)="nextImage()">❯</button>
+        </div>
       </div>
     </div>
   </div>

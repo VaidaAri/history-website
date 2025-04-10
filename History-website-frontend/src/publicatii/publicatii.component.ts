@@ -27,6 +27,12 @@ export class PublicatiiComponent implements OnInit {
   showGallery: boolean = false;
   currentImageIndex: number = 0;
   currentImages: PublicationImage[] = [];
+  zoomLevel: number = 1;
+  isDragging: boolean = false;
+  dragStartX: number = 0;
+  dragStartY: number = 0;
+  imageTranslateX: number = 0;
+  imageTranslateY: number = 0;
   
   constructor(private http: HttpClient) {}
   
@@ -92,6 +98,7 @@ export class PublicatiiComponent implements OnInit {
     this.currentImageIndex = this.currentImages.findIndex(img => 
       img.folder === image.folder && img.filename === image.filename);
     
+    this.resetZoomAndPosition();
     this.showGallery = true;
   }
   
@@ -106,6 +113,7 @@ export class PublicatiiComponent implements OnInit {
       // Rulează de la ultimul la primul
       this.currentImageIndex = this.currentImages.length - 1;
     }
+    this.resetZoomAndPosition();
   }
   
   nextImage() {
@@ -115,9 +123,71 @@ export class PublicatiiComponent implements OnInit {
       // Rulează de la primul la ultimul
       this.currentImageIndex = 0;
     }
+    this.resetZoomAndPosition();
   }
   
-  // Ascultă evenimentele de tastatură pentru navigare
+  resetZoomAndPosition() {
+    this.zoomLevel = 1;
+    this.imageTranslateX = 0;
+    this.imageTranslateY = 0;
+  }
+  
+  zoomIn() {
+    if (this.zoomLevel < 5) {
+      this.zoomLevel += 0.2;
+    }
+  }
+  
+  zoomOut() {
+    if (this.zoomLevel > 0.5) {
+      this.zoomLevel -= 0.2;
+    }
+    
+    // Resetează poziția dacă imaginea este micșorată sub nivelul inițial
+    if (this.zoomLevel <= 1) {
+      this.imageTranslateX = 0;
+      this.imageTranslateY = 0;
+    }
+  }
+  
+  resetZoom() {
+    this.resetZoomAndPosition();
+  }
+  
+  // Funcții pentru drag/pan imagine
+  startDrag(event: MouseEvent) {
+    if (this.zoomLevel > 1) {
+      this.isDragging = true;
+      this.dragStartX = event.clientX - this.imageTranslateX;
+      this.dragStartY = event.clientY - this.imageTranslateY;
+    }
+  }
+  
+  onDrag(event: MouseEvent) {
+    if (this.isDragging && this.zoomLevel > 1) {
+      this.imageTranslateX = event.clientX - this.dragStartX;
+      this.imageTranslateY = event.clientY - this.dragStartY;
+      
+      // Limitează pan-ul pentru a nu deplasa imaginea prea departe
+      const maxTranslate = 200 * this.zoomLevel;
+      this.imageTranslateX = Math.max(Math.min(this.imageTranslateX, maxTranslate), -maxTranslate);
+      this.imageTranslateY = Math.max(Math.min(this.imageTranslateY, maxTranslate), -maxTranslate);
+    }
+  }
+  
+  stopDrag() {
+    this.isDragging = false;
+  }
+  
+  getImageStyle() {
+    return {
+      'transform': `scale(${this.zoomLevel}) translate(${this.imageTranslateX / this.zoomLevel}px, ${this.imageTranslateY / this.zoomLevel}px)`,
+      'cursor': this.zoomLevel > 1 ? 'move' : 'default',
+      'transition': this.isDragging ? 'none' : 'transform 0.2s ease'
+    };
+  }
+  
+  // Ascultă evenimentele de tastatură pentru navigare și zoom
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     if (!this.showGallery) return;
@@ -132,6 +202,31 @@ export class PublicatiiComponent implements OnInit {
       case 'Escape':
         this.closeGallery();
         break;
+      case '+':
+      case '=':
+        this.zoomIn();
+        break;
+      case '-':
+        this.zoomOut();
+        break;
+      case '0':
+        this.resetZoom();
+        break;
+    }
+  }
+  
+  // Ascultă evenimentul de scroll pentru zoom
+  @HostListener('wheel', ['$event'])
+  onScroll(event: WheelEvent) {
+    if (!this.showGallery) return;
+    
+    event.preventDefault();
+    if (event.deltaY < 0) {
+      // Scroll în sus = zoom in
+      this.zoomIn();
+    } else {
+      // Scroll în jos = zoom out
+      this.zoomOut();
     }
   }
   
