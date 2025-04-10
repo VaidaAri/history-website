@@ -1,5 +1,8 @@
 <div class="publicatii-container">
-  <h1 class="title">Publicații</h1>
+  <div class="header-nav">
+    <button class="back-button" routerLink="/istoric">← Înapoi la Istoric</button>
+    <h1 class="title">Publicații</h1>
+  </div>
   
   <div class="category-selector">
     <button [class.active]="selectedCategory === 'arhivaSomesana'" (click)="switchCategory('arhivaSomesana')">Arhiva Someșană</button>
