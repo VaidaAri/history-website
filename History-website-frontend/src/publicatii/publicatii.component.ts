@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NgFor, NgIf, CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
@@ -22,6 +22,11 @@ export class PublicatiiComponent implements OnInit {
   scanCopertiImages: PublicationImage[] = [];
   selectedCategory: string = 'arhivaSomesana';
   apiBaseUrl = 'http://localhost:8080/api/staticresources';
+  
+  // Proprietăți pentru galerie
+  showGallery: boolean = false;
+  currentImageIndex: number = 0;
+  currentImages: PublicationImage[] = [];
   
   constructor(private http: HttpClient) {}
   
@@ -75,5 +80,81 @@ export class PublicatiiComponent implements OnInit {
   
   switchCategory(category: string) {
     this.selectedCategory = category;
+    this.showGallery = false;
+  }
+  
+  // Funcții pentru galerie
+  openGallery(image: PublicationImage) {
+    this.currentImages = this.selectedCategory === 'arhivaSomesana' 
+      ? this.arhivaSomesanaImages 
+      : this.scanCopertiImages;
+    
+    this.currentImageIndex = this.currentImages.findIndex(img => 
+      img.folder === image.folder && img.filename === image.filename);
+    
+    this.showGallery = true;
+  }
+  
+  closeGallery() {
+    this.showGallery = false;
+  }
+  
+  prevImage() {
+    if (this.currentImageIndex > 0) {
+      this.currentImageIndex--;
+    } else {
+      // Rulează de la ultimul la primul
+      this.currentImageIndex = this.currentImages.length - 1;
+    }
+  }
+  
+  nextImage() {
+    if (this.currentImageIndex < this.currentImages.length - 1) {
+      this.currentImageIndex++;
+    } else {
+      // Rulează de la primul la ultimul
+      this.currentImageIndex = 0;
+    }
+  }
+  
+  // Ascultă evenimentele de tastatură pentru navigare
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if (!this.showGallery) return;
+    
+    switch(event.key) {
+      case 'ArrowLeft':
+        this.prevImage();
+        break;
+      case 'ArrowRight':
+        this.nextImage();
+        break;
+      case 'Escape':
+        this.closeGallery();
+        break;
+    }
+  }
+  
+  // Obține imaginea curentă din galerie
+  get currentImage(): PublicationImage | null {
+    if (this.currentImages && this.currentImages.length > 0) {
+      return this.currentImages[this.currentImageIndex];
+    }
+    return null;
+  }
+  
+  // Obține titlul imaginii curente
+  getCurrentImageTitle(): string {
+    const img = this.currentImage;
+    if (img) {
+      if (this.selectedCategory === 'arhivaSomesana') {
+        return img.index >= 0 
+          ? `Arhiva Someșană - Pagina ${img.index + 1}` 
+          : 'Arhiva Someșană - Coperta';
+      } else {
+        return `Revista ${img.index + 1}`;
+      }
+    }
+    return '';
   }
 }

@@ -8,16 +8,16 @@
   
   <div class="publication-description" *ngIf="selectedCategory === 'arhivaSomesana'">
     <h2>Arhiva Someșană</h2>
-    <p>Colecție de articole istorice și documente despre regiunea Someșană.</p>
+    <p>Colecție de articole istorice și documente despre regiunea Someșană. Faceți click pe imagini pentru a le vizualiza în galerie.</p>
   </div>
   
   <div class="publication-description" *ngIf="selectedCategory === 'scanCoperti'">
     <h2>Reviste</h2>
-    <p>Colecție de reviste istorice.</p>
+    <p>Colecție de reviste istorice. Faceți click pe imagini pentru a le vizualiza în galerie.</p>
   </div>
   
   <div class="publications-grid" *ngIf="selectedCategory === 'arhivaSomesana'">
-    <div class="publication-item" *ngFor="let image of arhivaSomesanaImages">
+    <div class="publication-item" *ngFor="let image of arhivaSomesanaImages" (click)="openGallery(image)">
       <div class="publication-image-container">
         <img [src]="image.url" [alt]="image.filename" class="publication-image" />
       </div>
@@ -28,12 +28,35 @@
   </div>
   
   <div class="publications-grid" *ngIf="selectedCategory === 'scanCoperti'">
-    <div class="publication-item" *ngFor="let image of scanCopertiImages">
+    <div class="publication-item" *ngFor="let image of scanCopertiImages" (click)="openGallery(image)">
       <div class="publication-image-container">
         <img [src]="image.url" [alt]="image.filename" class="publication-image" />
       </div>
       <div class="publication-info">
         <p>{{ 'Revista ' + (image.index + 1) }}</p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Gallery modal -->
+  <div class="gallery-modal" *ngIf="showGallery">
+    <div class="gallery-overlay" (click)="closeGallery()"></div>
+    
+    <div class="gallery-content">
+      <button class="gallery-close" (click)="closeGallery()">×</button>
+      
+      <div class="gallery-title">
+        <h3>{{ getCurrentImageTitle() }}</h3>
+      </div>
+      
+      <div class="gallery-image-container">
+        <img *ngIf="currentImage" [src]="currentImage.url" [alt]="currentImage.filename" class="gallery-image" />
+      </div>
+      
+      <div class="gallery-controls">
+        <button class="gallery-nav prev" (click)="prevImage()">❮</button>
+        <span class="gallery-counter">{{ currentImageIndex + 1 }} / {{ currentImages.length }}</span>
+        <button class="gallery-nav next" (click)="nextImage()">❯</button>
       </div>
     </div>
   </div>
