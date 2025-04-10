@@ -1,1 +1,40 @@
-<p>publicatii works!</p>
+<div class="publicatii-container">
+  <h1 class="title">Publicații</h1>
+  
+  <div class="category-selector">
+    <button [class.active]="selectedCategory === 'arhivaSomesana'" (click)="switchCategory('arhivaSomesana')">Arhiva Someșană</button>
+    <button [class.active]="selectedCategory === 'scanCoperti'" (click)="switchCategory('scanCoperti')">Reviste</button>
+  </div>
+  
+  <div class="publication-description" *ngIf="selectedCategory === 'arhivaSomesana'">
+    <h2>Arhiva Someșană</h2>
+    <p>Colecție de articole istorice și documente despre regiunea Someșană.</p>
+  </div>
+  
+  <div class="publication-description" *ngIf="selectedCategory === 'scanCoperti'">
+    <h2>Reviste</h2>
+    <p>Colecție de reviste istorice.</p>
+  </div>
+  
+  <div class="publications-grid" *ngIf="selectedCategory === 'arhivaSomesana'">
+    <div class="publication-item" *ngFor="let image of arhivaSomesanaImages">
+      <div class="publication-image-container">
+        <img [src]="image.url" [alt]="image.filename" class="publication-image" />
+      </div>
+      <div class="publication-info">
+        <p>{{ image.index >= 0 ? 'Pagina ' + (image.index + 1) : 'Coperta' }}</p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="publications-grid" *ngIf="selectedCategory === 'scanCoperti'">
+    <div class="publication-item" *ngFor="let image of scanCopertiImages">
+      <div class="publication-image-container">
+        <img [src]="image.url" [alt]="image.filename" class="publication-image" />
+      </div>
+      <div class="publication-info">
+        <p>{{ 'Revista ' + (image.index + 1) }}</p>
+      </div>
+    </div>
+  </div>
+</div>
