@@ -2,7 +2,7 @@
     position: relative;
     width: 88%;
     max-width: 1250px; 
-    margin: 120px auto 50px;
+    margin: 20px auto 50px;
     background: rgba(248, 244, 227, 0.98);
     border-radius: 15px;
     box-shadow: 0px 8px 30px rgba(0, 0, 0, 0.35);
@@ -52,7 +52,7 @@ body::-webkit-scrollbar-thumb:hover {
 @media (max-width: 768px) {
     .cadran {
         width: 92%;
-        margin: 100px auto 40px;
+        margin: 15px auto 40px;
     }
     
     .cadran-content {
