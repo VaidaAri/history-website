@@ -1,6 +1,8 @@
 <main class="rezervari">
 <app-meniu></app-meniu>
 <app-cadran>
+    <h2>Rezervă o Vizită la Muzeu</h2>
+    
     <div class="rezervari-container">
         <!-- Indicator pentru administrator logat și button pentru deconectare -->
         <div *ngIf="isAdmin" class="admin-indicator">
@@ -9,9 +11,7 @@
             </div>
             <button (click)="logout()" class="logout-btn">Deconectare</button>
         </div>
-        
         <div class="form-section">
-            <h2>Adaugă o Rezervare Nouă</h2>
             <form (ngSubmit)="addBooking()" #bookingForm="ngForm">
                 <div class="form-group">
                     <label for="nume">Nume reprezentant:</label>
@@ -38,7 +38,7 @@
                     <input type="checkbox" id="guideRequired" name="guideRequired" [(ngModel)]="newBooking.guideRequired">
                 </div>
 
-                <button type="submit" [disabled]="!bookingForm.form.valid">Adaugă Rezervare</button>
+                <button type="submit" [disabled]="!bookingForm.form.valid">Rezervă Vizita</button>
             </form>
         </div>
 
@@ -78,8 +78,9 @@
         
         <!-- Mesaj de confirmare pentru utilizatorii normali după rezervare -->
         <div *ngIf="!isAdmin" class="confirmation-message">
-            <p>După trimiterea formularului, rezervarea va fi procesată de administrația muzeului.</p>
+            <p>După trimiterea formularului, rezervarea vizitei va fi procesată de administrația muzeului.</p>
             <p>Pentru modificări sau anulări, vă rugăm să contactați muzeul la numărul de telefon afișat pe pagina de contact.</p>
+            <p><em>Vă mulțumim și vă așteptăm cu drag la muzeu!</em></p>
         </div>
     </div>
 </app-cadran>
