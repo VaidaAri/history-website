@@ -150,21 +150,15 @@ li:before {
   background-color: #7D5A50;
   color: #FFF9E6;
   border: none;
-  border-radius: 25px;
-  padding: 10px 20px;
+  border-radius: 20px;
+  padding: 10px 22px;
   font-size: 1em;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12);
   font-family: 'Merriweather', serif;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.button-icon {
-  font-size: 1.2em;
+  letter-spacing: 0.03em;
 }
 
 .publications-btn:hover {
