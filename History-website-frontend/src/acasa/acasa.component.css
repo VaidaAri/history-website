@@ -16,7 +16,7 @@
 /* Secțiunea de bun venit */
 .welcome-section {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 5px;
 }
 
 .welcome-section h2 {
@@ -28,16 +28,6 @@
     padding-bottom: 10px;
 }
 
-.welcome-section h2:after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100px;
-    height: 2px;
-    background-color: #EAD196;
-}
 
 .title-accent {
     color: #7D5A50;
@@ -58,7 +48,7 @@
 
 /* Secțiunea de postări */
 .posts-section {
-    margin-top: 30px;
+    margin-top: 0px;
 }
 
 .posts-header {
@@ -74,16 +64,6 @@
     padding-bottom: 10px;
 }
 
-.posts-header h3:after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 70px;
-    height: 2px;
-    background-color: #EAD196;
-}
 
 /* Admin Indicator */
 .admin-indicator {
