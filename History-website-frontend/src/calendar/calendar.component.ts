@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { FullCalendarModule } from '@fullcalendar/angular'; 
 import { CalendarOptions } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -32,15 +32,38 @@ export class CalendarComponent implements OnInit {
     select: this.handleDateSelect.bind(this) // Adăugăm event listener pentru selectare
   };
 
+  // Validator pentru verificarea ordinii corecte a datelor
+  private dateOrderValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const startDate = control.get('startDate')?.value;
+      const endDate = control.get('endDate')?.value;
+      
+      if (startDate && endDate) {
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        
+        if (end < start) {
+          return { 'dateOrder': true };
+        }
+      }
+      
+      return null;
+    };
+  }
+  
   constructor(
     private http: HttpClient, 
     private authService: AuthService,
     private fb: FormBuilder
   ) {
-    // Inițializăm formularul
+    // Inițializăm formularul cu validatori
     this.eventForm = this.fb.group({
       name: ['', [Validators.required]],
-      eventType: ['eveniment'] // Default la eveniment normal
+      eventType: ['eveniment'], // Default la eveniment normal
+      startDate: ['', [Validators.required]],
+      endDate: ['', [Validators.required]]
+    }, {
+      validators: [this.dateOrderValidator()]
     });
   }
 
@@ -128,11 +151,31 @@ export class CalendarComponent implements OnInit {
     this.selectedDateInfo = selectInfo;
     this.showEventModal = true;
     
-    // Resetăm formularul
+    // Formatăm datele pentru input[type="date"] (YYYY-MM-DD)
+    const startDate = new Date(selectInfo.startStr);
+    const endDate = new Date(selectInfo.endStr);
+    
+    // Dacă sunt date în viitor, scădem o zi din data de sfârșit
+    // deoarece FullCalendar returnează ziua următoare pentru selecție
+    if (endDate > startDate) {
+      endDate.setDate(endDate.getDate() - 1);
+    }
+    
+    // Resetăm formularul cu date inițiale
     this.eventForm.reset({
       name: '',
-      eventType: 'eveniment'
+      eventType: 'eveniment',
+      startDate: this.formatDateForInput(startDate),
+      endDate: this.formatDateForInput(endDate)
     });
+  }
+  
+  // Formatăm data pentru input[type="date"] (YYYY-MM-DD)
+  formatDateForInput(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
   
   // Formatăm data pentru afișare
@@ -171,10 +214,17 @@ export class CalendarComponent implements OnInit {
   
   // Salvăm eveniment normal
   saveRegularEvent(formValue: any) {
+    // Ajustăm data de sfârșit pentru a include întreaga zi
+    const startDate = new Date(formValue.startDate);
+    const endDate = new Date(formValue.endDate);
+    
+    // Setăm ora pentru data de sfârșit la 23:59:59 pentru a include toată ziua
+    endDate.setHours(23, 59, 59, 999);
+    
     const newEvent = {
       name: formValue.name,
-      startDate: new Date(this.selectedDateInfo.startStr).toISOString(),
-      endDate: new Date(this.selectedDateInfo.endStr).toISOString(),
+      startDate: startDate.toISOString(),
+      endDate: endDate.toISOString(),
       location: 'Muzeu'
     };
     
@@ -189,10 +239,17 @@ export class CalendarComponent implements OnInit {
   
   // Salvăm expoziție
   saveExhibition(formValue: any) {
+    // Ajustăm data de sfârșit pentru a include întreaga zi
+    const startDate = new Date(formValue.startDate);
+    const endDate = new Date(formValue.endDate);
+    
+    // Setăm ora pentru data de sfârșit la 23:59:59 pentru a include toată ziua
+    endDate.setHours(23, 59, 59, 999);
+    
     const newExhibition = {
       name: formValue.name,
-      startDate: new Date(this.selectedDateInfo.startStr).toISOString(),
-      endDate: new Date(this.selectedDateInfo.endStr).toISOString(),
+      startDate: startDate.toISOString(),
+      endDate: endDate.toISOString(),
       location: 'Muzeu',
       tip: 'TEMPORARA' // Implicit temporară
     };
