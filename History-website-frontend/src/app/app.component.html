@@ -1,4 +1,24 @@
 
-<main class="main">
-</main>
-<router-outlet />
+<!-- Bara de administrare -->
+<div *ngIf="isAdmin" class="admin-bar">
+  <div class="admin-bar-title">
+    <span class="admin-icon">👑</span>
+    <span>Panou Administrare Muzeu</span>
+  </div>
+  <div class="admin-nav">
+    <a routerLink="/" class="admin-nav-item">Postări</a>
+    <a routerLink="/evenimente" class="admin-nav-item">Evenimente</a>
+    <a routerLink="/rezervari" class="admin-nav-item">Rezervări</a>
+  </div>
+  <div class="admin-controls">
+    <div class="admin-badge">
+      <span *ngIf="adminName">{{adminName}}</span>
+      <span *ngIf="!adminName">Administrator</span>
+    </div>
+    <button (click)="logout()" class="logout-btn">Deconectare</button>
+  </div>
+</div>
+
+<div [ngClass]="{'content-with-admin-bar': isAdmin}">
+  <router-outlet />
+</div>

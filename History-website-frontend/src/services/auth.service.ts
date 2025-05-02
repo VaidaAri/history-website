@@ -11,14 +11,26 @@ export class AuthService {
   // Inițializăm cu false pentru a evita autentificarea automată
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
   public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
+  
+  // BehaviorSubject pentru numele administratorului
+  private adminNameSubject = new BehaviorSubject<string>('');
+  public adminName$ = this.adminNameSubject.asObservable();
 
   private apiUrl = 'http://localhost:8080/api/administrators';
 
   constructor(private http: HttpClient, private router: Router) {
-    // La inițializare, șterge orice token salvat pentru a evita autentificarea automată
-    // Acest lucru asigură că utilizatorul trebuie să se autentifice explicit
-    localStorage.removeItem('adminToken');
-    this.isAuthenticatedSubject.next(false);
+    // Verifică dacă există un token salvat
+    const token = localStorage.getItem('adminToken');
+    const adminName = localStorage.getItem('adminName');
+    
+    if (token) {
+      this.isAuthenticatedSubject.next(true);
+      if (adminName) {
+        this.adminNameSubject.next(adminName);
+      }
+    } else {
+      this.isAuthenticatedSubject.next(false);
+    }
   }
 
   // Verifică validitatea token-ului de la server
@@ -53,6 +65,8 @@ export class AuthService {
       .pipe(
         tap(token => {
           localStorage.setItem('adminToken', token);
+          localStorage.setItem('adminName', credentials.username);
+          this.adminNameSubject.next(credentials.username);
           this.isAuthenticatedSubject.next(true);
         })
       );
@@ -61,8 +75,15 @@ export class AuthService {
   // Deconectare administrator
   logout(): void {
     localStorage.removeItem('adminToken');
+    localStorage.removeItem('adminName');
     this.isAuthenticatedSubject.next(false);
+    this.adminNameSubject.next('');
     this.router.navigate(['/']); // Redirecționare către pagina principală
+  }
+  
+  // Obține numele administratorului
+  getAdminName(): string {
+    return this.adminNameSubject.value;
   }
 
   // Obține starea curentă de autentificare

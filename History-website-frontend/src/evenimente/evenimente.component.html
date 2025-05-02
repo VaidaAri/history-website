@@ -3,13 +3,6 @@
 <app-cadran>
   <h2>Calendar Evenimente</h2>
   <div class="evenimente-container">
-      <!-- Indicator pentru administrator logat și button pentru deconectare -->
-      <div *ngIf="isAdmin" class="admin-indicator-events">
-        <div class="admin-badge-events">
-          <span class="admin-icon">👑</span> Administrare evenimente
-        </div>
-        <button (click)="logout()" class="logout-btn-events">Deconectare</button>
-      </div>
       
       <p *ngIf="isAdmin" class="events-description admin-desc">
         Sunteți autentificat ca administrator. Puteți adăuga evenimente noi făcând click pe o dată în calendar sau puteți șterge evenimente existente făcând click pe ele.

@@ -4,13 +4,6 @@
     <h2>Rezervă o Vizită la Muzeu</h2>
     
     <div class="rezervari-container">
-        <!-- Indicator pentru administrator logat și button pentru deconectare -->
-        <div *ngIf="isAdmin" class="admin-indicator">
-            <div class="admin-badge">
-                <span class="admin-icon">👑</span> Administrare rezervări
-            </div>
-            <button (click)="logout()" class="logout-btn">Deconectare</button>
-        </div>
         <div class="form-section">
             <form (ngSubmit)="addBooking()" #bookingForm="ngForm">
                 <div class="form-group">

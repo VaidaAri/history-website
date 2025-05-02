@@ -16,13 +16,6 @@
                         (postCreated)="onPostCreated()"
                     ></app-post-manager>
                     
-                    <!-- Indicator pentru administrator logat -->
-                    <div *ngIf="isAdmin" class="admin-indicator">
-                        <div class="admin-badge">
-                            <span class="admin-icon">👑</span> Sunteți autentificat ca administrator
-                        </div>
-                        <button (click)="logout()" class="logout-btn">Deconectare</button>
-                    </div>
                     
                     <!-- Am eliminat butonul de autentificare administrator de aici -->
                 </div>
@@ -62,7 +55,7 @@
     </app-cadran>
     
     <!-- Footer cu link de autentificare administrator -->
-    <div *ngIf="!isAdmin" class="admin-footer">
+    <div class="admin-footer">
         <a (click)="goToLogin()" class="admin-login-link">Autentificare administrator</a>
     </div>
 </main>
