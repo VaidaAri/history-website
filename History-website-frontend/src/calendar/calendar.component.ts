@@ -22,6 +22,10 @@ export class CalendarComponent implements OnInit {
   selectedDateInfo: any = null;
   eventForm: FormGroup;
   
+  // Constante pentru limitele de date 
+  readonly MONTHS_IN_PAST = 3; // Număr de luni în trecut din anul curent
+  readonly MONTHS_IN_FUTURE = 12; // Număr de luni în viitor
+  
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin, interactionPlugin],
     initialView: 'dayGridMonth',
@@ -29,10 +33,26 @@ export class CalendarComponent implements OnInit {
     selectMirror: true,
     events: [], // Inițial gol
     eventClick: this.handleEventClick.bind(this),
-    select: this.handleDateSelect.bind(this) // Adăugăm event listener pentru selectare
+    select: this.handleDateSelect.bind(this), // Adăugăm event listener pentru selectare
+    
+    // Restricționăm intervalul vizibil în calendar
+    validRange: this.getValidDateRange(),
+    
+    // Butoane pentru navigare și titlu
+    headerToolbar: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'dayGridMonth,dayGridYear'
+    },
+    
+    // Localizare pentru română
+    locale: 'ro',
+    
+    // Nu permitem utilizatorilor să navigheze în afara intervalului valid
+    fixedWeekCount: false
   };
 
-  // Validator pentru verificarea ordinii corecte a datelor
+  // Validator pentru verificarea ordinii corecte a datelor și a intervalului valid
   private dateOrderValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const startDate = control.get('startDate')?.value;
@@ -42,8 +62,20 @@ export class CalendarComponent implements OnInit {
         const start = new Date(startDate);
         const end = new Date(endDate);
         
+        // Verifică ordinea datelor
         if (end < start) {
           return { 'dateOrder': true };
+        }
+        
+        // Verifică dacă datele sunt în intervalul valid
+        const validRange = this.getValidDateRange();
+        
+        if (start < validRange.start) {
+          return { 'startDateOutOfRange': true };
+        }
+        
+        if (end > validRange.end) {
+          return { 'endDateOutOfRange': true };
         }
       }
       
@@ -147,13 +179,20 @@ export class CalendarComponent implements OnInit {
       return; // Dacă nu este admin, nu se întâmplă nimic
     }
     
-    // Stocăm informațiile despre data selectată și deschidem modalul
-    this.selectedDateInfo = selectInfo;
-    this.showEventModal = true;
-    
     // Formatăm datele pentru input[type="date"] (YYYY-MM-DD)
     const startDate = new Date(selectInfo.startStr);
     const endDate = new Date(selectInfo.endStr);
+    
+    // Verificăm dacă datele sunt în intervalul valid
+    const validRange = this.getValidDateRange();
+    if (startDate < validRange.start || endDate > validRange.end) {
+      alert(`Poți selecta doar date între ${this.formatDate(validRange.start.toISOString())} și ${this.formatDate(validRange.end.toISOString())}`);
+      return;
+    }
+    
+    // Stocăm informațiile despre data selectată și deschidem modalul
+    this.selectedDateInfo = selectInfo;
+    this.showEventModal = true;
     
     // Dacă sunt date în viitor, scădem o zi din data de sfârșit
     // deoarece FullCalendar returnează ziua următoare pentru selecție
@@ -188,6 +227,32 @@ export class CalendarComponent implements OnInit {
       month: 'long',
       year: 'numeric'
     });
+  }
+  
+  // Definește intervalul valid pentru calendar
+  getValidDateRange() {
+    const today = new Date();
+    
+    // Data minimă: acum X luni în trecut
+    const minDate = new Date(today);
+    minDate.setMonth(today.getMonth() - this.MONTHS_IN_PAST);
+    minDate.setDate(1); // La începutul lunii
+    
+    // Data maximă: acum Y luni în viitor
+    const maxDate = new Date(today);
+    maxDate.setMonth(today.getMonth() + this.MONTHS_IN_FUTURE);
+    maxDate.setDate(0); // Ultima zi a lunii
+    
+    return {
+      start: minDate,
+      end: maxDate
+    };
+  }
+  
+  // Verifică dacă o dată este în intervalul valid
+  isDateInValidRange(date: Date): boolean {
+    const range = this.getValidDateRange();
+    return date >= range.start && date <= range.end;
   }
   
   // Închidem modalul

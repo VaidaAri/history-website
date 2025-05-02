@@ -108,7 +108,8 @@
     margin-bottom: 25px;
     border: 1px solid rgba(234, 209, 150, 0.5);
     overflow: hidden;
-    height: 60vh;
+    height: 70vh; /* Înălțime intermediară */
+    min-height: 580px; /* Înălțimea minimă intermediară */
 }
 
 /* Cartonașe informative sub calendar */
@@ -179,6 +180,7 @@
     }
     
     .calendar-container {
-        height: 50vh;
+        height: 65vh;
+        min-height: 450px;
     }
 }

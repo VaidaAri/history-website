@@ -9,6 +9,7 @@
 ::ng-deep .fc {
   font-family: 'Merriweather', serif;
   height: 100%;
+  min-height: 500px; /* Înălțimea minimă pentru calendar - valoare intermediară */
 }
 
 /* Header calendar (lun, an, butoane) */
@@ -74,7 +75,7 @@
 }
 
 ::ng-deep .fc-daygrid-day-frame {
-  min-height: 70px;
+  min-height: 90px; /* Celule cu înălțime intermediară pentru zile */
 }
 
 ::ng-deep .fc-daygrid-day-number {
