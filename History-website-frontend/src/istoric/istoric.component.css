@@ -138,26 +138,39 @@ li:before {
 */
 
 /* Stilizare pentru butonul de publicații */
-.register-btn {
+.publications-button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin: -20px 30px 30px 0;
+  position: relative;
+  z-index: 10;
+}
+
+.publications-btn {
   background-color: #7D5A50;
   color: #FFF9E6;
   border: none;
-  border-radius: 6px;
-  padding: 12px 25px;
-  font-size: 1.1em;
-  font-weight: bold;
+  border-radius: 25px;
+  padding: 10px 20px;
+  font-size: 1em;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  display: block;
-  margin: 20px auto;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
   font-family: 'Merriweather', serif;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.register-btn:hover {
+.button-icon {
+  font-size: 1.2em;
+}
+
+.publications-btn:hover {
   background-color: #5D4037;
-  transform: translateY(-3px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
 /* Stilizare fără animație pentru text */
