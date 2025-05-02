@@ -1,1 +1,61 @@
 <full-calendar [options]="calendarOptions"></full-calendar>
+
+<!-- Modal pentru adăugare eveniment -->
+<div class="event-modal" *ngIf="showEventModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Adaugă eveniment nou</h3>
+      <button class="close-btn" (click)="closeModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="eventForm">
+        <div class="form-group">
+          <label for="eventName">Numele evenimentului:</label>
+          <input 
+            type="text" 
+            id="eventName" 
+            formControlName="name" 
+            placeholder="Introdu numele evenimentului"
+            class="form-control">
+          <div class="error-message" *ngIf="eventForm.get('name')?.invalid && eventForm.get('name')?.touched">
+            Numele evenimentului este obligatoriu
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="eventType">Tipul:</label>
+          <select id="eventType" formControlName="eventType" class="form-control">
+            <option value="eveniment">Eveniment</option>
+            <option value="expozitie">Expoziție temporară</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label>Data început:</label>
+          <div class="date-display">{{ formatDate(selectedDateInfo?.startStr) }}</div>
+        </div>
+        
+        <div class="form-group">
+          <label>Data sfârșit:</label>
+          <div class="date-display">{{ formatDate(selectedDateInfo?.endStr) }}</div>
+        </div>
+        
+        <div class="form-actions">
+          <button 
+            type="button" 
+            class="cancel-btn" 
+            (click)="closeModal()">
+            Anulează
+          </button>
+          <button 
+            type="button" 
+            class="save-btn" 
+            [disabled]="eventForm.invalid"
+            (click)="saveEvent()">
+            Salvează
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

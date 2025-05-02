@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { FullCalendarModule } from '@fullcalendar/angular'; 
 import { CalendarOptions } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -10,13 +11,17 @@ import { AuthService } from '../services/auth.service';
 @Component({
   selector: 'app-calendar',
   standalone: true,
-  imports: [CommonModule, HttpClientModule, FullCalendarModule],
+  imports: [CommonModule, HttpClientModule, FullCalendarModule, ReactiveFormsModule],
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.css'
 })
 export class CalendarComponent implements OnInit {
   events: any[] = [];
   isAdmin: boolean = false;
+  showEventModal: boolean = false;
+  selectedDateInfo: any = null;
+  eventForm: FormGroup;
+  
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin, interactionPlugin],
     initialView: 'dayGridMonth',
@@ -27,7 +32,17 @@ export class CalendarComponent implements OnInit {
     select: this.handleDateSelect.bind(this) // Adăugăm event listener pentru selectare
   };
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(
+    private http: HttpClient, 
+    private authService: AuthService,
+    private fb: FormBuilder
+  ) {
+    // Inițializăm formularul
+    this.eventForm = this.fb.group({
+      name: ['', [Validators.required]],
+      eventType: ['eveniment'] // Default la eveniment normal
+    });
+  }
 
   ngOnInit() {
     this.loadEvents();
@@ -109,20 +124,85 @@ export class CalendarComponent implements OnInit {
       return; // Dacă nu este admin, nu se întâmplă nimic
     }
     
-    const eventName = prompt('Introdu numele evenimentului:');
-    if (eventName) {
-      const newEvent = {
-        name: eventName,
-        startDate: new Date(selectInfo.startStr).toISOString(),
-        endDate: new Date(selectInfo.endStr).toISOString(),
-        location: 'Muzeu'
-      };
-      this.http.post('http://localhost:8080/api/events', newEvent).subscribe(() => {
-        alert('Eveniment adăugat cu succes!');
-        this.loadEvents(); 
-      }, error => {
-        alert('Eroare la salvarea evenimentului!');
-      });
+    // Stocăm informațiile despre data selectată și deschidem modalul
+    this.selectedDateInfo = selectInfo;
+    this.showEventModal = true;
+    
+    // Resetăm formularul
+    this.eventForm.reset({
+      name: '',
+      eventType: 'eveniment'
+    });
+  }
+  
+  // Formatăm data pentru afișare
+  formatDate(dateStr: string | undefined): string {
+    if (!dateStr) return '';
+    
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('ro-RO', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric'
+    });
+  }
+  
+  // Închidem modalul
+  closeModal() {
+    this.showEventModal = false;
+    this.selectedDateInfo = null;
+  }
+  
+  // Salvăm evenimentul
+  saveEvent() {
+    if (this.eventForm.invalid || !this.selectedDateInfo) {
+      return;
     }
+    
+    const formValue = this.eventForm.value;
+    const eventType = formValue.eventType;
+    
+    if (eventType === 'eveniment') {
+      this.saveRegularEvent(formValue);
+    } else if (eventType === 'expozitie') {
+      this.saveExhibition(formValue);
+    }
+  }
+  
+  // Salvăm eveniment normal
+  saveRegularEvent(formValue: any) {
+    const newEvent = {
+      name: formValue.name,
+      startDate: new Date(this.selectedDateInfo.startStr).toISOString(),
+      endDate: new Date(this.selectedDateInfo.endStr).toISOString(),
+      location: 'Muzeu'
+    };
+    
+    this.http.post('http://localhost:8080/api/events', newEvent).subscribe(() => {
+      alert('Eveniment adăugat cu succes!');
+      this.loadEvents();
+      this.closeModal();
+    }, error => {
+      alert('Eroare la salvarea evenimentului!');
+    });
+  }
+  
+  // Salvăm expoziție
+  saveExhibition(formValue: any) {
+    const newExhibition = {
+      name: formValue.name,
+      startDate: new Date(this.selectedDateInfo.startStr).toISOString(),
+      endDate: new Date(this.selectedDateInfo.endStr).toISOString(),
+      location: 'Muzeu',
+      tip: 'TEMPORARA' // Implicit temporară
+    };
+    
+    this.http.post('http://localhost:8080/api/exhibitions', newExhibition).subscribe(() => {
+      alert('Expoziție adăugată cu succes!');
+      this.loadEvents();
+      this.closeModal();
+    }, error => {
+      alert('Eroare la salvarea expoziției!');
+    });
   }
 }
