@@ -37,7 +37,7 @@ h1 {
 h1::after {
     content: '';
     display: block;
-    width: 180px;
+    width: 400px; /* Linie mult mai lungă pentru a depăși textul pe ambele părți */
     height: 1px;
     background-color: #EAD196;
     position: absolute;
