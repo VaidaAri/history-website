@@ -15,7 +15,11 @@ public class ExpozitieController {
     private ExpozitieService expozitieService;
 
     @GetMapping
-    public List<Expozitie> getAllExhibitions(){
+    public List<Expozitie> getAllExhibitions(
+            @RequestParam(required = false) Expozitie.TipExpozitie tip){
+        if (tip != null) {
+            return expozitieService.getExhibitionsByTip(tip);
+        }
         return expozitieService.getAllExhibitions();
     }
 
