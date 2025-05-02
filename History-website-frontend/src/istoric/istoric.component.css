@@ -111,16 +111,7 @@ h4 {
   letter-spacing: 0.1em;
 }
 
-h4:after {
-  content: '';
-  position: absolute;
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 50px;
-  height: 2px;
-  background-color: #EAD196;
-}
+/* Eliminată sublinierea de sub titluri */
 
 ul {
   margin: 25px 0 25px 40px;
