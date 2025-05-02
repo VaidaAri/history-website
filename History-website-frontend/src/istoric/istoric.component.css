@@ -107,7 +107,7 @@ h4 {
   position: relative;
   font-family: 'Merriweather', serif;
   font-weight: bold;
-  text-transform: uppercase;
+  /* Eliminat text-transform: uppercase; */
   letter-spacing: 0.1em;
 }
 
