@@ -1,16 +1,8 @@
 <main class="evenimente">
 <app-meniu></app-meniu>
 <app-cadran>
+  <h2>Calendar Evenimente</h2>
   <div class="evenimente-container">
-    <div class="evenimente-header">
-      <h2>Calendar <span class="title-accent">Evenimente</span></h2>
-      <p *ngIf="isAdmin" class="events-description admin-desc">
-        Sunteți autentificat ca administrator. Puteți adăuga evenimente noi făcând click pe o dată în calendar sau puteți șterge evenimente existente făcând click pe ele.
-      </p>
-      <p *ngIf="!isAdmin" class="events-description">
-        Descoperiți evenimentele organizate de Muzeul Grăniceresc Năsăudean. Faceți click pe un eveniment pentru a vedea detaliile.
-      </p>
-      
       <!-- Indicator pentru administrator logat și button pentru deconectare -->
       <div *ngIf="isAdmin" class="admin-indicator-events">
         <div class="admin-badge-events">
@@ -19,11 +11,17 @@
         <button (click)="logout()" class="logout-btn-events">Deconectare</button>
       </div>
       
-      <!-- Am eliminat butonul de autentificare administrator de pe pagina de evenimente -->
-    </div>
+      <p *ngIf="isAdmin" class="events-description admin-desc">
+        Sunteți autentificat ca administrator. Puteți adăuga evenimente noi făcând click pe o dată în calendar sau puteți șterge evenimente existente făcând click pe ele.
+      </p>
+      <p *ngIf="!isAdmin" class="events-description">
+        Descoperiți evenimentele organizate de Muzeul Grăniceresc Năsăudean. Faceți click pe un eveniment pentru a vedea detaliile.
+      </p>
+      
+      <div class="calendar-container">
+        <app-calendar></app-calendar>
+      </div>
     
-    <div class="calendar-container">
-      <app-calendar></app-calendar>
     </div>
     
     <div class="events-info">
@@ -45,6 +43,6 @@
         <p>Verificați periodic pentru noutăți și anunțuri importante legate de programul muzeului.</p>
       </div>
     </div>
-  </div>
+  
 </app-cadran>
 </main>
