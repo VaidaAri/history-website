@@ -124,6 +124,31 @@ label {
   opacity: 0.7;
 }
 
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 0;
+  color: #7D5A50;
+  z-index: 2;
+}
+
+.toggle-password:hover {
+  color: #5D4037;
+}
+
+.password-error {
+  color: #C14953;
+  font-size: 0.9em;
+  margin-top: 5px;
+  font-weight: 500;
+}
+
 input {
   width: 100%;
   padding: 12px 12px 12px 40px;

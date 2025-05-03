@@ -39,8 +39,12 @@
           <label for="password">Parolă</label>
           <div class="input-container">
             <span class="input-icon">🔒</span>
-            <input type="password" id="password" [(ngModel)]="newAdmin.password" name="password" placeholder="Introduceți o parolă puternică" required />
+            <input [type]="showPassword ? 'text' : 'password'" id="password" [(ngModel)]="newAdmin.password" name="password" placeholder="Introduceți o parolă puternică (minim 8 caractere)" required />
+            <button type="button" class="toggle-password" (click)="togglePasswordVisibility()" title="Afișează/Ascunde parola">
+              {{ showPassword ? '👁️‍🗨️' : '👁️' }}
+            </button>
           </div>
+          <div class="password-error" *ngIf="passwordError">{{ passwordError }}</div>
         </div>
         
         <button type="submit" class="submit-btn">Creare cont</button>

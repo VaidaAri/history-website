@@ -21,7 +21,10 @@
                 <label for="password">Parolă</label>
                 <div class="input-container">
                     <span class="input-icon">🔒</span>
-                    <input type="password" id="password" [(ngModel)]="password" name="password" placeholder="Introduceți parola" required>
+                    <input [type]="showPassword ? 'text' : 'password'" id="password" [(ngModel)]="password" name="password" placeholder="Introduceți parola" required>
+                    <button type="button" class="toggle-password" (click)="togglePasswordVisibility()" title="Afișează/Ascunde parola">
+                        {{ showPassword ? '👁️‍🗨️' : '👁️' }}
+                    </button>
                 </div>
             </div>
             

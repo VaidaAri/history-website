@@ -13,6 +13,8 @@ import { FormsModule } from '@angular/forms';
 })
 export class CreeareContComponent {
   admins: any = [];
+  showPassword: boolean = false;
+  passwordError: string = '';
 
   newAdmin = {
     firstName: '',
@@ -33,12 +35,30 @@ export class CreeareContComponent {
     });
   }
 
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
+  validatePassword() {
+    if (this.newAdmin.password.length < 8) {
+      this.passwordError = 'Parola trebuie să conțină minim 8 caractere';
+      return false;
+    }
+    this.passwordError = '';
+    return true;
+  }
+
   registerAdmin() {
+    if (!this.validatePassword()) {
+      return;
+    }
+
     this.http.post("http://localhost:8080/api/administrators", this.newAdmin).subscribe({
       next: () => {
         alert("Administrator adăugat cu succes!");
         this.fetchAdmins();  
         this.newAdmin = { firstName: '', lastName: '', username: '', password: '' }; // Resetează formularul
+        this.passwordError = '';
       },
       error: (err) => {
         console.error("Eroare la adăugarea administratorului:", err);

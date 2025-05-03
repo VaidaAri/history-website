@@ -17,8 +17,13 @@ export class AdministratorLoginComponent implements OnInit {
   username: string = '';
   password: string = '';
   errorMessage: string = '';
+  showPassword: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) {}
+  
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
 
   ngOnInit() {
     // Dacă utilizatorul este deja autentificat, redirecționează la pagina principală
