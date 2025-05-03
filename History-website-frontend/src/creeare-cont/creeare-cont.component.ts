@@ -3,11 +3,12 @@ import { RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { MeniuComponent } from '../meniu/meniu.component';
 
 @Component({
   selector: 'app-creeare-cont',
   standalone: true,
-  imports: [RouterModule, CommonModule, FormsModule],
+  imports: [RouterModule, CommonModule, FormsModule, MeniuComponent],
   templateUrl: './creeare-cont.component.html',
   styleUrls: ['./creeare-cont.component.css'],
 })

@@ -5,11 +5,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { MeniuComponent } from '../meniu/meniu.component';
 
 @Component({
   selector: 'app-administrator-login',
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule, RouterModule],
+  imports: [CommonModule, FormsModule, HttpClientModule, RouterModule, MeniuComponent],
   templateUrl: './administrator-login.component.html',
   styleUrls: ['./administrator-login.component.css'],
 })
