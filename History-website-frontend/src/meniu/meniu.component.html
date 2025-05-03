@@ -5,6 +5,11 @@
 </head>
 <body>
     <nav>
+        <div class="language-selector">
+            <div class="flag flag-ro" [class.active]="selectedLanguage === 'ro'" (click)="changeLanguage('ro')" title="Română"></div>
+            <div class="flag flag-en" [class.active]="selectedLanguage === 'en'" (click)="changeLanguage('en')" title="English"></div>
+            <div class="flag flag-de" [class.active]="selectedLanguage === 'de'" (click)="changeLanguage('de')" title="Deutsch"></div>
+        </div>
         <h1>Muzeul Grăniceresc Năsăudean</h1>
         <ul>            
             <li><a routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Acasă</a></li>
