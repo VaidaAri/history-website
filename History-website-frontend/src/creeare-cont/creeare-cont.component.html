@@ -64,44 +64,5 @@
         </button>
       </div>
     </div>
-    
-    <!-- Card pentru lista administratorilor -->
-    <div class="admin-card admin-list-card">
-      <div class="card-header">
-        <div class="header-icon">👥</div>
-        <h2>Lista <span class="title-accent">Administratorilor</span></h2>
-        <p class="card-subtitle">Vizualizați și gestionați administratorii înregistrați</p>
-      </div>
-      
-      <div class="table-container">
-        <table class="admin-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nume complet</th>
-              <th>Utilizator</th>
-              <th>Email</th>
-              <th>Acțiuni</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let admin of admins">
-              <td>{{ admin.id }}</td>
-              <td>{{ admin.firstName }} {{ admin.lastName }}</td>
-              <td>{{ admin.username }}</td>
-              <td>{{ admin.email }}</td>
-              <td>
-                <button class="delete-btn" (click)="deleteAdmin(admin.id)" title="Șterge administrator">
-                  <span class="delete-icon">🗑️</span>
-                </button>
-              </td>
-            </tr>
-            <tr *ngIf="admins.length === 0">
-              <td colspan="5" class="no-data">Nu există administratori înregistrați</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
   </div>
 </main>

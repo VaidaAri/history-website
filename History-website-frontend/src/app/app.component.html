@@ -10,7 +10,53 @@
       <span *ngIf="adminName">{{adminName}}</span>
       <span *ngIf="!adminName">Administrator</span>
     </div>
+    <button (click)="showAdminList()" class="admin-list-btn">
+      <span class="admin-list-icon">👥</span> Administratori
+    </button>
     <button (click)="logout()" class="logout-btn">Deconectare</button>
+  </div>
+</div>
+
+<!-- Dialog modal pentru lista de administratori -->
+<div *ngIf="showAdminModal" class="admin-modal-overlay">
+  <div class="admin-modal">
+    <div class="admin-modal-header">
+      <h2 class="admin-modal-title">Lista administratorilor</h2>
+      <button (click)="closeAdminList()" class="close-modal-btn">&times;</button>
+    </div>
+    <div class="admin-modal-content">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nume complet</th>
+            <th>Utilizator</th>
+            <th>Email</th>
+            <th>Acțiuni</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let admin of admins">
+            <td>{{ admin.id }}</td>
+            <td>{{ admin.firstName }} {{ admin.lastName }}</td>
+            <td>{{ admin.username }}</td>
+            <td>{{ admin.email }}</td>
+            <td>
+              <button class="delete-btn" (click)="deleteAdmin(admin.id)" title="Șterge administrator">
+                <span class="delete-icon">🗑️</span>
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="admins.length === 0">
+            <td colspan="5" class="no-data">Nu există administratori înregistrați</td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <div class="modal-actions">
+        <button routerLink="/creeare-cont" class="add-admin-btn">Adaugă administrator nou</button>
+      </div>
+    </div>
   </div>
 </div>
 

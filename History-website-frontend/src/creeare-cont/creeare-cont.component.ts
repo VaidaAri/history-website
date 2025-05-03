@@ -27,13 +27,7 @@ export class CreeareContComponent {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.fetchAdmins();
-  }
-
-  fetchAdmins() {
-    this.http.get("http://localhost:8080/api/administrators").subscribe((data) => {
-      this.admins = data;
-    });
+    // Nu mai este nevoie să încărcăm lista de administratori aici
   }
 
   togglePasswordVisibility() {
@@ -57,7 +51,6 @@ export class CreeareContComponent {
     this.http.post("http://localhost:8080/api/administrators", this.newAdmin).subscribe({
       next: () => {
         alert("Administrator adăugat cu succes!");
-        this.fetchAdmins();  
         this.newAdmin = { firstName: '', lastName: '', username: '', password: '', email: '' }; // Resetează formularul
         this.passwordError = '';
       },
@@ -68,18 +61,5 @@ export class CreeareContComponent {
     });
   }
 
-  deleteAdmin(adminId: number) {
-    if (confirm("Sigur vrei să ștergi acest administrator?")) {
-      this.http.delete(`http://localhost:8080/api/administrators/${adminId}`).subscribe({
-        next: () => {
-          alert("Administrator șters cu succes!");
-          this.fetchAdmins();
-        },
-        error: (err) => {
-          console.error("Eroare la ștergere:", err);
-          alert("Eroare la ștergere. Încearcă din nou.");
-        }
-      });
-    }
-  }
+  // Funcția de ștergere a fost mutată în panoul de administrare
 }

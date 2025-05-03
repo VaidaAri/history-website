@@ -15,15 +15,18 @@ import { RouterModule } from '@angular/router';
 })
 export class AdministratorComponent implements OnInit {
   posts: any[] = [];
+  admins: any[] = [];
   description: string = '';
   imageUrl: string = '';
   images: any[] = [];
+  currentSection: string = 'posts'; // Secțiunea implicită este 'posts'
 
   constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit() {
     this.checkAuthentication();
     this.loadPosts();
+    this.loadAdmins();
   }
 
   checkAuthentication() {
@@ -69,6 +72,31 @@ export class AdministratorComponent implements OnInit {
         this.loadPosts();
       });
     }
+  }
+
+  loadAdmins() {
+    this.http.get<any[]>('http://localhost:8080/api/administrators').subscribe(data => {
+      this.admins = data;
+    });
+  }
+
+  deleteAdmin(adminId: number) {
+    if (confirm("Sigur vrei să ștergi acest administrator?")) {
+      this.http.delete(`http://localhost:8080/api/administrators/${adminId}`).subscribe({
+        next: () => {
+          alert("Administrator șters cu succes!");
+          this.loadAdmins();
+        },
+        error: (err) => {
+          console.error("Eroare la ștergere:", err);
+          alert("Eroare la ștergere. Încearcă din nou.");
+        }
+      });
+    }
+  }
+
+  changeSection(section: string) {
+    this.currentSection = section;
   }
 
   logout() {
