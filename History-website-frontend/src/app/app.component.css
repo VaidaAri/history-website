@@ -87,6 +87,122 @@
   background-color: rgba(255, 255, 255, 0.2);
 }
 
+/* Stiluri footer simplu */
+.simple-footer {
+  background-color: #7D5A50;
+  background-image: linear-gradient(to right, #5D4037, #7D5A50, #5D4037);
+  height: 150px; /* Footer mai mare pe verticală */
+  width: 100%;
+  margin-top: 20px; /* Distanță mai mică față de conținut */
+  position: relative;
+  border-top: 4px solid #EAD196; /* Linie aurie în partea de sus */
+  box-shadow: 0px -6px 18px rgba(0, 0, 0, 0.15);
+}
+
+.simple-footer::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background-color: rgba(93, 64, 55, 0.3);
+  z-index: -1;
+}
+
+/* Stiluri pentru conținutul footer-ului */
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  padding: 0 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* Elementele laterale */
+.footer-left, .admin-login-container {
+  flex: 1;
+}
+
+/* Iconițe rețele sociale */
+.social-icons {
+  display: flex;
+  gap: 15px;
+}
+
+.social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #F8F4E3;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  border: 1px solid rgba(234, 209, 150, 0.3);
+}
+
+.social-icon i {
+  font-size: 1rem;
+}
+
+.social-icon:hover {
+  background-color: rgba(234, 209, 150, 0.2);
+  transform: translateY(-3px);
+  color: #EAD196;
+  border-color: #EAD196;
+}
+
+/* Element central */
+.footer-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+.footer-center p {
+  color: #F8F4E3;
+  font-size: 0.9em;
+  opacity: 0.8;
+  margin: 0;
+}
+
+/* Stiluri pentru butonul de autentificare administrator */
+.admin-login-container {
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+  text-align: right;
+}
+
+.admin-login-container:hover {
+  opacity: 1;
+}
+
+.admin-login-link {
+  color: #F8F4E3;
+  text-decoration: none;
+  font-size: 0.85em;
+  font-family: 'Merriweather', serif;
+  padding: 5px 10px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  display: inline-block;
+  border: 1px solid rgba(234, 209, 150, 0.3);
+}
+
+.admin-login-link:hover {
+  background-color: rgba(234, 209, 150, 0.2);
+  border-color: #EAD196;
+  transform: translateY(-2px);
+}
+
 /* Ajustări responsive */
 @media (max-width: 768px) {
   .admin-badge {
@@ -99,5 +215,41 @@
   
   .admin-bar-title span:last-child {
     font-size: 0.9em;
+  }
+  
+  /* Responsive footer */
+  .simple-footer {
+    height: auto;
+    padding: 30px 0 15px;
+  }
+  
+  .footer-content {
+    flex-direction: column;
+    gap: 25px;
+    text-align: center;
+    padding: 0 20px;
+    justify-content: center;
+  }
+  
+  .footer-center {
+    position: static;
+    transform: none;
+    order: 1;
+  }
+  
+  .admin-login-container {
+    position: static;
+    margin-top: 15px;
+    order: 2;
+    text-align: center;
+  }
+  
+  .footer-left {
+    order: 3;
+    margin-top: 5px;
+  }
+  
+  .social-icons {
+    justify-content: center;
   }
 }
