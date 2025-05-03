@@ -100,35 +100,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-.admin-footer {
-    text-align: center;
-    margin-top: auto;
-    padding: 10px 0;
-    opacity: 0.6;
-    transition: opacity 0.3s ease;
-    width: 100%;
-    margin-bottom: 20px;
-}
-
-.admin-footer:hover {
-    opacity: 1;
-}
-
-.admin-login-link {
-    color: #7D5A50;
-    text-decoration: none;
-    font-size: 0.85em;
-    padding: 5px 10px;
-    border-radius: 20px;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    display: inline-block;
-}
-
-.admin-login-link:hover {
-    background-color: rgba(125, 90, 80, 0.1);
-    text-decoration: underline;
-}
+/* Stilurile pentru admin-footer au fost mutate în app.component.css */
 
 /* Formular pentru adăugare postare */
 .add-post-form {
@@ -379,9 +351,5 @@
         padding: 20px;
     }
     
-    .admin-footer {
-        position: relative;
-        margin-top: 30px;
-        bottom: auto;
-    }
+    /* Stilurile pentru admin-footer au fost eliminate */
 }
