@@ -184,7 +184,7 @@ nav li:nth-child(5) {
     height: 20px;
     border-radius: 4px;
     cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
@@ -192,8 +192,8 @@ nav li:nth-child(5) {
 }
 
 .flag:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 /* Steagul României */
@@ -231,9 +231,14 @@ nav li:nth-child(5) {
 }
 
 .flag.active {
-    transform: scale(1.1);
-    box-shadow: 0 0 8px rgba(234, 209, 150, 0.8);
+    transform: translateY(-3px);
     border: 1px solid #EAD196;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    opacity: 1;
+}
+
+.flag:not(.active) {
+    opacity: 0.8;
 }
 
 @media (max-width: 768px) {
