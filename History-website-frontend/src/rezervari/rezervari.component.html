@@ -17,6 +17,11 @@
                 </div>
                 
                 <div class="form-group">
+                    <label for="email">Email reprezentant:</label>
+                    <input type="email" id="email" name="email" [(ngModel)]="newBooking.email" required>
+                </div>
+                
+                <div class="form-group">
                     <label for="datetime">Data și Ora:</label>
                     <input type="datetime-local" id="datetime" name="datetime" [(ngModel)]="newBooking.datetime" required>
                 </div>
@@ -44,6 +49,7 @@
                         <th>ID</th>
                         <th>Nume reprezentant</th>
                         <th>Prenume reprezentant</th>
+                        <th>Email</th>
                         <th>Data și Ora</th>
                         <th>Persoane</th>
                         <th>Ghid</th>
@@ -55,6 +61,7 @@
                         <td>{{booking.id}}</td>
                         <td>{{booking.nume}}</td>
                         <td>{{booking.prenume}}</td>
+                        <td>{{booking.email}}</td>
                         <td>{{ booking.datetime | date: 'dd MMM yyyy, HH:mm' }}</td>
                         <td>{{booking.numberOfPersons}}</td>
                         <td>{{ booking.guideRequired ? 'Da' : 'Nu' }}</td>
@@ -63,7 +70,7 @@
                         </td>
                     </tr>
                     <tr *ngIf="bookings.length === 0">
-                        <td colspan="7" class="empty-table">Nu există rezervări momentan</td>
+                        <td colspan="8" class="empty-table">Nu există rezervări momentan</td>
                     </tr>
                 </tbody>
             </table>

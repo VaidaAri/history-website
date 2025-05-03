@@ -26,6 +26,8 @@ public class Rezervare {
     private String nume;
     
     private String prenume;
+    
+    private String email;
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime datetime;

@@ -21,6 +21,7 @@ export class RezervariComponent implements OnInit {
   newBooking = {
     nume: '',
     prenume: '',
+    email: '',
     datetime: '',
     numberOfPersons: 0,
     guideRequired: false
@@ -84,6 +85,7 @@ export class RezervariComponent implements OnInit {
     this.newBooking = {
       nume: '',
       prenume: '',
+      email: '',
       datetime: '',
       numberOfPersons: 0,
       guideRequired: false
