@@ -19,7 +19,7 @@ export class AdministratorComponent implements OnInit {
   description: string = '';
   imageUrl: string = '';
   images: any[] = [];
-  currentSection: string = 'posts'; // Secțiunea implicită este 'posts'
+  currentSection: string = 'posts';
 
   constructor(private http: HttpClient, private router: Router) {}
 

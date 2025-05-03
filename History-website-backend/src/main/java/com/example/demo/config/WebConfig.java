@@ -16,16 +16,14 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedHeaders("*")
                 .exposedHeaders("Access-Control-Allow-Origin")
                 .allowCredentials(true)
-                .maxAge(3600); // Setează timpul de caching preflights la 1 oră
+                .maxAge(3600);
     }
     
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // Configurare pentru a permite accesul la fișierele statice din directorul "static/images"
         registry.addResourceHandler("/static/images/**")
                 .addResourceLocations("classpath:/static/images/");
                 
-        // Configurare pentru a permite accesul la fișierele din directorul "uploads"
         registry.addResourceHandler("/uploads/**")
                 .addResourceLocations("file:uploads/");
     }

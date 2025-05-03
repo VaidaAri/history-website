@@ -34,21 +34,17 @@ export class RezervariComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Verificăm dacă utilizatorul este administrator
     this.isAdmin = this.authService.isAuthenticated();
     
-    // Abonăm pentru a detecta schimbări în starea de autentificare
     this.authService.isAuthenticated$.subscribe(isAuthenticated => {
       this.isAdmin = isAuthenticated;
     });
     
-    // Încărcăm lista rezervărilor doar dacă utilizatorul este admin
     if (this.isAdmin) {
       this.fetchBookings();
     }
   }
   
-  // Metoda pentru deconectare
   logout() {
     this.authService.logout();
   }
@@ -64,10 +60,8 @@ export class RezervariComponent implements OnInit {
       next: (response) => {
         alert("Rezervare adăugată cu succes!");
         
-        // Resetăm formularul după adăugarea cu succes
         this.resetBookingForm();
         
-        // Reîncărcăm lista de rezervări doar dacă utilizatorul este admin
         if (this.isAdmin) {
           this.fetchBookings();
         }
@@ -79,7 +73,6 @@ export class RezervariComponent implements OnInit {
     });
   }
   
-  // Metodă pentru resetarea formularului
   resetBookingForm() {
     this.newBooking = {
       nume: '',

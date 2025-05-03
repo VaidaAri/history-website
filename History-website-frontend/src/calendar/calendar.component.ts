@@ -22,37 +22,27 @@ export class CalendarComponent implements OnInit {
   selectedDateInfo: any = null;
   eventForm: FormGroup;
   
-  // Constante pentru limitele de date 
-  readonly MONTHS_IN_PAST = 3; // Număr de luni în trecut din anul curent
-  readonly MONTHS_IN_FUTURE = 12; // Număr de luni în viitor
+  readonly MONTHS_IN_PAST = 3;
+  readonly MONTHS_IN_FUTURE = 12;
   
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin, interactionPlugin],
     initialView: 'dayGridMonth',
-    selectable: false, // Va fi setat în funcție de autentificare
+    selectable: false,
     selectMirror: true,
-    events: [], // Inițial gol
+    events: [],
     eventClick: this.handleEventClick.bind(this),
-    select: this.handleDateSelect.bind(this), // Adăugăm event listener pentru selectare
-    
-    // Restricționăm intervalul vizibil în calendar
+    select: this.handleDateSelect.bind(this),
     validRange: this.getValidDateRange(),
-    
-    // Butoane pentru navigare și titlu
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
       right: 'dayGridMonth,dayGridYear'
     },
-    
-    // Localizare pentru română
     locale: 'ro',
-    
-    // Nu permitem utilizatorilor să navigheze în afara intervalului valid
     fixedWeekCount: false
   };
 
-  // Validator pentru verificarea ordinii corecte a datelor și a intervalului valid
   private dateOrderValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const startDate = control.get('startDate')?.value;
@@ -62,12 +52,10 @@ export class CalendarComponent implements OnInit {
         const start = new Date(startDate);
         const end = new Date(endDate);
         
-        // Verifică ordinea datelor
         if (end < start) {
           return { 'dateOrder': true };
         }
         
-        // Verifică dacă datele sunt în intervalul valid
         const validRange = this.getValidDateRange();
         
         if (start < validRange.start) {
@@ -88,10 +76,9 @@ export class CalendarComponent implements OnInit {
     private authService: AuthService,
     private fb: FormBuilder
   ) {
-    // Inițializăm formularul cu validatori
     this.eventForm = this.fb.group({
       name: ['', [Validators.required]],
-      eventType: ['eveniment'], // Default la eveniment normal
+      eventType: ['eveniment'],
       startDate: ['', [Validators.required]],
       endDate: ['', [Validators.required]]
     }, {
@@ -101,14 +88,9 @@ export class CalendarComponent implements OnInit {
 
   ngOnInit() {
     this.loadEvents();
-    
-    // Verificăm dacă utilizatorul este administrator
     this.isAdmin = this.authService.isAuthenticated();
-    
-    // Actualizăm opțiunile calendarului în funcție de starea de autentificare
     this.updateCalendarPermissions();
     
-    // Abonăm pentru a detecta schimbări în starea de autentificare
     this.authService.isAuthenticated$.subscribe(isAuthenticated => {
       this.isAdmin = isAuthenticated;
       this.updateCalendarPermissions();
@@ -118,7 +100,7 @@ export class CalendarComponent implements OnInit {
   updateCalendarPermissions() {
     this.calendarOptions = { 
       ...this.calendarOptions, 
-      selectable: this.isAdmin, // Doar admin poate selecta date
+      selectable: this.isAdmin,
       events: this.events
     };
   }
@@ -126,7 +108,6 @@ export class CalendarComponent implements OnInit {
   loadEvents() {
     this.http.get<any[]>('http://localhost:8080/api/events').subscribe(data => {
       this.events = data.map(event => {
-        // Creăm un obiect Date din string-ul ISO
         const startDate = new Date(event.startDate);
         const endDate = new Date(event.endDate);
         
@@ -136,7 +117,7 @@ export class CalendarComponent implements OnInit {
           start: startDate,
           end: endDate,
           color: '#7D5A50',
-          allDay: true // Setăm evenimentele ca fiind "all day" pentru a evita afișarea orei
+          allDay: true
         };
       });
       this.updateCalendar();
@@ -152,12 +133,10 @@ export class CalendarComponent implements OnInit {
 
   handleEventClick(info: any) {
     if (!this.isAdmin) {
-      // Dacă nu este admin, se afișează doar detaliile evenimentului
       alert(`Eveniment: ${info.event.title}\nDată: ${new Date(info.event.start).toLocaleDateString()}`);
       return;
     }
     
-    // Dacă este admin, se oferă opțiunea de ștergere
     const confirmDelete = confirm(`Sigur vrei să ștergi evenimentul: ${info.event.title}?`);
     if (confirmDelete) {
       const eventToDelete = this.events.find(event => event.title === info.event.title);
@@ -176,31 +155,25 @@ export class CalendarComponent implements OnInit {
 
   handleDateSelect(selectInfo: any) {
     if (!this.isAdmin) {
-      return; // Dacă nu este admin, nu se întâmplă nimic
+      return;
     }
     
-    // Formatăm datele pentru input[type="date"] (YYYY-MM-DD)
     const startDate = new Date(selectInfo.startStr);
     const endDate = new Date(selectInfo.endStr);
     
-    // Verificăm dacă datele sunt în intervalul valid
     const validRange = this.getValidDateRange();
     if (startDate < validRange.start || endDate > validRange.end) {
       alert(`Poți selecta doar date între ${this.formatDate(validRange.start.toISOString())} și ${this.formatDate(validRange.end.toISOString())}`);
       return;
     }
     
-    // Stocăm informațiile despre data selectată și deschidem modalul
     this.selectedDateInfo = selectInfo;
     this.showEventModal = true;
     
-    // Dacă sunt date în viitor, scădem o zi din data de sfârșit
-    // deoarece FullCalendar returnează ziua următoare pentru selecție
     if (endDate > startDate) {
       endDate.setDate(endDate.getDate() - 1);
     }
     
-    // Resetăm formularul cu date inițiale
     this.eventForm.reset({
       name: '',
       eventType: 'eveniment',
@@ -209,7 +182,6 @@ export class CalendarComponent implements OnInit {
     });
   }
   
-  // Formatăm data pentru input[type="date"] (YYYY-MM-DD)
   formatDateForInput(date: Date): string {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -217,7 +189,6 @@ export class CalendarComponent implements OnInit {
     return `${year}-${month}-${day}`;
   }
   
-  // Formatăm data pentru afișare
   formatDate(dateStr: string | undefined): string {
     if (!dateStr) return '';
     
@@ -228,20 +199,16 @@ export class CalendarComponent implements OnInit {
       year: 'numeric'
     });
   }
-  
-  // Definește intervalul valid pentru calendar
   getValidDateRange() {
     const today = new Date();
     
-    // Data minimă: acum X luni în trecut
     const minDate = new Date(today);
     minDate.setMonth(today.getMonth() - this.MONTHS_IN_PAST);
-    minDate.setDate(1); // La începutul lunii
+    minDate.setDate(1);
     
-    // Data maximă: acum Y luni în viitor
     const maxDate = new Date(today);
     maxDate.setMonth(today.getMonth() + this.MONTHS_IN_FUTURE);
-    maxDate.setDate(0); // Ultima zi a lunii
+    maxDate.setDate(0);
     
     return {
       start: minDate,
@@ -249,19 +216,15 @@ export class CalendarComponent implements OnInit {
     };
   }
   
-  // Verifică dacă o dată este în intervalul valid
   isDateInValidRange(date: Date): boolean {
     const range = this.getValidDateRange();
     return date >= range.start && date <= range.end;
   }
   
-  // Închidem modalul
   closeModal() {
     this.showEventModal = false;
     this.selectedDateInfo = null;
   }
-  
-  // Salvăm evenimentul
   saveEvent() {
     if (this.eventForm.invalid || !this.selectedDateInfo) {
       return;
@@ -277,13 +240,10 @@ export class CalendarComponent implements OnInit {
     }
   }
   
-  // Salvăm eveniment normal
   saveRegularEvent(formValue: any) {
-    // Ajustăm data de sfârșit pentru a include întreaga zi
     const startDate = new Date(formValue.startDate);
     const endDate = new Date(formValue.endDate);
     
-    // Setăm ora pentru data de sfârșit la 23:59:59 pentru a include toată ziua
     endDate.setHours(23, 59, 59, 999);
     
     const newEvent = {
@@ -302,13 +262,10 @@ export class CalendarComponent implements OnInit {
     });
   }
   
-  // Salvăm expoziție
   saveExhibition(formValue: any) {
-    // Ajustăm data de sfârșit pentru a include întreaga zi
     const startDate = new Date(formValue.startDate);
     const endDate = new Date(formValue.endDate);
     
-    // Setăm ora pentru data de sfârșit la 23:59:59 pentru a include toată ziua
     endDate.setHours(23, 59, 59, 999);
     
     const newExhibition = {
@@ -316,7 +273,7 @@ export class CalendarComponent implements OnInit {
       startDate: startDate.toISOString(),
       endDate: endDate.toISOString(),
       location: 'Muzeu',
-      tip: 'TEMPORARA' // Implicit temporară
+      tip: 'TEMPORARA'
     };
     
     this.http.post('http://localhost:8080/api/exhibitions', newExhibition).subscribe(() => {
