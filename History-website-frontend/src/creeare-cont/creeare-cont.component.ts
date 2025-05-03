@@ -21,6 +21,7 @@ export class CreeareContComponent {
     lastName: '',
     username: '',
     password: '',
+    email: '',
   };
 
   constructor(private http: HttpClient) {}
@@ -57,7 +58,7 @@ export class CreeareContComponent {
       next: () => {
         alert("Administrator adăugat cu succes!");
         this.fetchAdmins();  
-        this.newAdmin = { firstName: '', lastName: '', username: '', password: '' }; // Resetează formularul
+        this.newAdmin = { firstName: '', lastName: '', username: '', password: '', email: '' }; // Resetează formularul
         this.passwordError = '';
       },
       error: (err) => {

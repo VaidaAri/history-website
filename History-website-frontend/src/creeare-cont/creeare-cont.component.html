@@ -36,6 +36,14 @@
         </div>
         
         <div class="input-group">
+          <label for="email">Email</label>
+          <div class="input-container">
+            <span class="input-icon">📧</span>
+            <input type="email" id="email" [(ngModel)]="newAdmin.email" name="email" placeholder="Introduceți adresa de email" required />
+          </div>
+        </div>
+        
+        <div class="input-group">
           <label for="password">Parolă</label>
           <div class="input-container">
             <span class="input-icon">🔒</span>
@@ -72,6 +80,7 @@
               <th>ID</th>
               <th>Nume complet</th>
               <th>Utilizator</th>
+              <th>Email</th>
               <th>Acțiuni</th>
             </tr>
           </thead>
@@ -80,6 +89,7 @@
               <td>{{ admin.id }}</td>
               <td>{{ admin.firstName }} {{ admin.lastName }}</td>
               <td>{{ admin.username }}</td>
+              <td>{{ admin.email }}</td>
               <td>
                 <button class="delete-btn" (click)="deleteAdmin(admin.id)" title="Șterge administrator">
                   <span class="delete-icon">🗑️</span>
@@ -87,7 +97,7 @@
               </td>
             </tr>
             <tr *ngIf="admins.length === 0">
-              <td colspan="4" class="no-data">Nu există administratori înregistrați</td>
+              <td colspan="5" class="no-data">Nu există administratori înregistrați</td>
             </tr>
           </tbody>
         </table>
