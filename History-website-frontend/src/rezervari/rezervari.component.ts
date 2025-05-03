@@ -63,7 +63,6 @@ export class RezervariComponent implements OnInit {
     this.http.post("http://localhost:8080/api/bookings", this.newBooking).subscribe({
       next: (response) => {
         alert("Rezervare adăugată cu succes!");
-        console.log("New booking data: ", this.newBooking);
         
         // Resetăm formularul după adăugarea cu succes
         this.resetBookingForm();
