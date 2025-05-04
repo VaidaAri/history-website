@@ -141,7 +141,7 @@
 }
 
 /* Stiluri pentru modal */
-.event-modal {
+.event-modal, .event-details-modal {
   position: fixed;
   top: 0;
   left: 0;
@@ -208,6 +208,117 @@
   padding: 20px;
   overflow-y: auto;
   flex: 1;
+}
+
+/* Stiluri pentru modalul de detalii eveniment */
+.event-details-modal .modal-content {
+  max-width: 700px;
+}
+
+.event-date, .event-location {
+  margin-bottom: 15px;
+  color: #5D4037;
+}
+
+.event-date .label, .event-location .label {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.event-description {
+  margin-bottom: 20px;
+}
+
+.event-description .label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+  color: #5D4037;
+}
+
+.event-description .value {
+  line-height: 1.6;
+  margin-top: 5px;
+  color: #333;
+  white-space: pre-line;
+}
+
+.event-images h4 {
+  font-size: 1.1em;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  color: #5D4037;
+  border-bottom: 1px solid #EAD196;
+  padding-bottom: 8px;
+}
+
+.image-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.image-gallery .image-item {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.image-gallery .image-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.image-container {
+  width: 100%;
+  height: 150px;
+  overflow: hidden;
+}
+
+.image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.image-container img:hover {
+  transform: scale(1.05);
+}
+
+.image-description {
+  padding: 8px;
+  font-size: 0.9em;
+  color: #555;
+  background-color: #f9f9f9;
+  border-top: 1px solid #eee;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 15px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.close-btn-secondary {
+  background-color: #7D5A50;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.close-btn-secondary:hover {
+  background-color: #6a4c42;
 }
 
 .form-group {

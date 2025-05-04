@@ -19,7 +19,9 @@ export class CalendarComponent implements OnInit, OnDestroy {
   events: any[] = [];
   isAdmin: boolean = false;
   showEventModal: boolean = false;
+  showEventDetailsModal: boolean = false;
   selectedDateInfo: any = null;
+  selectedEvent: any = null;
   eventForm: FormGroup;
   selectedImages: { path: string, description?: string }[] = [];
   selectedFile: File | null = null;
@@ -177,6 +179,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
           color: '#7D5A50',
           allDay: true,
           description: event.description,
+          location: event.location,
           images: event.images
         };
       });
@@ -192,19 +195,15 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   handleEventClick(info: any) {
-    // Pentru toți utilizatorii - afișează detaliile evenimentului
-    let message = `Eveniment: ${info.event.title}\nDată: ${new Date(info.event.start).toLocaleDateString()}`;
-    
-    if (info.event.extendedProps.description) {
-      message += `\n\nDescriere: ${info.event.extendedProps.description}`;
-    }
-    
-    if (info.event.extendedProps.images && info.event.extendedProps.images.length > 0) {
-      message += `\n\nAcest eveniment are ${info.event.extendedProps.images.length} imagini atașate.`;
-    }
-    
-    alert(message);
+    // Deschide modalul de detalii eveniment în loc de alert
+    this.selectedEvent = info.event;
+    this.showEventDetailsModal = true;
     return;
+  }
+  
+  closeEventDetailsModal() {
+    this.showEventDetailsModal = false;
+    this.selectedEvent = null;
   }
 
   handleDateSelect(selectInfo: any) {

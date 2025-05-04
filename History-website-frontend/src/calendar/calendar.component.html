@@ -131,3 +131,45 @@
     </div>
   </div>
 </div>
+
+<!-- Modal pentru afișare detalii eveniment -->
+<div class="event-details-modal" *ngIf="showEventDetailsModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>{{ selectedEvent?.title }}</h3>
+      <button class="close-btn" (click)="closeEventDetailsModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="event-date">
+        <span class="label">Data:</span> 
+        <span class="value">{{ selectedEvent?.start | date:'dd MMMM yyyy' }} - {{ selectedEvent?.end | date:'dd MMMM yyyy' }}</span>
+      </div>
+      <div class="event-location" *ngIf="selectedEvent?.extendedProps?.location">
+        <span class="label">Locație:</span>
+        <span class="value">{{ selectedEvent?.extendedProps?.location }}</span>
+      </div>
+      <div class="event-description" *ngIf="selectedEvent?.extendedProps?.description">
+        <span class="label">Descriere:</span>
+        <p class="value">{{ selectedEvent?.extendedProps?.description }}</p>
+      </div>
+      <div class="event-images" *ngIf="selectedEvent?.extendedProps?.images && selectedEvent?.extendedProps?.images.length > 0">
+        <h4>Galerie imagini:</h4>
+        <div class="image-gallery">
+          <div class="image-item" *ngFor="let image of selectedEvent?.extendedProps?.images">
+            <div class="image-container">
+              <img [src]="'http://localhost:8080/api/images/uploads/' + image.path" [alt]="image.description || 'Imagine eveniment'">
+            </div>
+            <div class="image-description" *ngIf="image.description">
+              {{ image.description }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="close-btn-secondary" (click)="closeEventDetailsModal()">
+        Închide
+      </button>
+    </div>
+  </div>
+</div>
