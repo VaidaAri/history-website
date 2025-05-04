@@ -174,13 +174,41 @@ button {
   background-color: #A13842;
 }
 
-/* Stilizare pentru tabel */
+/* Stilizare pentru tabel și celule */
+.description-cell {
+  max-width: 200px;
+}
+
+.truncated-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.edit-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  margin-right: 8px;
+  color: #5D4037;
+}
+
+.edit-btn:hover {
+  color: #7D5A50;
+}
+
+.actions-cell {
+  white-space: nowrap;
+  text-align: center;
+}
 .admin-table {
   width: 100%;
   border-collapse: collapse;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  table-layout: fixed;
 }
 
 .admin-table thead {

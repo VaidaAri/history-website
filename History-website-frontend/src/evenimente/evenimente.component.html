@@ -4,9 +4,61 @@
   <h2>Calendar Evenimente</h2>
   <div class="evenimente-container">
       
-      <p *ngIf="isAdmin" class="events-description admin-desc">
-        Sunteți autentificat ca administrator. Puteți adăuga evenimente noi făcând click pe o dată în calendar sau puteți șterge evenimente existente făcând click pe ele.
-      </p>
+      <div *ngIf="isAdmin" class="admin-controls">
+        <div class="events-description admin-desc">
+          <p>Sunteți autentificat ca administrator. Puteți adăuga evenimente noi făcând click pe o dată în calendar.</p>
+          <button class="toggle-list-btn" (click)="toggleEventsList()">
+            {{ showEventsList ? 'Ascunde lista de evenimente' : 'Arată lista de evenimente' }}
+          </button>
+        </div>
+        
+        <div *ngIf="showEventsList" class="events-list-container">
+          <h3>Lista de evenimente</h3>
+          <div class="events-list">
+            <table class="events-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nume eveniment</th>
+                  <th>Data început</th>
+                  <th>Data sfârșit</th>
+                  <th>Locație</th>
+                  <th>Descriere</th>
+                  <th>Imagini</th>
+                  <th>Acțiuni</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let event of events">
+                  <td>{{ event.id }}</td>
+                  <td>{{ event.name }}</td>
+                  <td>{{ event.startDate | date:'dd.MM.yyyy' }}</td>
+                  <td>{{ event.endDate | date:'dd.MM.yyyy' }}</td>
+                  <td>{{ event.location }}</td>
+                  <td class="description-cell">
+                    <div class="truncated-text" [title]="event.description">
+                      {{ event.description ? (event.description | slice:0:50) + (event.description.length > 50 ? '...' : '') : 'Fără descriere' }}
+                    </div>
+                  </td>
+                  <td>{{ event.images?.length || 0 }}</td>
+                  <td class="actions-cell">
+                    <button class="edit-btn" (click)="editEvent(event)" title="Editează eveniment">
+                      <span class="edit-icon">✏️</span>
+                    </button>
+                    <button class="delete-btn" (click)="deleteEvent(event.id)" title="Șterge eveniment">
+                      <span class="delete-icon">🗑️</span>
+                    </button>
+                  </td>
+                </tr>
+                <tr *ngIf="events.length === 0">
+                  <td colspan="8" class="no-data">Nu există evenimente înregistrate</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      
       <p *ngIf="!isAdmin" class="events-description">
         Descoperiți evenimentele organizate de Muzeul Grăniceresc Năsăudean. Faceți click pe un eveniment pentru a vedea detaliile.
       </p>

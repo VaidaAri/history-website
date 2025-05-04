@@ -177,35 +177,19 @@ export class CalendarComponent implements OnInit {
   }
 
   handleEventClick(info: any) {
-    if (!this.isAdmin) {
-      let message = `Eveniment: ${info.event.title}\nDată: ${new Date(info.event.start).toLocaleDateString()}`;
-      
-      if (info.event.extendedProps.description) {
-        message += `\n\nDescriere: ${info.event.extendedProps.description}`;
-      }
-      
-      if (info.event.extendedProps.images && info.event.extendedProps.images.length > 0) {
-        message += `\n\nAcest eveniment are ${info.event.extendedProps.images.length} imagini atașate.`;
-      }
-      
-      alert(message);
-      return;
+    // Pentru toți utilizatorii - afișează detaliile evenimentului
+    let message = `Eveniment: ${info.event.title}\nDată: ${new Date(info.event.start).toLocaleDateString()}`;
+    
+    if (info.event.extendedProps.description) {
+      message += `\n\nDescriere: ${info.event.extendedProps.description}`;
     }
     
-    const confirmDelete = confirm(`Sigur vrei să ștergi evenimentul: ${info.event.title}?`);
-    if (confirmDelete) {
-      const eventToDelete = this.events.find(event => event.title === info.event.title);
-      if (eventToDelete) {
-        this.http.delete(`http://localhost:8080/api/events/${eventToDelete.id}`).subscribe(() => {
-          alert('Eveniment șters cu succes!');
-          this.loadEvents();
-        }, error => {
-          alert('Eroare la ștergerea evenimentului!');
-        });
-      } else {
-        alert('Nu s-a găsit ID-ul evenimentului!');
-      }
+    if (info.event.extendedProps.images && info.event.extendedProps.images.length > 0) {
+      message += `\n\nAcest eveniment are ${info.event.extendedProps.images.length} imagini atașate.`;
     }
+    
+    alert(message);
+    return;
   }
 
   handleDateSelect(selectInfo: any) {

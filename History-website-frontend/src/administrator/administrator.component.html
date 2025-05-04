@@ -3,6 +3,7 @@
   
   <div class="dashboard-nav">
     <button class="nav-tab" (click)="changeSection('posts')" [class.active]="currentSection === 'posts'">Postări</button>
+    <button class="nav-tab" (click)="changeSection('events')" [class.active]="currentSection === 'events'">Evenimente</button>
     <button class="nav-tab" (click)="changeSection('admins')" [class.active]="currentSection === 'admins'">Administratori</button>
   </div>
 
@@ -34,6 +35,59 @@
       <div *ngFor="let post of posts" class="post-item">
         <app-postare [post]="post"></app-postare>
         <button (click)="deletePost(post.id)" class="delete-button">Șterge</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Secțiunea de evenimente -->
+  <div *ngIf="currentSection === 'events'">
+    <div class="dashboard-section">
+      <h3>Evenimente</h3>
+      <div class="events-list">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nume eveniment</th>
+              <th>Data început</th>
+              <th>Data sfârșit</th>
+              <th>Locație</th>
+              <th>Descriere</th>
+              <th>Imagini</th>
+              <th>Acțiuni</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let event of events">
+              <td>{{ event.id }}</td>
+              <td>{{ event.name }}</td>
+              <td>{{ event.startDate | date:'dd.MM.yyyy' }}</td>
+              <td>{{ event.endDate | date:'dd.MM.yyyy' }}</td>
+              <td>{{ event.location }}</td>
+              <td class="description-cell">
+                <div class="truncated-text" [title]="event.description">
+                  {{ event.description ? (event.description | slice:0:50) + (event.description.length > 50 ? '...' : '') : 'Fără descriere' }}
+                </div>
+              </td>
+              <td>{{ event.images?.length || 0 }}</td>
+              <td class="actions-cell">
+                <button class="edit-btn" (click)="editEvent(event)" title="Editează eveniment">
+                  <span class="edit-icon">✏️</span>
+                </button>
+                <button class="delete-btn" (click)="deleteEvent(event.id)" title="Șterge eveniment">
+                  <span class="delete-icon">🗑️</span>
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="events.length === 0">
+              <td colspan="8" class="no-data">Nu există evenimente înregistrate</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="admin-actions">
+        <button routerLink="/evenimente" class="action-button">Adaugă eveniment nou</button>
       </div>
     </div>
   </div>

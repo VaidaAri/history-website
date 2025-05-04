@@ -16,6 +16,7 @@ import { RouterModule } from '@angular/router';
 export class AdministratorComponent implements OnInit {
   posts: any[] = [];
   admins: any[] = [];
+  events: any[] = [];
   description: string = '';
   imageUrl: string = '';
   images: any[] = [];
@@ -27,6 +28,7 @@ export class AdministratorComponent implements OnInit {
     this.checkAuthentication();
     this.loadPosts();
     this.loadAdmins();
+    this.loadEvents();
   }
 
   checkAuthentication() {
@@ -91,6 +93,30 @@ export class AdministratorComponent implements OnInit {
           console.error("Eroare la ștergere:", err);
           alert("Eroare la ștergere. Încearcă din nou.");
         }
+      });
+    }
+  }
+
+  loadEvents() {
+    this.http.get<any[]>('http://localhost:8080/api/events').subscribe(data => {
+      this.events = data;
+    });
+  }
+  
+  editEvent(event: any) {
+    // Implementarea editării va necesita o funcționalitate mai complexă
+    // care va fi adăugată într-o fază ulterioară
+    alert('Funcționalitatea de editare a evenimentelor va fi disponibilă în curând!');
+  }
+  
+  deleteEvent(id: number) {
+    if (confirm('Sigur vrei să ștergi acest eveniment?')) {
+      this.http.delete(`http://localhost:8080/api/events/${id}`).subscribe(() => {
+        alert('Eveniment șters cu succes!');
+        this.loadEvents();
+      }, error => {
+        console.error('Eroare la ștergerea evenimentului:', error);
+        alert('Eroare la ștergerea evenimentului!');
       });
     }
   }
