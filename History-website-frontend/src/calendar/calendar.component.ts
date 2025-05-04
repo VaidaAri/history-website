@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
@@ -15,7 +15,7 @@ import { AuthService } from '../services/auth.service';
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.css'
 })
-export class CalendarComponent implements OnInit {
+export class CalendarComponent implements OnInit, OnDestroy {
   events: any[] = [];
   isAdmin: boolean = false;
   showEventModal: boolean = false;
@@ -100,6 +100,21 @@ export class CalendarComponent implements OnInit {
       this.isAdmin = isAuthenticated;
       this.updateCalendarPermissions();
     });
+    
+    // Ascultăm pentru evenimentul de ștergere a unui eveniment din listă
+    window.addEventListener('eventDeleted', this.handleEventDeleted.bind(this));
+  }
+  
+  ngOnDestroy() {
+    // Curățăm event listener la distrugerea componentei
+    window.removeEventListener('eventDeleted', this.handleEventDeleted.bind(this));
+  }
+  
+  // Handler pentru evenimentul de ștergere eveniment
+  handleEventDeleted(e: any) {
+    console.log('Event deleted event received in calendar:', e.detail);
+    // Actualizăm lista de evenimente pentru a reflecta schimbarea
+    this.loadEvents();
   }
   
   onFileSelected(event: any) {

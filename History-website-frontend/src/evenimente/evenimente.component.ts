@@ -81,6 +81,12 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
       this.http.delete(`http://localhost:8080/api/events/${id}`).subscribe(() => {
         alert('Eveniment șters cu succes!');
         this.loadEvents();
+        
+        // Emitem un eveniment pentru a notifica alte componente (calendar) despre ștergerea evenimentului
+        const eventDeletedEvent = new CustomEvent('eventDeleted', { 
+          detail: { eventId: id }
+        });
+        window.dispatchEvent(eventDeletedEvent);
       }, error => {
         console.error('Eroare la ștergerea evenimentului:', error);
         alert('Eroare la ștergerea evenimentului!');
