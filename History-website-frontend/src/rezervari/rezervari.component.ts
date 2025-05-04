@@ -113,7 +113,16 @@ export class RezervariComponent implements OnInit {
     if (confirm("Sigur doriți să aprobați această rezervare?")) {
       this.http.put<any>(`http://localhost:8080/api/bookings/${bookingId}/approve`, {}).subscribe({
         next: (response) => {
+          // Actualizăm și starea în UI imediat, fără a aștepta reîncărcarea
+          const bookingIndex = this.bookings.findIndex((booking: any) => booking.id === bookingId);
+          if (bookingIndex !== -1) {
+            this.bookings[bookingIndex].status = 'APROBATA';
+            console.log(`Rezervare cu ID ${bookingId} actualizată la status APROBATA`);
+          }
+          
           alert(response.message || "Rezervare aprobată cu succes!");
+          
+          // Reîncărcăm lista pentru a fi siguri că avem cele mai recente date
           this.fetchBookings();
         },
         error: (err) => {
