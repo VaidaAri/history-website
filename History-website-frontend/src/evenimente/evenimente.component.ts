@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MeniuComponent } from "../meniu/meniu.component";
@@ -15,7 +15,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
   templateUrl: './evenimente.component.html',
   styleUrl: './evenimente.component.css'
 })
-export class EvenimenteComponent implements OnInit {
+export class EvenimenteComponent implements OnInit, OnDestroy {
   isAdmin: boolean = false;
   events: any[] = [];
   showEventsList: boolean = false;
@@ -33,9 +33,29 @@ export class EvenimenteComponent implements OnInit {
     // Abonăm pentru a detecta schimbări în starea de autentificare
     this.authService.isAuthenticated$.subscribe(isAuthenticated => {
       this.isAdmin = isAuthenticated;
+      
+      // Încărcăm lista de evenimente dacă utilizatorul este administrator
+      if (isAuthenticated) {
+        this.loadEvents();
+      }
     });
     
     // Încărcăm lista de evenimente dacă utilizatorul este administrator
+    if (this.isAdmin) {
+      this.loadEvents();
+    }
+    
+    // Ascultăm pentru evenimente de adăugare de evenimente
+    window.addEventListener('eventAdded', this.handleEventAdded.bind(this));
+  }
+  
+  // Curățăm la distrugerea componentei
+  ngOnDestroy() {
+    window.removeEventListener('eventAdded', this.handleEventAdded.bind(this));
+  }
+  
+  // Handler pentru evenimentul custom de adăugare eveniment
+  handleEventAdded(e: any) {
     if (this.isAdmin) {
       this.loadEvents();
     }

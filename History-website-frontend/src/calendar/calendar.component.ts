@@ -306,19 +306,33 @@ export class CalendarComponent implements OnInit {
     
     endDate.setHours(23, 59, 59, 999);
     
+    // Convertim obiectele imagine în formatul așteptat de backend
+    const processedImages = this.selectedImages.map(img => {
+      return {
+        path: img.path,
+        description: img.description || 'Imagine eveniment'
+      };
+    });
+    
     const newEvent = {
       name: formValue.name,
       startDate: startDate.toISOString(),
       endDate: endDate.toISOString(),
       location: 'Muzeu',
       description: formValue.description || '',
-      images: this.selectedImages
+      images: processedImages
     };
     
     this.http.post('http://localhost:8080/api/events', newEvent).subscribe(() => {
       alert('Eveniment adăugat cu succes!');
       this.loadEvents();
       this.closeModal();
+      
+      // Emitem un eveniment custom pentru a notifica alte componente despre adăugarea unui eveniment
+      const eventAddedEvent = new CustomEvent('eventAdded', { 
+        detail: { event: newEvent }
+      });
+      window.dispatchEvent(eventAddedEvent);
     }, error => {
       alert('Eroare la salvarea evenimentului!');
     });
@@ -330,6 +344,14 @@ export class CalendarComponent implements OnInit {
     
     endDate.setHours(23, 59, 59, 999);
     
+    // Convertim obiectele imagine în formatul așteptat de backend
+    const processedImages = this.selectedImages.map(img => {
+      return {
+        path: img.path,
+        description: img.description || 'Imagine expoziție'
+      };
+    });
+    
     const newExhibition = {
       name: formValue.name,
       startDate: startDate.toISOString(),
@@ -337,13 +359,19 @@ export class CalendarComponent implements OnInit {
       location: 'Muzeu',
       tip: 'TEMPORARA',
       description: formValue.description || '',
-      images: this.selectedImages
+      images: processedImages
     };
     
     this.http.post('http://localhost:8080/api/exhibitions', newExhibition).subscribe(() => {
       alert('Expoziție adăugată cu succes!');
       this.loadEvents();
       this.closeModal();
+      
+      // Emitem un eveniment custom pentru a notifica alte componente despre adăugarea unei expoziții
+      const eventAddedEvent = new CustomEvent('eventAdded', { 
+        detail: { event: newExhibition }
+      });
+      window.dispatchEvent(eventAddedEvent);
     }, error => {
       alert('Eroare la salvarea expoziției!');
     });
