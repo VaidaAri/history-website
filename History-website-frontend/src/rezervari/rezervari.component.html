@@ -67,12 +67,15 @@
                         <td>{{booking.numberOfPersons}}</td>
                         <td>{{ booking.guideRequired ? 'Da' : 'Nu' }}</td>
                         <td>
-                            <span class="status-badge" [ngClass]="{'status-pending': booking.status === 'IN_ASTEPTARE', 'status-approved': booking.status === 'APROBATA'}">
-                                {{ booking.status === 'IN_ASTEPTARE' ? 'În așteptare' : 'Aprobată' }}
+                            <span class="status-badge" [ngClass]="{
+                                'status-pending': booking.status === 'IN_ASTEPTARE' || booking.status === null || booking.status === undefined, 
+                                'status-approved': booking.status === 'APROBATA'
+                            }">
+                                {{ (booking.status === 'IN_ASTEPTARE' || booking.status === null || booking.status === undefined) ? 'În așteptare' : 'Aprobată' }}
                             </span>
                         </td>
                         <td class="actions-cell">
-                            <button class="approve-btn" *ngIf="booking.status === 'IN_ASTEPTARE'" (click)="approveBooking(booking.id)">Aprobă</button>
+                            <button class="approve-btn" *ngIf="booking.status === 'IN_ASTEPTARE' || booking.status === null || booking.status === undefined" (click)="approveBooking(booking.id)">Aprobă</button>
                             <button class="delete-btn" (click)="deleteBooking(booking.id)">Șterge</button>
                         </td>
                     </tr>

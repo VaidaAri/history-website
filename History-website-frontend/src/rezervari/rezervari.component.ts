@@ -51,8 +51,11 @@ export class RezervariComponent implements OnInit {
   }
 
   fetchBookings() {
-    this.http.get("http://localhost:8080/api/bookings").subscribe((data) => {
+    this.http.get("http://localhost:8080/api/bookings").subscribe((data: any) => {
       this.bookings = data;
+      
+      // Afișăm datele primite în consolă pentru a verifica statusul
+      console.log('Bookings data received:', this.bookings);
     });
   }
 
