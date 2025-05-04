@@ -21,6 +21,7 @@ export class CalendarComponent implements OnInit {
   showEventModal: boolean = false;
   selectedDateInfo: any = null;
   eventForm: FormGroup;
+  selectedImages: { path: string, description?: string }[] = [];
   
   readonly MONTHS_IN_PAST = 3;
   readonly MONTHS_IN_FUTURE = 12;
@@ -78,9 +79,11 @@ export class CalendarComponent implements OnInit {
   ) {
     this.eventForm = this.fb.group({
       name: ['', [Validators.required]],
+      description: [''],
       eventType: ['eveniment'],
       startDate: ['', [Validators.required]],
-      endDate: ['', [Validators.required]]
+      endDate: ['', [Validators.required]],
+      imagePath: ['']
     }, {
       validators: [this.dateOrderValidator()]
     });
@@ -117,7 +120,9 @@ export class CalendarComponent implements OnInit {
           start: startDate,
           end: endDate,
           color: '#7D5A50',
-          allDay: true
+          allDay: true,
+          description: event.description,
+          images: event.images
         };
       });
       this.updateCalendar();
@@ -133,7 +138,17 @@ export class CalendarComponent implements OnInit {
 
   handleEventClick(info: any) {
     if (!this.isAdmin) {
-      alert(`Eveniment: ${info.event.title}\nDată: ${new Date(info.event.start).toLocaleDateString()}`);
+      let message = `Eveniment: ${info.event.title}\nDată: ${new Date(info.event.start).toLocaleDateString()}`;
+      
+      if (info.event.extendedProps.description) {
+        message += `\n\nDescriere: ${info.event.extendedProps.description}`;
+      }
+      
+      if (info.event.extendedProps.images && info.event.extendedProps.images.length > 0) {
+        message += `\n\nAcest eveniment are ${info.event.extendedProps.images.length} imagini atașate.`;
+      }
+      
+      alert(message);
       return;
     }
     
@@ -176,10 +191,14 @@ export class CalendarComponent implements OnInit {
     
     this.eventForm.reset({
       name: '',
+      description: '',
       eventType: 'eveniment',
       startDate: this.formatDateForInput(startDate),
-      endDate: this.formatDateForInput(endDate)
+      endDate: this.formatDateForInput(endDate),
+      imagePath: ''
     });
+    
+    this.selectedImages = [];
   }
   
   formatDateForInput(date: Date): string {
@@ -224,6 +243,21 @@ export class CalendarComponent implements OnInit {
   closeModal() {
     this.showEventModal = false;
     this.selectedDateInfo = null;
+    this.selectedImages = [];
+  }
+  
+  addImage() {
+    const imagePath = this.eventForm.get('imagePath')?.value;
+    if (imagePath && imagePath.trim() !== '') {
+      this.selectedImages.push({ path: imagePath });
+      this.eventForm.get('imagePath')?.setValue('');
+    }
+  }
+  
+  removeImage(index: number) {
+    if (index >= 0 && index < this.selectedImages.length) {
+      this.selectedImages.splice(index, 1);
+    }
   }
   saveEvent() {
     if (this.eventForm.invalid || !this.selectedDateInfo) {
@@ -250,7 +284,9 @@ export class CalendarComponent implements OnInit {
       name: formValue.name,
       startDate: startDate.toISOString(),
       endDate: endDate.toISOString(),
-      location: 'Muzeu'
+      location: 'Muzeu',
+      description: formValue.description || '',
+      images: this.selectedImages
     };
     
     this.http.post('http://localhost:8080/api/events', newEvent).subscribe(() => {
@@ -273,7 +309,9 @@ export class CalendarComponent implements OnInit {
       startDate: startDate.toISOString(),
       endDate: endDate.toISOString(),
       location: 'Muzeu',
-      tip: 'TEMPORARA'
+      tip: 'TEMPORARA',
+      description: formValue.description || '',
+      images: this.selectedImages
     };
     
     this.http.post('http://localhost:8080/api/exhibitions', newExhibition).subscribe(() => {

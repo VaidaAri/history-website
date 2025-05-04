@@ -23,6 +23,16 @@
         </div>
         
         <div class="form-group">
+          <label for="eventDescription">Descriere:</label>
+          <textarea 
+            id="eventDescription" 
+            formControlName="description" 
+            placeholder="Descriere eveniment"
+            class="form-control"
+            rows="3"></textarea>
+        </div>
+        
+        <div class="form-group">
           <label for="eventType">Tipul:</label>
           <select id="eventType" formControlName="eventType" class="form-control">
             <option value="eveniment">Eveniment</option>
@@ -60,6 +70,24 @@
           </div>
           <div class="error-message" *ngIf="eventForm.errors?.['endDateOutOfRange']">
             Data de sfârșit trebuie să fie în intervalul permis
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label>Adaugă imagini:</label>
+          <div class="image-input">
+            <input type="text" formControlName="imagePath" placeholder="URL imagine" class="form-control">
+            <button type="button" class="add-image-btn" (click)="addImage()">Adaugă imagine</button>
+          </div>
+          
+          <div *ngIf="selectedImages.length > 0" class="selected-images">
+            <h4>Imagini selectate:</h4>
+            <div class="image-list">
+              <div class="image-item" *ngFor="let image of selectedImages; let i = index">
+                <span>{{ image.path }}</span>
+                <button type="button" class="remove-btn" (click)="removeImage(i)">Șterge</button>
+              </div>
+            </div>
           </div>
         </div>
         

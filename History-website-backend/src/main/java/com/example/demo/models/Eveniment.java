@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,4 +25,11 @@ public class Eveniment {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private String location;
+    
+    @Column(length = 2000)
+    private String description;
+    
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "eveniment_id")
+    private List<Imagine> images = new ArrayList<>();
 }

@@ -274,6 +274,75 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   border-radius: 3px;
 }
 
+.selected-images {
+  margin-top: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 10px;
+  background-color: #f9f9f9;
+}
+
+.selected-images h4 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #333;
+}
+
+.image-list {
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.image-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+  border-bottom: 1px dashed #e0e0e0;
+}
+
+.image-item:last-child {
+  border-bottom: none;
+}
+
+.image-item span {
+  font-size: 12px;
+  color: #555;
+  word-break: break-all;
+  flex: 1;
+}
+
+.remove-btn {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  padding: 2px 5px;
+  font-size: 12px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.image-input {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.image-input input {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.add-image-btn {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
 .form-actions {
   display: flex;
   justify-content: flex-end;
