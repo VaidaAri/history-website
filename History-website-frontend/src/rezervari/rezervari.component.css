@@ -248,8 +248,54 @@ td {
     color: #888;
 }
 
-/* Stiluri pentru butonul de ștergere din tabel */
-td button {
+/* Stiluri pentru status */
+.status-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.85em;
+    font-weight: bold;
+}
+
+.status-pending {
+    background-color: #FFF3CD;
+    color: #856404;
+    border: 1px solid #FFEEBA;
+}
+
+.status-approved {
+    background-color: #D4EDDA;
+    color: #155724;
+    border: 1px solid #C3E6CB;
+}
+
+/* Stiluri pentru acțiuni în tabel */
+.actions-cell {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* Buton aprobare */
+.approve-btn {
+    background-color: #28A745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 0.85em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 0;
+    width: auto;
+}
+
+.approve-btn:hover {
+    background-color: #218838;
+}
+
+/* Buton ștergere */
+.delete-btn {
     background-color: #C14953;
     padding: 8px 15px;
     width: auto;
@@ -257,7 +303,7 @@ td button {
     margin-top: 0;
 }
 
-td button:hover {
+.delete-btn:hover {
     background-color: #A13842;
 }
 

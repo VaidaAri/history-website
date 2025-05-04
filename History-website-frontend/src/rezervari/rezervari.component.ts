@@ -24,7 +24,8 @@ export class RezervariComponent implements OnInit {
     email: '',
     datetime: '',
     numberOfPersons: 0,
-    guideRequired: false
+    guideRequired: false,
+    status: 'IN_ASTEPTARE'
   };
 
   constructor(
@@ -56,9 +57,14 @@ export class RezervariComponent implements OnInit {
   }
 
   addBooking() { 
-    this.http.post("http://localhost:8080/api/bookings", this.newBooking).subscribe({
+    this.http.post<any>("http://localhost:8080/api/bookings", this.newBooking).subscribe({
       next: (response) => {
-        alert("Rezervare adăugată cu succes!");
+        // Verificăm dacă răspunsul are proprietatea message înainte de a o folosi
+        const successMessage = response && response.message 
+          ? `Rezervare adăugată cu succes! ${response.message}` 
+          : "Rezervare adăugată cu succes!";
+        
+        alert(successMessage);
         
         this.resetBookingForm();
         
@@ -80,20 +86,36 @@ export class RezervariComponent implements OnInit {
       email: '',
       datetime: '',
       numberOfPersons: 0,
-      guideRequired: false
+      guideRequired: false,
+      status: 'IN_ASTEPTARE'
     };
   }
 
   deleteBooking(bookingId: number) {
-    if (confirm("Are you sure you want to delete this booking?")) {
+    if (confirm("Sigur doriți să ștergeți această rezervare?")) {
       this.http.delete(`http://localhost:8080/api/bookings/${bookingId}`).subscribe({
         next: (response) => {
-          alert("Booking deleted successfully!");
+          alert("Rezervare ștearsă cu succes!");
           this.fetchBookings();
         },
         error: (err) => {
           console.error("Error deleting booking:", err);
-          alert("Failed to delete booking. Please try again.");
+          alert("Eroare la ștergerea rezervării. Vă rugăm să încercați din nou.");
+        }
+      });
+    }
+  }
+  
+  approveBooking(bookingId: number) {
+    if (confirm("Sigur doriți să aprobați această rezervare?")) {
+      this.http.put<any>(`http://localhost:8080/api/bookings/${bookingId}/approve`, {}).subscribe({
+        next: (response) => {
+          alert(response.message || "Rezervare aprobată cu succes!");
+          this.fetchBookings();
+        },
+        error: (err) => {
+          console.error("Error approving booking:", err);
+          alert("Eroare la aprobarea rezervării. Vă rugăm să încercați din nou.");
         }
       });
     }

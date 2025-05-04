@@ -3,9 +3,11 @@ package com.example.demo.controllers;
 import com.example.demo.models.Rezervare;
 import com.example.demo.services.RezervareService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/bookings")
@@ -25,8 +27,12 @@ public class RezervareController {
     }
 
     @PostMapping
-    public void createBooking(@RequestBody Rezervare newBooking){
+    public ResponseEntity<Map<String, String>> createBooking(@RequestBody Rezervare newBooking){
         rezervareService.createBooking(newBooking);
+        return ResponseEntity.ok(Map.of(
+            "message", "Rezervare creată cu succes. Statusul este 'În așteptare'.",
+            "status", newBooking.getStatus().getDisplayName()
+        ));
     }
 
     @PutMapping
@@ -37,5 +43,14 @@ public class RezervareController {
     @DeleteMapping("/{id}")
     public void deleteBooking(@PathVariable Integer id){
         rezervareService.deleteBooking(id);
+    }
+    
+    @PutMapping("/{id}/approve")
+    public ResponseEntity<Map<String, String>> approveBooking(@PathVariable Integer id) {
+        rezervareService.approveBooking(id);
+        return ResponseEntity.ok(Map.of(
+            "message", "Rezervare aprobată cu succes.",
+            "status", "Aprobată"
+        ));
     }
 }

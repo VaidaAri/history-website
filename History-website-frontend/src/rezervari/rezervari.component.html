@@ -53,6 +53,7 @@
                         <th>Data și Ora</th>
                         <th>Persoane</th>
                         <th>Ghid</th>
+                        <th>Status</th>
                         <th>Acțiuni</th>
                     </tr>
                 </thead>
@@ -66,11 +67,17 @@
                         <td>{{booking.numberOfPersons}}</td>
                         <td>{{ booking.guideRequired ? 'Da' : 'Nu' }}</td>
                         <td>
-                            <button (click)="deleteBooking(booking.id)">Șterge</button>
+                            <span class="status-badge" [ngClass]="{'status-pending': booking.status === 'IN_ASTEPTARE', 'status-approved': booking.status === 'APROBATA'}">
+                                {{ booking.status === 'IN_ASTEPTARE' ? 'În așteptare' : 'Aprobată' }}
+                            </span>
+                        </td>
+                        <td class="actions-cell">
+                            <button class="approve-btn" *ngIf="booking.status === 'IN_ASTEPTARE'" (click)="approveBooking(booking.id)">Aprobă</button>
+                            <button class="delete-btn" (click)="deleteBooking(booking.id)">Șterge</button>
                         </td>
                     </tr>
                     <tr *ngIf="bookings.length === 0">
-                        <td colspan="8" class="empty-table">Nu există rezervări momentan</td>
+                        <td colspan="9" class="empty-table">Nu există rezervări momentan</td>
                     </tr>
                 </tbody>
             </table>

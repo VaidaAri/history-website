@@ -2,6 +2,8 @@ package com.example.demo.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -37,4 +39,22 @@ public class Rezervare {
     private Integer numberOfPersons;
 
     private boolean guideRequired;
+    
+    @Enumerated(EnumType.STRING)
+    private ReservationStatus status = ReservationStatus.IN_ASTEPTARE;
+    
+    public enum ReservationStatus {
+        IN_ASTEPTARE("În așteptare"),
+        APROBATA("Aprobată");
+        
+        private final String displayName;
+        
+        ReservationStatus(String displayName) {
+            this.displayName = displayName;
+        }
+        
+        public String getDisplayName() {
+            return displayName;
+        }
+    }
 }
