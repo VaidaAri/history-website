@@ -22,6 +22,8 @@ export class CalendarComponent implements OnInit {
   selectedDateInfo: any = null;
   eventForm: FormGroup;
   selectedImages: { path: string, description?: string }[] = [];
+  selectedFile: File | null = null;
+  uploadProgress: number = 0;
   
   readonly MONTHS_IN_PAST = 3;
   readonly MONTHS_IN_FUTURE = 12;
@@ -98,6 +100,44 @@ export class CalendarComponent implements OnInit {
       this.isAdmin = isAuthenticated;
       this.updateCalendarPermissions();
     });
+  }
+  
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0] || null;
+    this.uploadProgress = 0;
+  }
+  
+  uploadImage() {
+    if (!this.selectedFile) {
+      return;
+    }
+    
+    const formData = new FormData();
+    formData.append('image', this.selectedFile);
+    formData.append('description', 'Imagine eveniment');
+    
+    this.uploadProgress = 10;
+    
+    this.http.post<any>('http://localhost:8080/api/images/upload-image', formData).subscribe(
+      (response) => {
+        this.uploadProgress = 100;
+        if (response && response.imagePath) {
+          this.selectedImages.push({ path: response.imagePath });
+          this.selectedFile = null;
+          setTimeout(() => this.uploadProgress = 0, 1000);
+        }
+      },
+      (error) => {
+        console.error('Eroare la încărcarea imaginii:', error);
+        alert('Eroare la încărcarea imaginii. Vă rugăm să încercați din nou.');
+        this.uploadProgress = 0;
+      }
+    );
+  }
+  
+  cancelUpload() {
+    this.selectedFile = null;
+    this.uploadProgress = 0;
   }
 
   updateCalendarPermissions() {
@@ -244,13 +284,15 @@ export class CalendarComponent implements OnInit {
     this.showEventModal = false;
     this.selectedDateInfo = null;
     this.selectedImages = [];
+    this.selectedFile = null;
+    this.uploadProgress = 0;
   }
   
+  // Metoda nu mai este necesară, am înlocuit-o cu uploadImage()
+  // Păstrăm totuși metoda pentru compatibilitate în caz că este apelată undeva în cod
   addImage() {
-    const imagePath = this.eventForm.get('imagePath')?.value;
-    if (imagePath && imagePath.trim() !== '') {
-      this.selectedImages.push({ path: imagePath });
-      this.eventForm.get('imagePath')?.setValue('');
+    if (this.selectedFile) {
+      this.uploadImage();
     }
   }
   

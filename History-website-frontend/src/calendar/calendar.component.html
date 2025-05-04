@@ -75,38 +75,59 @@
         
         <div class="form-group">
           <label>Adaugă imagini:</label>
-          <div class="image-input">
-            <input type="text" formControlName="imagePath" placeholder="URL imagine" class="form-control">
-            <button type="button" class="add-image-btn" (click)="addImage()">Adaugă imagine</button>
+          <div class="image-upload">
+            <label for="imageUpload" class="upload-btn">
+              <span>Selectează imagini</span>
+              <input 
+                type="file" 
+                id="imageUpload" 
+                accept="image/*" 
+                (change)="onFileSelected($event)" 
+                class="file-input">
+            </label>
+            <div *ngIf="selectedFile" class="selected-file">
+              {{ selectedFile.name }}
+              <button type="button" class="upload-action-btn" (click)="uploadImage()">Încarcă</button>
+              <button type="button" class="upload-action-btn cancel" (click)="cancelUpload()">Anulează</button>
+            </div>
+          </div>
+          
+          <div *ngIf="uploadProgress > 0 && uploadProgress < 100" class="upload-progress">
+            <div class="progress-bar" [style.width.%]="uploadProgress"></div>
+            <span class="progress-text">{{ uploadProgress }}%</span>
           </div>
           
           <div *ngIf="selectedImages.length > 0" class="selected-images">
             <h4>Imagini selectate:</h4>
             <div class="image-list">
               <div class="image-item" *ngFor="let image of selectedImages; let i = index">
-                <span>{{ image.path }}</span>
+                <div class="image-preview">
+                  <img [src]="'http://localhost:8080/api/images/uploads/' + image.path" alt="Preview">
+                </div>
+                <span>{{ image.path | slice:0:20 }}{{ image.path.length > 20 ? '...' : '' }}</span>
                 <button type="button" class="remove-btn" (click)="removeImage(i)">Șterge</button>
               </div>
             </div>
           </div>
         </div>
         
-        <div class="form-actions">
-          <button 
-            type="button" 
-            class="cancel-btn" 
-            (click)="closeModal()">
-            Anulează
-          </button>
-          <button 
-            type="button" 
-            class="save-btn" 
-            [disabled]="eventForm.invalid"
-            (click)="saveEvent()">
-            Salvează
-          </button>
-        </div>
       </form>
+    </div>
+    
+    <div class="form-actions">
+      <button 
+        type="button" 
+        class="cancel-btn" 
+        (click)="closeModal()">
+        Anulează
+      </button>
+      <button 
+        type="button" 
+        class="save-btn" 
+        [disabled]="eventForm.invalid"
+        (click)="saveEvent()">
+        Salvează
+      </button>
     </div>
   </div>
 </div>
