@@ -23,6 +23,11 @@ public class PostareController {
     public Postare getPostById(@PathVariable Integer id){
         return postareService.findPostByID(id);
     }
+    
+    @GetMapping("/sectiune/{sectiuneId}")
+    public List<Postare> getPostsBySectiune(@PathVariable Integer sectiuneId) {
+        return postareService.getPostsBySectiuneId(sectiuneId);
+    }
 
     @PostMapping
     public void createPost(@RequestBody Postare newPost){

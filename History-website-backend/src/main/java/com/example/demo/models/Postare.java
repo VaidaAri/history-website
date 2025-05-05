@@ -1,5 +1,6 @@
 package com.example.demo.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,6 +27,11 @@ public class Postare {
     private String description;
     
     private LocalDateTime createdAt;
+    
+    @ManyToOne
+    @JoinColumn(name = "sectiune_id")
+    @JsonBackReference
+    private Sectiune sectiune;
     
     @PrePersist
     protected void onCreate() {
