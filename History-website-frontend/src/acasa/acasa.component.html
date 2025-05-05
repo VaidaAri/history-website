@@ -5,7 +5,7 @@
         <div class="home-container">
             <h2>Bine ați venit la Muzeul Grăniceresc Năsăudean</h2>
             
-            <!-- Secțiunea de postări - Noutăți și Articole -->
+            <!-- Secțiunea 1: Noutăți și Articole -->
             <div class="posts-section">
                 <div class="posts-header">
                     <h3>Noutăți și Articole</h3>
@@ -15,18 +15,15 @@
                         *ngIf="isAdmin" 
                         (postCreated)="onPostCreated()"
                     ></app-post-manager>
-                    
-                    
-                    <!-- Am eliminat butonul de autentificare administrator de aici -->
                 </div>
                 
                 <!-- Lista de postări -->
                 <div class="posts-list">
-                    <div *ngIf="posts.length === 0" class="no-posts">
+                    <div *ngIf="getPostsForSection(0).length === 0" class="no-posts">
                         <p>Nu există postări momentan.</p>
                     </div>
                     
-                    <div *ngFor="let post of posts" class="post-item">
+                    <div *ngFor="let post of getPostsForSection(0)" class="post-item">
                         <!-- Arată postarea în mod normal dacă nu este în modul de editare -->
                         <div *ngIf="editingPostId !== post.id">
                             <app-postare [post]="post"></app-postare>
@@ -52,22 +49,78 @@
                 </div>
             </div>
             
-            <!-- Secțiunea nouă - Peisaje din curtea muzeului -->
+            <!-- Secțiunea 2: Peisaje din curtea muzeului -->
             <div class="posts-section">
                 <div class="posts-header">
                     <h3>Peisaje din curtea muzeului</h3>
+                    
+                    <!-- Componenta de administrare postări - vizibilă doar pentru administratori -->
+                    <app-post-manager 
+                        *ngIf="isAdmin" 
+                        (postCreated)="onPostCreated()"
+                    ></app-post-manager>
                 </div>
                 
-                <!-- Lista de postări - goală momentan -->
+                <!-- Lista de postări -->
                 <div class="posts-list">
-                    <div class="no-posts">
+                    <div *ngIf="getPostsForSection(1).length === 0" class="no-posts">
                         <p>Nu există postări momentan.</p>
+                    </div>
+                    
+                    <div *ngFor="let post of getPostsForSection(1)" class="post-item">
+                        <!-- Conținut postare similar cu secțiunea 1 -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Secțiunea 3: Expoziții permanente -->
+            <div class="posts-section">
+                <div class="posts-header">
+                    <h3>Expoziții permanente</h3>
+                    
+                    <!-- Componenta de administrare postări - vizibilă doar pentru administratori -->
+                    <app-post-manager 
+                        *ngIf="isAdmin" 
+                        (postCreated)="onPostCreated()"
+                    ></app-post-manager>
+                </div>
+                
+                <!-- Lista de postări -->
+                <div class="posts-list">
+                    <div *ngIf="getPostsForSection(2).length === 0" class="no-posts">
+                        <p>Nu există postări momentan.</p>
+                    </div>
+                    
+                    <div *ngFor="let post of getPostsForSection(2)" class="post-item">
+                        <!-- Conținut postare similar cu secțiunea 1 -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Secțiunea 4: Prietenii muzeului -->
+            <div class="posts-section">
+                <div class="posts-header">
+                    <h3>Prietenii muzeului</h3>
+                    
+                    <!-- Componenta de administrare postări - vizibilă doar pentru administratori -->
+                    <app-post-manager 
+                        *ngIf="isAdmin" 
+                        (postCreated)="onPostCreated()"
+                    ></app-post-manager>
+                </div>
+                
+                <!-- Lista de postări -->
+                <div class="posts-list">
+                    <div *ngIf="getPostsForSection(3).length === 0" class="no-posts">
+                        <p>Nu există postări momentan.</p>
+                    </div>
+                    
+                    <div *ngFor="let post of getPostsForSection(3)" class="post-item">
+                        <!-- Conținut postare similar cu secțiunea 1 -->
                     </div>
                 </div>
             </div>
         </div>
     </app-cadran>
-    
-    <!-- Footer-ul global a înlocuit acest footer local -->
 </main>
 

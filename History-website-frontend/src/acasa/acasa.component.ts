@@ -11,6 +11,13 @@ import { PostEditorComponent } from '../components/post-editor/post-editor.compo
 import { AuthService } from '../services/auth.service';
 import { PostService } from '../services/post.service';
 
+// Interfață pentru secțiune
+interface Section {
+  id: number;
+  title: string;
+  posts: any[];
+}
+
 @Component({
   selector: 'app-acasa',
   standalone: true,
@@ -29,6 +36,14 @@ import { PostService } from '../services/post.service';
   styleUrl: './acasa.component.css'
 })
 export class AcasaComponent implements OnInit {
+  // Definim secțiunile statice
+  sections: Section[] = [
+    { id: 0, title: 'Noutăți și Articole', posts: [] },
+    { id: 1, title: 'Peisaje din curtea muzeului', posts: [] },
+    { id: 2, title: 'Expoziții permanente', posts: [] },
+    { id: 3, title: 'Prietenii muzeului', posts: [] }
+  ];
+  
   posts: any[] = [];
   isAdmin: boolean = false;
   editingPostId: number | null = null;
@@ -49,6 +64,16 @@ export class AcasaComponent implements OnInit {
     
     // Încarcă postările
     this.loadPosts();
+  }
+
+  // Obține postările pentru o secțiune specifică
+  getPostsForSection(sectionId: number): any[] {
+    // În această versiune simplă, toate postările sunt în prima secțiune
+    // Restul secțiunilor sunt goale
+    if (sectionId === 0) {
+      return this.posts;
+    }
+    return [];
   }
 
   // Încarcă toate postările din backend
