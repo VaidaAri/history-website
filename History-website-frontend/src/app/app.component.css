@@ -39,7 +39,7 @@
   font-weight: 600;
 }
 
-.admin-list-btn {
+.admin-list-btn, .news-btn {
   background-color: #5D4037;
   color: white;
   border: none;
@@ -55,14 +55,25 @@
   margin-right: 10px;
 }
 
-.admin-list-btn:hover {
+.admin-list-btn:hover, .news-btn:hover {
   background-color: #4E342E;
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-.admin-list-icon {
+.admin-list-icon, .news-icon {
   margin-right: 6px;
+}
+
+.news-btn {
+  background-color: #5D4037;
+  margin-left: -5px;
+  padding-left: 25px;
+  padding-right: 25px;
+}
+
+.news-btn:hover {
+  background-color: #4E342E;
 }
 
 .logout-btn {
