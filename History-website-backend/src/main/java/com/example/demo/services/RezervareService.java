@@ -42,5 +42,9 @@ public class RezervareService {
         booking.setStatus(ReservationStatus.APROBATA);
         rezervareRepository.save(booking);
     }
+    
+    public int getPendingBookingsCount() {
+        return rezervareRepository.countByStatus(ReservationStatus.IN_ASTEPTARE);
+    }
 }
 

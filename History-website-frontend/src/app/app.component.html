@@ -13,8 +13,9 @@
     <button (click)="showAdminList()" class="admin-list-btn">
       <span class="admin-list-icon">👥</span> Administratori
     </button>
-    <button class="news-btn">
+    <button class="news-btn" (click)="loadPendingReservationsCount()">
       <span class="news-icon">🔔</span> Noutăți
+      <span *ngIf="pendingReservationsCount > 0" class="notification-badge">{{pendingReservationsCount}}</span>
     </button>
     <button (click)="logout()" class="logout-btn">Deconectare</button>
   </div>

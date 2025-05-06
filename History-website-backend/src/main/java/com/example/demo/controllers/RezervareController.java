@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("/api/bookings")
@@ -15,6 +16,14 @@ public class RezervareController {
 
     @Autowired
     private RezervareService rezervareService;
+    
+    @GetMapping("/pending-count")
+    public Map<String, Integer> getPendingBookingsCount() {
+        int count = rezervareService.getPendingBookingsCount();
+        Map<String, Integer> response = new HashMap<>();
+        response.put("count", count);
+        return response;
+    }
 
     @GetMapping
     public List<Rezervare> getAllBookings(){
