@@ -30,7 +30,7 @@ export class MuseumScheduleService {
       weekdaysClose: '18:00',
       weekendOpen: '10:00',
       weekendClose: '16:00',
-      specialNotes: 'Ultima intrare cu 30 de minute înainte de închidere',
+      specialNotes: 'Muzeul este ÎNCHIS LUNEA pentru activități administrative. Ultima intrare cu 30 de minute înainte de închidere.',
       isActive: true,
       validMonths: [3, 4, 5, 6, 7, 8, 9] // Apr-Oct
     },
@@ -41,7 +41,7 @@ export class MuseumScheduleService {
       weekdaysClose: '17:00',
       weekendOpen: '10:00',
       weekendClose: '15:00',
-      specialNotes: 'Închis în zilele de 25, 26 decembrie și 1, 2 ianuarie',
+      specialNotes: 'Muzeul este ÎNCHIS LUNEA pentru activități administrative. Închis în zilele de 25, 26 decembrie și 1, 2 ianuarie.',
       isActive: true,
       validMonths: [0, 1, 2, 10, 11] // Nov-Mar
     }

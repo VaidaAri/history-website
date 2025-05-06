@@ -26,7 +26,7 @@ public class MuseumScheduleService {
             summerSchedule.setWeekdaysClose("18:00");
             summerSchedule.setWeekendOpen("10:00");
             summerSchedule.setWeekendClose("16:00");
-            summerSchedule.setSpecialNotes("Ultima intrare cu 30 de minute înainte de închidere");
+            summerSchedule.setSpecialNotes("Muzeul este ÎNCHIS LUNEA pentru activități administrative. Ultima intrare cu 30 de minute înainte de închidere.");
             summerSchedule.setActive(true);
             summerSchedule.setValidMonths(Arrays.asList(3, 4, 5, 6, 7, 8, 9)); // Apr-Oct
             
@@ -37,7 +37,7 @@ public class MuseumScheduleService {
             winterSchedule.setWeekdaysClose("17:00");
             winterSchedule.setWeekendOpen("10:00");
             winterSchedule.setWeekendClose("15:00");
-            winterSchedule.setSpecialNotes("Închis în zilele de 25, 26 decembrie și 1, 2 ianuarie");
+            winterSchedule.setSpecialNotes("Muzeul este ÎNCHIS LUNEA pentru activități administrative. Închis în zilele de 25, 26 decembrie și 1, 2 ianuarie.");
             winterSchedule.setActive(true);
             winterSchedule.setValidMonths(Arrays.asList(0, 1, 2, 10, 11)); // Nov-Mar
             
