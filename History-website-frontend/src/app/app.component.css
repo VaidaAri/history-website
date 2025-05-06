@@ -28,7 +28,7 @@
 .admin-controls {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 8px;
 }
 
 .admin-badge {
@@ -52,7 +52,7 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   display: flex;
   align-items: center;
-  margin-right: 10px;
+  margin-right: 0;
 }
 
 .admin-list-btn:hover, .news-btn:hover {
@@ -67,7 +67,7 @@
 
 .news-btn {
   background-color: #5D4037;
-  margin-left: -5px;
+  margin-left: 0;
   padding-left: 25px;
   padding-right: 25px;
 }
