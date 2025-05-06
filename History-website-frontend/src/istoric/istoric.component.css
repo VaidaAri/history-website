@@ -68,7 +68,7 @@ p {
   padding: 0 20px;
   overflow: auto;
   color: #3E2723;
-  font-size: 1.05em;
+  font-size: 1.15em;
   letter-spacing: 0.02em;
   text-indent: 1.5em;
   position: relative;
@@ -125,6 +125,7 @@ li {
   position: relative;
   padding-left: 10px;
   font-family: 'Georgia', serif;
+  font-size: 1.15em;
 }
 
 /* Eliminăm bulinele generate prin pseudo-element
