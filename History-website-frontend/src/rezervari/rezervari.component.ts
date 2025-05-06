@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CadranComponent } from '../cadran/cadran.component';
 import { AuthService } from '../services/auth.service';
+import { ReservationService } from '../services/reservation.service';
 
 @Component({
   selector: 'app-rezervari',
@@ -31,7 +32,8 @@ export class RezervariComponent implements OnInit {
   constructor(
     private http: HttpClient, 
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private reservationService: ReservationService
   ) {}
 
   ngOnInit() {
@@ -60,7 +62,7 @@ export class RezervariComponent implements OnInit {
   }
 
   addBooking() { 
-    this.http.post<any>("http://localhost:8080/api/bookings", this.newBooking).subscribe({
+    this.reservationService.createReservation(this.newBooking).subscribe({
       next: (response) => {
         // Verificăm dacă răspunsul are proprietatea message înainte de a o folosi
         const successMessage = response && response.message 

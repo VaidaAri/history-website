@@ -44,6 +44,11 @@ export class AppComponent implements OnInit, OnDestroy {
         this.refreshSubscription = interval(30000).subscribe(() => {
           this.loadPendingReservationsCount();
         });
+        
+        // Ne abonăm la evenimentul de creare a unei noi rezervări
+        this.reservationService.reservationCreated$.subscribe(() => {
+          this.loadPendingReservationsCount();
+        });
       } else {
         // Dacă nu mai suntem autentificați, oprim actualizarea automată
         if (this.refreshSubscription) {

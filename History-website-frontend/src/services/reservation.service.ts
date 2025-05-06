@@ -1,12 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReservationService {
   private apiUrl = 'http://localhost:8080/api/bookings';
+  
+  // Subject pentru a notifica crearea unei noi rezervări
+  private reservationCreatedSubject = new Subject<void>();
+  
+  // Observable public pe care componentele se pot abona
+  public reservationCreated$ = this.reservationCreatedSubject.asObservable();
 
   constructor(private http: HttpClient) { }
 
@@ -31,7 +38,12 @@ export class ReservationService {
   }
 
   createReservation(reservation: any): Observable<any> {
-    return this.http.post<any>(this.apiUrl, reservation);
+    return this.http.post<any>(this.apiUrl, reservation).pipe(
+      tap(() => {
+        // Emite evenimentul pentru a notifica toate componentele abonate
+        this.reservationCreatedSubject.next();
+      })
+    );
   }
 
   updateReservation(reservation: any): Observable<any> {
