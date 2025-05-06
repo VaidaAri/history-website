@@ -45,8 +45,16 @@ export class AppComponent implements OnInit, OnDestroy {
           this.loadPendingReservationsCount();
         });
         
-        // Ne abonăm la evenimentul de creare a unei noi rezervări
+        // Ne abonăm la toate evenimentele de schimbare a rezervărilor
         this.reservationService.reservationCreated$.subscribe(() => {
+          this.loadPendingReservationsCount();
+        });
+        
+        this.reservationService.reservationUpdated$.subscribe(() => {
+          this.loadPendingReservationsCount();
+        });
+        
+        this.reservationService.reservationDeleted$.subscribe(() => {
           this.loadPendingReservationsCount();
         });
       } else {

@@ -98,7 +98,7 @@ export class RezervariComponent implements OnInit {
 
   deleteBooking(bookingId: number) {
     if (confirm("Sigur doriți să ștergeți această rezervare?")) {
-      this.http.delete(`http://localhost:8080/api/bookings/${bookingId}`).subscribe({
+      this.reservationService.deleteReservation(bookingId).subscribe({
         next: (response) => {
           alert("Rezervare ștearsă cu succes!");
           this.fetchBookings();
@@ -113,7 +113,7 @@ export class RezervariComponent implements OnInit {
   
   approveBooking(bookingId: number) {
     if (confirm("Sigur doriți să aprobați această rezervare?")) {
-      this.http.put<any>(`http://localhost:8080/api/bookings/${bookingId}/approve`, {}).subscribe({
+      this.reservationService.approveReservation(bookingId).subscribe({
         next: (response) => {
           // Actualizăm și starea în UI imediat, fără a aștepta reîncărcarea
           const bookingIndex = this.bookings.findIndex((booking: any) => booking.id === bookingId);
