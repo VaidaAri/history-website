@@ -9,6 +9,108 @@
     flex-direction: column;
 }
 
+/* Stiluri pentru program muzeu */
+.museum-schedule {
+    background-color: #F8F4E3;
+    border: 2px solid #EAD196;
+    border-radius: 12px;
+    margin: 20px 0;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.schedule-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #EAD196;
+    padding-bottom: 10px;
+}
+
+.schedule-header h3 {
+    margin: 0;
+    color: #5D4037;
+    font-size: 1.4em;
+}
+
+.season {
+    font-weight: bold;
+    color: #7D5A50;
+}
+
+.schedule-icon {
+    font-size: 1.8em;
+    margin-left: 10px;
+}
+
+.schedule-content {
+    margin-top: 10px;
+}
+
+.schedule-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.schedule-day {
+    flex: 1;
+    min-width: 200px;
+    background-color: rgba(234, 209, 150, 0.2);
+    padding: 15px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.schedule-day:hover {
+    background-color: rgba(234, 209, 150, 0.4);
+    transform: translateY(-2px);
+}
+
+.schedule-day h4 {
+    margin: 0 0 8px 0;
+    color: #5D4037;
+}
+
+.schedule-day p {
+    margin: 0;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #5D4037;
+}
+
+.schedule-notes {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: rgba(125, 90, 80, 0.1);
+    border-left: 4px solid #7D5A50;
+    border-radius: 4px;
+}
+
+.schedule-notes p {
+    margin: 0;
+    color: #5D4037;
+    font-size: 0.95em;
+}
+
+.summer {
+    color: #FF9800;
+}
+
+.winter {
+    color: #2196F3;
+}
+
+.loading-schedule {
+    text-align: center;
+    padding: 20px;
+    color: #5D4037;
+    font-style: italic;
+}
+
 /* Stiluri pentru container principal */
 .rezervari-container {
     padding: 15px 25px 25px 25px;

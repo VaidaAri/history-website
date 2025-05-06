@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { CadranComponent } from '../cadran/cadran.component';
 import { AuthService } from '../services/auth.service';
 import { ReservationService } from '../services/reservation.service';
+import { MuseumScheduleService, MuseumSchedule } from '../services/museum-schedule.service';
 
 @Component({
   selector: 'app-rezervari',
@@ -28,12 +29,17 @@ export class RezervariComponent implements OnInit {
     guideRequired: false,
     status: 'IN_ASTEPTARE'
   };
+  
+  // Programul muzeului
+  currentSchedule: MuseumSchedule | null = null;
+  isLoading = true;
 
   constructor(
     private http: HttpClient, 
     private authService: AuthService,
     private router: Router,
-    private reservationService: ReservationService
+    private reservationService: ReservationService,
+    private museumScheduleService: MuseumScheduleService
   ) {}
 
   ngOnInit() {
@@ -46,6 +52,24 @@ export class RezervariComponent implements OnInit {
     if (this.isAdmin) {
       this.fetchBookings();
     }
+    
+    // Încărcăm programul muzeului
+    this.loadMuseumSchedule();
+  }
+  
+  // Încărcăm programul curent al muzeului
+  loadMuseumSchedule() {
+    this.isLoading = true;
+    this.museumScheduleService.getCurrentSchedule().subscribe({
+      next: (schedule) => {
+        this.currentSchedule = schedule;
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Eroare la încărcarea programului muzeului:', err);
+        this.isLoading = false;
+      }
+    });
   }
   
   logout() {

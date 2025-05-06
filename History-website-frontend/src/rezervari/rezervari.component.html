@@ -3,6 +3,35 @@
 <app-cadran>
     <h2>Rezervă o Vizită la Muzeu</h2>
     
+    <!-- Program muzeu -->
+    <div class="museum-schedule" *ngIf="currentSchedule">
+        <div class="schedule-header">
+            <h3>Program de Vizitare: <span class="season">{{ currentSchedule.seasonName }}</span></h3>
+            <span class="schedule-icon" [ngClass]="{'summer': currentSchedule.seasonName === 'Vară', 'winter': currentSchedule.seasonName === 'Iarnă'}">
+                {{ currentSchedule.seasonName === 'Vară' ? '☀️' : '❄️' }}
+            </span>
+        </div>
+        <div class="schedule-content">
+            <div class="schedule-row">
+                <div class="schedule-day">
+                    <h4>Luni - Vineri:</h4>
+                    <p>{{ currentSchedule.weekdaysOpen }} - {{ currentSchedule.weekdaysClose }}</p>
+                </div>
+                <div class="schedule-day">
+                    <h4>Sâmbătă - Duminică:</h4>
+                    <p>{{ currentSchedule.weekendOpen }} - {{ currentSchedule.weekendClose }}</p>
+                </div>
+            </div>
+            <div class="schedule-notes" *ngIf="currentSchedule.specialNotes">
+                <p><em>{{ currentSchedule.specialNotes }}</em></p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="loading-schedule" *ngIf="isLoading">
+        <p>Se încarcă programul muzeului...</p>
+    </div>
+    
     <div class="rezervari-container">
         <div class="form-section">
             <form (ngSubmit)="addBooking()" #bookingForm="ngForm">
