@@ -24,7 +24,7 @@ export class RezervariComponent implements OnInit {
     prenume: '',
     email: '',
     datetime: '',
-    numberOfPersons: 0,
+    numberOfPersons: 1,
     guideRequired: false,
     status: 'IN_ASTEPTARE'
   };
@@ -90,7 +90,7 @@ export class RezervariComponent implements OnInit {
       prenume: '',
       email: '',
       datetime: '',
-      numberOfPersons: 0,
+      numberOfPersons: 1,
       guideRequired: false,
       status: 'IN_ASTEPTARE'
     };
