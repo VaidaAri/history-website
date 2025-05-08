@@ -5,8 +5,24 @@
         <div class="home-container">
             <h2>Bine ați venit la Muzeul Grăniceresc Năsăudean</h2>
             
+            <!-- Formular simplu pentru adăugare postare - vizibil doar pentru administratori -->
+            <div *ngIf="isAdmin" class="admin-post-form">
+                <h3>Adaugă o postare nouă</h3>
+                <div class="admin-form-content">
+                    <!-- Selector pentru secțiune -->
+                    <div class="section-select-container">
+                        <label for="admin-section-select">Alege secțiunea:</label>
+                        <select id="admin-section-select" class="admin-section-select">
+                            <option *ngFor="let section of sections" [value]="section.id">{{ section.title }}</option>
+                        </select>
+                    </div>
+                    
+                    <button class="admin-add-post-btn" (click)="addPostToSelectedSection()">Adaugă postare în secțiunea selectată</button>
+                </div>
+            </div>
+            
             <!-- Secțiunea 1: Noutăți și Articole - afișată doar dacă are postări -->
-            <div class="posts-section" *ngIf="hasPosts(0)">
+            <div id="section-0" class="posts-section" *ngIf="hasPosts(0)">
                 <div class="posts-header">
                     <h3>Noutăți și Articole</h3>
                     
@@ -50,7 +66,7 @@
             </div>
             
             <!-- Secțiunea 2: Peisaje din curtea muzeului - afișată doar dacă are postări -->
-            <div class="posts-section" *ngIf="hasPosts(1)">
+            <div id="section-1" class="posts-section" *ngIf="hasPosts(1)">
                 <div class="posts-header">
                     <h3>Peisaje din curtea muzeului</h3>
                     
@@ -74,7 +90,7 @@
             </div>
             
             <!-- Secțiunea 3: Expoziții permanente - afișată doar dacă are postări -->
-            <div class="posts-section" *ngIf="hasPosts(2)">
+            <div id="section-2" class="posts-section" *ngIf="hasPosts(2)">
                 <div class="posts-header">
                     <h3>Expoziții permanente</h3>
                     
@@ -98,7 +114,7 @@
             </div>
             
             <!-- Secțiunea 4: Prietenii muzeului - afișată doar dacă are postări -->
-            <div class="posts-section" *ngIf="hasPosts(3)">
+            <div id="section-3" class="posts-section" *ngIf="hasPosts(3)">
                 <div class="posts-header">
                     <h3>Prietenii muzeului</h3>
                     

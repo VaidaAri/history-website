@@ -54,6 +54,81 @@
     border-bottom: none;
 }
 
+/* Formular administrator pentru adăugare postări */
+.admin-post-form {
+    background-color: #F8F4E3;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(234, 209, 150, 0.5);
+}
+
+.admin-post-form h3 {
+    color: #5D4037;
+    font-size: 1.4em;
+    margin-top: 0;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.admin-form-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.section-select-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.section-select-container label {
+    color: #5D4037;
+    font-weight: 600;
+    font-size: 1em;
+}
+
+.admin-section-select {
+    padding: 12px;
+    border: 1px solid #EAD196;
+    border-radius: 8px;
+    background-color: white;
+    font-family: 'Merriweather', serif;
+    font-size: 1em;
+    color: #3E2723;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+
+.admin-section-select:focus {
+    outline: none;
+    border-color: #7D5A50;
+    box-shadow: 0 0 0 2px rgba(125, 90, 80, 0.2);
+}
+
+.admin-add-post-btn {
+    background-color: #7D5A50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    font-family: 'Merriweather', serif;
+    font-size: 1em;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.admin-add-post-btn:hover {
+    background-color: #5D4037;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
 
 /* Admin Indicator */
 .admin-indicator {

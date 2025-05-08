@@ -155,4 +155,15 @@ export class AcasaComponent implements OnInit {
   goToLogin() {
     this.router.navigate(['/administrator-login']);
   }
+  
+  // Adaugă postare în secțiunea selectată
+  addPostToSelectedSection() {
+    // Obține valoarea selectată din dropdown
+    const selectElement = document.getElementById('admin-section-select') as HTMLSelectElement;
+    const selectedSectionId = parseInt(selectElement.value);
+    
+    // Afișează un mesaj (în implementare reală ar deschide un formular de adăugare postări)
+    console.log('Adaugă postare în secțiunea:', selectedSectionId);
+    alert('În curând vei putea adăuga o postare în secțiunea: ' + this.sections[selectedSectionId].title);
+  }
 }
