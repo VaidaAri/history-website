@@ -47,6 +47,9 @@ export class AcasaComponent implements OnInit {
   posts: any[] = [];
   isAdmin: boolean = false;
   editingPostId: number | null = null;
+  selectedSectionId: number = 0;
+  newPostDescription: string = '';
+  newPostImages: any[] = [];
 
   constructor(
     private authService: AuthService,
@@ -156,14 +159,75 @@ export class AcasaComponent implements OnInit {
     this.router.navigate(['/administrator-login']);
   }
   
+  // Gestionează selecția de fișiere
+  onFileSelected(event: any) {
+    const files = event.target.files;
+    if (files) {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        
+        // Verifică dacă fișierul este o imagine
+        if (file.type.match(/image\/*/) == null) {
+          alert('Doar fișierele de tip imagine sunt permise!');
+          continue;
+        }
+        
+        // Limitează numărul de imagini la 5 per postare
+        if (this.newPostImages.length >= 5) {
+          alert('Poți adăuga maxim 5 imagini la o postare.');
+          break;
+        }
+        
+        // Citește fișierul și adaugă-l la lista de imagini
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          this.newPostImages.push({
+            url: reader.result as string,
+            file: file
+          });
+        };
+      }
+    }
+    
+    // Resetează input-ul pentru a permite reîncărcarea aceluiași fișier
+    event.target.value = '';
+  }
+
+  // Elimină o imagine din lista de imagini selectate
+  removeImage(index: number) {
+    this.newPostImages.splice(index, 1);
+  }
+
   // Adaugă postare în secțiunea selectată
   addPostToSelectedSection() {
-    // Obține valoarea selectată din dropdown
-    const selectElement = document.getElementById('admin-section-select') as HTMLSelectElement;
-    const selectedSectionId = parseInt(selectElement.value);
+    if (!this.newPostDescription.trim()) {
+      alert('Descrierea nu poate fi goală!');
+      return;
+    }
     
-    // Afișează un mesaj (în implementare reală ar deschide un formular de adăugare postări)
-    console.log('Adaugă postare în secțiunea:', selectedSectionId);
-    alert('În curând vei putea adăuga o postare în secțiunea: ' + this.sections[selectedSectionId].title);
+    const sectionId = this.selectedSectionId;
+    
+    const newPost = { 
+      description: this.newPostDescription, 
+      images: this.newPostImages,
+      sectionId: sectionId
+    };
+
+    // Afișăm un indicator de încărcare sau un mesaj
+    console.log('Adaugă postare în secțiunea:', sectionId);
+    
+    this.postService.addPost(newPost).subscribe({
+      next: () => {
+        alert('Postare adăugată cu succes în secțiunea: ' + this.sections[sectionId].title);
+        this.newPostDescription = '';
+        this.newPostImages = [];
+        this.loadPosts();
+      },
+      error: (err) => {
+        console.error('Eroare la crearea postării:', err);
+        alert('A apărut o eroare la crearea postării. Vă rugăm să încercați din nou.');
+      }
+    });
   }
 }

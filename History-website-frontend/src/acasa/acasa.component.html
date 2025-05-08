@@ -5,19 +5,44 @@
         <div class="home-container">
             <h2>Bine ați venit la Muzeul Grăniceresc Năsăudean</h2>
             
-            <!-- Formular simplu pentru adăugare postare - vizibil doar pentru administratori -->
+            <!-- Formular pentru adăugare postare - vizibil doar pentru administratori -->
             <div *ngIf="isAdmin" class="admin-post-form">
                 <h3>Adaugă o postare nouă</h3>
                 <div class="admin-form-content">
                     <!-- Selector pentru secțiune -->
                     <div class="section-select-container">
                         <label for="admin-section-select">Alege secțiunea:</label>
-                        <select id="admin-section-select" class="admin-section-select">
+                        <select id="admin-section-select" class="admin-section-select" [(ngModel)]="selectedSectionId">
                             <option *ngFor="let section of sections" [value]="section.id">{{ section.title }}</option>
                         </select>
                     </div>
                     
-                    <button class="admin-add-post-btn" (click)="addPostToSelectedSection()">Adaugă postare în secțiunea selectată</button>
+                    <!-- Câmpul pentru descriere -->
+                    <div class="description-container">
+                        <textarea [(ngModel)]="newPostDescription" placeholder="Scrie o postare..." class="post-textarea"></textarea>
+                    </div>
+                    
+                    <!-- Upload imagini -->
+                    <div class="file-upload-container">
+                        <label for="home-file-upload" class="file-upload-label">
+                            <span class="file-icon">📷</span>
+                            <span>Selectează imagini</span>
+                        </label>
+                        <input type="file" id="home-file-upload" (change)="onFileSelected($event)" accept="image/*" multiple class="file-input">
+                    </div>
+                    
+                    <!-- Previzualizare imagini selectate -->
+                    <div *ngIf="newPostImages.length > 0" class="selected-images">
+                        <h5>Imagini selectate ({{ newPostImages.length }}):</h5>
+                        <div class="image-previews">
+                            <div *ngFor="let image of newPostImages; let i = index" class="image-preview-container">
+                                <img [src]="image.url" alt="Preview" class="image-preview" />
+                                <button (click)="removeImage(i)" class="remove-image-btn" title="Elimină imaginea">×</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="admin-add-post-btn" (click)="addPostToSelectedSection()" [disabled]="!newPostDescription.trim()">Adaugă postare în secțiunea selectată</button>
                 </div>
             </div>
             
