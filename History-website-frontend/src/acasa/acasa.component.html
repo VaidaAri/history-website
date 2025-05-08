@@ -5,8 +5,8 @@
         <div class="home-container">
             <h2>Bine ați venit la Muzeul Grăniceresc Năsăudean</h2>
             
-            <!-- Secțiunea 1: Noutăți și Articole -->
-            <div class="posts-section">
+            <!-- Secțiunea 1: Noutăți și Articole - afișată doar dacă are postări -->
+            <div class="posts-section" *ngIf="hasPosts(0)">
                 <div class="posts-header">
                     <h3>Noutăți și Articole</h3>
                     
@@ -49,8 +49,8 @@
                 </div>
             </div>
             
-            <!-- Secțiunea 2: Peisaje din curtea muzeului -->
-            <div class="posts-section">
+            <!-- Secțiunea 2: Peisaje din curtea muzeului - afișată doar dacă are postări -->
+            <div class="posts-section" *ngIf="hasPosts(1)">
                 <div class="posts-header">
                     <h3>Peisaje din curtea muzeului</h3>
                     
@@ -73,8 +73,8 @@
                 </div>
             </div>
             
-            <!-- Secțiunea 3: Expoziții permanente -->
-            <div class="posts-section">
+            <!-- Secțiunea 3: Expoziții permanente - afișată doar dacă are postări -->
+            <div class="posts-section" *ngIf="hasPosts(2)">
                 <div class="posts-header">
                     <h3>Expoziții permanente</h3>
                     
@@ -97,8 +97,8 @@
                 </div>
             </div>
             
-            <!-- Secțiunea 4: Prietenii muzeului -->
-            <div class="posts-section">
+            <!-- Secțiunea 4: Prietenii muzeului - afișată doar dacă are postări -->
+            <div class="posts-section" *ngIf="hasPosts(3)">
                 <div class="posts-header">
                     <h3>Prietenii muzeului</h3>
                     

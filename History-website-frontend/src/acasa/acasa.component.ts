@@ -75,6 +75,11 @@ export class AcasaComponent implements OnInit {
     }
     return [];
   }
+  
+  // Verifică dacă o secțiune are postări
+  hasPosts(sectionId: number): boolean {
+    return this.getPostsForSection(sectionId).length > 0;
+  }
 
   // Încarcă toate postările din backend
   loadPosts() {
