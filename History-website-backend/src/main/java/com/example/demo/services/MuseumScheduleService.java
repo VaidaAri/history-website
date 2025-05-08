@@ -18,6 +18,19 @@ public class MuseumScheduleService {
     // Inițializarea programelor implicite dacă nu există
     @PostConstruct
     public void initDefaultSchedules() {
+        // Actualizăm mai întâi programul de vară existent (dacă există)
+        List<MuseumSchedule> existingSchedules = scheduleRepository.findAll();
+        boolean summerUpdated = false;
+        
+        for (MuseumSchedule schedule : existingSchedules) {
+            if ("Vară".equals(schedule.getSeasonName())) {
+                schedule.setSpecialNotes("Muzeul este ÎNCHIS LUNEA pentru activități administrative.");
+                scheduleRepository.save(schedule);
+                summerUpdated = true;
+            }
+        }
+        
+        // Crează programe implicite doar dacă nu există
         if (scheduleRepository.count() == 0) {
             // Program de vară (aprilie-octombrie)
             MuseumSchedule summerSchedule = new MuseumSchedule();
@@ -26,7 +39,7 @@ public class MuseumScheduleService {
             summerSchedule.setWeekdaysClose("18:00");
             summerSchedule.setWeekendOpen("10:00");
             summerSchedule.setWeekendClose("16:00");
-            summerSchedule.setSpecialNotes("Muzeul este ÎNCHIS LUNEA pentru activități administrative. Ultima intrare cu 30 de minute înainte de închidere.");
+            summerSchedule.setSpecialNotes("Muzeul este ÎNCHIS LUNEA pentru activități administrative.");
             summerSchedule.setActive(true);
             summerSchedule.setValidMonths(Arrays.asList(3, 4, 5, 6, 7, 8, 9)); // Apr-Oct
             
@@ -43,6 +56,8 @@ public class MuseumScheduleService {
             
             scheduleRepository.saveAll(Arrays.asList(summerSchedule, winterSchedule));
         }
+        
+        // Metoda a fost executată cu succes
     }
     
     // Obține programul pentru luna curentă
