@@ -194,6 +194,12 @@
   font-weight: 500;
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .close-btn {
   background: none;
   border: none;
@@ -202,6 +208,25 @@
   cursor: pointer;
   padding: 0;
   line-height: 1;
+}
+
+.edit-btn {
+  background-color: #EAD196;
+  color: #5D4037;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-size: 0.9em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.2s;
+}
+
+.edit-btn:hover {
+  background-color: #E6C077;
+  transform: translateY(-2px);
 }
 
 .modal-body {

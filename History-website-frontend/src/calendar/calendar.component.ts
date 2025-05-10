@@ -20,13 +20,19 @@ export class CalendarComponent implements OnInit, OnDestroy {
   isAdmin: boolean = false;
   showEventModal: boolean = false;
   showEventDetailsModal: boolean = false;
+  showEditEventModal: boolean = false;
   selectedDateInfo: any = null;
   selectedEvent: any = null;
   eventForm: FormGroup;
+  editEventForm: FormGroup;
   selectedImages: { path: string, description?: string }[] = [];
+  editEventImages: { path: string, description?: string }[] = [];
   selectedFile: File | null = null;
+  editSelectedFile: File | null = null;
   uploadProgress: number = 0;
+  editUploadProgress: number = 0;
   currentImageIndex: number = 0;
+  selectedEventId: string | null = null;
   
   readonly MONTHS_IN_PAST = 3;
   readonly MONTHS_IN_FUTURE = 12;
@@ -78,7 +84,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
   
   constructor(
-    private http: HttpClient, 
+    private http: HttpClient,
     private authService: AuthService,
     private fb: FormBuilder
   ) {
@@ -89,6 +95,15 @@ export class CalendarComponent implements OnInit, OnDestroy {
       startDate: ['', [Validators.required]],
       endDate: ['', [Validators.required]],
       imagePath: ['']
+    }, {
+      validators: [this.dateOrderValidator()]
+    });
+
+    this.editEventForm = this.fb.group({
+      name: ['', [Validators.required]],
+      description: [''],
+      startDate: ['', [Validators.required]],
+      endDate: ['', [Validators.required]]
     }, {
       validators: [this.dateOrderValidator()]
     });
@@ -219,6 +234,132 @@ export class CalendarComponent implements OnInit, OnDestroy {
     if (this.currentImageIndex > 0) {
       this.currentImageIndex--;
     }
+  }
+
+  editEvent() {
+    if (!this.selectedEvent || !this.isAdmin) {
+      return;
+    }
+
+    this.selectedEventId = this.selectedEvent.id;
+
+    // Populează formularul cu datele evenimentului selectat
+    const startDate = new Date(this.selectedEvent.start);
+    const endDate = new Date(this.selectedEvent.end);
+
+    this.editEventForm.reset({
+      name: this.selectedEvent.title,
+      description: this.selectedEvent.extendedProps?.description || '',
+      startDate: this.formatDateForInput(startDate),
+      endDate: this.formatDateForInput(endDate)
+    });
+
+    // Copiază imaginile existente
+    this.editEventImages = [];
+    if (this.selectedEvent.extendedProps?.images) {
+      this.editEventImages = [...this.selectedEvent.extendedProps.images];
+    }
+
+    // Ascunde modalul de detalii și arată pe cel de editare
+    this.showEventDetailsModal = false;
+    this.showEditEventModal = true;
+  }
+
+  closeEditModal() {
+    this.showEditEventModal = false;
+    this.editEventImages = [];
+    this.editSelectedFile = null;
+    this.editUploadProgress = 0;
+    this.selectedEventId = null;
+  }
+
+  onEditFileSelected(event: any) {
+    this.editSelectedFile = event.target.files[0] || null;
+    this.editUploadProgress = 0;
+  }
+
+  uploadEditImage() {
+    if (!this.editSelectedFile) {
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('image', this.editSelectedFile);
+    formData.append('description', 'Imagine eveniment');
+
+    this.editUploadProgress = 10;
+
+    this.http.post<any>('http://localhost:8080/api/images/upload-image', formData).subscribe(
+      (response) => {
+        this.editUploadProgress = 100;
+        if (response && response.imagePath) {
+          this.editEventImages.push({ path: response.imagePath });
+          this.editSelectedFile = null;
+          setTimeout(() => this.editUploadProgress = 0, 1000);
+        }
+      },
+      (error) => {
+        console.error('Eroare la încărcarea imaginii:', error);
+        alert('Eroare la încărcarea imaginii. Vă rugăm să încercați din nou.');
+        this.editUploadProgress = 0;
+      }
+    );
+  }
+
+  cancelEditUpload() {
+    this.editSelectedFile = null;
+    this.editUploadProgress = 0;
+  }
+
+  removeEditImage(index: number) {
+    if (index >= 0 && index < this.editEventImages.length) {
+      this.editEventImages.splice(index, 1);
+    }
+  }
+
+  saveEditedEvent() {
+    if (this.editEventForm.invalid || !this.selectedEventId) {
+      return;
+    }
+
+    const formValue = this.editEventForm.value;
+    const startDate = new Date(formValue.startDate);
+    const endDate = new Date(formValue.endDate);
+
+    endDate.setHours(23, 59, 59, 999);
+
+    // Convertim obiectele imagine în formatul așteptat de backend
+    const processedImages = this.editEventImages.map(img => {
+      return {
+        path: img.path,
+        description: img.description || 'Imagine eveniment'
+      };
+    });
+
+    const updatedEvent = {
+      id: this.selectedEventId,
+      name: formValue.name,
+      startDate: startDate.toISOString(),
+      endDate: endDate.toISOString(),
+      location: 'Muzeu',
+      description: formValue.description || '',
+      images: processedImages
+    };
+
+    // Adăugăm id-ul în URL pentru a corespunde cu endpoint-ul din backend
+    this.http.put(`http://localhost:8080/api/events/${this.selectedEventId}`, updatedEvent).subscribe(() => {
+      alert('Eveniment actualizat cu succes!');
+      this.loadEvents();
+      this.closeEditModal();
+
+      // Emitem un eveniment custom pentru a notifica alte componente despre actualizarea unui eveniment
+      const eventUpdatedEvent = new CustomEvent('eventUpdated', {
+        detail: { event: updatedEvent }
+      });
+      window.dispatchEvent(eventUpdatedEvent);
+    }, error => {
+      alert('Eroare la actualizarea evenimentului!');
+    });
   }
 
   handleDateSelect(selectInfo: any) {

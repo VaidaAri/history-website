@@ -29,8 +29,9 @@ public class EvenimentController {
         evenimentService.createEvent(newEvent);
     }
 
-    @PutMapping
-    public void updateEvent(@RequestBody Eveniment updatedEvent){
+    @PutMapping("/{id}")
+    public void updateEvent(@PathVariable Integer id, @RequestBody Eveniment updatedEvent){
+        updatedEvent.setId(id);
         evenimentService.updateEvent(updatedEvent);
     }
 

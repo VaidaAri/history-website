@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MeniuComponent } from "../meniu/meniu.component";
@@ -20,6 +20,8 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
   events: any[] = [];
   showEventsList: boolean = false;
 
+  @ViewChild(CalendarComponent) calendarComponent!: CalendarComponent;
+
   constructor(
     private authService: AuthService, 
     private router: Router,
@@ -29,29 +31,31 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // Verificăm dacă utilizatorul este administrator
     this.isAdmin = this.authService.isAuthenticated();
-    
+
     // Abonăm pentru a detecta schimbări în starea de autentificare
     this.authService.isAuthenticated$.subscribe(isAuthenticated => {
       this.isAdmin = isAuthenticated;
-      
+
       // Încărcăm lista de evenimente dacă utilizatorul este administrator
       if (isAuthenticated) {
         this.loadEvents();
       }
     });
-    
+
     // Încărcăm lista de evenimente dacă utilizatorul este administrator
     if (this.isAdmin) {
       this.loadEvents();
     }
-    
-    // Ascultăm pentru evenimente de adăugare de evenimente
+
+    // Ascultăm pentru evenimente de adăugare sau actualizare de evenimente
     window.addEventListener('eventAdded', this.handleEventAdded.bind(this));
+    window.addEventListener('eventUpdated', this.handleEventAdded.bind(this));
   }
   
   // Curățăm la distrugerea componentei
   ngOnDestroy() {
     window.removeEventListener('eventAdded', this.handleEventAdded.bind(this));
+    window.removeEventListener('eventUpdated', this.handleEventAdded.bind(this));
   }
   
   // Handler pentru evenimentul custom de adăugare eveniment
@@ -72,8 +76,24 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
   }
   
   editEvent(event: any) {
-    // Implementarea editării va fi adăugată ulterior
-    alert('Funcționalitatea de editare a evenimentelor va fi disponibilă în curând!');
+    // Convertim evenimentul în formatul așteptat de CalendarComponent
+    const calendarEvent = {
+      id: event.id,
+      title: event.name,
+      start: new Date(event.startDate),
+      end: new Date(event.endDate),
+      extendedProps: {
+        description: event.description,
+        location: event.location,
+        images: event.images || []
+      }
+    };
+
+    // Setăm evenimentul selectat în CalendarComponent
+    this.calendarComponent.selectedEvent = calendarEvent;
+
+    // Apelăm metoda de editare din CalendarComponent
+    this.calendarComponent.editEvent();
   }
   
   deleteEvent(id: number) {

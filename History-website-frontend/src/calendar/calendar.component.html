@@ -137,7 +137,12 @@
   <div class="modal-content">
     <div class="modal-header">
       <h3>{{ selectedEvent?.title }}</h3>
-      <button class="close-btn" (click)="closeEventDetailsModal()">&times;</button>
+      <div class="header-actions">
+        <button *ngIf="isAdmin" class="edit-btn" (click)="editEvent()">
+          <i class="fas fa-edit"></i> Editează
+        </button>
+        <button class="close-btn" (click)="closeEventDetailsModal()">&times;</button>
+      </div>
     </div>
     <div class="modal-body">
       <div class="event-date">
@@ -175,5 +180,129 @@
       </div>
     </div>
     <!-- Modal footer removed, using only the X button in the header -->
+  </div>
+</div>
+
+<!-- Modal pentru editare eveniment -->
+<div class="event-modal" *ngIf="showEditEventModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Editare eveniment</h3>
+      <button class="close-btn" (click)="closeEditModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="editEventForm">
+        <div class="form-group">
+          <label for="editEventName">Numele evenimentului:</label>
+          <input 
+            type="text" 
+            id="editEventName" 
+            formControlName="name" 
+            placeholder="Introdu numele evenimentului"
+            class="form-control">
+          <div class="error-message" *ngIf="editEventForm.get('name')?.invalid && editEventForm.get('name')?.touched">
+            Numele evenimentului este obligatoriu
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="editEventDescription">Descriere:</label>
+          <textarea 
+            id="editEventDescription" 
+            formControlName="description" 
+            placeholder="Descriere eveniment"
+            class="form-control"
+            rows="3"></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="editStartDate">Data început:</label>
+          <input 
+            type="date" 
+            id="editStartDate" 
+            formControlName="startDate" 
+            class="form-control date-input">
+          <div class="error-message" *ngIf="editEventForm.get('startDate')?.invalid && editEventForm.get('startDate')?.touched">
+            Data de început este obligatorie
+          </div>
+          <div class="error-message" *ngIf="editEventForm.errors?.['startDateOutOfRange']">
+            Data de început trebuie să fie în intervalul permis
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="editEndDate">Data sfârșit:</label>
+          <input 
+            type="date" 
+            id="editEndDate" 
+            formControlName="endDate" 
+            class="form-control date-input">
+          <div class="error-message" *ngIf="editEventForm.get('endDate')?.invalid && editEventForm.get('endDate')?.touched">
+            Data de sfârșit este obligatorie
+          </div>
+          <div class="error-message" *ngIf="editEventForm.errors?.['dateOrder']">
+            Data de sfârșit trebuie să fie după data de început
+          </div>
+          <div class="error-message" *ngIf="editEventForm.errors?.['endDateOutOfRange']">
+            Data de sfârșit trebuie să fie în intervalul permis
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label>Imagini existente:</label>
+          <div *ngIf="editEventImages.length > 0" class="selected-images">
+            <div class="image-list">
+              <div class="image-item" *ngFor="let image of editEventImages; let i = index">
+                <div class="image-preview">
+                  <img [src]="'http://localhost:8080/api/images/uploads/' + image.path" alt="Preview">
+                </div>
+                <span>{{ image.path | slice:0:20 }}{{ image.path.length > 20 ? '...' : '' }}</span>
+                <button type="button" class="remove-btn" (click)="removeEditImage(i)">Șterge</button>
+              </div>
+            </div>
+          </div>
+          
+          <label class="mt-3">Adaugă imagini noi:</label>
+          <div class="image-upload">
+            <label for="editImageUpload" class="upload-btn">
+              <span>Selectează imagini</span>
+              <input 
+                type="file" 
+                id="editImageUpload" 
+                accept="image/*" 
+                (change)="onEditFileSelected($event)" 
+                class="file-input">
+            </label>
+            <div *ngIf="editSelectedFile" class="selected-file">
+              {{ editSelectedFile.name }}
+              <button type="button" class="upload-action-btn" (click)="uploadEditImage()">Încarcă</button>
+              <button type="button" class="upload-action-btn cancel" (click)="cancelEditUpload()">Anulează</button>
+            </div>
+          </div>
+          
+          <div *ngIf="editUploadProgress > 0 && editUploadProgress < 100" class="upload-progress">
+            <div class="progress-bar" [style.width.%]="editUploadProgress"></div>
+            <span class="progress-text">{{ editUploadProgress }}%</span>
+          </div>
+        </div>
+        
+      </form>
+    </div>
+    
+    <div class="form-actions">
+      <button 
+        type="button" 
+        class="cancel-btn" 
+        (click)="closeEditModal()">
+        Anulează
+      </button>
+      <button 
+        type="button" 
+        class="save-btn" 
+        [disabled]="editEventForm.invalid"
+        (click)="saveEditedEvent()">
+        Salvează
+      </button>
+    </div>
   </div>
 </div>
