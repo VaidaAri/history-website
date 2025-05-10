@@ -117,26 +117,21 @@ ul {
   margin: 25px 0 25px 40px;
   line-height: 1.8;
   color: #3E2723;
-  list-style-type: none; /* Eliminăm bulinele standard */
+  list-style-type: none;
+  background-color: #f9f5e8;
+  border-radius: 8px;
+  padding: 15px 20px 15px 30px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid #7D5A50;
 }
 
 li {
   margin-bottom: 12px;
   position: relative;
-  padding-left: 10px;
+  padding-left: 0;
   font-family: 'Georgia', serif;
   font-size: 1.15em;
 }
-
-/* Eliminăm bulinele generate prin pseudo-element
-li:before {
-  content: '•';
-  position: absolute;
-  left: -15px;
-  color: #7D5A50;
-  font-size: 1.2em;
-}
-*/
 
 /* Stilizare pentru butonul de publicații */
 .publications-button-container {
@@ -221,5 +216,16 @@ p, h4, li {
   
   h4 {
     font-size: 1.3em;
+  }
+  
+  /* Adaptăm listele pentru dispozitive mobile */
+  ul {
+    margin: 20px 10px;
+    padding: 12px 12px 12px 24px;
+  }
+  
+  li {
+    font-size: 1.05em;
+    padding-left: 0;
   }
 }
