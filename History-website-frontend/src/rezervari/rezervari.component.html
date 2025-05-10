@@ -51,16 +51,35 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="datetime">Data și Ora:</label>
-                    <input type="datetime-local" id="datetime" name="datetime"
-                           [(ngModel)]="newBooking.datetime"
-                           required
-                           [min]="minDateTime"
-                           [max]="maxDateTime"
-                           (change)="validateDateTime()">
+                    <label>Data și Ora:</label>
+                    <div class="date-time-selector">
+                        <!-- Selector de dată -->
+                        <div class="date-select">
+                            <label for="date">Data:</label>
+                            <input type="date" id="date" name="date"
+                                  [(ngModel)]="selectedDate"
+                                  required
+                                  [min]="minDate"
+                                  [max]="maxDate"
+                                  (change)="onDateSelected()">
+                        </div>
+
+                        <!-- Selector de oră - disponibil după ce data este selectată -->
+                        <div class="time-select" *ngIf="selectedDate">
+                            <label for="time">Ora:</label>
+                            <select id="time" name="time" [(ngModel)]="selectedTime" required (change)="onTimeSelected()">
+                                <option value="">-- Selectați ora --</option>
+                                <option *ngFor="let time of availableHours" [value]="time">{{ time }}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Mesaj de eroare pentru data/ora -->
                     <div *ngIf="dateTimeError" class="error-message">
                         {{ dateTimeError }}
                     </div>
+
+                    <!-- Informații despre program -->
                     <div class="booking-time-info" *ngIf="currentSchedule">
                         <p>Notă: Puteți rezerva doar în zilele de marți-duminică, în intervalul orar:</p>
                         <ul>
@@ -68,6 +87,9 @@
                             <li>Sâmbătă - Duminică: {{ currentSchedule.weekendOpen }} - {{ currentSchedule.weekendClose }}</li>
                         </ul>
                     </div>
+
+                    <!-- Input ascuns pentru a stoca valoarea datetime completă pentru backend -->
+                    <input type="hidden" name="datetime" [(ngModel)]="newBooking.datetime">
                 </div>
                 
                 <div class="form-group">

@@ -20,6 +20,15 @@ export class RezervariComponent implements OnInit {
   isAdmin: boolean = false;
   bookings: any = [];
 
+  // Formularul pentru rezervare
+  reservationForm: any;
+  
+  // Datele formularului
+  selectedDate: string = '';
+  selectedTime: string = '';
+  availableHours: string[] = [];
+  
+  // Datele rezervării
   newBooking = {
     nume: '',
     prenume: '',
@@ -29,14 +38,18 @@ export class RezervariComponent implements OnInit {
     guideRequired: false,
     status: 'IN_ASTEPTARE'
   };
-
+  
   // Programul muzeului
   currentSchedule: MuseumSchedule | null = null;
   isLoading = true;
-
-  // Date & time restrictions
-  minDateTime: string = '';
-  maxDateTime: string = '';
+  
+  // Limite pentru datepicker
+  minDate: string = '';
+  maxDate: string = '';
+  
+  // Restricții și mesaje de eroare
+  minDateTime: string = ''; // pentru compatibilitate
+  maxDateTime: string = ''; // pentru compatibilitate
   dateTimeError: string = '';
 
   constructor(
@@ -45,7 +58,16 @@ export class RezervariComponent implements OnInit {
     private router: Router,
     private reservationService: ReservationService,
     private museumScheduleService: MuseumScheduleService
-  ) {}
+  ) {
+    // Inițializăm limitele datei
+    const today = new Date();
+    this.minDate = today.toISOString().split('T')[0];
+    
+    // Setăm data maximă la 3 luni în viitor
+    const maxDate = new Date();
+    maxDate.setMonth(maxDate.getMonth() + 3);
+    this.maxDate = maxDate.toISOString().split('T')[0];
+  }
 
   ngOnInit() {
     this.isAdmin = this.authService.isAuthenticated();
@@ -83,42 +105,48 @@ export class RezervariComponent implements OnInit {
   // Setează restricțiile pentru data și ora rezervării
   setDateTimeRestrictions() {
     if (!this.currentSchedule) return;
-
+    
     // Data minimă = ziua curentă
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    this.minDateTime = today.toISOString().slice(0, 16);
-
+    this.minDateTime = today.toISOString().slice(0, 16); // pentru compatibilitate
+    this.minDate = today.toISOString().split('T')[0];    // pentru noul input de dată
+    
     // Data maximă = 3 luni în viitor
     const maxDate = new Date();
     maxDate.setMonth(maxDate.getMonth() + 3);
-    this.maxDateTime = maxDate.toISOString().slice(0, 16);
+    this.maxDateTime = maxDate.toISOString().slice(0, 16); // pentru compatibilitate
+    this.maxDate = maxDate.toISOString().split('T')[0];    // pentru noul input de dată
   }
-
-  // Validează data și ora selectată
-  validateDateTime() {
-    if (!this.newBooking.datetime || !this.currentSchedule) return;
-
-    const selectedDate = new Date(this.newBooking.datetime);
-    const dayOfWeek = selectedDate.getDay(); // 0 = duminică, 1 = luni, ...
-    const hours = selectedDate.getHours();
-    const minutes = selectedDate.getMinutes();
-
+  
+  // Generează orele disponibile în funcție de ziua selectată
+  generateAvailableHours(date: Date): string[] {
+    if (!this.currentSchedule || !date) return [];
+    
+    const dayOfWeek = date.getDay(); // 0 = duminică, 1 = luni, ...
+    
     // Nu permitem rezervări lunea (ziua 1)
     if (dayOfWeek === 1) {
       this.dateTimeError = "Muzeul este închis lunea. Vă rugăm să selectați o altă zi.";
-      return false;
+      return [];
     }
-
-    // Convertim orele din string în minute pentru comparație
-    const parseTimeToMinutes = (timeStr: string) => {
+    
+    // Transformă orele din string în minute de la miezul nopții
+    const parseTimeToMinutes = (timeStr: string): number => {
       const [hours, minutes] = timeStr.split(':').map(Number);
       return hours * 60 + minutes;
     };
-
-    // Orele de deschidere și închidere în funcție de zi
+    
+    // Transformă minutele în string-uri de forma "HH:MM"
+    const minutesToTimeString = (minutes: number): string => {
+      const hours = Math.floor(minutes / 60);
+      const mins = minutes % 60;
+      return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
+    };
+    
+    // Obținem ora de deschidere și închidere în funcție de zi
     let openTime, closeTime;
-
+    
     if (dayOfWeek >= 2 && dayOfWeek <= 5) {
       // Marți - Vineri
       openTime = parseTimeToMinutes(this.currentSchedule.weekdaysOpen);
@@ -128,24 +156,98 @@ export class RezervariComponent implements OnInit {
       openTime = parseTimeToMinutes(this.currentSchedule.weekendOpen);
       closeTime = parseTimeToMinutes(this.currentSchedule.weekendClose);
     }
-
-    // Timpul selectat în minute
-    const selectedTime = hours * 60 + minutes;
-
-    // Verificăm dacă timpul selectat este în intervalul de program
-    if (selectedTime < openTime) {
-      this.dateTimeError = "Ora selectată este înainte de deschiderea muzeului.";
-      return false;
+    
+    // Generăm slot-uri orare la fiecare oră, lăsând o oră la final pentru vizită
+    const hours: string[] = [];
+    
+    // Verificăm dacă data selectată este astăzi
+    const today = new Date();
+    const isToday = date.getDate() === today.getDate() && 
+                    date.getMonth() === today.getMonth() && 
+                    date.getFullYear() === today.getFullYear();
+    
+    // Dacă este astăzi, ajustăm ora de start de la ora curentă + 1 oră
+    let startMinutes = openTime;
+    if (isToday) {
+      const currentMinutes = today.getHours() * 60 + today.getMinutes();
+      // Rotunjim la următoarea oră completă
+      const nextHourMinutes = Math.ceil(currentMinutes / 60) * 60;
+      startMinutes = Math.max(openTime, nextHourMinutes);
     }
-
-    // Ora ultimei rezervări este cu 1 oră înainte de închidere
-    if (selectedTime > closeTime - 60) {
-      this.dateTimeError = "Ora selectată este prea aproape de închidere. Ultima rezervare se poate face cu cel puțin o oră înainte de închidere.";
-      return false;
+    
+    // Generăm orele disponibile, lăsând o oră la final pentru vizită
+    for (let timeMinutes = startMinutes; timeMinutes <= closeTime - 60; timeMinutes += 60) {
+      hours.push(minutesToTimeString(timeMinutes));
     }
-
-    // Totul este în regulă
+    
+    return hours;
+  }
+  
+  // Când se schimbă data selectată
+  onDateSelected() {
+    if (!this.selectedDate) {
+      this.availableHours = [];
+      this.selectedTime = '';
+      this.dateTimeError = '';
+      this.newBooking.datetime = '';
+      return;
+    }
+    
+    // Convertim string-ul de dată într-un obiect Date
+    const selectedDate = new Date(this.selectedDate);
+    
+    // Generăm orele disponibile pentru data selectată
+    this.availableHours = this.generateAvailableHours(selectedDate);
+    
+    // Resetăm ora selectată
+    this.selectedTime = '';
     this.dateTimeError = '';
+    
+    // Dacă nu avem ore disponibile pentru ziua selectată
+    if (this.availableHours.length === 0 && this.selectedDate) {
+      if (selectedDate.getDay() === 1) {
+        this.dateTimeError = "Muzeul este închis lunea. Vă rugăm să selectați o altă zi.";
+      } else {
+        this.dateTimeError = "Nu există ore disponibile pentru rezervare în această zi.";
+      }
+    }
+    
+    // Actualizăm datetime pentru transmitere la backend
+    this.updateDateTime();
+  }
+  
+  // Când se schimbă ora selectată
+  onTimeSelected() {
+    this.dateTimeError = '';
+    this.updateDateTime();
+  }
+  
+  // Actualizează valoarea combinată a datei și orei
+  updateDateTime() {
+    if (!this.selectedDate || !this.selectedTime) {
+      // Dacă nu avem ambele valori, resetăm datetime
+      this.newBooking.datetime = '';
+      return;
+    }
+    
+    // Combinăm data și ora în formatul exact așteptat de backend: yyyy-MM-dd'T'HH:mm
+    // Backend utilizează @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm") pentru LocalDateTime
+    this.newBooking.datetime = `${this.selectedDate}T${this.selectedTime}`;
+    
+    // Log pentru debugging
+    console.log('Formatted datetime for backend:', this.newBooking.datetime);
+  }
+
+  // Validează data și ora selectată
+  validateDateTime() {
+    // Noua implementare a validării se face la selecția datei și orei
+    // Această metodă este păstrată pentru compatibilitate și cazul folosirii vechiului control datetime-local
+    if (!this.selectedDate || !this.selectedTime) {
+      this.dateTimeError = "Vă rugăm să selectați atât data cât și ora.";
+      return false;
+    }
+    
+    // Dacă am ajuns aici, înseamnă că validările au trecut în onDateSelected și onTimeSelected
     return true;
   }
   
@@ -168,6 +270,8 @@ export class RezervariComponent implements OnInit {
       return;
     }
 
+    console.log("Sending booking with datetime:", this.newBooking.datetime);
+    
     this.reservationService.createReservation(this.newBooking).subscribe({
       next: (response) => {
         // Verificăm dacă răspunsul are proprietatea message înainte de a o folosi
@@ -200,6 +304,10 @@ export class RezervariComponent implements OnInit {
       guideRequired: false,
       status: 'IN_ASTEPTARE'
     };
+    this.selectedDate = '';
+    this.selectedTime = '';
+    this.availableHours = [];
+    this.dateTimeError = '';
   }
 
   deleteBooking(bookingId: number) {

@@ -1,3 +1,6 @@
+/* Import Angular Material stylesheet */
+@import "@angular/material/prebuilt-themes/indigo-pink.css";
+
 /* Global styles */
 html, body {
   margin: 0;
