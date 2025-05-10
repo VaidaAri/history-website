@@ -49,7 +49,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
-      right: 'dayGridMonth,dayGridYear'
+      right: ''
     },
     locale: 'ro',
     fixedWeekCount: false
