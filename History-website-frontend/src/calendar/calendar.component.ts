@@ -26,6 +26,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   selectedImages: { path: string, description?: string }[] = [];
   selectedFile: File | null = null;
   uploadProgress: number = 0;
+  currentImageIndex: number = 0;
   
   readonly MONTHS_IN_PAST = 3;
   readonly MONTHS_IN_FUTURE = 12;
@@ -197,6 +198,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   handleEventClick(info: any) {
     // Deschide modalul de detalii eveniment în loc de alert
     this.selectedEvent = info.event;
+    this.currentImageIndex = 0; // Reset image index when opening a new event
     this.showEventDetailsModal = true;
     return;
   }
@@ -204,6 +206,19 @@ export class CalendarComponent implements OnInit, OnDestroy {
   closeEventDetailsModal() {
     this.showEventDetailsModal = false;
     this.selectedEvent = null;
+    this.currentImageIndex = 0;
+  }
+
+  nextImage() {
+    if (this.selectedEvent?.extendedProps?.images && this.currentImageIndex < this.selectedEvent.extendedProps.images.length - 1) {
+      this.currentImageIndex++;
+    }
+  }
+
+  prevImage() {
+    if (this.currentImageIndex > 0) {
+      this.currentImageIndex--;
+    }
   }
 
   handleDateSelect(selectInfo: any) {

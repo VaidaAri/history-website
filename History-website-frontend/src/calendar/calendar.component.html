@@ -154,22 +154,26 @@
       </div>
       <div class="event-images" *ngIf="selectedEvent?.extendedProps?.images && selectedEvent?.extendedProps?.images.length > 0">
         <h4>Galerie imagini:</h4>
-        <div class="image-gallery">
-          <div class="image-item" *ngFor="let image of selectedEvent?.extendedProps?.images">
-            <div class="image-container">
-              <img [src]="'http://localhost:8080/api/images/uploads/' + image.path" [alt]="image.description || 'Imagine eveniment'">
+        <div class="gallery-container">
+          <div class="gallery-main-image">
+            <img [src]="'http://localhost:8080/api/images/uploads/' + selectedEvent?.extendedProps?.images[currentImageIndex].path"
+                 [alt]="selectedEvent?.extendedProps?.images[currentImageIndex].description || 'Imagine eveniment'">
+          </div>
+
+          <div class="gallery-navigation" *ngIf="selectedEvent?.extendedProps?.images.length > 1">
+            <button class="gallery-nav-button prev" (click)="prevImage()" [disabled]="currentImageIndex === 0">
+              &#10094;
+            </button>
+            <div class="gallery-indicator">
+              {{ currentImageIndex + 1 }} / {{ selectedEvent?.extendedProps?.images.length }}
             </div>
-            <div class="image-description" *ngIf="image.description">
-              {{ image.description }}
-            </div>
+            <button class="gallery-nav-button next" (click)="nextImage()" [disabled]="currentImageIndex === selectedEvent?.extendedProps?.images.length - 1">
+              &#10095;
+            </button>
           </div>
         </div>
       </div>
     </div>
-    <div class="modal-footer">
-      <button type="button" class="close-btn-secondary" (click)="closeEventDetailsModal()">
-        Închide
-      </button>
-    </div>
+    <!-- Modal footer removed, using only the X button in the header -->
   </div>
 </div>
