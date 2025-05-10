@@ -17,7 +17,7 @@
   object-fit: contain;
 }
 
-/* Format vertical pentru portrete */
+
 .standard-image[src*="Florian Porcius"],
 .standard-image[src*="Iulian Martian"],
 .standard-image[src*="Virgil Sotropa"],
@@ -27,7 +27,7 @@
   height: 500px;
 }
 
-/* Format orizontal pentru clădiri și alte imagini landscape */
+
 .standard-image[src*="cladire veche muz"],
 .standard-image[src*="bust Vasile Nascu"] {
   width: 500px;

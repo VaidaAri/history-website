@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import { MeniuComponent } from "../meniu/meniu.component";
@@ -31,6 +31,16 @@ export class AppComponent implements OnInit, OnDestroy {
     private http: HttpClient,
     private reservationService: ReservationService
   ) {}
+  
+  // Detectează când utilizatorul închide pagina sau reîmprospătează browser-ul
+  @HostListener('window:beforeunload', ['$event'])
+  unloadHandler(event: Event) {
+    // Dacă un administrator este autentificat, îl deconectăm automat la închiderea browser-ului
+    if (this.isAdmin) {
+      localStorage.removeItem('adminToken');
+      localStorage.removeItem('adminName');
+    }
+  }
   
   ngOnInit() {
     this.authService.isAuthenticated$.subscribe(isAuthenticated => {
@@ -75,6 +85,12 @@ export class AppComponent implements OnInit, OnDestroy {
     // Ne asigurăm că dezabonăm pentru a evita memory leaks
     if (this.refreshSubscription) {
       this.refreshSubscription.unsubscribe();
+    }
+    
+    // Deconectăm administratorul dacă aplicația este oprită sau navigăm în afara aplicației
+    if (this.isAdmin) {
+      localStorage.removeItem('adminToken');
+      localStorage.removeItem('adminName');
     }
   }
   
