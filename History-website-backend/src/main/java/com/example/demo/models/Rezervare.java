@@ -7,6 +7,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,9 +29,9 @@ public class Rezervare {
     private Integer id;
 
     private String nume;
-    
+
     private String prenume;
-    
+
     private String email;
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
@@ -39,20 +40,28 @@ public class Rezervare {
     private Integer numberOfPersons;
 
     private boolean guideRequired;
-    
+
     @Enumerated(EnumType.STRING)
     private ReservationStatus status = ReservationStatus.IN_ASTEPTARE;
-    
+
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
+
     public enum ReservationStatus {
         IN_ASTEPTARE("În așteptare"),
         APROBATA("Aprobată");
-        
+
         private final String displayName;
-        
+
         ReservationStatus(String displayName) {
             this.displayName = displayName;
         }
-        
+
         public String getDisplayName() {
             return displayName;
         }

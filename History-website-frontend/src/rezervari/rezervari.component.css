@@ -309,10 +309,10 @@ table {
     border-collapse: collapse;
     background-color: #F8F4E3;
     border-radius: 12px;
-    overflow: hidden;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     border: 2px solid #EAD196;
     font-size: 0.95em;
+    table-layout: fixed; /* Asigură că lățimile coloanelor sunt fixe */
 }
 
 thead {
@@ -320,13 +320,21 @@ thead {
 }
 
 th {
-    padding: 15px;
+    padding: 15px 10px;
     text-align: left;
     color: #5D4037;
     font-weight: bold;
     text-transform: uppercase;
-    font-size: 0.9em;
+    font-size: 0.85em;
     letter-spacing: 0.5px;
+    line-height: 1.4;
+    height: 60px; /* Înălțime fixă pentru anteturi */
+    vertical-align: middle;
+}
+
+/* Aliniere centrată pentru anteturile coloanelor Persoane și Ghid */
+th:nth-child(6), th:nth-child(7) {
+    text-align: center;
 }
 
 tbody tr:nth-child(even) {
@@ -337,10 +345,19 @@ tbody tr:hover {
     background-color: #EFE3C8;
 }
 
+tbody tr {
+    height: 70px; /* Înălțime minimă pentru rânduri */
+}
+
 td {
-    padding: 12px 15px;
+    padding: 15px 10px;
     border-bottom: 1px solid #E6D3A3;
     color: #5D4037;
+    word-wrap: break-word; /* Permite ruperea cuvintelor */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.4;
+    vertical-align: middle;
 }
 
 .empty-table {
@@ -349,6 +366,36 @@ td {
     font-style: italic;
     color: #888;
 }
+
+/* Adaugă scrollbar personalizat pentru tabel */
+.table-section {
+    overflow-x: auto;
+}
+
+/* Stiluri pentru data vizitei și data creării */
+td:nth-child(4), td:nth-child(5) {
+    font-size: 0.9em;
+    line-height: 1.3;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+/* Stiluri pentru a evidenția data creării */
+td:nth-child(5) {
+    font-weight: bold;
+    color: #7D5A50;
+}
+
+/* Ajustăm lățimile coloanelor pentru un layout mai bun */
+th:nth-child(1), td:nth-child(1) { width: 11%; } /* Nume */
+th:nth-child(2), td:nth-child(2) { width: 11%; } /* Prenume */
+th:nth-child(3), td:nth-child(3) { width: 15%; } /* Email */
+th:nth-child(4), td:nth-child(4) { width: 12%; } /* Data vizitei */
+th:nth-child(5), td:nth-child(5) { width: 10%; } /* Data creării - redusă */
+th:nth-child(6), td:nth-child(6) { width: 8%; text-align: center; } /* Persoane - mărită și apropiată */
+th:nth-child(7), td:nth-child(7) { width: 8%; text-align: center; } /* Ghid */
+th:nth-child(8), td:nth-child(8) { width: 10%; } /* Status */
+th:nth-child(9), td:nth-child(9) { width: 15%; } /* Acțiuni */
 
 /* Stiluri pentru status */
 .status-badge {
@@ -373,9 +420,17 @@ td {
 
 /* Stiluri pentru acțiuni în tabel */
 .actions-cell {
+    vertical-align: middle;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.action-buttons {
     display: flex;
+    flex-direction: column;
     gap: 8px;
-    flex-wrap: wrap;
+    max-width: 90%;
+    margin: 0 auto;
 }
 
 /* Buton aprobare */
@@ -386,10 +441,12 @@ td {
     border-radius: 4px;
     padding: 8px 12px;
     font-size: 0.85em;
+    font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s;
-    margin-top: 0;
-    width: auto;
+    transition: background-color 0.2s ease;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .approve-btn:hover {
@@ -399,10 +456,18 @@ td {
 /* Buton ștergere */
 .delete-btn {
     background-color: #C14953;
-    padding: 8px 15px;
-    width: auto;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
     font-size: 0.85em;
-    margin-top: 0;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    margin-top: 5px; /* Spațiu între butoane */
 }
 
 .delete-btn:hover {
@@ -560,7 +625,7 @@ input[type="date"]:focus, select:focus {
 }
 
 /* Stiluri responsive */
-@media (max-width: 768px) {
+@media (max-width: 992px) {
     .rezervari-container {
         padding: 15px;
     }
@@ -569,11 +634,121 @@ input[type="date"]:focus, select:focus {
         padding: 15px;
     }
 
+    /* Asigurăm vizibilitatea corectă a tabelului pe ecrane mai mici */
     table {
         font-size: 0.85em;
+        width: 100%;
     }
 
     th, td {
-        padding: 10px;
+        padding: 10px 6px;
+        font-size: 0.9em;
+    }
+
+    /* Stiluri speciale pentru a asigura responsivitatea fără scroll orizontal */
+    .table-section {
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+    /* Ajustăm lățimile coloanelor pentru un layout mai bun pe mobile */
+    th:nth-child(1), td:nth-child(1) { width: 9%; }  /* Nume */
+    th:nth-child(2), td:nth-child(2) { width: 9%; }  /* Prenume */
+    th:nth-child(3), td:nth-child(3) { width: 16%; } /* Email */
+    th:nth-child(4), td:nth-child(4) { width: 13%; } /* Data vizitei */
+    th:nth-child(5), td:nth-child(5) { width: 13%; } /* Data creării */
+    th:nth-child(6), td:nth-child(6) { width: 6%; }  /* Persoane */
+    th:nth-child(7), td:nth-child(7) { width: 6%; }  /* Ghid */
+    th:nth-child(8), td:nth-child(8) { width: 12%; } /* Status */
+    th:nth-child(9), td:nth-child(9) { width: 16%; } /* Acțiuni */
+
+    /* Optimizări pentru afișarea pe ecran mic */
+    .status-badge {
+        padding: 4px 6px;
+        font-size: 0.8em;
+    }
+
+    /* Butonul de aprobare în colțul din dreapta sus */
+    .approve-btn, .delete-btn {
+        padding: 10px 12px;
+        font-size: 0.85em;
+    }
+}
+
+/* Stiluri pentru dispozitive foarte mici */
+@media (max-width: 576px) {
+    /* Pe ecrane foarte mici, aplicăm un layout card-like pentru înregistrări */
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+
+    thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    tr {
+        border: 1px solid #EAD196;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    td {
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-left: 50%;
+        text-align: right;
+        overflow: visible;
+        min-height: 30px;
+    }
+
+    td:before {
+        position: absolute;
+        top: 12px;
+        left: 10px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align: left;
+        font-weight: bold;
+        color: #7D5A50;
+    }
+
+    /* Adaugă etichete pentru fiecare celulă */
+    td:nth-of-type(1):before { content: "Nume:"; }
+    td:nth-of-type(2):before { content: "Prenume:"; }
+    td:nth-of-type(3):before { content: "Email:"; }
+    td:nth-of-type(4):before { content: "Data vizitei:"; }
+    td:nth-of-type(5):before { content: "Data creării:"; }
+    td:nth-of-type(6):before { content: "Persoane:"; }
+    td:nth-of-type(7):before { content: "Ghid:"; }
+    td:nth-of-type(8):before { content: "Status:"; }
+    td:nth-of-type(9):before { content: "Acțiuni:"; }
+
+    /* Ajustări pentru butoane pe ecrane mici */
+    .actions-cell {
+        padding: 15px 10px;
+    }
+
+    .action-buttons {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+
+    .approve-btn, .delete-btn {
+        width: auto;
+        min-width: 90px;
+    }
+
+    .empty-table {
+        display: block;
+        text-align: center;
+        padding: 20px;
     }
 }
