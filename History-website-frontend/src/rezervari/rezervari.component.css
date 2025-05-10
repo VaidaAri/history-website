@@ -409,20 +409,58 @@ td {
     background-color: #A13842;
 }
 
+/* Stiluri pentru notificări și erori */
+.error-message {
+  color: #d9534f;
+  font-size: 0.9rem;
+  margin-top: 5px;
+  font-weight: 500;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.booking-time-info {
+  background-color: #FFF9E6;
+  border-left: 3px solid #7D5A50;
+  padding: 10px 15px;
+  margin-top: 10px;
+  font-size: 0.9rem;
+  border-radius: 4px;
+}
+
+.booking-time-info p {
+  margin-bottom: 8px;
+  color: #5D4037;
+}
+
+.booking-time-info ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.booking-time-info li {
+  margin-bottom: 4px;
+  color: #5D4037;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 /* Stiluri responsive */
 @media (max-width: 768px) {
     .rezervari-container {
         padding: 15px;
     }
-    
+
     form {
         padding: 15px;
     }
-    
+
     table {
         font-size: 0.85em;
     }
-    
+
     th, td {
         padding: 10px;
     }

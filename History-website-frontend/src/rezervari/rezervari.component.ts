@@ -29,10 +29,15 @@ export class RezervariComponent implements OnInit {
     guideRequired: false,
     status: 'IN_ASTEPTARE'
   };
-  
+
   // Programul muzeului
   currentSchedule: MuseumSchedule | null = null;
   isLoading = true;
+
+  // Date & time restrictions
+  minDateTime: string = '';
+  maxDateTime: string = '';
+  dateTimeError: string = '';
 
   constructor(
     private http: HttpClient, 
@@ -64,12 +69,84 @@ export class RezervariComponent implements OnInit {
       next: (schedule) => {
         this.currentSchedule = schedule;
         this.isLoading = false;
+
+        // Setăm restricțiile de dată și oră
+        this.setDateTimeRestrictions();
       },
       error: (err) => {
         console.error('Eroare la încărcarea programului muzeului:', err);
         this.isLoading = false;
       }
     });
+  }
+
+  // Setează restricțiile pentru data și ora rezervării
+  setDateTimeRestrictions() {
+    if (!this.currentSchedule) return;
+
+    // Data minimă = ziua curentă
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    this.minDateTime = today.toISOString().slice(0, 16);
+
+    // Data maximă = 3 luni în viitor
+    const maxDate = new Date();
+    maxDate.setMonth(maxDate.getMonth() + 3);
+    this.maxDateTime = maxDate.toISOString().slice(0, 16);
+  }
+
+  // Validează data și ora selectată
+  validateDateTime() {
+    if (!this.newBooking.datetime || !this.currentSchedule) return;
+
+    const selectedDate = new Date(this.newBooking.datetime);
+    const dayOfWeek = selectedDate.getDay(); // 0 = duminică, 1 = luni, ...
+    const hours = selectedDate.getHours();
+    const minutes = selectedDate.getMinutes();
+
+    // Nu permitem rezervări lunea (ziua 1)
+    if (dayOfWeek === 1) {
+      this.dateTimeError = "Muzeul este închis lunea. Vă rugăm să selectați o altă zi.";
+      return false;
+    }
+
+    // Convertim orele din string în minute pentru comparație
+    const parseTimeToMinutes = (timeStr: string) => {
+      const [hours, minutes] = timeStr.split(':').map(Number);
+      return hours * 60 + minutes;
+    };
+
+    // Orele de deschidere și închidere în funcție de zi
+    let openTime, closeTime;
+
+    if (dayOfWeek >= 2 && dayOfWeek <= 5) {
+      // Marți - Vineri
+      openTime = parseTimeToMinutes(this.currentSchedule.weekdaysOpen);
+      closeTime = parseTimeToMinutes(this.currentSchedule.weekdaysClose);
+    } else {
+      // Sâmbătă - Duminică
+      openTime = parseTimeToMinutes(this.currentSchedule.weekendOpen);
+      closeTime = parseTimeToMinutes(this.currentSchedule.weekendClose);
+    }
+
+    // Timpul selectat în minute
+    const selectedTime = hours * 60 + minutes;
+
+    // Verificăm dacă timpul selectat este în intervalul de program
+    if (selectedTime < openTime) {
+      this.dateTimeError = "Ora selectată este înainte de deschiderea muzeului.";
+      return false;
+    }
+
+    // Ora ultimei rezervări este cu 1 oră înainte de închidere
+    if (selectedTime > closeTime - 60) {
+      this.dateTimeError = "Ora selectată este prea aproape de închidere. Ultima rezervare se poate face cu cel puțin o oră înainte de închidere.";
+      return false;
+    }
+
+    // Totul este în regulă
+    this.dateTimeError = '';
+    return true;
   }
   
   logout() {
@@ -85,18 +162,23 @@ export class RezervariComponent implements OnInit {
     });
   }
 
-  addBooking() { 
+  addBooking() {
+    // Validăm data și ora înainte de a trimite rezervarea
+    if (!this.validateDateTime()) {
+      return;
+    }
+
     this.reservationService.createReservation(this.newBooking).subscribe({
       next: (response) => {
         // Verificăm dacă răspunsul are proprietatea message înainte de a o folosi
-        const successMessage = response && response.message 
-          ? `Rezervare adăugată cu succes! ${response.message}` 
+        const successMessage = response && response.message
+          ? `Rezervare adăugată cu succes! ${response.message}`
           : "Rezervare adăugată cu succes!";
-        
+
         alert(successMessage);
-        
+
         this.resetBookingForm();
-        
+
         if (this.isAdmin) {
           this.fetchBookings();
         }
