@@ -64,10 +64,10 @@
                                   (change)="onDateSelected()">
                         </div>
 
-                        <!-- Selector de oră - disponibil după ce data este selectată -->
-                        <div class="time-select" *ngIf="selectedDate">
+                        <!-- Selector de oră - dezactivat până când data este selectată -->
+                        <div class="time-select">
                             <label for="time">Ora:</label>
-                            <select id="time" name="time" [(ngModel)]="selectedTime" required (change)="onTimeSelected()">
+                            <select id="time" name="time" [(ngModel)]="selectedTime" required [disabled]="!selectedDate" (change)="onTimeSelected()">
                                 <option value="">-- Selectați ora --</option>
                                 <option *ngFor="let time of availableHours" [value]="time">{{ time }}</option>
                             </select>
