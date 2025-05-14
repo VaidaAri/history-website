@@ -119,7 +119,7 @@ export class RezervariComponent implements OnInit {
     this.maxDate = maxDate.toISOString().split('T')[0];    // pentru noul input de dată
   }
   
-  // Generează orele disponibile în funcție de ziua selectată
+  // Generează intervalele orare disponibile în funcție de ziua selectată
   generateAvailableHours(date: Date): string[] {
     if (!this.currentSchedule || !date) return [];
     
@@ -144,6 +144,14 @@ export class RezervariComponent implements OnInit {
       return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
     };
     
+    // Funcție pentru generarea intervalelor de 2 ore
+    const createTimeInterval = (startMinutes: number): string => {
+      const endMinutes = startMinutes + 120; // 2 ore
+      const startTime = minutesToTimeString(startMinutes);
+      const endTime = minutesToTimeString(endMinutes);
+      return `${startTime}-${endTime}`;
+    };
+    
     // Obținem ora de deschidere și închidere în funcție de zi
     let openTime, closeTime;
     
@@ -157,7 +165,7 @@ export class RezervariComponent implements OnInit {
       closeTime = parseTimeToMinutes(this.currentSchedule.weekendClose);
     }
     
-    // Generăm slot-uri orare la fiecare oră, lăsând o oră la final pentru vizită
+    // Generăm slot-uri orare la fiecare 2 ore, lăsând cel puțin o oră la final pentru vizită
     const hours: string[] = [];
     
     // Verificăm dacă data selectată este astăzi
@@ -175,9 +183,9 @@ export class RezervariComponent implements OnInit {
       startMinutes = Math.max(openTime, nextHourMinutes);
     }
     
-    // Generăm orele disponibile, lăsând o oră la final pentru vizită
-    for (let timeMinutes = startMinutes; timeMinutes <= closeTime - 60; timeMinutes += 60) {
-      hours.push(minutesToTimeString(timeMinutes));
+    // Generăm intervalele de 2 ore disponibile, asigurând că fiecare interval se încadrează în programul muzeului
+    for (let timeMinutes = startMinutes; timeMinutes <= closeTime - 120; timeMinutes += 120) {
+      hours.push(createTimeInterval(timeMinutes));
     }
     
     return hours;
@@ -230,9 +238,12 @@ export class RezervariComponent implements OnInit {
       return;
     }
     
-    // Combinăm data și ora în formatul exact așteptat de backend: yyyy-MM-dd'T'HH:mm
+    // Extragem ora de început din intervalul selectat (format: "09:00-11:00")
+    const startTime = this.selectedTime.split('-')[0];
+    
+    // Combinăm data și ora de început în formatul exact așteptat de backend: yyyy-MM-dd'T'HH:mm
     // Backend utilizează @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm") pentru LocalDateTime
-    this.newBooking.datetime = `${this.selectedDate}T${this.selectedTime}`;
+    this.newBooking.datetime = `${this.selectedDate}T${startTime}`;
     
     // Log pentru debugging
     console.log('Formatted datetime for backend:', this.newBooking.datetime);
