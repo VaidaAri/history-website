@@ -28,6 +28,9 @@ export class AuthService {
       if (adminName) {
         this.adminNameSubject.next(adminName);
       }
+      
+      // Validăm token-ul la inițializare pentru a verifica dacă este încă valid
+      this.validateToken().subscribe();
     } else {
       this.isAuthenticatedSubject.next(false);
     }

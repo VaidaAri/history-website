@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; 
 import { PostareComponent } from '../postare/postare.component';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-administrator',
@@ -22,7 +23,7 @@ export class AdministratorComponent implements OnInit {
   images: any[] = [];
   currentSection: string = 'posts';
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router, private authService: AuthService) {}
 
   ngOnInit() {
     this.checkAuthentication();
@@ -32,8 +33,8 @@ export class AdministratorComponent implements OnInit {
   }
 
   checkAuthentication() {
-    const isLoggedIn = localStorage.getItem('adminToken'); 
-    if (!isLoggedIn) {
+    // Folosim serviciul AuthService injectat în constructor
+    if (!this.authService.isAuthenticated()) {
       this.router.navigate(['/administrator-login']);
     }
   }
@@ -132,7 +133,7 @@ export class AdministratorComponent implements OnInit {
   }
 
   logout() {
-    localStorage.removeItem('adminToken'); 
-    this.router.navigate(['/administrator-login']);
+    // Folosim metoda logout a serviciului AuthService
+    this.authService.logout();
   }
 }

@@ -35,11 +35,8 @@ export class AppComponent implements OnInit, OnDestroy {
   // Detectează când utilizatorul închide pagina sau reîmprospătează browser-ul
   @HostListener('window:beforeunload', ['$event'])
   unloadHandler(event: Event) {
-    // Dacă un administrator este autentificat, îl deconectăm automat la închiderea browser-ului
-    if (this.isAdmin) {
-      localStorage.removeItem('adminToken');
-      localStorage.removeItem('adminName');
-    }
+    // Nu mai deconectăm administratorul la reîmprospătarea paginii
+    // Token-ul rămâne în localStorage pentru persistență
   }
   
   ngOnInit() {
@@ -87,11 +84,8 @@ export class AppComponent implements OnInit, OnDestroy {
       this.refreshSubscription.unsubscribe();
     }
     
-    // Deconectăm administratorul dacă aplicația este oprită sau navigăm în afara aplicației
-    if (this.isAdmin) {
-      localStorage.removeItem('adminToken');
-      localStorage.removeItem('adminName');
-    }
+    // Nu mai deconectăm administratorul când componentul este distrus
+    // Astfel starea de autentificare va persista între reîmprospătări ale paginii
   }
   
   // Încarcă numărul de rezervări în așteptare
