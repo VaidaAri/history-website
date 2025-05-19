@@ -5,51 +5,12 @@
         <div class="home-container">
             <h2>Bine ați venit la Muzeul Grăniceresc Năsăudean</h2>
             
-            <!-- Formular pentru adăugare postare - vizibil doar pentru administratori -->
-            <div *ngIf="isAdmin" class="admin-post-form">
-                <h3>Adaugă o postare nouă</h3>
-                <div class="admin-form-content">
-                    <!-- Selector pentru secțiune -->
-                    <div class="section-select-container">
-                        <label for="admin-section-select">Alege secțiunea:</label>
-                        <select id="admin-section-select" class="admin-section-select" [(ngModel)]="selectedSectionId">
-                            <option *ngFor="let section of sections" [value]="section.id">{{ section.title }}</option>
-                        </select>
-                    </div>
-                    
-                    <!-- Câmpul pentru descriere -->
-                    <div class="description-container">
-                        <textarea [(ngModel)]="newPostDescription" placeholder="Scrie o postare..." class="post-textarea"></textarea>
-                    </div>
-                    
-                    <!-- Upload imagini -->
-                    <div class="file-upload-container">
-                        <label for="home-file-upload" class="file-upload-label">
-                            <span class="file-icon">📷</span>
-                            <span>Selectează imagini</span>
-                        </label>
-                        <input type="file" id="home-file-upload" (change)="onFileSelected($event)" accept="image/*" multiple class="file-input">
-                    </div>
-                    
-                    <!-- Previzualizare imagini selectate -->
-                    <div *ngIf="newPostImages.length > 0" class="selected-images">
-                        <h5>Imagini selectate ({{ newPostImages.length }}):</h5>
-                        <div class="image-previews">
-                            <div *ngFor="let image of newPostImages; let i = index" class="image-preview-container">
-                                <img [src]="image.url" alt="Preview" class="image-preview" />
-                                <button (click)="removeImage(i)" class="remove-image-btn" title="Elimină imaginea">×</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <button class="admin-add-post-btn" (click)="addPostToSelectedSection()" [disabled]="!newPostDescription.trim()">Adaugă postare în secțiunea selectată</button>
-                </div>
-            </div>
+            <!-- Componenta de administrare va fi folosită pentru adăugarea postărilor -->
             
-            <!-- Secțiunea 1: Noutăți și Articole - afișată doar dacă are postări -->
-            <div id="section-0" class="posts-section" *ngIf="hasPosts(0)">
+            <!-- Afișare unificată a tuturor postărilor -->
+            <div id="posts-section" class="posts-section">
                 <div class="posts-header">
-                    <h3>Noutăți și Articole</h3>
+                    <h3>Postări</h3>
                     
                     <!-- Componenta de administrare postări - vizibilă doar pentru administratori -->
                     <app-post-manager 
@@ -60,11 +21,11 @@
                 
                 <!-- Lista de postări -->
                 <div class="posts-list">
-                    <div *ngIf="getPostsForSection(0).length === 0" class="no-posts">
+                    <div *ngIf="posts.length === 0" class="no-posts">
                         <p>Nu există postări momentan.</p>
                     </div>
                     
-                    <div *ngFor="let post of getPostsForSection(0)" class="post-item">
+                    <div *ngFor="let post of posts" class="post-item">
                         <!-- Arată postarea în mod normal dacă nu este în modul de editare -->
                         <div *ngIf="editingPostId !== post.id">
                             <app-postare [post]="post"></app-postare>
@@ -86,78 +47,6 @@
                                 (postUpdated)="onPostUpdated()">
                             </app-post-editor>
                         </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Secțiunea 2: Peisaje din curtea muzeului - afișată doar dacă are postări -->
-            <div id="section-1" class="posts-section" *ngIf="hasPosts(1)">
-                <div class="posts-header">
-                    <h3>Peisaje din curtea muzeului</h3>
-                    
-                    <!-- Componenta de administrare postări - vizibilă doar pentru administratori -->
-                    <app-post-manager 
-                        *ngIf="isAdmin" 
-                        (postCreated)="onPostCreated()"
-                    ></app-post-manager>
-                </div>
-                
-                <!-- Lista de postări -->
-                <div class="posts-list">
-                    <div *ngIf="getPostsForSection(1).length === 0" class="no-posts">
-                        <p>Nu există postări momentan.</p>
-                    </div>
-                    
-                    <div *ngFor="let post of getPostsForSection(1)" class="post-item">
-                        <!-- Conținut postare similar cu secțiunea 1 -->
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Secțiunea 3: Expoziții permanente - afișată doar dacă are postări -->
-            <div id="section-2" class="posts-section" *ngIf="hasPosts(2)">
-                <div class="posts-header">
-                    <h3>Expoziții permanente</h3>
-                    
-                    <!-- Componenta de administrare postări - vizibilă doar pentru administratori -->
-                    <app-post-manager 
-                        *ngIf="isAdmin" 
-                        (postCreated)="onPostCreated()"
-                    ></app-post-manager>
-                </div>
-                
-                <!-- Lista de postări -->
-                <div class="posts-list">
-                    <div *ngIf="getPostsForSection(2).length === 0" class="no-posts">
-                        <p>Nu există postări momentan.</p>
-                    </div>
-                    
-                    <div *ngFor="let post of getPostsForSection(2)" class="post-item">
-                        <!-- Conținut postare similar cu secțiunea 1 -->
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Secțiunea 4: Prietenii muzeului - afișată doar dacă are postări -->
-            <div id="section-3" class="posts-section" *ngIf="hasPosts(3)">
-                <div class="posts-header">
-                    <h3>Prietenii muzeului</h3>
-                    
-                    <!-- Componenta de administrare postări - vizibilă doar pentru administratori -->
-                    <app-post-manager 
-                        *ngIf="isAdmin" 
-                        (postCreated)="onPostCreated()"
-                    ></app-post-manager>
-                </div>
-                
-                <!-- Lista de postări -->
-                <div class="posts-list">
-                    <div *ngIf="getPostsForSection(3).length === 0" class="no-posts">
-                        <p>Nu există postări momentan.</p>
-                    </div>
-                    
-                    <div *ngFor="let post of getPostsForSection(3)" class="post-item">
-                        <!-- Conținut postare similar cu secțiunea 1 -->
                     </div>
                 </div>
             </div>

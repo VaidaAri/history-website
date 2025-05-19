@@ -69,20 +69,17 @@ export class AcasaComponent implements OnInit {
     this.loadPosts();
   }
 
-  // Obține postările pentru o secțiune specifică
-  getPostsForSection(sectionId: number): any[] {
-    // În această versiune simplă, toate postările sunt în prima secțiune
-    // Restul secțiunilor sunt goale
-    if (sectionId === 0) {
-      return this.posts;
-    }
-    return [];
-  }
+  // Aceste metode sunt păstrate pentru viitor, dar nu mai sunt utilizate activ
+  // getPostsForSection(sectionId: number): any[] {
+  //   if (sectionId === 0) {
+  //     return this.posts;
+  //   }
+  //   return [];
+  // }
   
-  // Verifică dacă o secțiune are postări
-  hasPosts(sectionId: number): boolean {
-    return this.getPostsForSection(sectionId).length > 0;
-  }
+  // hasPosts(sectionId: number): boolean {
+  //   return this.getPostsForSection(sectionId).length > 0;
+  // }
 
   // Încarcă toate postările din backend
   loadPosts() {
@@ -199,27 +196,22 @@ export class AcasaComponent implements OnInit {
     this.newPostImages.splice(index, 1);
   }
 
-  // Adaugă postare în secțiunea selectată
+  // Adaugă postare (fără secțiune obligatorie)
   addPostToSelectedSection() {
     if (!this.newPostDescription.trim()) {
       alert('Descrierea nu poate fi goală!');
       return;
     }
     
-    const sectionId = this.selectedSectionId;
-    
     const newPost = { 
       description: this.newPostDescription, 
-      images: this.newPostImages,
-      sectionId: sectionId
+      images: this.newPostImages
+      // sectionId nu mai este necesar
     };
 
-    // Afișăm un indicator de încărcare sau un mesaj
-    console.log('Adaugă postare în secțiunea:', sectionId);
-    
     this.postService.addPost(newPost).subscribe({
       next: () => {
-        alert('Postare adăugată cu succes în secțiunea: ' + this.sections[sectionId].title);
+        alert('Postare adăugată cu succes!');
         this.newPostDescription = '';
         this.newPostImages = [];
         this.loadPosts();
