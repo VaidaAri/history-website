@@ -1,0 +1,44 @@
+<main class="expozitii-permanente">
+  <app-meniu></app-meniu>
+  <app-cadran>
+    <div class="container">
+      <h2>Expoziții Permanente</h2>
+      <p class="intro-text">
+        Muzeul Grăniceresc Năsăudean găzduiește o serie de expoziții permanente care pun în valoare istoria, 
+        cultura și tradițiile regiunii. Vă invităm să descoperiți bogăția patrimoniului nostru prin intermediul 
+        acestor colecții valoroase.
+      </p>
+
+      <div class="expozitii-list">
+        <div *ngFor="let expozitie of expozitii" class="expozitie-card">
+          <div class="expozitie-image" *ngIf="expozitie.imagine">
+            <img [src]="expozitie.imagine" [alt]="expozitie.titlu">
+          </div>
+          <div class="expozitie-image placeholder" *ngIf="!expozitie.imagine">
+            <div class="placeholder-text">Imagine în curând</div>
+          </div>
+          <div class="expozitie-content">
+            <h3>{{ expozitie.titlu }}</h3>
+            <p>{{ expozitie.descriere }}</p>
+            <button class="details-button">Detalii expoziție</button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="info-section">
+        <h3>Program de vizitare</h3>
+        <p>Expozițiile permanente pot fi vizitate în timpul programului normal al muzeului:</p>
+        <ul>
+          <li><strong>Marți - Vineri:</strong> 9:00 - 17:00</li>
+          <li><strong>Sâmbătă - Duminică:</strong> 10:00 - 16:00</li>
+          <li><strong>Luni:</strong> Închis</li>
+        </ul>
+        <p>Pentru grupuri organizate, vă rugăm să faceți o rezervare în prealabil.</p>
+      </div>
+      
+      <div class="navigation-buttons">
+        <button class="back-button" routerLink="/">Înapoi la pagina principală</button>
+      </div>
+    </div>
+  </app-cadran>
+</main>

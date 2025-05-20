@@ -11,6 +11,9 @@ import { PublicatiiComponent } from '../publicatii/publicatii.component';
 import { CreeareContComponent } from '../creeare-cont/creeare-cont.component';
 import { AdministratorComponent } from '../administrator/administrator.component';
 import { CadranComponent } from '../cadran/cadran.component';
+import { PeisajeMuzeuComponent } from '../peisaje-muzeu/peisaje-muzeu.component';
+import { ExpozitiiPermanenteComponent } from '../expozitii-permanente/expozitii-permanente.component';
+import { PrieteniiMuzeuluiComponent } from '../prietenii-muzeului/prietenii-muzeului.component';
 
 export const routes: Routes = [{path:'', component: AcasaComponent},
     {path:'istoric', component: IstoricComponent },
@@ -23,5 +26,8 @@ export const routes: Routes = [{path:'', component: AcasaComponent},
     {path:'publicatii', component: PublicatiiComponent},
     {path:'creeare-cont', component: CreeareContComponent},
     {path: 'administrator', component: AdministratorComponent},
-    {path: 'cadran', component: CadranComponent}
+    {path: 'cadran', component: CadranComponent},
+    {path: 'peisaje-muzeu', component: PeisajeMuzeuComponent},
+    {path: 'expozitii-permanente', component: ExpozitiiPermanenteComponent},
+    {path: 'prietenii-muzeului', component: PrieteniiMuzeuluiComponent}
 ];

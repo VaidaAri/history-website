@@ -1,0 +1,35 @@
+<main class="peisaje-muzeu">
+  <app-meniu></app-meniu>
+  <app-cadran>
+    <div class="container">
+      <h2>Peisaje din curtea muzeului</h2>
+      <p class="intro-text">
+        Muzeul Grăniceresc Năsăudean este înconjurat de o curte minunată, cu peisaje ce reflectă frumusețea 
+        istorică și naturală a zonei. Aceste imagini surprind diversele perspective și elemente care compun 
+        spațiul exterior al muzeului.
+      </p>
+
+      <div class="gallery">
+        <div *ngFor="let image of peisajeImages" class="gallery-item">
+          <div class="image-container">
+            <img [src]="image.url" [alt]="image.description" class="peisaj-image">
+          </div>
+          <div class="image-description">
+            <p>{{ image.description }}</p>
+          </div>
+        </div>
+        
+        <!-- Placeholder pentru imagini viitoare -->
+        <div class="gallery-placeholder">
+          <div class="placeholder-message">
+            <p>Secțiune în curs de actualizare cu mai multe imagini din curtea muzeului.</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="navigation-buttons">
+        <button class="back-button" routerLink="/">Înapoi la pagina principală</button>
+      </div>
+    </div>
+  </app-cadran>
+</main>
