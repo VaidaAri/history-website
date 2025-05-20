@@ -1,11 +1,11 @@
 .post {
-  margin: 0 auto 35px auto;
-  padding: 30px;
+  margin: 0 auto 45px auto;
+  padding: 35px;
   background-color: #F8F4E3;
-  border-radius: 15px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
-  border: 1px solid rgba(234, 209, 150, 0.5);
-  max-width: 850px;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  border: 2px solid rgba(234, 209, 150, 0.6);
+  max-width: 900px;
   width: 100%;
 }
 
@@ -13,15 +13,17 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
-  border-bottom: 1px solid rgba(234, 209, 150, 0.5);
-  padding-bottom: 10px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid rgba(234, 209, 150, 0.6);
+  padding-bottom: 15px;
 }
 
 .post-date {
-  font-size: 0.9em;
+  font-size: 1.1em;
   color: #7D5A50;
   font-style: italic;
+  font-weight: 500;
+  letter-spacing: 0.5px;
 }
 
 .post-content {
@@ -30,20 +32,22 @@
 
 .post p {
   color: #3E2723;
-  font-size: 1.15em;
-  line-height: 1.9;
-  margin-bottom: 20px;
+  font-size: 1.25em;
+  line-height: 2;
+  margin-bottom: 25px;
   white-space: pre-line;
   text-align: justify;
+  letter-spacing: 0.3px;
 }
 
 /* Stiluri pentru carusel */
 .carousel-container {
   position: relative;
-  margin: 25px 0;
+  margin: 35px 0;
   overflow: hidden;
-  border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(234, 209, 150, 0.4);
 }
 
 .carousel-wrapper {
@@ -51,6 +55,7 @@
   width: 100%;
   overflow: hidden;
   aspect-ratio: 16/9;
+  background-color: rgba(0, 0, 0, 0.02);
 }
 
 .carousel-slides {
@@ -74,12 +79,7 @@
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-  transition: transform 0.3s ease;
   cursor: pointer;
-}
-
-.carousel-slide img:hover {
-  transform: scale(1.03);
 }
 
 /* Stiluri pentru butoane de navigare */
@@ -90,15 +90,16 @@
   background-color: rgba(125, 90, 80, 0.7);
   color: white;
   border: none;
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   z-index: 10;
-  transition: background-color 0.3s ease;
+  font-size: 1.2em;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .carousel-btn:hover {
@@ -127,12 +128,12 @@
 }
 
 .carousel-dot {
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   background-color: rgba(125, 90, 80, 0.3);
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  border: 1px solid rgba(125, 90, 80, 0.1);
 }
 
 .carousel-dot.active {
@@ -146,8 +147,8 @@
 /* Responsive styles */
 @media (max-width: 768px) {
   .post {
-    padding: 15px;
-    margin-bottom: 20px;
+    padding: 25px;
+    margin-bottom: 30px;
     width: 95%;
   }
   
@@ -156,7 +157,16 @@
   }
   
   .carousel-btn {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
+  }
+  
+  .post p {
+    font-size: 1.15em;
+    line-height: 1.8;
+  }
+  
+  .post-date {
+    font-size: 1em;
   }
 }
