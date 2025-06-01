@@ -47,7 +47,22 @@
                 
                 <div class="form-group">
                     <label for="email">Email reprezentant:</label>
-                    <input type="email" id="email" name="email" [(ngModel)]="newBooking.email" required>
+                    <input type="email" id="email" name="email" 
+                           [(ngModel)]="newBooking.email" 
+                           required 
+                           #emailInput="ngModel"
+                           (input)="validateEmail()"
+                           [class.invalid]="emailValidationError">
+                    
+                    <!-- Mesaj de validare email -->
+                    <div *ngIf="emailValidationError" class="error-message">
+                        {{ emailValidationError }}
+                    </div>
+                    
+                    <!-- Indicator email valid -->
+                    <div *ngIf="emailValidationSuccess" class="success-message">
+                        ✓ Email valid
+                    </div>
                 </div>
                 
                 <div class="form-group">
@@ -134,15 +149,18 @@
                         <td>{{ booking.guideRequired ? 'Da' : 'Nu' }}</td>
                         <td>
                             <span class="status-badge" [ngClass]="{
-                                'status-pending': booking.status === 'IN_ASTEPTARE' || booking.status === null || booking.status === undefined,
-                                'status-approved': booking.status === 'APROBATA'
+                                'status-confirmed': booking.status === 'CONFIRMATA',
+                                'status-pending': booking.status === 'IN_ASTEPTARE',
+                                'status-approved': booking.status === 'APROBATA',
+                                'status-rejected': booking.status === 'RESPINSA'
                             }">
-                                {{ (booking.status === 'IN_ASTEPTARE' || booking.status === null || booking.status === undefined) ? 'În așteptare' : 'Aprobată' }}
+                                {{ getStatusDisplayName(booking.status) }}
                             </span>
                         </td>
                         <td class="actions-cell">
                             <div class="action-buttons">
-                                <button class="approve-btn" *ngIf="booking.status === 'IN_ASTEPTARE' || booking.status === null || booking.status === undefined" (click)="approveBooking(booking.id)">Aprobă</button>
+                                <button class="approve-btn" *ngIf="booking.status === 'CONFIRMATA' || booking.status === 'IN_ASTEPTARE'" (click)="approveBooking(booking.id)">Aprobă</button>
+                                <button class="reject-btn" *ngIf="booking.status === 'CONFIRMATA' || booking.status === 'IN_ASTEPTARE'" (click)="rejectBooking(booking.id)">Respinge</button>
                                 <button class="delete-btn" (click)="deleteBooking(booking.id)">Șterge</button>
                             </div>
                         </td>
@@ -156,7 +174,9 @@
         
         <!-- Mesaj de confirmare pentru utilizatorii normali după rezervare -->
         <div *ngIf="!isAdmin" class="confirmation-message">
-            <p>După trimiterea formularului, rezervarea vizitei va fi procesată de administrația muzeului.</p>
+            <p><strong>Important:</strong> După trimiterea formularului, veți primi un email de confirmare.</p>
+            <p>Rezervarea va deveni activă doar după confirmarea email-ului prin click pe link-ul primit.</p>
+            <p>Verificați și folderul spam/junk dacă nu găsiți email-ul în inbox.</p>
             <p>Pentru modificări sau anulări, vă rugăm să contactați muzeul la numărul de telefon afișat pe pagina de contact.</p>
             <p><em>Vă mulțumim și vă așteptăm cu drag la muzeu!</em></p>
         </div>

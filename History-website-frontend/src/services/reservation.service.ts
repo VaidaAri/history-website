@@ -63,4 +63,13 @@ export class ReservationService {
   updateReservation(reservation: any): Observable<any> {
     return this.http.put<any>(this.apiUrl, reservation);
   }
+
+  rejectReservation(id: number, requestBody: any = {}): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${id}/reject`, requestBody).pipe(
+      tap(() => {
+        // Notifică componentele că o rezervare a fost actualizată
+        this.reservationUpdatedSubject.next();
+      })
+    );
+  }
 }

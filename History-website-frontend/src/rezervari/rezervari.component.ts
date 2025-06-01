@@ -51,6 +51,10 @@ export class RezervariComponent implements OnInit {
   minDateTime: string = ''; // pentru compatibilitate
   maxDateTime: string = ''; // pentru compatibilitate
   dateTimeError: string = '';
+  
+  // Validare email
+  emailValidationError: string = '';
+  emailValidationSuccess: boolean = false;
 
   constructor(
     private http: HttpClient, 
@@ -305,6 +309,43 @@ export class RezervariComponent implements OnInit {
     });
   }
   
+  // Validare email în timp real
+  validateEmail() {
+    const email = this.newBooking.email;
+    
+    // Resetăm mesajele
+    this.emailValidationError = '';
+    this.emailValidationSuccess = false;
+    
+    if (!email || email.trim() === '') {
+      return;
+    }
+    
+    // Regex pentru validare email
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    
+    if (!emailRegex.test(email)) {
+      this.emailValidationError = 'Formatul email-ului nu este valid';
+      return;
+    }
+    
+    // Verificări suplimentare
+    if (email.length > 254) {
+      this.emailValidationError = 'Email-ul este prea lung';
+      return;
+    }
+    
+    // Verificăm domeniul
+    const domain = email.split('@')[1];
+    if (domain && domain.includes('..')) {
+      this.emailValidationError = 'Domeniul email-ului nu este valid';
+      return;
+    }
+    
+    // Email valid
+    this.emailValidationSuccess = true;
+  }
+
   resetBookingForm() {
     this.newBooking = {
       nume: '',
@@ -319,6 +360,8 @@ export class RezervariComponent implements OnInit {
     this.selectedTime = '';
     this.availableHours = [];
     this.dateTimeError = '';
+    this.emailValidationError = '';
+    this.emailValidationSuccess = false;
   }
 
   deleteBooking(bookingId: number) {
@@ -355,6 +398,36 @@ export class RezervariComponent implements OnInit {
         error: (err) => {
           console.error("Error approving booking:", err);
           alert("Eroare la aprobarea rezervării. Vă rugăm să încercați din nou.");
+        }
+      });
+    }
+  }
+  
+  getStatusDisplayName(status: string): string {
+    switch(status) {
+      case 'NECONFIRMATA': return 'Neconfirmată';
+      case 'CONFIRMATA': return 'Confirmată';
+      case 'IN_ASTEPTARE': return 'În așteptare';
+      case 'APROBATA': return 'Aprobată';
+      case 'RESPINSA': return 'Respinsă';
+      default: return 'În așteptare';
+    }
+  }
+  
+  rejectBooking(bookingId: number) {
+    const reason = prompt("Introduceți motivul respingerii (opțional):");
+    
+    if (confirm("Sigur doriți să respingeți această rezervare?")) {
+      const requestBody = reason ? { reason: reason } : {};
+      
+      this.reservationService.rejectReservation(bookingId, requestBody).subscribe({
+        next: (response) => {
+          alert(response.message || "Rezervare respinsă cu succes!");
+          this.fetchBookings();
+        },
+        error: (err) => {
+          console.error("Error rejecting booking:", err);
+          alert("Eroare la respingerea rezervării. Vă rugăm să încercați din nou.");
         }
       });
     }

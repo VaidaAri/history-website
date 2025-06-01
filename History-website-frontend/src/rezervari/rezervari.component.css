@@ -412,10 +412,22 @@ th:nth-child(9), td:nth-child(9) { width: 15%; } /* Acțiuni */
     border: 1px solid #FFEEBA;
 }
 
+.status-confirmed {
+    background-color: #E2E3F1;
+    color: #383D71;
+    border: 1px solid #B6B8D6;
+}
+
 .status-approved {
     background-color: #D4EDDA;
     color: #155724;
     border: 1px solid #C3E6CB;
+}
+
+.status-rejected {
+    background-color: #F8D7DA;
+    color: #721C24;
+    border: 1px solid #F5C6CB;
 }
 
 /* Stiluri pentru acțiuni în tabel */
@@ -453,6 +465,26 @@ th:nth-child(9), td:nth-child(9) { width: 15%; } /* Acțiuni */
     background-color: #218838;
 }
 
+/* Buton respingere */
+.reject-btn {
+    background-color: #FFC107;
+    color: #212529;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 0.85em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.reject-btn:hover {
+    background-color: #E0A800;
+}
+
 /* Buton ștergere */
 .delete-btn {
     background-color: #C14953;
@@ -481,6 +513,25 @@ th:nth-child(9), td:nth-child(9) { width: 15%; } /* Acțiuni */
   margin-top: 5px;
   font-weight: 500;
   animation: fadeIn 0.3s ease-in-out;
+}
+
+.success-message {
+  color: #28a745;
+  font-size: 0.9rem;
+  margin-top: 5px;
+  font-weight: 500;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Stiluri pentru input invalid */
+input.invalid {
+  border-color: #d9534f !important;
+  box-shadow: 0 0 4px rgba(217, 83, 79, 0.3) !important;
+}
+
+input.valid {
+  border-color: #28a745 !important;
+  box-shadow: 0 0 4px rgba(40, 167, 69, 0.3) !important;
 }
 
 /* Stiluri pentru selectori de dată și oră */

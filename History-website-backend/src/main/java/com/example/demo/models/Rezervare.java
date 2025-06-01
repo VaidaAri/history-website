@@ -42,7 +42,13 @@ public class Rezervare {
     private boolean guideRequired;
 
     @Enumerated(EnumType.STRING)
-    private ReservationStatus status = ReservationStatus.IN_ASTEPTARE;
+    private ReservationStatus status = ReservationStatus.NECONFIRMATA;
+
+    private String confirmationToken;
+    
+    private LocalDateTime tokenExpiry;
+    
+    private LocalDateTime confirmedAt;
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime createdAt;
@@ -53,8 +59,11 @@ public class Rezervare {
     }
 
     public enum ReservationStatus {
+        NECONFIRMATA("Neconfirmată"),
+        CONFIRMATA("Confirmată"),
         IN_ASTEPTARE("În așteptare"),
-        APROBATA("Aprobată");
+        APROBATA("Aprobată"),
+        RESPINSA("Respinsă");
 
         private final String displayName;
 

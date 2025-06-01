@@ -29,7 +29,7 @@ public class RezervareController {
 
     @GetMapping
     public List<Rezervare> getAllBookings(){
-        return rezervareService.getAllBookings();
+        return rezervareService.getConfirmedBookings(); // Doar rezervările confirmate pentru admin
     }
 
     @GetMapping("/{id}")
@@ -41,7 +41,7 @@ public class RezervareController {
     public ResponseEntity<Map<String, String>> createBooking(@RequestBody Rezervare newBooking){
         rezervareService.createBooking(newBooking);
         return ResponseEntity.ok(Map.of(
-            "message", "Rezervare creată cu succes. Statusul este 'În așteptare'.",
+            "message", "Rezervare creată cu succes. Verificați email-ul pentru confirmare.",
             "status", newBooking.getStatus().getDisplayName()
         ));
     }
@@ -91,5 +91,36 @@ public class RezervareController {
         }
         
         return response;
+    }
+    
+    @PostMapping("/confirm/{token}")
+    public ResponseEntity<Map<String, String>> confirmReservation(@PathVariable String token) {
+        boolean confirmed = rezervareService.confirmReservation(token);
+        
+        if (confirmed) {
+            return ResponseEntity.ok(Map.of(
+                "message", "Rezervarea a fost confirmată cu succes!",
+                "status", "success"
+            ));
+        } else {
+            return ResponseEntity.badRequest().body(Map.of(
+                "message", "Token invalid sau expirat.",
+                "status", "error"
+            ));
+        }
+    }
+    
+    @PutMapping("/{id}/reject")
+    public ResponseEntity<Map<String, String>> rejectBooking(
+            @PathVariable Integer id, 
+            @RequestBody(required = false) Map<String, String> requestBody) {
+        
+        String reason = requestBody != null ? requestBody.get("reason") : null;
+        rezervareService.rejectBooking(id, reason);
+        
+        return ResponseEntity.ok(Map.of(
+            "message", "Rezervare respinsă cu succes.",
+            "status", "Respinsă"
+        ));
     }
 }
