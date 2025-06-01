@@ -34,6 +34,15 @@ export class PeisajeMuzeuComponent implements OnInit {
   uploadMessage: string = '';
   showUploadMessage: boolean = false;
   
+  // Proprietăți pentru galeria modală
+  showGalleryModal: boolean = false;
+  currentImageIndex: number = 0;
+  currentImage: PeisajImage | null = null;
+  zoomLevel: number = 1;
+  panPosition = { x: 0, y: 0 };
+  isDragging = false;
+  dragStart = { x: 0, y: 0 };
+  
   constructor(
     private http: HttpClient,
     private authService: AuthService
@@ -148,5 +157,88 @@ export class PeisajeMuzeuComponent implements OnInit {
         }
       });
     }
+  }
+  
+  // Deschide galeria modală
+  openGallery(index: number) {
+    this.currentImageIndex = index;
+    this.currentImage = this.peisajeImages[index];
+    this.showGalleryModal = true;
+    this.resetZoom();
+    
+    // Previne scrollarea în background când galeria este deschisă
+    document.body.style.overflow = 'hidden';
+  }
+  
+  // Închide galeria
+  closeGallery() {
+    this.showGalleryModal = false;
+    this.resetZoom();
+    
+    // Permite scrollarea după închiderea galeriei
+    document.body.style.overflow = 'auto';
+  }
+  
+  // Navigare la imaginea anterioară
+  prevImage() {
+    this.resetZoom();
+    this.currentImageIndex = (this.currentImageIndex - 1 + this.peisajeImages.length) % this.peisajeImages.length;
+    this.currentImage = this.peisajeImages[this.currentImageIndex];
+  }
+  
+  // Navigare la imaginea următoare
+  nextImage() {
+    this.resetZoom();
+    this.currentImageIndex = (this.currentImageIndex + 1) % this.peisajeImages.length;
+    this.currentImage = this.peisajeImages[this.currentImageIndex];
+  }
+  
+  // Funcții pentru zoom și pan
+  zoomIn() {
+    this.zoomLevel = Math.min(this.zoomLevel + 0.25, 3);
+  }
+  
+  zoomOut() {
+    this.zoomLevel = Math.max(this.zoomLevel - 0.25, 1);
+    if (this.zoomLevel === 1) {
+      this.panPosition = { x: 0, y: 0 };
+    }
+  }
+  
+  resetZoom() {
+    this.zoomLevel = 1;
+    this.panPosition = { x: 0, y: 0 };
+  }
+  
+  startDrag(event: MouseEvent) {
+    if (this.zoomLevel > 1) {
+      this.isDragging = true;
+      this.dragStart = { 
+        x: event.clientX - this.panPosition.x, 
+        y: event.clientY - this.panPosition.y 
+      };
+      event.preventDefault();
+    }
+  }
+  
+  onDrag(event: MouseEvent) {
+    if (this.isDragging && this.zoomLevel > 1) {
+      this.panPosition = {
+        x: event.clientX - this.dragStart.x,
+        y: event.clientY - this.dragStart.y
+      };
+      event.preventDefault();
+    }
+  }
+  
+  stopDrag() {
+    this.isDragging = false;
+  }
+  
+  getImageStyle() {
+    return {
+      transform: `scale(${this.zoomLevel}) translate(${this.panPosition.x / this.zoomLevel}px, ${this.panPosition.y / this.zoomLevel}px)`,
+      cursor: this.isDragging ? 'grabbing' : (this.zoomLevel > 1 ? 'grab' : 'default')
+    };
   }
 }

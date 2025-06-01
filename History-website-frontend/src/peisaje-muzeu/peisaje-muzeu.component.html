@@ -59,28 +59,69 @@
         </div>
       </div>
 
-      <!-- Galeria de imagini -->
-      <div class="gallery">
+      <!-- Galeria de imagini îmbunătățită -->
+      <div class="gallery-container">
         <div *ngIf="peisajeImages.length === 0" class="no-images">
           <p>Nu există imagini disponibile momentan.</p>
         </div>
         
-        <div *ngFor="let image of peisajeImages" class="gallery-item">
-          <div class="image-container">
-            <img [src]="getImageUrl(image.path)" [alt]="image.description" class="peisaj-image">
-          </div>
-          <div class="image-details">
-            <!-- Descrierea imaginii este ascunsă în vizualizarea publică -->
+        <div class="gallery-grid">
+          <div *ngFor="let image of peisajeImages; let i = index" class="gallery-item" (click)="openGallery(i)">
+            <div class="gallery-item-image">
+              <img [src]="getImageUrl(image.path)" [alt]="image.description" class="peisaj-image">
+            </div>
+            
+            <!-- Informații administrative (vizibile doar pentru administratori) -->
+            <div *ngIf="isAdmin" class="admin-badge">
+              <span class="admin-icon">🔒</span>
+            </div>
             
             <!-- Butoane de administrare (vizibile doar pentru administratori) -->
             <div *ngIf="isAdmin" class="image-admin-controls">
-              <!-- Afișăm descrierea doar pentru administratori -->
               <div class="admin-image-description">
                 <span class="description-label">Descriere:</span> {{ image.description }}
               </div>
-              <button (click)="deleteImage(image.id)" class="delete-btn" title="Șterge imaginea">
+              <button (click)="deleteImage(image.id); $event.stopPropagation();" class="delete-btn" title="Șterge imaginea">
                 <span class="delete-icon">🗑️</span>
               </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Galerie Modal pentru vizualizarea detaliată -->
+      <div class="gallery-modal" *ngIf="showGalleryModal">
+        <div class="gallery-overlay" (click)="closeGallery()"></div>
+        
+        <div class="gallery-content">
+          <button class="gallery-close" (click)="closeGallery()">×</button>
+          
+          <div class="gallery-image-container">
+            <img *ngIf="currentImage" 
+                [src]="getImageUrl(currentImage.path)" 
+                [alt]="currentImage.description" 
+                class="gallery-modal-image"
+                [ngStyle]="getImageStyle()">
+          </div>
+          
+          <div class="gallery-controls">
+            <div class="controls-left">
+              <button class="gallery-nav prev" (click)="prevImage()">❮</button>
+            </div>
+            
+            <div class="controls-center">
+              <span class="gallery-counter">{{ currentImageIndex + 1 }} / {{ peisajeImages.length }}</span>
+              
+              <div class="zoom-controls">
+                <button class="zoom-button" (click)="zoomOut()" title="Micșorează">−</button>
+                <span class="zoom-level">{{ (zoomLevel * 100).toFixed(0) }}%</span>
+                <button class="zoom-button" (click)="zoomIn()" title="Mărește">+</button>
+                <button class="zoom-button" (click)="resetZoom()" title="Resetează zoom">↺</button>
+              </div>
+            </div>
+            
+            <div class="controls-right">
+              <button class="gallery-nav next" (click)="nextImage()">❯</button>
             </div>
           </div>
         </div>
