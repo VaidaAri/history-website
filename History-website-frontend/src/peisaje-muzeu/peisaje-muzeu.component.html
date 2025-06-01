@@ -9,8 +9,79 @@
         spațiul exterior al muzeului.
       </p>
 
+      <!-- Secțiunea de administrare (vizibilă doar pentru administratori) -->
+      <div *ngIf="isAdmin" class="admin-section">
+        <div class="admin-header">
+          <h3>Administrare imagini</h3>
+        </div>
+        
+        <div class="upload-form">
+          <div class="upload-status" *ngIf="showUploadMessage" [class.success]="uploadMessage.includes('succes')" [class.error]="!uploadMessage.includes('succes')">
+            {{ uploadMessage }}
+          </div>
+          
+          <div class="form-group">
+            <label for="image-description">Descriere imagine:</label>
+            <input 
+              type="text" 
+              id="image-description" 
+              [(ngModel)]="imageDescription" 
+              placeholder="Adaugă o descriere pentru imagine..."
+              class="description-input"
+            >
+          </div>
+          
+          <div class="form-group">
+            <label for="image-upload" class="file-upload-label">
+              <span class="upload-icon">📷</span>
+              <span>Selectează imagine</span>
+            </label>
+            <input 
+              type="file" 
+              id="image-upload" 
+              (change)="onFileSelected($event)" 
+              accept="image/*" 
+              class="file-input"
+            >
+            <div *ngIf="selectedFile" class="selected-file-info">
+              Fișier selectat: {{ selectedFile.name }}
+            </div>
+          </div>
+          
+          <button 
+            (click)="uploadImage()" 
+            [disabled]="isUploading || !selectedFile" 
+            class="upload-btn"
+          >
+            <span *ngIf="!isUploading">Încarcă imaginea</span>
+            <span *ngIf="isUploading">Se încarcă...</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Galeria de imagini -->
       <div class="gallery">
-        <!-- Galeria de imagini va fi populată dinamic -->
+        <div *ngIf="peisajeImages.length === 0" class="no-images">
+          <p>Nu există imagini disponibile momentan.</p>
+        </div>
+        
+        <div *ngFor="let image of peisajeImages" class="gallery-item">
+          <div class="image-container">
+            <img [src]="getImageUrl(image.path)" [alt]="image.description" class="peisaj-image">
+          </div>
+          <div class="image-details">
+            <div class="image-description">
+              <p>{{ image.description }}</p>
+            </div>
+            
+            <!-- Butoane de administrare (vizibile doar pentru administratori) -->
+            <div *ngIf="isAdmin" class="image-admin-controls">
+              <button (click)="deleteImage(image.id)" class="delete-btn" title="Șterge imaginea">
+                <span class="delete-icon">🗑️</span>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
       
       <div class="navigation-buttons">
