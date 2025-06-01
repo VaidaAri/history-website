@@ -69,24 +69,6 @@ h2 {
   color: #3E2723;
 }
 
-.gallery-placeholder {
-  grid-column: span 2;
-  background: #F8F4E3;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 250px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
-  border: 1px solid rgba(234, 209, 150, 0.5);
-}
-
-.placeholder-message {
-  text-align: center;
-  padding: 20px;
-  color: #7D5A50;
-  font-style: italic;
-}
 
 .navigation-buttons {
   display: flex;

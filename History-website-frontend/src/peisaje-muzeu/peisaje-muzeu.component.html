@@ -10,21 +10,7 @@
       </p>
 
       <div class="gallery">
-        <div *ngFor="let image of peisajeImages" class="gallery-item">
-          <div class="image-container">
-            <img [src]="image.url" [alt]="image.description" class="peisaj-image">
-          </div>
-          <div class="image-description">
-            <p>{{ image.description }}</p>
-          </div>
-        </div>
-        
-        <!-- Placeholder pentru imagini viitoare -->
-        <div class="gallery-placeholder">
-          <div class="placeholder-message">
-            <p>Secțiune în curs de actualizare cu mai multe imagini din curtea muzeului.</p>
-          </div>
-        </div>
+        <!-- Galeria de imagini va fi populată dinamic -->
       </div>
       
       <div class="navigation-buttons">
