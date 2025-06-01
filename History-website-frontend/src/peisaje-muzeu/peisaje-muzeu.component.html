@@ -2,12 +2,20 @@
   <app-meniu></app-meniu>
   <app-cadran>
     <div class="container">
-      <h2>Peisaje din curtea muzeului</h2>
-      <p class="intro-text">
-        Muzeul Grăniceresc Năsăudean este înconjurat de o curte minunată, cu peisaje ce reflectă frumusețea 
-        istorică și naturală a zonei. Aceste imagini surprind diversele perspective și elemente care compun 
-        spațiul exterior al muzeului.
-      </p>
+      <!-- Elegant header with decorative elements -->
+      <header class="page-header">
+        <h1 class="page-title">Peisaje din curtea muzeului</h1>
+        <div class="title-decoration">
+          <span class="decoration-line"></span>
+          <span class="decoration-icon">❖</span>
+          <span class="decoration-line"></span>
+        </div>
+        <p class="page-description">
+          Muzeul Grăniceresc Năsăudean este înconjurat de o curte minunată, cu peisaje ce reflectă frumusețea 
+          istorică și naturală a zonei. Aceste imagini surprind diversele perspective și elemente care compun 
+          spațiul exterior al muzeului.
+        </p>
+      </header>
 
       <!-- Secțiunea de administrare (vizibilă doar pentru administratori) -->
       <div *ngIf="isAdmin" class="admin-section">
@@ -59,74 +67,78 @@
         </div>
       </div>
 
-      <!-- Galeria de imagini îmbunătățită -->
-      <div class="gallery-container">
-        <div *ngIf="peisajeImages.length === 0" class="no-images">
-          <p>Nu există imagini disponibile momentan.</p>
-        </div>
-        
-        <div class="gallery-grid">
-          <div *ngFor="let image of peisajeImages; let i = index" class="gallery-item" (click)="openGallery(i)">
-            <div class="gallery-item-image">
-              <img [src]="getImageUrl(image.path)" [alt]="image.description" class="peisaj-image">
-            </div>
+      <!-- Mesaj când nu există imagini -->
+      <div *ngIf="peisajeImages.length === 0" class="no-images">
+        <p>Nu există imagini disponibile momentan.</p>
+      </div>
+
+      <!-- Galerie de tip slideshow cu imagini elegante -->
+      <div *ngIf="peisajeImages.length > 0" class="classic-gallery">
+        <div class="gallery-container">
+          <!-- Imagine curentă -->
+          <div class="main-image-container">
+            <img 
+              [src]="getImageUrl(peisajeImages[currentImageIndex].path)" 
+              [alt]="peisajeImages[currentImageIndex].description" 
+              class="main-image"
+            >
             
-            <!-- Informații administrative (vizibile doar pentru administratori) -->
-            <div *ngIf="isAdmin" class="admin-badge">
-              <span class="admin-icon">🔒</span>
-            </div>
-            
-            <!-- Butoane de administrare (vizibile doar pentru administratori) -->
-            <div *ngIf="isAdmin" class="image-admin-controls">
-              <div class="admin-image-description">
-                <span class="description-label">Descriere:</span> {{ image.description }}
+            <!-- Overlay cu informații administrative pentru admin -->
+            <div *ngIf="isAdmin" class="admin-image-overlay">
+              <div class="admin-badge">
+                <span class="admin-icon">🔒</span>
               </div>
-              <button (click)="deleteImage(image.id); $event.stopPropagation();" class="delete-btn" title="Șterge imaginea">
-                <span class="delete-icon">🗑️</span>
-              </button>
+              <div class="admin-controls">
+                <button 
+                  (click)="deleteImage(peisajeImages[currentImageIndex].id)" 
+                  class="admin-delete-btn" 
+                  title="Șterge imaginea"
+                >
+                  <span class="delete-icon">🗑️</span>
+                </button>
+              </div>
+            </div>
+            
+            <!-- Săgeți de navigare -->
+            <button class="gallery-nav prev-nav" (click)="prevImage()" title="Imaginea anterioară">
+              <span class="nav-icon">❮</span>
+            </button>
+            <button class="gallery-nav next-nav" (click)="nextImage()" title="Imaginea următoare">
+              <span class="nav-icon">❯</span>
+            </button>
+          </div>
+          
+          <!-- Descriere imagine și informații -->
+          <div class="image-info">
+            <div class="image-counter">{{ currentImageIndex + 1 }} / {{ peisajeImages.length }}</div>
+            <h3 class="image-title">{{ peisajeImages[currentImageIndex].description }}</h3>
+            
+            <!-- Informații administrative pentru admin -->
+            <div *ngIf="isAdmin" class="admin-image-details">
+              <div class="admin-image-id">ID: {{ peisajeImages[currentImageIndex].id }}</div>
+              <div class="admin-image-path">Path: {{ peisajeImages[currentImageIndex].path }}</div>
+            </div>
+          </div>
+          
+          <!-- Miniaturi imagini (thumbnails) -->
+          <div class="thumbnails-container">
+            <div 
+              *ngFor="let image of peisajeImages; let i = index" 
+              class="thumbnail"
+              [class.active]="i === currentImageIndex"
+              (click)="setCurrentImage(i)"
+            >
+              <img 
+                [src]="getImageUrl(image.path)" 
+                [alt]="image.description" 
+                class="thumbnail-image"
+              >
             </div>
           </div>
         </div>
       </div>
       
-      <!-- Galerie Modal pentru vizualizarea detaliată -->
-      <div class="gallery-modal" *ngIf="showGalleryModal">
-        <div class="gallery-overlay" (click)="closeGallery()"></div>
-        
-        <div class="gallery-content">
-          <button class="gallery-close" (click)="closeGallery()">×</button>
-          
-          <div class="gallery-image-container">
-            <img *ngIf="currentImage" 
-                [src]="getImageUrl(currentImage.path)" 
-                [alt]="currentImage.description" 
-                class="gallery-modal-image"
-                [ngStyle]="getImageStyle()">
-          </div>
-          
-          <div class="gallery-controls">
-            <div class="controls-left">
-              <button class="gallery-nav prev" (click)="prevImage()">❮</button>
-            </div>
-            
-            <div class="controls-center">
-              <span class="gallery-counter">{{ currentImageIndex + 1 }} / {{ peisajeImages.length }}</span>
-              
-              <div class="zoom-controls">
-                <button class="zoom-button" (click)="zoomOut()" title="Micșorează">−</button>
-                <span class="zoom-level">{{ (zoomLevel * 100).toFixed(0) }}%</span>
-                <button class="zoom-button" (click)="zoomIn()" title="Mărește">+</button>
-                <button class="zoom-button" (click)="resetZoom()" title="Resetează zoom">↺</button>
-              </div>
-            </div>
-            
-            <div class="controls-right">
-              <button class="gallery-nav next" (click)="nextImage()">❯</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      
+      <!-- Buton de întoarcere la pagina principală -->
       <div class="navigation-buttons">
         <button class="back-button" routerLink="/">Înapoi la pagina principală</button>
       </div>
