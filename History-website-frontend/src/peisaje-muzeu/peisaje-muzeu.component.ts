@@ -29,7 +29,7 @@ export class PeisajeMuzeuComponent implements OnInit {
   
   // Proprietăți pentru încărcare
   selectedFile: File | null = null;
-  imageDescription: string = '';
+  imageDescription: string = 'Peisaj din curtea muzeului';  // Valoare implicită
   isUploading: boolean = false;
   uploadMessage: string = '';
   showUploadMessage: boolean = false;
@@ -98,17 +98,15 @@ export class PeisajeMuzeuComponent implements OnInit {
       return;
     }
     
-    if (!this.imageDescription.trim()) {
-      this.showUploadMessage = true;
-      this.uploadMessage = 'Adăugați o descriere pentru imagine.';
-      setTimeout(() => this.showUploadMessage = false, 3000);
-      return;
-    }
+    // Folosim valoarea implicită dacă nu este completată
+    const description = this.imageDescription.trim() 
+      ? this.imageDescription 
+      : 'Peisaj din curtea muzeului';
     
     this.isUploading = true;
     const formData = new FormData();
     formData.append('image', this.selectedFile);
-    formData.append('description', 'PEISAJ: ' + this.imageDescription);
+    formData.append('description', 'PEISAJ: ' + description);
     
     this.http.post('http://localhost:8080/api/images/upload-image', formData).subscribe({
       next: () => {
@@ -116,7 +114,7 @@ export class PeisajeMuzeuComponent implements OnInit {
         this.uploadMessage = 'Imaginea a fost încărcată cu succes!';
         setTimeout(() => this.showUploadMessage = false, 3000);
         this.selectedFile = null;
-        this.imageDescription = '';
+        this.imageDescription = 'Peisaj din curtea muzeului';  // Resetăm la valoarea implicită
         this.isUploading = false;
         this.loadImages();
       },

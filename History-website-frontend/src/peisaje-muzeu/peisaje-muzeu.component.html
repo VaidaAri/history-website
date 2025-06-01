@@ -70,12 +70,14 @@
             <img [src]="getImageUrl(image.path)" [alt]="image.description" class="peisaj-image">
           </div>
           <div class="image-details">
-            <div class="image-description">
-              <p>{{ image.description }}</p>
-            </div>
+            <!-- Descrierea imaginii este ascunsă în vizualizarea publică -->
             
             <!-- Butoane de administrare (vizibile doar pentru administratori) -->
             <div *ngIf="isAdmin" class="image-admin-controls">
+              <!-- Afișăm descrierea doar pentru administratori -->
+              <div class="admin-image-description">
+                <span class="description-label">Descriere:</span> {{ image.description }}
+              </div>
               <button (click)="deleteImage(image.id)" class="delete-btn" title="Șterge imaginea">
                 <span class="delete-icon">🗑️</span>
               </button>

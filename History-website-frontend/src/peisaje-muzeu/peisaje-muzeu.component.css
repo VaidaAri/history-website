@@ -237,9 +237,24 @@ h2 {
 
 .image-admin-controls {
   display: flex;
-  justify-content: flex-end;
+  flex-direction: column;
   gap: 8px;
   margin-top: 5px;
+}
+
+.admin-image-description {
+  font-size: 0.9em;
+  background-color: rgba(234, 209, 150, 0.2);
+  padding: 8px 10px;
+  border-radius: 6px;
+  color: #5D4037;
+  margin-bottom: 5px;
+  text-align: left;
+}
+
+.description-label {
+  font-weight: bold;
+  margin-right: 5px;
 }
 
 .delete-btn {
@@ -251,6 +266,7 @@ h2 {
   border-radius: 4px;
   transition: background-color 0.2s ease;
   display: flex;
+  align-self: flex-end;
   align-items: center;
   justify-content: center;
 }
