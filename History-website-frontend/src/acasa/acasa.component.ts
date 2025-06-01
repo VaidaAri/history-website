@@ -85,7 +85,12 @@ export class AcasaComponent implements OnInit {
   loadPosts() {
     this.postService.getPosts().subscribe({
       next: (data) => {
-        this.posts = data;
+        // Filtrăm postările goale (cele fără descriere sau cu descriere goală)
+        this.posts = data.filter(post => 
+          post.description && 
+          post.description.trim().length > 0
+        );
+        
         // Sortare postări - cele mai noi primele
         this.posts.sort((a, b) => {
           return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();

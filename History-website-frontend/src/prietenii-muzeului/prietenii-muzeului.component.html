@@ -10,6 +10,126 @@
         Fiecare vizitator, fiecare mână de ajutor, fiecare poveste împărtășită face din muzeul nostru un spațiu al comunității!
       </p>
 
+      <!-- Secțiunea de administrare (vizibilă doar pentru administratori) -->
+      <div *ngIf="isAdmin" class="admin-section">
+        <div class="admin-header">
+          <h3>Administrare imagini</h3>
+        </div>
+        
+        <div class="upload-form">
+          <div class="upload-status" *ngIf="showUploadMessage" [class.success]="uploadMessage.includes('succes')" [class.error]="!uploadMessage.includes('succes')">
+            {{ uploadMessage }}
+          </div>
+          
+          <div class="form-group">
+            <label for="image-description">Descriere imagine:</label>
+            <input 
+              type="text" 
+              id="image-description" 
+              [(ngModel)]="imageDescription" 
+              placeholder="Adaugă o descriere pentru imagine..."
+              class="description-input"
+            >
+          </div>
+          
+          <div class="form-group">
+            <label for="image-upload" class="file-upload-label">
+              <span class="upload-icon">📷</span>
+              <span>Selectează imagine</span>
+            </label>
+            <input 
+              type="file" 
+              id="image-upload" 
+              (change)="onFileSelected($event)" 
+              accept="image/*" 
+              class="file-input"
+            >
+            <div *ngIf="selectedFile" class="selected-file-info">
+              Fișier selectat: {{ selectedFile.name }}
+            </div>
+          </div>
+          
+          <button 
+            (click)="uploadImage()" 
+            [disabled]="isUploading || !selectedFile" 
+            class="upload-btn"
+          >
+            <span *ngIf="!isUploading">Încarcă imaginea</span>
+            <span *ngIf="isUploading">Se încarcă...</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mesaj când nu există imagini -->
+      <div *ngIf="prieteniImages.length === 0" class="no-images">
+        <p>Nu există imagini disponibile momentan.</p>
+      </div>
+
+      <!-- Galerie de tip slideshow cu imagini elegante -->
+      <div *ngIf="prieteniImages.length > 0" class="classic-gallery">
+        <div class="gallery-container">
+          <!-- Imagine curentă -->
+          <div class="main-image-container">
+            <img 
+              [src]="getImageUrl(prieteniImages[currentImageIndex].path)" 
+              [alt]="prieteniImages[currentImageIndex].description" 
+              class="main-image"
+            >
+            
+            <!-- Overlay cu informații administrative pentru admin -->
+            <div *ngIf="isAdmin" class="admin-image-overlay">
+              <div class="admin-badge">
+                <span class="admin-icon">🔒</span>
+              </div>
+              <div class="admin-controls">
+                <button 
+                  (click)="deleteImage(prieteniImages[currentImageIndex].id)" 
+                  class="admin-delete-btn" 
+                  title="Șterge imaginea"
+                >
+                  <span class="delete-icon">🗑️</span>
+                </button>
+              </div>
+            </div>
+            
+            <!-- Săgeți de navigare -->
+            <button class="gallery-nav prev-nav" (click)="prevImage()" title="Imaginea anterioară">
+              <span class="nav-icon">❮</span>
+            </button>
+            <button class="gallery-nav next-nav" (click)="nextImage()" title="Imaginea următoare">
+              <span class="nav-icon">❯</span>
+            </button>
+          </div>
+          
+          <!-- Descriere imagine și informații -->
+          <div class="image-info">
+            <div class="image-counter">{{ currentImageIndex + 1 }} / {{ prieteniImages.length }}</div>
+            <h3 class="image-title">{{ prieteniImages[currentImageIndex].description }}</h3>
+            
+            <!-- Informații administrative pentru admin -->
+            <div *ngIf="isAdmin" class="admin-image-details">
+              <div class="admin-image-id">ID: {{ prieteniImages[currentImageIndex].id }}</div>
+              <div class="admin-image-path">Path: {{ prieteniImages[currentImageIndex].path }}</div>
+            </div>
+          </div>
+          
+          <!-- Miniaturi imagini (thumbnails) -->
+          <div class="thumbnails-container">
+            <div 
+              *ngFor="let image of prieteniImages; let i = index" 
+              class="thumbnail"
+              [class.active]="i === currentImageIndex"
+              (click)="setCurrentImage(i)"
+            >
+              <img 
+                [src]="getImageUrl(image.path)" 
+                [alt]="image.description" 
+                class="thumbnail-image"
+              >
+            </div>
+          </div>
+        </div>
+      </div>
 
       
       <div class="contact-section">
