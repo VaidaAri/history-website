@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MeniuComponent } from '../meniu/meniu.component';
@@ -18,7 +18,7 @@ interface ExhibitionImage {
   templateUrl: './expozitii-permanente.component.html',
   styleUrl: './expozitii-permanente.component.css'
 })
-export class ExpozitiiPermanenteComponent {
+export class ExpozitiiPermanenteComponent implements OnInit {
   selectedSection: string = 'istorie';
 
   // Gallery functionality
@@ -32,6 +32,11 @@ export class ExpozitiiPermanenteComponent {
   isDragging: boolean = false;
   dragStart: { x: number, y: number } = { x: 0, y: 0 };
   imagePosition: { x: number, y: number } = { x: 0, y: 0 };
+
+  // Pagination functionality
+  currentPage: number = 1;
+  imagesPerPage: number = 4; // Reduce number of images per page for better performance
+  totalPages: number = 1;
 
   // Sample images for each section - these would be loaded from backend
   istorieImages: ExhibitionImage[] = [
@@ -125,6 +130,59 @@ export class ExpozitiiPermanenteComponent {
 
   switchSection(section: string) {
     this.selectedSection = section;
+    this.currentPage = 1; // Reset to first page when switching sections
+    this.updatePagination();
+  }
+
+  updatePagination() {
+    const totalImages = this.getCurrentSectionImages().length;
+    this.totalPages = Math.ceil(totalImages / this.imagesPerPage);
+  }
+
+  getCurrentSectionImages(): ExhibitionImage[] {
+    switch(this.selectedSection) {
+      case 'istorie':
+        return this.istorieImages;
+      case 'etnografie':
+        return this.etnografieImages;
+      case 'aerLiber':
+        return this.aerLiberImages;
+      default:
+        return [];
+    }
+  }
+
+  getPaginatedImages(): ExhibitionImage[] {
+    const allImages = this.getCurrentSectionImages();
+    const startIndex = (this.currentPage - 1) * this.imagesPerPage;
+    const endIndex = startIndex + this.imagesPerPage;
+    return allImages.slice(startIndex, endIndex);
+  }
+
+  goToPage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+    }
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+    }
+  }
+
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
+
+  getPageNumbers(): number[] {
+    return Array.from({length: this.totalPages}, (_, i) => i + 1);
+  }
+
+  ngOnInit() {
+    this.updatePagination();
   }
 
   openGallery(image: ExhibitionImage) {
