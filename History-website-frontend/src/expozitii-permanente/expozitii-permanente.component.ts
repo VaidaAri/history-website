@@ -49,7 +49,78 @@ export class ExpozitiiPermanenteComponent {
   ];
 
   aerLiberImages: ExhibitionImage[] = [
-    // Add outdoor section images here
+    {
+      url: 'http://localhost:8080/images/Sectia in aer liber/IMG_9430_1.jpg',
+      filename: 'IMG_9430_1.jpg',
+      description: 'Casa țărănească din Ilva Mare - vedere generală',
+      index: 0
+    },
+    {
+      url: 'http://localhost:8080/images/Sectia in aer liber/IMG_9431_1.jpg',
+      filename: 'IMG_9431_1.jpg',
+      description: 'Detalii arhitecturale ale casei tradiționale',
+      index: 1
+    },
+    {
+      url: 'http://localhost:8080/images/Sectia in aer liber/IMG_9672_1.jpg',
+      filename: 'IMG_9672_1.jpg',
+      description: 'Secția în aer liber - perspectivă laterală',
+      index: 2
+    },
+    {
+      url: 'http://localhost:8080/images/Sectia in aer liber/IMG_9673_1.JPG',
+      filename: 'IMG_9673_1.JPG',
+      description: 'Arhitectura tradițională năsăudeană',
+      index: 3
+    },
+    {
+      url: 'http://localhost:8080/images/Sectia in aer liber/IMG_9674_1.JPG',
+      filename: 'IMG_9674_1.JPG',
+      description: 'Elemente decorative specifice zonei',
+      index: 4
+    },
+    {
+      url: 'http://localhost:8080/images/Sectia in aer liber/IMG_9675_1.jpg',
+      filename: 'IMG_9675_1.jpg',
+      description: 'Casa din Ilva Mare - vedere din față',
+      index: 5
+    },
+    {
+      url: 'http://localhost:8080/images/Sectia in aer liber/IMG_9676_1.jpg',
+      filename: 'IMG_9676_1.jpg',
+      description: 'Detalii de construcție tradițională',
+      index: 6
+    },
+    {
+      url: 'http://localhost:8080/images/Sectia in aer liber/IMG_9677_1.jpg',
+      filename: 'IMG_9677_1.jpg',
+      description: 'Amenajarea curții muzeului',
+      index: 7
+    },
+    {
+      url: 'http://localhost:8080/images/Sectia in aer liber/IMG_9678_1.jpg',
+      filename: 'IMG_9678_1.jpg',
+      description: 'Contextul istoric al secției în aer liber',
+      index: 8
+    },
+    {
+      url: 'http://localhost:8080/images/Sectia in aer liber/IMG_9679_1.jpg',
+      filename: 'IMG_9679_1.jpg',
+      description: 'Prezentare completă a casei țărănești',
+      index: 9
+    },
+    {
+      url: 'http://localhost:8080/images/Sectia in aer liber/IMG_9680_1.jpg',
+      filename: 'IMG_9680_1.jpg',
+      description: 'Elemente specifice arhitecturii locale',
+      index: 10
+    },
+    {
+      url: 'http://localhost:8080/images/Sectia in aer liber/IMG_9682_1.jpg',
+      filename: 'IMG_9682_1.jpg',
+      description: 'Secția etnografică în aer liber',
+      index: 11
+    }
   ];
 
   switchSection(section: string) {
