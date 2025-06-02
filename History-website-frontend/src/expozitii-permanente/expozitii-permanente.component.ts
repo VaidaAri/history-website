@@ -41,16 +41,170 @@ export class ExpozitiiPermanenteComponent implements OnInit {
   // Sample images for each section - these would be loaded from backend
   istorieImages: ExhibitionImage[] = [
     {
-      url: 'http://localhost:8080/images/Catana neagra.jpg',
-      filename: 'Catana neagra.jpg',
-      description: 'Sabie de granicer din colecția muzeului',
+      url: 'http://localhost:8080/images/Sectia istorie/IMG_9613_1_compressed.jpg',
+      filename: 'IMG_9613_1_compressed.jpg',
+      description: 'Expoziția permanentă de istorie - vedere generală',
       index: 0
+    },
+    {
+      url: 'http://localhost:8080/images/Sectia istorie/IMG_9616_1_compressed.jpg',
+      filename: 'IMG_9616_1_compressed.jpg',
+      description: 'Vitrină cu documente istorice din perioada grănicerească',
+      index: 1
+    },
+    {
+      url: 'http://localhost:8080/images/Sectia istorie/IMG_9617_!_compressed.jpg',
+      filename: 'IMG_9617_!_compressed.jpg',
+      description: 'Colecție de arme și uniforme militare',
+      index: 2
+    },
+    {
+      url: 'http://localhost:8080/images/Sectia istorie/IMG_9621_1_compressed.jpg',
+      filename: 'IMG_9621_1_compressed.jpg',
+      description: 'Exponate din perioada Regimentului II Românesc de Graniță',
+      index: 3
+    },
+    {
+      url: 'http://localhost:8080/images/Sectia istorie/IMG_9622_1_compressed.jpg',
+      filename: 'IMG_9622_1_compressed.jpg',
+      description: 'Obiecte personale ale grănicerilor năsăudeni',
+      index: 4
+    },
+    {
+      url: 'http://localhost:8080/images/Sectia istorie/IMG_9623_1_compressed.jpg',
+      filename: 'IMG_9623_1_compressed.jpg',
+      description: 'Documente și hărți istorice ale regiunii Năsăud',
+      index: 5
+    },
+    {
+      url: 'http://localhost:8080/images/Sectia istorie/IMG_9624_1_compressed.jpg',
+      filename: 'IMG_9624_1_compressed.jpg',
+      description: 'Colecție de insigne și decorații militare',
+      index: 6
+    },
+    {
+      url: 'http://localhost:8080/images/Sectia istorie/IMG_9628_1_compressed.jpg',
+      filename: 'IMG_9628_1_compressed.jpg',
+      description: 'Vitrină cu artefacte din perioada grănicerească',
+      index: 7
+    },
+    {
+      url: 'http://localhost:8080/images/Sectia istorie/IMG_9629_1_compressed.jpg',
+      filename: 'IMG_9629_1_compressed.jpg',
+      description: 'Exponate dedicate personalităților marcante ale regiunii',
+      index: 8
+    },
+    {
+      url: 'http://localhost:8080/images/Sectia istorie/IMG_9630_1_compressed.jpg',
+      filename: 'IMG_9630_1_compressed.jpg',
+      description: 'Secțiune dedicată istoriei locale năsăudene',
+      index: 9
+    },
+    {
+      url: 'http://localhost:8080/images/Sectia istorie/IMG_9635_1_compressed.jpg',
+      filename: 'IMG_9635_1_compressed.jpg',
+      description: 'Colecție de fotografii istorice din arhiva muzeului',
+      index: 10
+    },
+    {
+      url: 'http://localhost:8080/images/Sectia istorie/IMG_9636_1_compressed.jpg',
+      filename: 'IMG_9636_1_compressed.jpg',
+      description: 'Exponate militare din colecția permanentă',
+      index: 11
+    },
+    {
+      url: 'http://localhost:8080/images/Sectia istorie/IMG_9637_1_compressed.jpg',
+      filename: 'IMG_9637_1_compressed.jpg',
+      description: 'Uniformele și echipamentul grănicerilor năsăudeni',
+      index: 12
+    },
+    {
+      url: 'http://localhost:8080/images/Sectia istorie/IMG_9642_1_compressed.jpg',
+      filename: 'IMG_9642_1_compressed.jpg',
+      description: 'Documente oficiale și corespondenţă istorică',
+      index: 13
+    },
+    {
+      url: 'http://localhost:8080/images/Sectia istorie/IMG_9643_!_compressed.jpg',
+      filename: 'IMG_9643_!_compressed.jpg',
+      description: 'Colecție de medalii și distincții de onoare',
+      index: 14
+    },
+    {
+      url: 'http://localhost:8080/images/Sectia istorie/IMG_9648_1_compressed.jpg',
+      filename: 'IMG_9648_1_compressed.jpg',
+      description: 'Exponate din perioada de glorie a grănicerilor năsăudeni',
+      index: 15
+    },
+    {
+      url: 'http://localhost:8080/images/Sectia istorie/IMG_9653_1_compressed.jpg',
+      filename: 'IMG_9653_1_compressed.jpg',
+      description: 'Vitrină cu obiecte comemorative și memorabile',
+      index: 16
+    },
+    {
+      url: 'http://localhost:8080/images/Sectia istorie/IMG_9654_1_compressed.jpg',
+      filename: 'IMG_9654_1_compressed.jpg',
+      description: 'Colecție completă a expoziției permanente de istorie',
+      index: 17
+    },
+    {
+      url: 'http://localhost:8080/images/Sectia istorie/IMG_9655_1_compressed.jpg',
+      filename: 'IMG_9655_1_compressed.jpg',
+      description: 'Exponate finale din galeria de istorie a muzeului',
+      index: 18
     }
-    // Add more images here
   ];
 
   etnografieImages: ExhibitionImage[] = [
-    // Add ethnography images here
+    {
+      url: 'http://localhost:8080/images/Sectia etnografie/IMG_9656_1_compressed.jpg',
+      filename: 'IMG_9656_1_compressed.jpg',
+      description: 'Expoziția de etnografie - vedere de ansamblu',
+      index: 0
+    },
+    {
+      url: 'http://localhost:8080/images/Sectia etnografie/IMG_9657_1.jpg',
+      filename: 'IMG_9657_1.jpg',
+      description: 'Costume populare tradiționale din zona Năsăud',
+      index: 1
+    },
+    {
+      url: 'http://localhost:8080/images/Sectia etnografie/IMG_9664_1.jpg',
+      filename: 'IMG_9664_1.jpg',
+      description: 'Colecție de obiecte de uz casnic tradițional',
+      index: 2
+    },
+    {
+      url: 'http://localhost:8080/images/Sectia etnografie/IMG_9665_1.jpg',
+      filename: 'IMG_9665_1.jpg',
+      description: 'Instrumente de lucru și unelte tradiționale',
+      index: 3
+    },
+    {
+      url: 'http://localhost:8080/images/Sectia etnografie/IMG_9666_1.jpg',
+      filename: 'IMG_9666_1.jpg',
+      description: 'Artizanat local și piese de meșteșug năsăudean',
+      index: 4
+    },
+    {
+      url: 'http://localhost:8080/images/Sectia etnografie/IMG_9667_1.jpg',
+      filename: 'IMG_9667_1.jpg',
+      description: 'Costume festive și îmbrăcăminte ceremonială',
+      index: 5
+    },
+    {
+      url: 'http://localhost:8080/images/Sectia etnografie/IMG_9670_1.jpg',
+      filename: 'IMG_9670_1.jpg',
+      description: 'Tradiții și obiceiuri din Țara Năsăudului',
+      index: 6
+    },
+    {
+      url: 'http://localhost:8080/images/Sectia etnografie/IMG_9671_1.jpg',
+      filename: 'IMG_9671_1.jpg',
+      description: 'Colecție completă de etnografie năsăudeană',
+      index: 7
+    }
   ];
 
   aerLiberImages: ExhibitionImage[] = [
