@@ -32,6 +32,9 @@ export class ExpozitiiPermanenteComponent implements OnInit {
   isDragging: boolean = false;
   dragStart: { x: number, y: number } = { x: 0, y: 0 };
   imagePosition: { x: number, y: number } = { x: 0, y: 0 };
+  
+  // Fullscreen functionality
+  isFullscreen: boolean = false;
 
   // Pagination functionality
   currentPage: number = 1;
@@ -337,6 +340,39 @@ export class ExpozitiiPermanenteComponent implements OnInit {
 
   ngOnInit() {
     this.updatePagination();
+    this.setupKeyboardListeners();
+  }
+
+  setupKeyboardListeners() {
+    document.addEventListener('keydown', (event) => {
+      if (this.showGallery) {
+        switch(event.key) {
+          case 'ArrowLeft':
+            this.prevImage();
+            break;
+          case 'ArrowRight':
+            this.nextImage();
+            break;
+          case 'Escape':
+            this.closeGallery();
+            break;
+          case '+':
+          case '=':
+            this.zoomIn();
+            break;
+          case '-':
+            this.zoomOut();
+            break;
+          case '0':
+            this.resetZoom();
+            break;
+          case 'f':
+          case 'F':
+            this.toggleFullscreen();
+            break;
+        }
+      }
+    });
   }
 
   openGallery(image: ExhibitionImage) {
@@ -358,20 +394,21 @@ export class ExpozitiiPermanenteComponent implements OnInit {
     this.currentImageIndex = images.findIndex(img => img.url === image.url);
     this.currentImage = image;
     this.showGallery = true;
-    this.resetZoom();
+    this.resetImageTransforms();
   }
 
   closeGallery() {
     this.showGallery = false;
     this.currentImage = null;
-    this.resetZoom();
+    this.isFullscreen = false;
+    this.resetImageTransforms();
   }
 
   prevImage() {
     if (this.currentImageIndex > 0) {
       this.currentImageIndex--;
       this.currentImage = this.currentImages[this.currentImageIndex];
-      this.resetZoom();
+      this.resetImageTransforms();
     }
   }
 
@@ -379,7 +416,7 @@ export class ExpozitiiPermanenteComponent implements OnInit {
     if (this.currentImageIndex < this.currentImages.length - 1) {
       this.currentImageIndex++;
       this.currentImage = this.currentImages[this.currentImageIndex];
-      this.resetZoom();
+      this.resetImageTransforms();
     }
   }
 
@@ -409,10 +446,20 @@ export class ExpozitiiPermanenteComponent implements OnInit {
     this.imagePosition = { x: 0, y: 0 };
   }
 
+  // Fullscreen functionality
+  toggleFullscreen() {
+    this.isFullscreen = !this.isFullscreen;
+  }
+
+  resetImageTransforms() {
+    this.resetZoom();
+  }
+
   getImageStyle() {
     return {
       'transform': `scale(${this.zoomLevel}) translate(${this.imagePosition.x}px, ${this.imagePosition.y}px)`,
-      'cursor': this.zoomLevel > 1 ? (this.isDragging ? 'grabbing' : 'grab') : 'default'
+      'cursor': this.zoomLevel > 1 ? (this.isDragging ? 'grabbing' : 'grab') : 'default',
+      'transition': this.isDragging ? 'none' : 'transform 0.3s ease'
     };
   }
 

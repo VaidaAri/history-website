@@ -215,6 +215,10 @@
   justify-content: center;
 }
 
+.gallery-modal.fullscreen {
+  background-color: #000;
+}
+
 .gallery-overlay {
   position: absolute;
   top: 0;
@@ -238,6 +242,14 @@
   padding: 20px;
   box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
   box-sizing: border-box;
+}
+
+.gallery-content.fullscreen-content {
+  width: 100%;
+  height: 100vh;
+  max-width: none;
+  border-radius: 0;
+  padding: 15px;
 }
 
 .gallery-close {
@@ -349,12 +361,25 @@
   margin-bottom: 5px;
 }
 
+.action-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
 .zoom-controls {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  margin-top: 5px;
+  gap: 8px;
+}
+
+.transform-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .zoom-level {
@@ -364,23 +389,38 @@
   text-align: center;
 }
 
-.zoom-button {
+.control-button {
   background: rgba(255, 255, 255, 0.1);
   color: white;
   border: none;
-  border-radius: 4px;
-  width: 30px;
-  height: 30px;
-  font-size: 18px;
+  border-radius: 6px;
+  width: 35px;
+  height: 35px;
+  font-size: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.3s ease;
+  position: relative;
 }
 
-.zoom-button:hover {
+.control-button:hover {
   background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+
+.fullscreen-btn {
+  font-size: 14px;
+}
+
+/* Zoom button specific styles */
+.zoom-controls .control-button {
+  width: 32px;
+  height: 32px;
+  font-size: 18px;
+  font-weight: bold;
 }
 
 /* Responsive adjustments */
@@ -399,6 +439,27 @@
   .gallery-controls {
     padding: 0 20px;
   }
+  
+  .action-controls {
+    gap: 10px;
+  }
+  
+  .zoom-controls, .transform-controls {
+    gap: 6px;
+  }
+  
+  .control-button {
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+  }
+  
+  .zoom-controls .control-button {
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
+  }
+  
   
   .category-selector {
     flex-direction: column;

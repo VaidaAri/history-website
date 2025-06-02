@@ -172,10 +172,10 @@
       </div>
 
       <!-- Gallery modal -->
-      <div class="gallery-modal" *ngIf="showGallery">
+      <div class="gallery-modal" *ngIf="showGallery" [class.fullscreen]="isFullscreen">
         <div class="gallery-overlay" (click)="closeGallery()"></div>
         
-        <div class="gallery-content">
+        <div class="gallery-content" [class.fullscreen-content]="isFullscreen">
           <button class="gallery-close" (click)="closeGallery()">×</button>
           
           <div class="gallery-title">
@@ -197,22 +197,34 @@
           
           <div class="gallery-controls">
             <div class="controls-left">
-              <button class="gallery-nav prev" (click)="prevImage()">❮</button>
+              <button class="gallery-nav prev" (click)="prevImage()" title="Imaginea anterioară (←)">❮</button>
             </div>
             
             <div class="controls-center">
               <span class="gallery-counter">{{ currentImageIndex + 1 }} / {{ currentImages.length }}</span>
               
-              <div class="zoom-controls">
-                <button class="zoom-button" (click)="zoomOut()" title="Micșorează">−</button>
-                <span class="zoom-level">{{ (zoomLevel * 100).toFixed(0) }}%</span>
-                <button class="zoom-button" (click)="zoomIn()" title="Mărește">+</button>
-                <button class="zoom-button" (click)="resetZoom()" title="Resetează zoom">↺</button>
+              <div class="action-controls">
+                <div class="zoom-controls">
+                  <button class="control-button" (click)="zoomOut()" title="Micșorează (-)">−</button>
+                  <span class="zoom-level">{{ (zoomLevel * 100).toFixed(0) }}%</span>
+                  <button class="control-button" (click)="zoomIn()" title="Mărește (+)">+</button>
+                  <button class="control-button" (click)="resetZoom()" title="Resetează zoom (0)">↺</button>
+                </div>
+                
+                <div class="transform-controls">
+                  <button class="control-button" (click)="resetImageTransforms()" title="Resetează transformările">
+                    🔄
+                  </button>
+                  <button class="control-button fullscreen-btn" (click)="toggleFullscreen()" [title]="isFullscreen ? 'Ieși din fullscreen (F)' : 'Fullscreen (F)'">
+                    <span *ngIf="!isFullscreen">⛶</span>
+                    <span *ngIf="isFullscreen">⧉</span>
+                  </button>
+                </div>
               </div>
             </div>
             
             <div class="controls-right">
-              <button class="gallery-nav next" (click)="nextImage()">❯</button>
+              <button class="gallery-nav next" (click)="nextImage()" title="Imaginea următoare (→)">❯</button>
             </div>
           </div>
         </div>
