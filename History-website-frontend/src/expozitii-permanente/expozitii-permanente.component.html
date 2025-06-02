@@ -2,25 +2,85 @@
   <app-meniu></app-meniu>
   <app-cadran>
     <div class="container">
-      <h2>Expoziții Permanente</h2>
+      <div class="header-nav">
+        <button class="back-button" routerLink="/">← Înapoi la pagina principală</button>
+        <h1 class="title">Expoziții Permanente</h1>
+      </div>
+      
       <p class="intro-text">
-        Muzeul Grăniceresc Năsăudean găzduiește o serie de expoziții permanente care pun în valoare istoria, 
+        Muzeul Grăniceresc Năsăudean găzduiește trei expoziții permanente care pun în valoare istoria, 
         cultura și tradițiile regiunii. Vă invităm să descoperiți bogăția patrimoniului nostru prin intermediul 
         acestor colecții valoroase.
       </p>
 
-      <div class="expozitii-list">
-        <div *ngFor="let expozitie of expozitii" class="expozitie-card">
-          <div class="expozitie-image" *ngIf="expozitie.imagine">
-            <img [src]="expozitie.imagine" [alt]="expozitie.titlu">
+      <div class="category-selector">
+        <button [class.active]="selectedSection === 'istorie'" (click)="switchSection('istorie')">Expoziția de Istorie</button>
+        <button [class.active]="selectedSection === 'etnografie'" (click)="switchSection('etnografie')">Expoziția de Etnografie</button>
+        <button [class.active]="selectedSection === 'aerLiber'" (click)="switchSection('aerLiber')">Secția în Aer Liber</button>
+      </div>
+
+      <!-- Expoziția de Istorie -->
+      <div class="section-description" *ngIf="selectedSection === 'istorie'">
+        <h2>Expoziția Permanentă de Istorie</h2>
+        <p><em>Inaugurată în decembrie 2011</em></p>
+        <p>
+          Această expoziție permanentă prezintă istoria fascinantă a Regimentului II Românesc de Graniță și impactul său 
+          asupra dezvoltării zonei Năsăud. Vizitatorii pot descoperi documentele, armele, uniformele și obiectele personale 
+          care ilustrează viața și activitatea grănicerilor năsăudeni. De asemenea, expoziția include o secțiune dedicată 
+          personalităților marcante care au contribuit la dezvoltarea culturală și istorică a regiunii.
+        </p>
+        <div class="exhibitions-grid">
+          <div class="exhibition-item" *ngFor="let image of istorieImages" (click)="openGallery(image)">
+            <div class="exhibition-image-container">
+              <img [src]="image.url" [alt]="image.filename" class="exhibition-image" />
+            </div>
+            <div class="exhibition-info">
+              <p>{{ image.description || 'Vedere din expoziția de istorie' }}</p>
+            </div>
           </div>
-          <div class="expozitie-image placeholder" *ngIf="!expozitie.imagine">
-            <div class="placeholder-text">Imagine în curând</div>
+        </div>
+      </div>
+
+      <!-- Expoziția de Etnografie -->
+      <div class="section-description" *ngIf="selectedSection === 'etnografie'">
+        <h2>Expoziția de Etnografie</h2>
+        <p><em>Inaugurată în mai 2009, de "Zilele Năsăudului"</em></p>
+        <p>
+          Expoziția de etnografie prezintă tradițiile, costumele și obiceiurile specifice zonei Năsăud și Țării Năsăudului. 
+          Colecția cuprinde costume populare autentice, obiecte de uz casnic tradițional, instrumente de lucru și piese de 
+          artizanat local. Această expoziție oferă o perspectivă completă asupra vieții și culturii tradiționale din regiunea 
+          grănicerească năsăudeană.
+        </p>
+        <div class="exhibitions-grid">
+          <div class="exhibition-item" *ngFor="let image of etnografieImages" (click)="openGallery(image)">
+            <div class="exhibition-image-container">
+              <img [src]="image.url" [alt]="image.filename" class="exhibition-image" />
+            </div>
+            <div class="exhibition-info">
+              <p>{{ image.description || 'Vedere din expoziția de etnografie' }}</p>
+            </div>
           </div>
-          <div class="expozitie-content">
-            <h3>{{ expozitie.titlu }}</h3>
-            <p>{{ expozitie.descriere }}</p>
-            <button class="details-button">Detalii expoziție</button>
+        </div>
+      </div>
+
+      <!-- Secția în Aer Liber -->
+      <div class="section-description" *ngIf="selectedSection === 'aerLiber'">
+        <h2>Secția în Aer Liber</h2>
+        <p><em>Finalizată în 2010, inaugurată în decembrie 2010</em></p>
+        <p>
+          Situată în curtea din spate a muzeului, secția în aer liber cu specific etnografic reprezintă o atracție unică. 
+          Centrul de atracție îl constituie o veche casă cu specific țărănesc, strămutată din localitatea Ilva Mare și 
+          reconstruită fidel în incinta muzeului. Această casă tradițională oferă vizitatorilor posibilitatea de a experimenta 
+          direct arhitectura și stilul de viață din satele năsăudene de odinioară.
+        </p>
+        <div class="exhibitions-grid">
+          <div class="exhibition-item" *ngFor="let image of aerLiberImages" (click)="openGallery(image)">
+            <div class="exhibition-image-container">
+              <img [src]="image.url" [alt]="image.filename" class="exhibition-image" />
+            </div>
+            <div class="exhibition-info">
+              <p>{{ image.description || 'Vedere din secția în aer liber' }}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -35,9 +95,52 @@
         </ul>
         <p>Pentru grupuri organizate, vă rugăm să faceți o rezervare în prealabil.</p>
       </div>
-      
-      <div class="navigation-buttons">
-        <button class="back-button" routerLink="/">Înapoi la pagina principală</button>
+
+      <!-- Gallery modal -->
+      <div class="gallery-modal" *ngIf="showGallery">
+        <div class="gallery-overlay" (click)="closeGallery()"></div>
+        
+        <div class="gallery-content">
+          <button class="gallery-close" (click)="closeGallery()">×</button>
+          
+          <div class="gallery-title">
+            <h3>{{ getCurrentImageTitle() }}</h3>
+          </div>
+          
+          <div class="gallery-image-container" 
+               (mousedown)="startDrag($event)" 
+               (mousemove)="onDrag($event)" 
+               (mouseup)="stopDrag()" 
+               (mouseleave)="stopDrag()">
+            <img *ngIf="currentImage" 
+                 [src]="currentImage.url" 
+                 [alt]="currentImage.filename" 
+                 class="gallery-image" 
+                 [ngStyle]="getImageStyle()" 
+                 draggable="false" />
+          </div>
+          
+          <div class="gallery-controls">
+            <div class="controls-left">
+              <button class="gallery-nav prev" (click)="prevImage()">❮</button>
+            </div>
+            
+            <div class="controls-center">
+              <span class="gallery-counter">{{ currentImageIndex + 1 }} / {{ currentImages.length }}</span>
+              
+              <div class="zoom-controls">
+                <button class="zoom-button" (click)="zoomOut()" title="Micșorează">−</button>
+                <span class="zoom-level">{{ (zoomLevel * 100).toFixed(0) }}%</span>
+                <button class="zoom-button" (click)="zoomIn()" title="Mărește">+</button>
+                <button class="zoom-button" (click)="resetZoom()" title="Resetează zoom">↺</button>
+              </div>
+            </div>
+            
+            <div class="controls-right">
+              <button class="gallery-nav next" (click)="nextImage()">❯</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </app-cadran>
