@@ -10,13 +10,13 @@
             <div class="flag flag-en" [class.active]="selectedLanguage === 'en'" (click)="changeLanguage('en')" title="English"></div>
             <div class="flag flag-de" [class.active]="selectedLanguage === 'de'" (click)="changeLanguage('de')" title="Deutsch"></div>
         </div>
-        <h1>Muzeul Grăniceresc Năsăudean</h1>
+        <h1>{{ 'menuMuseumName' | translate }}</h1>
         <ul>            
-            <li><a routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Acasă</a></li>
-            <li><a routerLink="/istoric" routerLinkActive="active">Istoric</a></li>
-            <li><a routerLink="/rezervari" routerLinkActive="active">Rezervări</a></li>
-            <li><a routerLink="/evenimente" routerLinkActive="active">Evenimente</a></li>
-            <li><a routerLink="/tarife" routerLinkActive="active">Tarife & Contact</a></li>
+            <li><a routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">{{ 'menuHome' | translate }}</a></li>
+            <li><a routerLink="/istoric" routerLinkActive="active">{{ 'menuHistory' | translate }}</a></li>
+            <li><a routerLink="/rezervari" routerLinkActive="active">{{ 'menuReservations' | translate }}</a></li>
+            <li><a routerLink="/evenimente" routerLinkActive="active">{{ 'menuEvents' | translate }}</a></li>
+            <li><a routerLink="/tarife" routerLinkActive="active">{{ 'menuPricesContact' | translate }}</a></li>
         </ul>
     </nav>
 </body>

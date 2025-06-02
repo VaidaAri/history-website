@@ -2,13 +2,15 @@ import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TranslationService, SupportedLanguages } from '../services/i18n/translation.service';
+import { TranslatePipe } from '../services/i18n/translate.pipe';
 
 @Component({
   selector: 'app-meniu',
   standalone: true,
-  imports: [RouterModule, CommonModule],
+  imports: [RouterModule, CommonModule, TranslatePipe],
   templateUrl: './meniu.component.html',
-  styleUrl: './meniu.component.css'
+  styleUrl: './meniu.component.css',
+  providers: [TranslationService]
 })
 export class MeniuComponent {
   selectedLanguage: SupportedLanguages = 'ro';

@@ -222,6 +222,38 @@ export class TranslationService {
       'ro': 'Rezervă Vizita',
       'en': 'Book Visit',
       'de': 'Besuch buchen'
+    },
+    
+    // Menu translations
+    'menuMuseumName': {
+      'ro': 'Muzeul Grăniceresc Năsăudean',
+      'en': 'Năsăud Border Guard Museum',
+      'de': 'Näsäuder Grenzschutzmuseum'
+    },
+    'menuHome': {
+      'ro': 'Acasă',
+      'en': 'Home',
+      'de': 'Startseite'
+    },
+    'menuHistory': {
+      'ro': 'Istoric',
+      'en': 'History',
+      'de': 'Geschichte'
+    },
+    'menuReservations': {
+      'ro': 'Rezervări',
+      'en': 'Reservations',
+      'de': 'Reservierungen'
+    },
+    'menuEvents': {
+      'ro': 'Evenimente',
+      'en': 'Events',
+      'de': 'Veranstaltungen'
+    },
+    'menuPricesContact': {
+      'ro': 'Tarife & Contact',
+      'en': 'Prices & Contact',
+      'de': 'Preise & Kontakt'
     }
     // Poți adăuga restul paragrafelor în același mod
   };
