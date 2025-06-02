@@ -8,13 +8,16 @@ import { CadranComponent } from '../cadran/cadran.component';
 import { AuthService } from '../services/auth.service';
 import { ReservationService } from '../services/reservation.service';
 import { MuseumScheduleService, MuseumSchedule } from '../services/museum-schedule.service';
+import { TranslatePipe } from '../services/i18n/translate.pipe';
+import { TranslationService } from '../services/i18n/translation.service';
 
 @Component({
   selector: 'app-rezervari',
   standalone: true,
-  imports: [RouterModule, MeniuComponent, CommonModule, FormsModule, CadranComponent],
+  imports: [RouterModule, MeniuComponent, CommonModule, FormsModule, CadranComponent, TranslatePipe],
   templateUrl: './rezervari.component.html',
-  styleUrls: ['./rezervari.component.css']
+  styleUrls: ['./rezervari.component.css'],
+  providers: [TranslationService]
 })
 export class RezervariComponent implements OnInit {
   isAdmin: boolean = false;

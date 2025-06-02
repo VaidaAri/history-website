@@ -41,6 +41,187 @@ export class TranslationService {
       'ro': 'Totodată, unii profesori ai gimnaziului decid constituirea, în cadrul acestei şcoli, a unor expoziţii ce conţin obiecte găsite de profesori şi elevi în săpături arheologice sau care au fost descoperite ocazional de diverse persoane particulare şi oferite apoi şcolii. Aşadar, avem de-a face cu primele încercări de a cuprinde într-o expoziţie documentară valori ale culturii năsăudene. Să mai menţionăm că în aproape toate anuarele gimnaziului se aminteşte înmulţirea numărului de publicaţii, cărţi, manuscrise şi obiecte de muzeu, o mare parte dintre acestea fiind donate de către intelectualii năsăudeni.',
       'en': 'At the same time, some gymnasium professors decided to establish, within this school, exhibitions containing objects found by professors and students in archaeological excavations or which were occasionally discovered by various private individuals and then offered to the school. Thus, we are dealing with the first attempts to include values of Năsăud culture in a documentary exhibition. It should also be mentioned that almost all the yearbooks of the gymnasium mention the increase in the number of publications, books, manuscripts and museum objects, a large part of them being donated by the Năsăud intellectuals.',
       'de': 'Gleichzeitig beschlossen einige Gymnasialprofessoren, in dieser Schule Ausstellungen mit Objekten einzurichten, die von Professoren und Schülern bei archäologischen Ausgrabungen gefunden oder gelegentlich von verschiedenen Privatpersonen entdeckt und dann der Schule angeboten wurden. Somit haben wir es mit den ersten Versuchen zu tun, Werte der Năsăud-Kultur in eine Dokumentarausstellung einzubeziehen. Es ist auch zu erwähnen, dass fast alle Jahrbücher des Gymnasiums die Zunahme der Anzahl von Publikationen, Büchern, Manuskripten und Museumsobjekten erwähnen, von denen ein großer Teil von den Intellektuellen aus Năsăud gespendet wurde.'
+    },
+    
+    // Tarife page translations
+    'tarifeTitle': {
+      'ro': 'Tarife',
+      'en': 'Prices',
+      'de': 'Preise'
+    },
+    'tarifeMuseum': {
+      'ro': 'Muzeu',
+      'en': 'Museum',
+      'de': 'Museum'
+    },
+    'tarifeStudents': {
+      'ro': 'Elevi & Studenți',
+      'en': 'Students & Pupils',
+      'de': 'Schüler & Studenten'
+    },
+    'tarifeStudentsDesc': {
+      'ro': 'Cu prezentarea carnetului de elev/student',
+      'en': 'With student/pupil ID presentation',
+      'de': 'Mit Vorlage des Schüler-/Studentenausweises'
+    },
+    'tarifePensioners': {
+      'ro': 'Pensionari',
+      'en': 'Pensioners',
+      'de': 'Rentner'
+    },
+    'tarifePensionersDesc': {
+      'ro': 'Cu prezentarea cuponului de pensie',
+      'en': 'With pension certificate presentation',
+      'de': 'Mit Vorlage des Rentenbescheids'
+    },
+    'tarifeAdults': {
+      'ro': 'Adulți',
+      'en': 'Adults',
+      'de': 'Erwachsene'
+    },
+    'tarifeAdultsDesc': {
+      'ro': 'Bilet standard de intrare',
+      'en': 'Standard entrance ticket',
+      'de': 'Standard-Eintrittskarte'
+    },
+    'tarifeCurrency': {
+      'ro': 'lei',
+      'en': 'lei',
+      'de': 'Lei'
+    },
+    'tarifeNote': {
+      'ro': 'Notă',
+      'en': 'Note',
+      'de': 'Hinweis'
+    },
+    'tarifeFreeAccess': {
+      'ro': 'Accesul este gratuit pentru copiii sub 7 ani și persoane cu dizabilități.',
+      'en': 'Free access for children under 7 and people with disabilities.',
+      'de': 'Freier Eintritt für Kinder unter 7 Jahren und Menschen mit Behinderungen.'
+    },
+    
+    // Contact page translations
+    'contactTitle': {
+      'ro': 'Contact',
+      'en': 'Contact',
+      'de': 'Kontakt'
+    },
+    'contactMuseum': {
+      'ro': 'Muzeu',
+      'en': 'Museum',
+      'de': 'Museum'
+    },
+    'contactLandline': {
+      'ro': 'Telefon Fix',
+      'en': 'Landline',
+      'de': 'Festnetz'
+    },
+    'contactMobile': {
+      'ro': 'Telefon Mobil',
+      'en': 'Mobile Phone',
+      'de': 'Mobiltelefon'
+    },
+    'contactEmail': {
+      'ro': 'E-mail',
+      'en': 'E-mail',
+      'de': 'E-Mail'
+    },
+    'contactLocation': {
+      'ro': 'Ne găsiți aici',
+      'en': 'You can find us here',
+      'de': 'Sie finden uns hier'
+    },
+    'contactAddress': {
+      'ro': 'Str. Muzeului Nr. 1, Muzeul Grăniceresc Năsăudean',
+      'en': 'Museum Street No. 1, Năsăud Border Guard Museum',
+      'de': 'Museumsstraße Nr. 1, Näsäuder Grenzschutzmuseum'
+    },
+    
+    // Rezervari page translations
+    'rezervariTitle': {
+      'ro': 'Rezervă o Vizită la Muzeu',
+      'en': 'Book a Museum Visit',
+      'de': 'Museumsbesuch buchen'
+    },
+    'rezervariScheduleTitle': {
+      'ro': 'Program de Vizitare',
+      'en': 'Visiting Schedule',
+      'de': 'Besuchszeiten'
+    },
+    'rezervariWeekdays': {
+      'ro': 'Marți - Vineri',
+      'en': 'Tuesday - Friday',
+      'de': 'Dienstag - Freitag'
+    },
+    'rezervariWeekend': {
+      'ro': 'Sâmbătă - Duminică',
+      'en': 'Saturday - Sunday',
+      'de': 'Samstag - Sonntag'
+    },
+    'rezervariLoading': {
+      'ro': 'Se încarcă programul muzeului...',
+      'en': 'Loading museum schedule...',
+      'de': 'Museumszeiten werden geladen...'
+    },
+    'rezervariLastName': {
+      'ro': 'Nume reprezentant',
+      'en': 'Representative Last Name',
+      'de': 'Nachname des Vertreters'
+    },
+    'rezervariFirstName': {
+      'ro': 'Prenume reprezentant',
+      'en': 'Representative First Name',
+      'de': 'Vorname des Vertreters'
+    },
+    'rezervariEmail': {
+      'ro': 'Email reprezentant',
+      'en': 'Representative Email',
+      'de': 'E-Mail des Vertreters'
+    },
+    'rezervariEmailValid': {
+      'ro': 'Email valid',
+      'en': 'Valid email',
+      'de': 'Gültige E-Mail'
+    },
+    'rezervariDateTime': {
+      'ro': 'Data și Ora',
+      'en': 'Date and Time',
+      'de': 'Datum und Uhrzeit'
+    },
+    'rezervariDate': {
+      'ro': 'Data',
+      'en': 'Date',
+      'de': 'Datum'
+    },
+    'rezervariTime': {
+      'ro': 'Ora',
+      'en': 'Time',
+      'de': 'Uhrzeit'
+    },
+    'rezervariSelectTime': {
+      'ro': 'Selectați ora',
+      'en': 'Select time',
+      'de': 'Zeit wählen'
+    },
+    'rezervariBookingNote': {
+      'ro': 'Notă: Puteți rezerva doar în zilele de marți-duminică, în intervalul orar',
+      'en': 'Note: You can only book on Tuesday-Sunday, during the time slots',
+      'de': 'Hinweis: Sie können nur dienstags-sonntags in den folgenden Zeitfenstern buchen'
+    },
+    'rezervariNumberOfPersons': {
+      'ro': 'Număr de Persoane',
+      'en': 'Number of Persons',
+      'de': 'Anzahl der Personen'
+    },
+    'rezervariGuideRequired': {
+      'ro': 'Doriți ghid?',
+      'en': 'Do you want a guide?',
+      'de': 'Möchten Sie einen Führer?'
+    },
+    'rezervariSubmit': {
+      'ro': 'Rezervă Vizita',
+      'en': 'Book Visit',
+      'de': 'Besuch buchen'
     }
     // Poți adăuga restul paragrafelor în același mod
   };

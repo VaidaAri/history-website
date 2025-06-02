@@ -1,12 +1,12 @@
 <main class="rezervari">
 <app-meniu></app-meniu>
 <app-cadran>
-    <h2>Rezervă o Vizită la Muzeu</h2>
+    <h2>{{ 'rezervariTitle' | translate }}</h2>
     
     <!-- Program muzeu -->
     <div class="museum-schedule" *ngIf="currentSchedule">
         <div class="schedule-header">
-            <h3>Program de Vizitare: <span class="season">{{ currentSchedule.seasonName }}</span></h3>
+            <h3>{{ 'rezervariScheduleTitle' | translate }}: <span class="season">{{ currentSchedule.seasonName }}</span></h3>
             <span class="schedule-icon" [ngClass]="{'summer': currentSchedule.seasonName === 'Vară', 'winter': currentSchedule.seasonName === 'Iarnă'}">
                 {{ currentSchedule.seasonName === 'Vară' ? '☀️' : '❄️' }}
             </span>
@@ -14,11 +14,11 @@
         <div class="schedule-content">
             <div class="schedule-row">
                 <div class="schedule-day">
-                    <h4>Marți - Vineri:</h4>
+                    <h4>{{ 'rezervariWeekdays' | translate }}:</h4>
                     <p>{{ currentSchedule.weekdaysOpen }} - {{ currentSchedule.weekdaysClose }}</p>
                 </div>
                 <div class="schedule-day">
-                    <h4>Sâmbătă - Duminică:</h4>
+                    <h4>{{ 'rezervariWeekend' | translate }}:</h4>
                     <p>{{ currentSchedule.weekendOpen }} - {{ currentSchedule.weekendClose }}</p>
                 </div>
             </div>
@@ -29,24 +29,24 @@
     </div>
     
     <div class="loading-schedule" *ngIf="isLoading">
-        <p>Se încarcă programul muzeului...</p>
+        <p>{{ 'rezervariLoading' | translate }}</p>
     </div>
     
     <div class="rezervari-container">
         <div class="form-section">
             <form (ngSubmit)="addBooking()" #bookingForm="ngForm">
                 <div class="form-group">
-                    <label for="nume">Nume reprezentant:</label>
+                    <label for="nume">{{ 'rezervariLastName' | translate }}:</label>
                     <input type="text" id="nume" name="nume" [(ngModel)]="newBooking.nume" required>
                 </div>
                 
                 <div class="form-group">
-                    <label for="prenume">Prenume reprezentant:</label>
+                    <label for="prenume">{{ 'rezervariFirstName' | translate }}:</label>
                     <input type="text" id="prenume" name="prenume" [(ngModel)]="newBooking.prenume" required>
                 </div>
                 
                 <div class="form-group">
-                    <label for="email">Email reprezentant:</label>
+                    <label for="email">{{ 'rezervariEmail' | translate }}:</label>
                     <input type="email" id="email" name="email" 
                            [(ngModel)]="newBooking.email" 
                            required 
@@ -61,16 +61,16 @@
                     
                     <!-- Indicator email valid -->
                     <div *ngIf="emailValidationSuccess" class="success-message">
-                        ✓ Email valid
+                        ✓ {{ 'rezervariEmailValid' | translate }}
                     </div>
                 </div>
                 
                 <div class="form-group">
-                    <label>Data și Ora:</label>
+                    <label>{{ 'rezervariDateTime' | translate }}:</label>
                     <div class="date-time-selector">
                         <!-- Selector de dată -->
                         <div class="date-select">
-                            <label for="date">Data:</label>
+                            <label for="date">{{ 'rezervariDate' | translate }}:</label>
                             <input type="date" id="date" name="date"
                                   [(ngModel)]="selectedDate"
                                   required
@@ -81,9 +81,9 @@
 
                         <!-- Selector de oră - dezactivat până când data este selectată -->
                         <div class="time-select">
-                            <label for="time">Ora:</label>
+                            <label for="time">{{ 'rezervariTime' | translate }}:</label>
                             <select id="time" name="time" [(ngModel)]="selectedTime" required [disabled]="!selectedDate" (change)="onTimeSelected()">
-                                <option value="">-- Selectați ora --</option>
+                                <option value="">-- {{ 'rezervariSelectTime' | translate }} --</option>
                                 <option *ngFor="let time of availableHours" [value]="time">{{ time }}</option>
                             </select>
                         </div>
@@ -96,10 +96,10 @@
 
                     <!-- Informații despre program -->
                     <div class="booking-time-info" *ngIf="currentSchedule">
-                        <p>Notă: Puteți rezerva doar în zilele de marți-duminică, în intervalul orar:</p>
+                        <p>{{ 'rezervariBookingNote' | translate }}:</p>
                         <ul>
-                            <li>Marți - Vineri: {{ currentSchedule.weekdaysOpen }} - {{ currentSchedule.weekdaysClose }}</li>
-                            <li>Sâmbătă - Duminică: {{ currentSchedule.weekendOpen }} - {{ currentSchedule.weekendClose }}</li>
+                            <li>{{ 'rezervariWeekdays' | translate }}: {{ currentSchedule.weekdaysOpen }} - {{ currentSchedule.weekdaysClose }}</li>
+                            <li>{{ 'rezervariWeekend' | translate }}: {{ currentSchedule.weekendOpen }} - {{ currentSchedule.weekendClose }}</li>
                         </ul>
                     </div>
 
@@ -108,16 +108,16 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="numberOfPersons">Număr de Persoane:</label>
+                    <label for="numberOfPersons">{{ 'rezervariNumberOfPersons' | translate }}:</label>
                     <input type="number" id="numberOfPersons" name="numberOfPersons" [(ngModel)]="newBooking.numberOfPersons" required min="1">
                 </div>
                 
                 <div class="form-group checkbox-group">
-                    <label for="guideRequired">Doriți ghid? </label>
+                    <label for="guideRequired">{{ 'rezervariGuideRequired' | translate }} </label>
                     <input type="checkbox" id="guideRequired" name="guideRequired" [(ngModel)]="newBooking.guideRequired">
                 </div>
 
-                <button type="submit" [disabled]="!bookingForm.form.valid">Rezervă Vizita</button>
+                <button type="submit" [disabled]="!bookingForm.form.valid">{{ 'rezervariSubmit' | translate }}</button>
             </form>
         </div>
 

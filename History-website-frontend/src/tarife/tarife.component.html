@@ -3,67 +3,67 @@
 <app-cadran>
     <div class="tarife-content">
         <div class="section tarife-section">
-            <h2 class="section-title">Tarife <span class="title-accent">Muzeu</span></h2>
+            <h2 class="section-title">{{ 'tarifeTitle' | translate }} <span class="title-accent">{{ 'tarifeMuseum' | translate }}</span></h2>
             <div class="price-cards">
                 <div class="price-card">
                     <div class="price-header">
                         <i class="price-icon student-icon">👨‍🎓</i>
-                        <h3>Elevi & Studenți</h3>
+                        <h3>{{ 'tarifeStudents' | translate }}</h3>
                     </div>
-                    <div class="price-value">2 <span class="currency">lei</span></div>
-                    <div class="price-description">Cu prezentarea carnetului de elev/student</div>
+                    <div class="price-value">2 <span class="currency">{{ 'tarifeCurrency' | translate }}</span></div>
+                    <div class="price-description">{{ 'tarifeStudentsDesc' | translate }}</div>
                 </div>
                 
                 <div class="price-card">
                     <div class="price-header">
                         <i class="price-icon pensioner-icon">👵</i>
-                        <h3>Pensionari</h3>
+                        <h3>{{ 'tarifePensioners' | translate }}</h3>
                     </div>
-                    <div class="price-value">5 <span class="currency">lei</span></div>
-                    <div class="price-description">Cu prezentarea cuponului de pensie</div>
+                    <div class="price-value">5 <span class="currency">{{ 'tarifeCurrency' | translate }}</span></div>
+                    <div class="price-description">{{ 'tarifePensionersDesc' | translate }}</div>
                 </div>
                 
                 <div class="price-card">
                     <div class="price-header">
                         <i class="price-icon adult-icon">👨‍💼</i>
-                        <h3>Adulți</h3>
+                        <h3>{{ 'tarifeAdults' | translate }}</h3>
                     </div>
-                    <div class="price-value">8 <span class="currency">lei</span></div>
-                    <div class="price-description">Bilet standard de intrare</div>
+                    <div class="price-value">8 <span class="currency">{{ 'tarifeCurrency' | translate }}</span></div>
+                    <div class="price-description">{{ 'tarifeAdultsDesc' | translate }}</div>
                 </div>
             </div>
             
             <div class="note">
-                <p><strong>Notă:</strong> Accesul este gratuit pentru copiii sub 7 ani și persoane cu dizabilități.</p>
+                <p><strong>{{ 'tarifeNote' | translate }}:</strong> {{ 'tarifeFreeAccess' | translate }}</p>
             </div>
         </div>
         
         <div class="section contact-section">
-            <h2 class="section-title">Contact <span class="title-accent">Muzeu</span></h2>
+            <h2 class="section-title">{{ 'contactTitle' | translate }} <span class="title-accent">{{ 'contactMuseum' | translate }}</span></h2>
             <div class="contact-cards">
                 <div class="contact-card">
                     <div class="contact-icon">📞</div>
-                    <h3>Telefon Fix</h3>
+                    <h3>{{ 'contactLandline' | translate }}</h3>
                     <p><a href="tel:+40363131317">+40 363 131 317</a></p>
                 </div>
                 
                 <div class="contact-card">
                     <div class="contact-icon">📱</div>
-                    <h3>Telefon Mobil</h3>
+                    <h3>{{ 'contactMobile' | translate }}</h3>
                     <p><a href="tel:+40748370402">+40 748 370 402</a></p>
                 </div>
                 
                 <div class="contact-card">
                     <div class="contact-icon">✉️</div>
-                    <h3>E-mail</h3>
+                    <h3>{{ 'contactEmail' | translate }}</h3>
                     <p><a href="mailto:muzeu_gr.com">muzeu_gr.com</a></p>
                 </div>
             </div>
             
             <div class="map-container">
-                <h3>Ne găsiți aici:</h3>
+                <h3>{{ 'contactLocation' | translate }}:</h3>
                 <div class="address">
-                    <p>Str. Muzeului Nr. 1, Muzeul Grăniceresc Năsăudean</p>
+                    <p>{{ 'contactAddress' | translate }}</p>
                 </div>
             </div>
         </div>
