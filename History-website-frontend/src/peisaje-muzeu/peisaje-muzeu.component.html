@@ -2,20 +2,16 @@
   <app-meniu></app-meniu>
   <app-cadran>
     <div class="container">
-      <!-- Elegant header with decorative elements -->
-      <header class="page-header">
-        <h1 class="page-title">Peisaje din curtea muzeului</h1>
-        <div class="title-decoration">
-          <span class="decoration-line"></span>
-          <span class="decoration-icon">❖</span>
-          <span class="decoration-line"></span>
-        </div>
-        <p class="page-description">
-          Muzeul Grăniceresc Năsăudean este înconjurat de o curte minunată, cu peisaje ce reflectă frumusețea 
-          istorică și naturală a zonei. Aceste imagini surprind diversele perspective și elemente care compun 
-          spațiul exterior al muzeului.
-        </p>
-      </header>
+      <div class="header-nav">
+        <button class="back-button" routerLink="/">← Înapoi la pagina principală</button>
+        <h1 class="title">Peisaje din curtea muzeului</h1>
+      </div>
+      
+      <p class="intro-text">
+        Muzeul Grăniceresc Năsăudean este înconjurat de o curte minunată, cu peisaje ce reflectă frumusețea 
+        istorică și naturală a zonei. Aceste imagini surprind diversele perspective și elemente care compun 
+        spațiul exterior al muzeului.
+      </p>
 
       <!-- Secțiunea de administrare (vizibilă doar pentru administratori) -->
       <div *ngIf="isAdmin" class="admin-section">
@@ -122,10 +118,6 @@
         </div>
       </div>
       
-      <!-- Buton de întoarcere la pagina principală -->
-      <div class="navigation-buttons">
-        <button class="back-button" routerLink="/">Înapoi la pagina principală</button>
-      </div>
     </div>
 
     <!-- Galeria modal -->

@@ -2,21 +2,17 @@
   <app-meniu></app-meniu>
   <app-cadran>
     <div class="container">
-      <!-- Elegant header with decorative elements -->
-      <header class="page-header">
-        <h1 class="page-title">Prietenii Muzeului</h1>
-        <div class="title-decoration">
-          <span class="decoration-line"></span>
-          <span class="decoration-icon">❖</span>
-          <span class="decoration-line"></span>
-        </div>
-        <p class="page-description">
-          Muzeul Grăniceresc Năsăudean este un loc plin de viață, unde istoria prinde culoare prin zâmbetele copiilor din școlile care ne vizitează cu entuziasm! 
-          Prietenii noștri sunt clasele pline de elevi curioși care descoperă cu ochii mari exponatele, voluntarii care ne ajută la târgurile de Crăciun și evenimentele speciale, 
-          familiile care petrec weekenduri frumoase explorând trecutul, și toți cei care își deschid inimile pentru patrimoniul cultural al Năsăudului. 
-          Fiecare vizitator, fiecare mână de ajutor, fiecare poveste împărtășită face din muzeul nostru un spațiu al comunității!
-        </p>
-      </header>
+      <div class="header-nav">
+        <button class="back-button" routerLink="/">← Înapoi la pagina principală</button>
+        <h1 class="title">Prietenii Muzeului</h1>
+      </div>
+      
+      <p class="intro-text">
+        Muzeul Grăniceresc Năsăudean este un loc plin de viață, unde istoria prinde culoare prin zâmbetele copiilor din școlile care ne vizitează cu entuziasm! 
+        Prietenii noștri sunt clasele pline de elevi curioși care descoperă cu ochii mari exponatele, voluntarii care ne ajută la târgurile de Crăciun și evenimentele speciale, 
+        familiile care petrec weekenduri frumoase explorând trecutul, și toți cei care își deschid inimile pentru patrimoniul cultural al Năsăudului. 
+        Fiecare vizitator, fiecare mână de ajutor, fiecare poveste împărtășită face din muzeul nostru un spațiu al comunității!
+      </p>
 
       <!-- Secțiunea de administrare (vizibilă doar pentru administratori) -->
       <div *ngIf="isAdmin" class="admin-section">
@@ -133,9 +129,6 @@
         </div>
       </div>
       
-      <div class="navigation-buttons">
-        <button class="back-button" routerLink="/">Înapoi la pagina principală</button>
-      </div>
     </div>
 
     <!-- Galeria modal -->
