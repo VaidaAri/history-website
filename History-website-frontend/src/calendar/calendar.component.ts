@@ -91,6 +91,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.eventForm = this.fb.group({
       name: ['', [Validators.required]],
       description: [''],
+      location: [''],
       eventType: ['eveniment'],
       startDate: ['', [Validators.required]],
       endDate: ['', [Validators.required]],
@@ -102,6 +103,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.editEventForm = this.fb.group({
       name: ['', [Validators.required]],
       description: [''],
+      location: [''],
       startDate: ['', [Validators.required]],
       endDate: ['', [Validators.required]]
     }, {
@@ -250,6 +252,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.editEventForm.reset({
       name: this.selectedEvent.title,
       description: this.selectedEvent.extendedProps?.description || '',
+      location: this.selectedEvent.extendedProps?.location || '',
       startDate: this.formatDateForInput(startDate),
       endDate: this.formatDateForInput(endDate)
     });
@@ -341,7 +344,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
       name: formValue.name,
       startDate: startDate.toISOString(),
       endDate: endDate.toISOString(),
-      location: 'Muzeu',
+      location: formValue.location || '',
       description: formValue.description || '',
       images: processedImages
     };
@@ -386,6 +389,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.eventForm.reset({
       name: '',
       description: '',
+      location: '',
       eventType: 'eveniment',
       startDate: this.formatDateForInput(startDate),
       endDate: this.formatDateForInput(endDate),
@@ -488,7 +492,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
       name: formValue.name,
       startDate: startDate.toISOString(),
       endDate: endDate.toISOString(),
-      location: 'Muzeu',
+      location: formValue.location || '',
       description: formValue.description || '',
       images: processedImages
     };
@@ -526,7 +530,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
       name: formValue.name,
       startDate: startDate.toISOString(),
       endDate: endDate.toISOString(),
-      location: 'Muzeu',
+      location: formValue.location || '',
       tip: 'TEMPORARA',
       description: formValue.description || '',
       images: processedImages
