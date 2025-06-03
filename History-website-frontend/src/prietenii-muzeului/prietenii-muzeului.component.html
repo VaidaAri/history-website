@@ -2,13 +2,21 @@
   <app-meniu></app-meniu>
   <app-cadran>
     <div class="container">
-      <h2>Prietenii Muzeului</h2>
-      <p class="intro-text">
-        Muzeul Grăniceresc Năsăudean este un loc plin de viață, unde istoria prinde culoare prin zâmbetele copiilor din școlile care ne vizitează cu entuziasm! 
-        Prietenii noștri sunt clasele pline de elevi curioși care descoperă cu ochii mari exponatele, voluntarii care ne ajută la târgurile de Crăciun și evenimentele speciale, 
-        familiile care petrec weekenduri frumoase explorând trecutul, și toți cei care își deschid inimile pentru patrimoniul cultural al Năsăudului. 
-        Fiecare vizitator, fiecare mână de ajutor, fiecare poveste împărtășită face din muzeul nostru un spațiu al comunității!
-      </p>
+      <!-- Elegant header with decorative elements -->
+      <header class="page-header">
+        <h1 class="page-title">Prietenii Muzeului</h1>
+        <div class="title-decoration">
+          <span class="decoration-line"></span>
+          <span class="decoration-icon">❖</span>
+          <span class="decoration-line"></span>
+        </div>
+        <p class="page-description">
+          Muzeul Grăniceresc Năsăudean este un loc plin de viață, unde istoria prinde culoare prin zâmbetele copiilor din școlile care ne vizitează cu entuziasm! 
+          Prietenii noștri sunt clasele pline de elevi curioși care descoperă cu ochii mari exponatele, voluntarii care ne ajută la târgurile de Crăciun și evenimentele speciale, 
+          familiile care petrec weekenduri frumoase explorând trecutul, și toți cei care își deschid inimile pentru patrimoniul cultural al Năsăudului. 
+          Fiecare vizitator, fiecare mână de ajutor, fiecare poveste împărtășită face din muzeul nostru un spațiu al comunității!
+        </p>
+      </header>
 
       <!-- Secțiunea de administrare (vizibilă doar pentru administratori) -->
       <div *ngIf="isAdmin" class="admin-section">
@@ -65,25 +73,17 @@
         <p>Nu există imagini disponibile momentan.</p>
       </div>
 
-      <!-- Galerie de tip slideshow cu imagini elegante -->
-      <div *ngIf="prieteniImages.length > 0" class="classic-gallery">
-        <div class="gallery-container">
-          <!-- Imagine curentă -->
-          <div class="main-image-container">
-            <img 
-              [src]="getImageUrl(prieteniImages[currentImageIndex].path)" 
-              [alt]="prieteniImages[currentImageIndex].description" 
-              class="main-image"
-            >
-            
-            <!-- Overlay cu informații administrative pentru admin -->
-            <div *ngIf="isAdmin" class="admin-image-overlay">
-              <div class="admin-badge">
-                <span class="admin-icon">🔒</span>
-              </div>
-              <div class="admin-controls">
+      <!-- Grid de imagini similar cu expozitii-permanente -->
+      <div *ngIf="prieteniImages.length > 0" class="prieteni-gallery">
+        <div class="images-grid">
+          <div class="image-item" *ngFor="let image of getPaginatedImages()" (click)="openGallery(image)">
+            <div class="image-container">
+              <img [src]="getImageUrl(image.path)" [alt]="image.description" class="gallery-image" loading="lazy" />
+              
+              <!-- Overlay cu informații administrative pentru admin -->
+              <div *ngIf="isAdmin" class="admin-overlay">
                 <button 
-                  (click)="deleteImage(prieteniImages[currentImageIndex].id)" 
+                  (click)="deleteImage(image.id); $event.stopPropagation()" 
                   class="admin-delete-btn" 
                   title="Șterge imaginea"
                 >
@@ -91,43 +91,35 @@
                 </button>
               </div>
             </div>
-            
-            <!-- Săgeți de navigare -->
-            <button class="gallery-nav prev-nav" (click)="prevImage()" title="Imaginea anterioară">
-              <span class="nav-icon">❮</span>
-            </button>
-            <button class="gallery-nav next-nav" (click)="nextImage()" title="Imaginea următoare">
-              <span class="nav-icon">❯</span>
+            <!-- <div class="image-info">
+              <p>{{ image.description }}</p>
+            </div> -->
+          </div>
+        </div>
+        
+        <!-- Controale de paginare -->
+        <div class="pagination-controls" *ngIf="totalPages > 1">
+          <button class="pagination-btn" (click)="prevPage()" [disabled]="currentPage === 1">
+            ❮ Anterior
+          </button>
+          
+          <div class="page-numbers">
+            <button 
+              *ngFor="let pageNum of getPageNumbers()" 
+              class="page-number" 
+              [class.active]="pageNum === currentPage"
+              (click)="goToPage(pageNum)">
+              {{ pageNum }}
             </button>
           </div>
           
-          <!-- Descriere imagine și informații -->
-          <div class="image-info">
-            <div class="image-counter">{{ currentImageIndex + 1 }} / {{ prieteniImages.length }}</div>
-            <h3 class="image-title">{{ prieteniImages[currentImageIndex].description }}</h3>
-            
-            <!-- Informații administrative pentru admin -->
-            <div *ngIf="isAdmin" class="admin-image-details">
-              <div class="admin-image-id">ID: {{ prieteniImages[currentImageIndex].id }}</div>
-              <div class="admin-image-path">Path: {{ prieteniImages[currentImageIndex].path }}</div>
-            </div>
-          </div>
-          
-          <!-- Miniaturi imagini (thumbnails) -->
-          <div class="thumbnails-container">
-            <div 
-              *ngFor="let image of prieteniImages; let i = index" 
-              class="thumbnail"
-              [class.active]="i === currentImageIndex"
-              (click)="setCurrentImage(i)"
-            >
-              <img 
-                [src]="getImageUrl(image.path)" 
-                [alt]="image.description" 
-                class="thumbnail-image"
-              >
-            </div>
-          </div>
+          <button class="pagination-btn" (click)="nextPage()" [disabled]="currentPage === totalPages">
+            Următorul ❯
+          </button>
+        </div>
+        
+        <div class="pagination-info" *ngIf="totalPages > 1">
+          <p>Pagina {{ currentPage }} din {{ totalPages }} ({{ prieteniImages.length }} imagini în total)</p>
         </div>
       </div>
 
@@ -143,6 +135,71 @@
       
       <div class="navigation-buttons">
         <button class="back-button" routerLink="/">Înapoi la pagina principală</button>
+      </div>
+    </div>
+
+    <!-- Galeria modal -->
+    <div class="gallery-modal" *ngIf="showGallery" [class.fullscreen]="isFullscreen">
+      <div class="gallery-overlay" (click)="closeGallery()"></div>
+      
+      <div class="gallery-content" [class.fullscreen-content]="isFullscreen">
+        <button class="gallery-close" (click)="closeGallery()">×</button>
+        
+        <div class="gallery-title">
+          <h3>Prietenii Muzeului</h3>
+        </div>
+        
+        <div class="gallery-image-container" 
+             (mousedown)="startDrag($event)" 
+             (mousemove)="onDrag($event)" 
+             (mouseup)="stopDrag()" 
+             (mouseleave)="stopDrag()">
+          <img *ngIf="currentImage" 
+               [src]="getImageUrl(currentImage.path)" 
+               [alt]="currentImage.description" 
+               class="gallery-image" 
+               [ngStyle]="getImageStyle()" 
+               draggable="false" />
+        </div>
+        
+        <div class="gallery-controls">
+          <div class="controls-left">
+            <button class="gallery-nav prev" (click)="prevModalImage()" title="Imaginea anterioară (←)">❮</button>
+          </div>
+          
+          <div class="controls-center">
+            <span class="gallery-counter">{{ currentModalImageIndex + 1 }} / {{ prieteniImages.length }}</span>
+            
+            <div class="action-controls">
+              <div class="zoom-controls">
+                <button class="control-button" (click)="zoomOut()" title="Micșorează (-)">−</button>
+                <span class="zoom-level">{{ (zoomLevel * 100).toFixed(0) }}%</span>
+                <button class="control-button" (click)="zoomIn()" title="Mărește (+)">+</button>
+                <button class="control-button" (click)="resetZoom()" title="Resetează zoom (0)">↺</button>
+              </div>
+              
+              <div class="transform-controls">
+                <button class="control-button" (click)="resetImageTransforms()" title="Resetează transformările">
+                  🔄
+                </button>
+                <button class="control-button fullscreen-btn" (click)="toggleFullscreen()" [title]="isFullscreen ? 'Ieși din fullscreen (F)' : 'Fullscreen (F)'">
+                  <span *ngIf="!isFullscreen">⛶</span>
+                  <span *ngIf="isFullscreen">⧉</span>
+                </button>
+              </div>
+            </div>
+            
+            <!-- Informații administrative pentru admin -->
+            <div *ngIf="isAdmin && currentImage" class="admin-modal-info">
+              <div class="admin-detail">ID: {{ currentImage.id }}</div>
+              <div class="admin-detail">{{ currentImage.description }}</div>
+            </div>
+          </div>
+          
+          <div class="controls-right">
+            <button class="gallery-nav next" (click)="nextModalImage()" title="Imaginea următoare (→)">❯</button>
+          </div>
+        </div>
       </div>
     </div>
   </app-cadran>
