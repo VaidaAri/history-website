@@ -11,6 +11,7 @@ interface PeisajImage {
   id?: number;
   path: string;
   description: string;
+  index?: number;
 }
 
 @Component({
@@ -34,7 +35,26 @@ export class PeisajeMuzeuComponent implements OnInit {
   uploadMessage: string = '';
   showUploadMessage: boolean = false;
   
-  // Proprietăți pentru galeria clasică
+  // Gallery functionality
+  showGallery: boolean = false;
+  currentImage: PeisajImage | null = null;
+  currentModalImageIndex: number = 0;
+  
+  // Zoom and drag functionality
+  zoomLevel: number = 1;
+  isDragging: boolean = false;
+  dragStart: { x: number, y: number } = { x: 0, y: 0 };
+  imagePosition: { x: number, y: number } = { x: 0, y: 0 };
+  
+  // Fullscreen functionality
+  isFullscreen: boolean = false;
+
+  // Pagination functionality
+  currentPage: number = 1;
+  imagesPerPage: number = 4;
+  totalPages: number = 1;
+  
+  // Proprietăți pentru galeria clasică (păstrate pentru compatibilitate)
   currentImageIndex: number = 0;
   
   constructor(
@@ -50,6 +70,7 @@ export class PeisajeMuzeuComponent implements OnInit {
     
     // Încarcă imaginile existente
     this.loadImages();
+    this.setupKeyboardListeners();
   }
   
   // Încarcă imaginile din backend
@@ -68,6 +89,8 @@ export class PeisajeMuzeuComponent implements OnInit {
         if (this.peisajeImages.length > 0 && this.currentImageIndex >= this.peisajeImages.length) {
           this.currentImageIndex = 0;
         }
+        
+        this.updatePagination();
       },
       error: (err) => {
         console.error('Eroare la încărcarea imaginilor:', err);
@@ -152,6 +175,11 @@ export class PeisajeMuzeuComponent implements OnInit {
             this.currentImageIndex = Math.max(0, this.peisajeImages.length - 2);
           }
           
+          // Dacă ștergem imaginea curentă din modal, închidem modalul
+          if (this.showGallery && this.currentImage && this.currentImage.id === imageId) {
+            this.closeGallery();
+          }
+          
           this.loadImages();
         },
         error: (err) => {
@@ -181,5 +209,154 @@ export class PeisajeMuzeuComponent implements OnInit {
     if (index >= 0 && index < this.peisajeImages.length) {
       this.currentImageIndex = index;
     }
+  }
+  
+  // Pagination methods
+  updatePagination() {
+    this.totalPages = Math.ceil(this.peisajeImages.length / this.imagesPerPage);
+  }
+
+  getPaginatedImages(): PeisajImage[] {
+    const startIndex = (this.currentPage - 1) * this.imagesPerPage;
+    const endIndex = startIndex + this.imagesPerPage;
+    return this.peisajeImages.slice(startIndex, endIndex);
+  }
+
+  goToPage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+    }
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+    }
+  }
+
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
+
+  getPageNumbers(): number[] {
+    return Array.from({length: this.totalPages}, (_, i) => i + 1);
+  }
+  
+  // Gallery modal methods
+  setupKeyboardListeners() {
+    document.addEventListener('keydown', (event) => {
+      if (this.showGallery) {
+        switch(event.key) {
+          case 'ArrowLeft':
+            this.prevModalImage();
+            break;
+          case 'ArrowRight':
+            this.nextModalImage();
+            break;
+          case 'Escape':
+            this.closeGallery();
+            break;
+          case '+':
+          case '=':
+            this.zoomIn();
+            break;
+          case '-':
+            this.zoomOut();
+            break;
+          case '0':
+            this.resetZoom();
+            break;
+          case 'f':
+          case 'F':
+            this.toggleFullscreen();
+            break;
+        }
+      }
+    });
+  }
+
+  openGallery(image: PeisajImage) {
+    this.currentModalImageIndex = this.peisajeImages.findIndex(img => img.path === image.path);
+    this.currentImage = image;
+    this.showGallery = true;
+    this.resetImageTransforms();
+  }
+
+  closeGallery() {
+    this.showGallery = false;
+    this.currentImage = null;
+    this.isFullscreen = false;
+    this.resetImageTransforms();
+  }
+
+  prevModalImage() {
+    if (this.currentModalImageIndex > 0) {
+      this.currentModalImageIndex--;
+      this.currentImage = this.peisajeImages[this.currentModalImageIndex];
+      this.resetImageTransforms();
+    }
+  }
+
+  nextModalImage() {
+    if (this.currentModalImageIndex < this.peisajeImages.length - 1) {
+      this.currentModalImageIndex++;
+      this.currentImage = this.peisajeImages[this.currentModalImageIndex];
+      this.resetImageTransforms();
+    }
+  }
+
+  // Zoom functionality
+  zoomIn() {
+    this.zoomLevel = Math.min(this.zoomLevel * 1.2, 3);
+  }
+
+  zoomOut() {
+    this.zoomLevel = Math.max(this.zoomLevel / 1.2, 0.5);
+  }
+
+  resetZoom() {
+    this.zoomLevel = 1;
+    this.imagePosition = { x: 0, y: 0 };
+  }
+
+  // Fullscreen functionality
+  toggleFullscreen() {
+    this.isFullscreen = !this.isFullscreen;
+  }
+
+  resetImageTransforms() {
+    this.resetZoom();
+  }
+
+  getImageStyle() {
+    return {
+      'transform': `scale(${this.zoomLevel}) translate(${this.imagePosition.x}px, ${this.imagePosition.y}px)`,
+      'cursor': this.zoomLevel > 1 ? (this.isDragging ? 'grabbing' : 'grab') : 'default',
+      'transition': this.isDragging ? 'none' : 'transform 0.3s ease'
+    };
+  }
+
+  // Drag functionality
+  startDrag(event: MouseEvent) {
+    if (this.zoomLevel > 1) {
+      this.isDragging = true;
+      this.dragStart = { x: event.clientX - this.imagePosition.x, y: event.clientY - this.imagePosition.y };
+      event.preventDefault();
+    }
+  }
+
+  onDrag(event: MouseEvent) {
+    if (this.isDragging && this.zoomLevel > 1) {
+      this.imagePosition = {
+        x: event.clientX - this.dragStart.x,
+        y: event.clientY - this.dragStart.y
+      };
+    }
+  }
+
+  stopDrag() {
+    this.isDragging = false;
   }
 }

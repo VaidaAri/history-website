@@ -1,0 +1,344 @@
+/* Gallery Modal Styles */
+.gallery-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gallery-modal.fullscreen {
+  background-color: #000;
+}
+
+.gallery-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 1001;
+}
+
+.gallery-content {
+  position: relative;
+  z-index: 1002;
+  width: 95%;
+  max-width: 1600px;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #222;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
+}
+
+.gallery-content.fullscreen-content {
+  width: 100%;
+  height: 100vh;
+  max-width: none;
+  border-radius: 0;
+  padding: 15px;
+}
+
+.gallery-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 30px;
+  color: white;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1003;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.gallery-close:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.gallery-title {
+  color: white;
+  text-align: center;
+  margin-bottom: 15px;
+  padding-right: 40px;
+}
+
+.gallery-title h3 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.gallery-image-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0;
+  min-height: 400px;
+  max-height: 75vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.modal-gallery-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  width: auto;
+  height: auto;
+  min-height: 90%;
+}
+
+.gallery-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+  padding: 0 40px;
+}
+
+.controls-left, .controls-right {
+  flex: 1;
+}
+
+.controls-center {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.controls-right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.gallery-nav {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.gallery-nav:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.gallery-counter {
+  color: #ccc;
+  font-size: 1rem;
+  margin-bottom: 5px;
+}
+
+.action-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.zoom-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.transform-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.zoom-level {
+  color: #ccc;
+  font-size: 0.9rem;
+  min-width: 50px;
+  text-align: center;
+}
+
+.control-button {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  width: 35px;
+  height: 35px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.control-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.fullscreen-btn {
+  font-size: 14px;
+}
+
+.zoom-controls .control-button {
+  width: 32px;
+  height: 32px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.admin-modal-info {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background-color: rgba(234, 209, 150, 0.2);
+  border-radius: 6px;
+  font-size: 0.8rem;
+  color: #ccc;
+}
+
+.admin-detail {
+  margin-bottom: 3px;
+}
+
+/* Pagination Styles */
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin: 30px 0;
+  flex-wrap: wrap;
+}
+
+.pagination-btn {
+  background-color: #7D5A50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background-color: #B08968;
+  transform: translateY(-2px);
+}
+
+.pagination-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.page-numbers {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.page-number {
+  background-color: #EAD196;
+  color: #7D5A50;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  min-width: 40px;
+}
+
+.page-number:hover {
+  background-color: #7D5A50;
+  color: white;
+}
+
+.page-number.active {
+  background-color: #7D5A50;
+  color: white;
+  font-weight: bold;
+}
+
+.pagination-info {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.pagination-info p {
+  color: #7D5A50;
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+/* Responsive adjustments for modal */
+@media (max-width: 768px) {
+  .gallery-content {
+    width: 95%;
+    padding: 15px;
+  }
+  
+  .gallery-nav {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
+  
+  .gallery-controls {
+    padding: 0 20px;
+  }
+  
+  .action-controls {
+    gap: 10px;
+  }
+  
+  .zoom-controls, .transform-controls {
+    gap: 6px;
+  }
+  
+  .control-button {
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+  }
+  
+  .zoom-controls .control-button {
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
+  }
+}
