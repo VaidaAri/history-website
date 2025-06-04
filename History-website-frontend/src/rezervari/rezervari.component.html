@@ -123,19 +123,19 @@
 
         <!-- Lista rezervărilor - vizibilă doar pentru administratori -->
         <div class="table-section" *ngIf="isAdmin">
-            <h2>Lista Rezervărilor</h2>
+            <h2>{{ 'rezervariListTitle' | translate }}</h2>
             <table>
                 <thead>
                     <tr>
-                        <th>Nume<br>reprezentant</th>
-                        <th>Prenume<br>reprezentant</th>
-                        <th>Email</th>
-                        <th>Data și Ora<br>Vizitei</th>
-                        <th>Data<br>Creării</th>
-                        <th>Persoane</th>
-                        <th>Ghid</th>
-                        <th>Status</th>
-                        <th>Acțiuni</th>
+                        <th>{{ 'rezervariTableLastName' | translate }}</th>
+                        <th>{{ 'rezervariTableFirstName' | translate }}</th>
+                        <th>{{ 'rezervariTableEmail' | translate }}</th>
+                        <th>{{ 'rezervariTableDateTime' | translate }}</th>
+                        <th>{{ 'rezervariTableCreatedAt' | translate }}</th>
+                        <th>{{ 'rezervariTablePersons' | translate }}</th>
+                        <th>{{ 'rezervariTableGuide' | translate }}</th>
+                        <th>{{ 'rezervariTableStatus' | translate }}</th>
+                        <th>{{ 'rezervariTableActions' | translate }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -146,7 +146,7 @@
                         <td>{{ booking.datetime | date: 'dd MMM' }}<br>{{ booking.datetime | date: 'yyyy, HH:mm' }}</td>
                         <td>{{ booking.createdAt | date: 'dd MMM' }}<br>{{ booking.createdAt | date: 'yyyy, HH:mm' }}</td>
                         <td>{{booking.numberOfPersons}}</td>
-                        <td>{{ booking.guideRequired ? 'Da' : 'Nu' }}</td>
+                        <td>{{ booking.guideRequired ? ('rezervariYes' | translate) : ('rezervariNo' | translate) }}</td>
                         <td>
                             <span class="status-badge" [ngClass]="{
                                 'status-confirmed': booking.status === 'CONFIRMATA',
@@ -159,14 +159,14 @@
                         </td>
                         <td class="actions-cell">
                             <div class="action-buttons">
-                                <button class="approve-btn" *ngIf="booking.status === 'CONFIRMATA' || booking.status === 'IN_ASTEPTARE'" (click)="approveBooking(booking.id)">Aprobă</button>
-                                <button class="reject-btn" *ngIf="booking.status === 'CONFIRMATA' || booking.status === 'IN_ASTEPTARE'" (click)="rejectBooking(booking.id)">Respinge</button>
-                                <button class="delete-btn" (click)="deleteBooking(booking.id)">Șterge</button>
+                                <button class="approve-btn" *ngIf="booking.status === 'CONFIRMATA' || booking.status === 'IN_ASTEPTARE'" (click)="approveBooking(booking.id)">{{ 'rezervariApprove' | translate }}</button>
+                                <button class="reject-btn" *ngIf="booking.status === 'CONFIRMATA' || booking.status === 'IN_ASTEPTARE'" (click)="rejectBooking(booking.id)">{{ 'rezervariReject' | translate }}</button>
+                                <button class="delete-btn" (click)="deleteBooking(booking.id)">{{ 'rezervariDelete' | translate }}</button>
                             </div>
                         </td>
                     </tr>
                     <tr *ngIf="bookings.length === 0">
-                        <td colspan="9" class="empty-table">Nu există rezervări momentan</td>
+                        <td colspan="9" class="empty-table">{{ 'rezervariNoBookings' | translate }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -174,11 +174,11 @@
         
         <!-- Mesaj de confirmare pentru utilizatorii normali după rezervare -->
         <div *ngIf="!isAdmin" class="confirmation-message">
-            <p><strong>Important:</strong> După trimiterea formularului, veți primi un email de confirmare.</p>
-            <p>Rezervarea va deveni activă doar după confirmarea email-ului prin click pe link-ul primit.</p>
-            <p>Verificați și folderul spam/junk dacă nu găsiți email-ul în inbox.</p>
-            <p>Pentru modificări sau anulări, vă rugăm să contactați muzeul la numărul de telefon afișat pe pagina de contact.</p>
-            <p><em>Vă mulțumim și vă așteptăm cu drag la muzeu!</em></p>
+            <p><strong>{{ 'rezervariImportant' | translate }}</strong> {{ 'rezervariConfirmationEmail' | translate }}</p>
+            <p>{{ 'rezervariActivation' | translate }}</p>
+            <p>{{ 'rezervariSpamCheck' | translate }}</p>
+            <p>{{ 'rezervariChanges' | translate }}</p>
+            <p><em>{{ 'rezervariThankYou' | translate }}</em></p>
         </div>
     </div>
 </app-cadran>

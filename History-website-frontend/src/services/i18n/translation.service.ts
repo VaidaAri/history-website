@@ -428,6 +428,118 @@ export class TranslationService {
       'ro': 'Verificați periodic pentru noutăți și anunțuri importante legate de programul muzeului.',
       'en': 'Check periodically for news and important announcements related to the museum program.',
       'de': 'Überprüfen Sie regelmäßig Neuigkeiten und wichtige Ankündigungen zum Museumsprogramm.'
+    },
+    
+    // Additional reservations translations
+    'rezervariListTitle': {
+      'ro': 'Lista Rezervărilor',
+      'en': 'Reservations List',
+      'de': 'Reservierungsliste'
+    },
+    'rezervariTableLastName': {
+      'ro': 'Nume<br>reprezentant',
+      'en': 'Last Name<br>Representative',
+      'de': 'Nachname<br>Vertreter'
+    },
+    'rezervariTableFirstName': {
+      'ro': 'Prenume<br>reprezentant',
+      'en': 'First Name<br>Representative',
+      'de': 'Vorname<br>Vertreter'
+    },
+    'rezervariTableEmail': {
+      'ro': 'Email',
+      'en': 'Email',
+      'de': 'E-Mail'
+    },
+    'rezervariTableDateTime': {
+      'ro': 'Data și Ora<br>Vizitei',
+      'en': 'Date and Time<br>of Visit',
+      'de': 'Datum und Uhrzeit<br>des Besuchs'
+    },
+    'rezervariTableCreatedAt': {
+      'ro': 'Data<br>Creării',
+      'en': 'Creation<br>Date',
+      'de': 'Erstellungs-<br>datum'
+    },
+    'rezervariTablePersons': {
+      'ro': 'Persoane',
+      'en': 'Persons',
+      'de': 'Personen'
+    },
+    'rezervariTableGuide': {
+      'ro': 'Ghid',
+      'en': 'Guide',
+      'de': 'Führer'
+    },
+    'rezervariTableStatus': {
+      'ro': 'Status',
+      'en': 'Status',
+      'de': 'Status'
+    },
+    'rezervariTableActions': {
+      'ro': 'Acțiuni',
+      'en': 'Actions',
+      'de': 'Aktionen'
+    },
+    'rezervariYes': {
+      'ro': 'Da',
+      'en': 'Yes',
+      'de': 'Ja'
+    },
+    'rezervariNo': {
+      'ro': 'Nu',
+      'en': 'No',
+      'de': 'Nein'
+    },
+    'rezervariApprove': {
+      'ro': 'Aprobă',
+      'en': 'Approve',
+      'de': 'Genehmigen'
+    },
+    'rezervariReject': {
+      'ro': 'Respinge',
+      'en': 'Reject',
+      'de': 'Ablehnen'
+    },
+    'rezervariDelete': {
+      'ro': 'Șterge',
+      'en': 'Delete',
+      'de': 'Löschen'
+    },
+    'rezervariNoBookings': {
+      'ro': 'Nu există rezervări momentan',
+      'en': 'No reservations at the moment',
+      'de': 'Momentan keine Reservierungen'
+    },
+    'rezervariImportant': {
+      'ro': 'Important:',
+      'en': 'Important:',
+      'de': 'Wichtig:'
+    },
+    'rezervariConfirmationEmail': {
+      'ro': 'După trimiterea formularului, veți primi un email de confirmare.',
+      'en': 'After submitting the form, you will receive a confirmation email.',
+      'de': 'Nach dem Absenden des Formulars erhalten Sie eine Bestätigungs-E-Mail.'
+    },
+    'rezervariActivation': {
+      'ro': 'Rezervarea va deveni activă doar după confirmarea email-ului prin click pe link-ul primit.',
+      'en': 'The reservation will become active only after confirming the email by clicking on the received link.',
+      'de': 'Die Reservierung wird erst aktiv, nachdem Sie die E-Mail durch Klicken auf den erhaltenen Link bestätigt haben.'
+    },
+    'rezervariSpamCheck': {
+      'ro': 'Verificați și folderul spam/junk dacă nu găsiți email-ul în inbox.',
+      'en': 'Also check your spam/junk folder if you don\'t find the email in your inbox.',
+      'de': 'Überprüfen Sie auch Ihren Spam-/Junk-Ordner, falls Sie die E-Mail nicht in Ihrem Posteingang finden.'
+    },
+    'rezervariChanges': {
+      'ro': 'Pentru modificări sau anulări, vă rugăm să contactați muzeul la numărul de telefon afișat pe pagina de contact.',
+      'en': 'For changes or cancellations, please contact the museum at the phone number displayed on the contact page.',
+      'de': 'Für Änderungen oder Stornierungen wenden Sie sich bitte an das Museum unter der auf der Kontaktseite angezeigten Telefonnummer.'
+    },
+    'rezervariThankYou': {
+      'ro': 'Vă mulțumim și vă așteptăm cu drag la muzeu!',
+      'en': 'Thank you and we look forward to welcoming you to the museum!',
+      'de': 'Vielen Dank und wir freuen uns darauf, Sie im Museum begrüßen zu dürfen!'
     }
     
     // Poți adăuga restul paragrafelor în același mod
