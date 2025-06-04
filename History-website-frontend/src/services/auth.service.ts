@@ -29,14 +29,14 @@ export class AuthService {
         this.adminNameSubject.next(adminName);
       }
       
-      // Validăm token-ul la inițializare pentru a verifica dacă este încă valid
-      this.validateToken().subscribe();
+      // Nu validăm token-ul automat la inițializare pentru a evita deconectarea nedorită
+      // Validarea se va face doar la cerere sau la operații critice
     } else {
       this.isAuthenticatedSubject.next(false);
     }
   }
 
-  // Verifică validitatea token-ului de la server
+  // Verifică validitatea token-ului de la server (apelat manual când este necesar)
   validateToken(): Observable<boolean> {
     const token = this.getToken();
     if (!token) {
@@ -44,22 +44,28 @@ export class AuthService {
       return of(false);
     }
 
-    // În mod normal, am face un apel la API pentru a valida token-ul
-    // Dacă nu există un endpoint pentru validare, putem folosi un endpoint existent
-    // Acest apel ar trebui să folosească token-ul și să returneze true sau false
     return this.http.get<boolean>(`${this.apiUrl}/validate-token`).pipe(
       tap(isValid => {
         this.isAuthenticatedSubject.next(isValid);
         if (!isValid) {
           localStorage.removeItem('adminToken');
+          localStorage.removeItem('adminName');
+          this.adminNameSubject.next('');
         }
       }),
-      catchError(() => {
-        this.isAuthenticatedSubject.next(false);
-        localStorage.removeItem('adminToken');
-        return of(false);
+      catchError((error) => {
+        console.warn('Eroare la validarea token-ului:', error);
+        // Nu deconectăm automat dacă serverul nu răspunde
+        // Păstrăm autentificarea locală
+        return of(true);
       })
     );
+  }
+
+  // Verifică dacă utilizatorul este autentificat fără a face apel la server
+  isAuthenticatedLocally(): boolean {
+    const token = localStorage.getItem('adminToken');
+    return !!token && this.isAuthenticated();
   }
 
   // Autentificare administrator

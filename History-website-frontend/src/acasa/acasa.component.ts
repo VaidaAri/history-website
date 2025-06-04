@@ -157,8 +157,7 @@ export class AcasaComponent implements OnInit {
   logout() {
     this.authService.logout();
     alert('V-ați deconectat cu succes!');
-    // Reîncărcăm pagina pentru a actualiza interfața
-    window.location.reload();
+    // Nu mai reîncărcăm pagina - interfața se va actualiza automat prin AuthService
   }
   
   // Adăugăm un link pentru pagina de login pentru administratori
