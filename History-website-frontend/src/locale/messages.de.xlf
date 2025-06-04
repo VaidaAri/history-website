@@ -2,6 +2,86 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
   <file source-language="en-US" target-language="de" datatype="plaintext" original="ng2.template">
     <body>
+      <trans-unit id="welcomeTitle" datatype="html">
+        <source>Bine ați venit la Muzeul Grăniceresc Năsăudean</source>
+        <target>Willkommen im Năsăuder Grenzwacht-Museum</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/acasa/acasa.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="exploreMuseum" datatype="html">
+        <source>Explorează Muzeul</source>
+        <target>Museum erkunden</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/acasa/acasa.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="permanentExhibitions" datatype="html">
+        <source>Expoziții Permanente</source>
+        <target>Dauerausstellungen</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/acasa/acasa.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="permanentExhibitionsDesc" datatype="html">
+        <source>Descoperă colecțiile noastre valoroase</source>
+        <target>Entdecken Sie unsere wertvollen Sammlungen</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/acasa/acasa.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="museumLandscapes" datatype="html">
+        <source>Peisaje din curtea muzeului</source>
+        <target>Museumshof-Landschaften</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/acasa/acasa.component.html</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="museumLandscapesDesc" datatype="html">
+        <source>Frumusețea exterioară a muzeului</source>
+        <target>Die äußere Schönheit des Museums</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/acasa/acasa.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="friendsOfMuseum" datatype="html">
+        <source>Prietenii Muzeului</source>
+        <target>Freunde des Museums</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/acasa/acasa.component.html</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="friendsOfMuseumDesc" datatype="html">
+        <source>Comunitatea care susține muzeul</source>
+        <target>Die Gemeinschaft, die das Museum unterstützt</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/acasa/acasa.component.html</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="news" datatype="html">
+        <source>Noutăți</source>
+        <target>Neuigkeiten</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/acasa/acasa.component.html</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="noPosts" datatype="html">
+        <source>Nu există postări momentan.</source>
+        <target>Momentan sind keine Beiträge verfügbar.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/acasa/acasa.component.html</context>
+          <context context-type="linenumber">47</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="istoricTitle" datatype="html">
         <source>Istoric și Publicații</source>
         <target>Geschichte und Publikationen</target>

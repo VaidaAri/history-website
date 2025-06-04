@@ -3,26 +3,26 @@
     
     <app-cadran>
         <div class="home-container">
-            <h2>Bine ați venit la Muzeul Grăniceresc Năsăudean</h2>
+            <h2>{{ 'welcomeTitle' | translate }}</h2>
             
             <!-- Secțiunea de navigare rapidă -->
             <div class="quick-nav-section">
-                <h3>Explorează Muzeul</h3>
+                <h3>{{ 'exploreMuseum' | translate }}</h3>
                 <div class="nav-cards-container">
                     <div class="nav-card" routerLink="/expozitii-permanente">
                         <div class="nav-card-icon">🖼️</div>
-                        <h4>Expoziții Permanente</h4>
-                        <p>Descoperă colecțiile noastre valoroase</p>
+                        <h4>{{ 'permanentExhibitions' | translate }}</h4>
+                        <p>{{ 'permanentExhibitionsDesc' | translate }}</p>
                     </div>
                     <div class="nav-card" routerLink="/peisaje-muzeu">
                         <div class="nav-card-icon">🏛️</div>
-                        <h4>Peisaje din curtea muzeului</h4>
-                        <p>Frumusețea exterioară a muzeului</p>
+                        <h4>{{ 'museumLandscapes' | translate }}</h4>
+                        <p>{{ 'museumLandscapesDesc' | translate }}</p>
                     </div>
                     <div class="nav-card" routerLink="/prietenii-muzeului">
                         <div class="nav-card-icon">👥</div>
-                        <h4>Prietenii Muzeului</h4>
-                        <p>Comunitatea care susține muzeul</p>
+                        <h4>{{ 'friendsOfMuseum' | translate }}</h4>
+                        <p>{{ 'friendsOfMuseumDesc' | translate }}</p>
                     </div>
                 </div>
             </div>
@@ -32,7 +32,7 @@
             <!-- Afișare unificată a tuturor postărilor -->
             <div id="posts-section" class="posts-section">
                 <div class="posts-header">
-                    <h3>Noutăți</h3>
+                    <h3>{{ 'news' | translate }}</h3>
                     
                     <!-- Componenta de administrare postări - vizibilă doar pentru administratori -->
                     <app-post-manager 
@@ -44,7 +44,7 @@
                 <!-- Lista de postări -->
                 <div class="posts-list">
                     <div *ngIf="posts.length === 0" class="no-posts">
-                        <p>Nu există postări momentan.</p>
+                        <p>{{ 'noPosts' | translate }}</p>
                     </div>
                     
                     <div *ngFor="let post of posts" class="post-item">

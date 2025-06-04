@@ -254,7 +254,60 @@ export class TranslationService {
       'ro': 'Tarife & Contact',
       'en': 'Prices & Contact',
       'de': 'Preise & Kontakt'
+    },
+    
+    // Home page translations
+    'welcomeTitle': {
+      'ro': 'Bine ați venit la Muzeul Grăniceresc Năsăudean',
+      'en': 'Welcome to the Năsăud Border Guard Museum',
+      'de': 'Willkommen im Năsăuder Grenzwacht-Museum'
+    },
+    'exploreMuseum': {
+      'ro': 'Explorează Muzeul',
+      'en': 'Explore the Museum',
+      'de': 'Museum erkunden'
+    },
+    'permanentExhibitions': {
+      'ro': 'Expoziții Permanente',
+      'en': 'Permanent Exhibitions',
+      'de': 'Dauerausstellungen'
+    },
+    'permanentExhibitionsDesc': {
+      'ro': 'Descoperă colecțiile noastre valoroase',
+      'en': 'Discover our valuable collections',
+      'de': 'Entdecken Sie unsere wertvollen Sammlungen'
+    },
+    'museumLandscapes': {
+      'ro': 'Peisaje din curtea muzeului',
+      'en': 'Museum Courtyard Landscapes',
+      'de': 'Museumshof-Landschaften'
+    },
+    'museumLandscapesDesc': {
+      'ro': 'Frumusețea exterioară a muzeului',
+      'en': 'The exterior beauty of the museum',
+      'de': 'Die äußere Schönheit des Museums'
+    },
+    'friendsOfMuseum': {
+      'ro': 'Prietenii Muzeului',
+      'en': 'Friends of the Museum',
+      'de': 'Freunde des Museums'
+    },
+    'friendsOfMuseumDesc': {
+      'ro': 'Comunitatea care susține muzeul',
+      'en': 'The community that supports the museum',
+      'de': 'Die Gemeinschaft, die das Museum unterstützt'
+    },
+    'news': {
+      'ro': 'Noutăți',
+      'en': 'News',
+      'de': 'Neuigkeiten'
+    },
+    'noPosts': {
+      'ro': 'Nu există postări momentan.',
+      'en': 'No posts available at the moment.',
+      'de': 'Momentan sind keine Beiträge verfügbar.'
     }
+    
     // Poți adăuga restul paragrafelor în același mod
   };
 

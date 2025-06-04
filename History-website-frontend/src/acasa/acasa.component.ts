@@ -10,6 +10,8 @@ import { PostManagerComponent } from '../components/post-manager/post-manager.co
 import { PostEditorComponent } from '../components/post-editor/post-editor.component';
 import { AuthService } from '../services/auth.service';
 import { PostService } from '../services/post.service';
+import { TranslatePipe } from '../services/i18n/translate.pipe';
+import { TranslationService } from '../services/i18n/translation.service';
 
 // Interfață pentru secțiune
 interface Section {
@@ -30,10 +32,12 @@ interface Section {
     FormsModule,
     HttpClientModule,
     PostManagerComponent,
-    PostEditorComponent
+    PostEditorComponent,
+    TranslatePipe
   ],
   templateUrl: './acasa.component.html',
-  styleUrl: './acasa.component.css'
+  styleUrl: './acasa.component.css',
+  providers: [TranslationService]
 })
 export class AcasaComponent implements OnInit {
   // Definim secțiunile statice
@@ -54,7 +58,8 @@ export class AcasaComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private postService: PostService,
-    private router: Router
+    private router: Router,
+    private translationService: TranslationService
   ) {}
 
   ngOnInit() {
