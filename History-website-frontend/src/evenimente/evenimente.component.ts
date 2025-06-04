@@ -7,13 +7,16 @@ import { CadranComponent } from "../cadran/cadran.component";
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { TranslatePipe } from '../services/i18n/translate.pipe';
+import { TranslationService } from '../services/i18n/translation.service';
 
 @Component({
   selector: 'app-evenimente',
   standalone: true,
-  imports: [CommonModule, RouterModule, HttpClientModule, MeniuComponent, CalendarComponent, CadranComponent],
+  imports: [CommonModule, RouterModule, HttpClientModule, MeniuComponent, CalendarComponent, CadranComponent, TranslatePipe],
   templateUrl: './evenimente.component.html',
-  styleUrl: './evenimente.component.css'
+  styleUrl: './evenimente.component.css',
+  providers: [TranslationService]
 })
 export class EvenimenteComponent implements OnInit, OnDestroy {
   isAdmin: boolean = false;
@@ -25,7 +28,8 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService, 
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    private translationService: TranslationService
   ) {}
 
   ngOnInit() {

@@ -306,6 +306,128 @@ export class TranslationService {
       'ro': 'Nu există postări momentan.',
       'en': 'No posts available at the moment.',
       'de': 'Momentan sind keine Beiträge verfügbar.'
+    },
+    
+    // Events page translations
+    'eventsCalendarTitle': {
+      'ro': 'Calendar Evenimente',
+      'en': 'Events Calendar',
+      'de': 'Veranstaltungskalender'
+    },
+    'eventsAdminDescription': {
+      'ro': 'Sunteți autentificat ca administrator. Puteți adăuga evenimente noi făcând click pe o dată în calendar.',
+      'en': 'You are authenticated as administrator. You can add new events by clicking on a date in the calendar.',
+      'de': 'Sie sind als Administrator authentifiziert. Sie können neue Veranstaltungen hinzufügen, indem Sie auf ein Datum im Kalender klicken.'
+    },
+    'eventsHideList': {
+      'ro': 'Ascunde lista de evenimente',
+      'en': 'Hide events list',
+      'de': 'Veranstaltungsliste ausblenden'
+    },
+    'eventsShowList': {
+      'ro': 'Arată lista de evenimente',
+      'en': 'Show events list',
+      'de': 'Veranstaltungsliste anzeigen'
+    },
+    'eventsListTitle': {
+      'ro': 'Lista de evenimente',
+      'en': 'Events List',
+      'de': 'Veranstaltungsliste'
+    },
+    'eventsTableId': {
+      'ro': 'ID',
+      'en': 'ID',
+      'de': 'ID'
+    },
+    'eventsTableName': {
+      'ro': 'Nume eveniment',
+      'en': 'Event Name',
+      'de': 'Veranstaltungsname'
+    },
+    'eventsTableStartDate': {
+      'ro': 'Data început',
+      'en': 'Start Date',
+      'de': 'Startdatum'
+    },
+    'eventsTableEndDate': {
+      'ro': 'Data sfârșit',
+      'en': 'End Date',
+      'de': 'Enddatum'
+    },
+    'eventsTableLocation': {
+      'ro': 'Locație',
+      'en': 'Location',
+      'de': 'Ort'
+    },
+    'eventsTableDescription': {
+      'ro': 'Descriere',
+      'en': 'Description',
+      'de': 'Beschreibung'
+    },
+    'eventsTableImages': {
+      'ro': 'Imagini',
+      'en': 'Images',
+      'de': 'Bilder'
+    },
+    'eventsTableActions': {
+      'ro': 'Acțiuni',
+      'en': 'Actions',
+      'de': 'Aktionen'
+    },
+    'eventsNoDescription': {
+      'ro': 'Fără descriere',
+      'en': 'No description',
+      'de': 'Keine Beschreibung'
+    },
+    'eventsEditTooltip': {
+      'ro': 'Editează eveniment',
+      'en': 'Edit event',
+      'de': 'Veranstaltung bearbeiten'
+    },
+    'eventsDeleteTooltip': {
+      'ro': 'Șterge eveniment',
+      'en': 'Delete event',
+      'de': 'Veranstaltung löschen'
+    },
+    'eventsNoEvents': {
+      'ro': 'Nu există evenimente înregistrate',
+      'en': 'No registered events',
+      'de': 'Keine registrierten Veranstaltungen'
+    },
+    'eventsUserDescription': {
+      'ro': 'Descoperiți evenimentele organizate de Muzeul Grăniceresc Năsăudean. Faceți click pe un eveniment pentru a vedea detaliile.',
+      'en': 'Discover the events organized by the Năsăud Border Guard Museum. Click on an event to see the details.',
+      'de': 'Entdecken Sie die vom Năsăuder Grenzwacht-Museum organisierten Veranstaltungen. Klicken Sie auf eine Veranstaltung, um die Details zu sehen.'
+    },
+    'eventsVisitUsTitle': {
+      'ro': 'Vizitați-ne',
+      'en': 'Visit Us',
+      'de': 'Besuchen Sie uns'
+    },
+    'eventsVisitUsDesc': {
+      'ro': 'Programul de vizitare este zilnic între orele 9:00 - 17:00, cu excepția zilei de luni.',
+      'en': 'Visiting hours are daily from 9:00 AM - 5:00 PM, except Mondays.',
+      'de': 'Die Besuchszeiten sind täglich von 9:00 - 17:00 Uhr, außer montags.'
+    },
+    'eventsSpecialTitle': {
+      'ro': 'Evenimente speciale',
+      'en': 'Special Events',
+      'de': 'Besondere Veranstaltungen'
+    },
+    'eventsSpecialDesc': {
+      'ro': 'Urmăriți calendarul pentru expoziții temporare, târguri și alte activități culturale.',
+      'en': 'Follow the calendar for temporary exhibitions, fairs and other cultural activities.',
+      'de': 'Verfolgen Sie den Kalender für Wechselausstellungen, Messen und andere kulturelle Aktivitäten.'
+    },
+    'eventsAnnouncementsTitle': {
+      'ro': 'Anunțuri',
+      'en': 'Announcements',
+      'de': 'Ankündigungen'
+    },
+    'eventsAnnouncementsDesc': {
+      'ro': 'Verificați periodic pentru noutăți și anunțuri importante legate de programul muzeului.',
+      'en': 'Check periodically for news and important announcements related to the museum program.',
+      'de': 'Überprüfen Sie regelmäßig Neuigkeiten und wichtige Ankündigungen zum Museumsprogramm.'
     }
     
     // Poți adăuga restul paragrafelor în același mod

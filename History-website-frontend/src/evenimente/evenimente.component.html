@@ -1,31 +1,31 @@
 <main class="evenimente">
 <app-meniu></app-meniu>
 <app-cadran>
-  <h2>Calendar Evenimente</h2>
+  <h2>{{ 'eventsCalendarTitle' | translate }}</h2>
   <div class="evenimente-container">
       
       <div *ngIf="isAdmin" class="admin-controls">
         <div class="events-description admin-desc">
-          <p>Sunteți autentificat ca administrator. Puteți adăuga evenimente noi făcând click pe o dată în calendar.</p>
+          <p>{{ 'eventsAdminDescription' | translate }}</p>
           <button class="toggle-list-btn" (click)="toggleEventsList()">
-            {{ showEventsList ? 'Ascunde lista de evenimente' : 'Arată lista de evenimente' }}
+            {{ showEventsList ? ('eventsHideList' | translate) : ('eventsShowList' | translate) }}
           </button>
         </div>
         
         <div *ngIf="showEventsList" class="events-list-container">
-          <h3>Lista de evenimente</h3>
+          <h3>{{ 'eventsListTitle' | translate }}</h3>
           <div class="events-list">
             <table class="events-table">
               <thead>
                 <tr>
-                  <th>ID</th>
-                  <th>Nume eveniment</th>
-                  <th>Data început</th>
-                  <th>Data sfârșit</th>
-                  <th>Locație</th>
-                  <th>Descriere</th>
-                  <th>Imagini</th>
-                  <th>Acțiuni</th>
+                  <th>{{ 'eventsTableId' | translate }}</th>
+                  <th>{{ 'eventsTableName' | translate }}</th>
+                  <th>{{ 'eventsTableStartDate' | translate }}</th>
+                  <th>{{ 'eventsTableEndDate' | translate }}</th>
+                  <th>{{ 'eventsTableLocation' | translate }}</th>
+                  <th>{{ 'eventsTableDescription' | translate }}</th>
+                  <th>{{ 'eventsTableImages' | translate }}</th>
+                  <th>{{ 'eventsTableActions' | translate }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -37,21 +37,21 @@
                   <td>{{ event.location }}</td>
                   <td class="description-cell">
                     <div class="truncated-text" [title]="event.description">
-                      {{ event.description ? (event.description | slice:0:50) + (event.description.length > 50 ? '...' : '') : 'Fără descriere' }}
+                      {{ event.description ? (event.description | slice:0:50) + (event.description.length > 50 ? '...' : '') : ('eventsNoDescription' | translate) }}
                     </div>
                   </td>
                   <td>{{ event.images?.length || 0 }}</td>
                   <td class="actions-cell">
-                    <button class="edit-btn" (click)="editEvent(event)" title="Editează eveniment">
+                    <button class="edit-btn" (click)="editEvent(event)" [title]="'eventsEditTooltip' | translate">
                       <span class="edit-icon">✏️</span>
                     </button>
-                    <button class="delete-btn" (click)="deleteEvent(event.id)" title="Șterge eveniment">
+                    <button class="delete-btn" (click)="deleteEvent(event.id)" [title]="'eventsDeleteTooltip' | translate">
                       <span class="delete-icon">🗑️</span>
                     </button>
                   </td>
                 </tr>
                 <tr *ngIf="events.length === 0">
-                  <td colspan="8" class="no-data">Nu există evenimente înregistrate</td>
+                  <td colspan="8" class="no-data">{{ 'eventsNoEvents' | translate }}</td>
                 </tr>
               </tbody>
             </table>
@@ -60,7 +60,7 @@
       </div>
       
       <p *ngIf="!isAdmin" class="events-description">
-        Descoperiți evenimentele organizate de Muzeul Grăniceresc Năsăudean. Faceți click pe un eveniment pentru a vedea detaliile.
+        {{ 'eventsUserDescription' | translate }}
       </p>
       
       <div class="calendar-container">
@@ -72,20 +72,20 @@
     <div class="events-info">
       <div class="event-info-box">
         <div class="event-icon">📅</div>
-        <h3>Vizitați-ne</h3>
-        <p>Programul de vizitare este zilnic între orele 9:00 - 17:00, cu excepția zilei de luni.</p>
+        <h3>{{ 'eventsVisitUsTitle' | translate }}</h3>
+        <p>{{ 'eventsVisitUsDesc' | translate }}</p>
       </div>
       
       <div class="event-info-box">
         <div class="event-icon">🎭</div>
-        <h3>Evenimente speciale</h3>
-        <p>Urmăriți calendarul pentru expoziții temporare, târguri și alte activități culturale.</p>
+        <h3>{{ 'eventsSpecialTitle' | translate }}</h3>
+        <p>{{ 'eventsSpecialDesc' | translate }}</p>
       </div>
       
       <div class="event-info-box">
         <div class="event-icon">🔔</div>
-        <h3>Anunțuri</h3>
-        <p>Verificați periodic pentru noutăți și anunțuri importante legate de programul muzeului.</p>
+        <h3>{{ 'eventsAnnouncementsTitle' | translate }}</h3>
+        <p>{{ 'eventsAnnouncementsDesc' | translate }}</p>
       </div>
     </div>
   
