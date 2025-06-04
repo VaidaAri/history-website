@@ -224,3 +224,67 @@
         font-size: 2.2em;
     }
 }
+
+/* =============================================== */
+/* BORDURI DECORATIVE CU MODELE POPULARE ROMÂNEȘTI */
+/* =============================================== */
+
+.decorative-borders {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100vh;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.decorative-border-left {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 120px;
+    height: 100%;
+    background-image: url('http://localhost:8080/images/Modele Pagina/model1.png');
+    background-repeat: repeat-y;
+    background-size: 170px auto;
+    background-position: center top;
+    opacity: 0.85;
+}
+
+.decorative-border-right {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 120px;
+    height: 100%;
+    background-image: url('http://localhost:8080/images/Modele Pagina/model1.png');
+    background-repeat: repeat-y;
+    background-size: 170px auto;
+    background-position: center top;
+    opacity: 0.85;
+    transform: scaleX(-1);
+}
+
+.tarife {
+    position: relative;
+}
+
+@media (max-width: 1400px) {
+    .decorative-border-left, .decorative-border-right {
+        width: 100px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .decorative-border-left, .decorative-border-right {
+        width: 80px;
+    }
+}
+
+@media (max-width: 768px) {
+    .decorative-borders {
+        display: none;
+    }
+}
