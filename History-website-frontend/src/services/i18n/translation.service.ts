@@ -540,6 +540,68 @@ export class TranslationService {
       'ro': 'Vă mulțumim și vă așteptăm cu drag la muzeu!',
       'en': 'Thank you and we look forward to welcoming you to the museum!',
       'de': 'Vielen Dank und wir freuen uns darauf, Sie im Museum begrüßen zu dürfen!'
+    },
+    
+    // Publications page translations
+    'publicationsBackToHistory': {
+      'ro': 'Înapoi la Istoric',
+      'en': 'Back to History',
+      'de': 'Zurück zur Geschichte'
+    },
+    'publicationsTitle': {
+      'ro': 'Publicații',
+      'en': 'Publications',
+      'de': 'Publikationen'
+    },
+    'publicationsArhivaSomesana': {
+      'ro': 'Arhiva Someșană',
+      'en': 'Someș Archive',
+      'de': 'Someș-Archiv'
+    },
+    'publicationsReviste': {
+      'ro': 'Reviste',
+      'en': 'Magazines',
+      'de': 'Zeitschriften'
+    },
+    'publicationsArhivaSomesanaDesc': {
+      'ro': 'Colecție de articole istorice și documente despre regiunea Someșană. Faceți click pe imagini pentru a le vizualiza în galerie.',
+      'en': 'Collection of historical articles and documents about the Someș region. Click on images to view them in the gallery.',
+      'de': 'Sammlung historischer Artikel und Dokumente über die Someș-Region. Klicken Sie auf die Bilder, um sie in der Galerie anzuzeigen.'
+    },
+    'publicationsRevisteDesc': {
+      'ro': 'Colecție de reviste istorice. Faceți click pe imagini pentru a le vizualiza în galerie.',
+      'en': 'Collection of historical magazines. Click on images to view them in the gallery.',
+      'de': 'Sammlung historischer Zeitschriften. Klicken Sie auf die Bilder, um sie in der Galerie anzuzeigen.'
+    },
+    'publicationsPage': {
+      'ro': 'Pagina',
+      'en': 'Page',
+      'de': 'Seite'
+    },
+    'publicationsCover': {
+      'ro': 'Coperta',
+      'en': 'Cover',
+      'de': 'Umschlag'
+    },
+    'publicationsMagazine': {
+      'ro': 'Revista',
+      'en': 'Magazine',
+      'de': 'Zeitschrift'
+    },
+    'publicationsZoomOut': {
+      'ro': 'Micșorează',
+      'en': 'Zoom Out',
+      'de': 'Verkleinern'
+    },
+    'publicationsZoomIn': {
+      'ro': 'Mărește',
+      'en': 'Zoom In',
+      'de': 'Vergrößern'
+    },
+    'publicationsResetZoom': {
+      'ro': 'Resetează zoom',
+      'en': 'Reset Zoom',
+      'de': 'Zoom zurücksetzen'
     }
     
     // Poți adăuga restul paragrafelor în același mod

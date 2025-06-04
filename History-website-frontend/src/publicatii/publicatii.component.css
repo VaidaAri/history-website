@@ -5,6 +5,78 @@
   font-family: Arial, sans-serif;
 }
 
+/* Language selector styles */
+.language-selector {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 8px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.flag {
+  width: 30px;
+  height: 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.flag:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Steagul României */
+.flag-ro {
+  background: linear-gradient(to right, 
+    #002B7F 33.33%, 
+    #FCD116 33.33%, 66.66%, 
+    #CE1126 66.66%);
+}
+
+/* Steagul Angliei (UK) */
+.flag-en {
+  background-color: #012169;
+  background-image:
+    /* Crucea Sfântului Andrei albă */
+    linear-gradient(to bottom right, transparent 45%, white 45%, white 55%, transparent 55%),
+    linear-gradient(to bottom left, transparent 45%, white 45%, white 55%, transparent 55%),
+    /* Crucea Sfântului Andrei roșie */
+    linear-gradient(to bottom right, transparent 47%, #C8102E 47%, #C8102E 53%, transparent 53%),
+    linear-gradient(to bottom left, transparent 47%, #C8102E 47%, #C8102E 53%, transparent 53%),
+    /* Crucea Sfântului Gheorghe albă */
+    linear-gradient(to right, transparent 42%, white 42%, white 58%, transparent 58%),
+    linear-gradient(to bottom, transparent 42%, white 42%, white 58%, transparent 58%),
+    /* Crucea Sfântului Gheorghe roșie */
+    linear-gradient(to right, transparent 44%, #C8102E 44%, #C8102E 56%, transparent 56%),
+    linear-gradient(to bottom, transparent 44%, #C8102E 44%, #C8102E 56%, transparent 56%);
+}
+
+/* Steagul Germaniei */
+.flag-de {
+  background: linear-gradient(to bottom,
+    #000000 33.33%,
+    #DD0000 33.33%, 66.66%,
+    #FFCE00 66.66%);
+}
+
+.flag.active {
+  transform: translateY(-3px);
+  border: 1px solid #EAD196;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  opacity: 1;
+}
+
 .header-nav {
   display: flex;
   align-items: center;

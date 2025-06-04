@@ -2,6 +2,8 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NgFor, NgIf, CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { TranslatePipe } from '../services/i18n/translate.pipe';
+import { TranslationService } from '../services/i18n/translation.service';
 
 interface PublicationImage {
   url: string;
@@ -13,9 +15,10 @@ interface PublicationImage {
 @Component({
   selector: 'app-publicatii',
   standalone: true,
-  imports: [RouterModule, NgFor, NgIf, CommonModule],
+  imports: [RouterModule, NgFor, NgIf, CommonModule, TranslatePipe],
   templateUrl: './publicatii.component.html',
-  styleUrl: './publicatii.component.css'
+  styleUrl: './publicatii.component.css',
+  providers: [TranslationService]
 })
 export class PublicatiiComponent implements OnInit {
   arhivaSomesanaImages: PublicationImage[] = [];
@@ -34,7 +37,7 @@ export class PublicatiiComponent implements OnInit {
   imageTranslateX: number = 0;
   imageTranslateY: number = 0;
   
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, public translationService: TranslationService) {}
   
   ngOnInit() {
     this.loadArhivaSomesanaImages();

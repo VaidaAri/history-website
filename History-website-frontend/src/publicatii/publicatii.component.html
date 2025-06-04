@@ -1,22 +1,29 @@
 <div class="publicatii-container">
+  <!-- Language selector -->
+  <div class="language-selector">
+    <div class="flag flag-ro" [class.active]="translationService.getLanguage() === 'ro'" (click)="translationService.setLanguage('ro')" title="Română"></div>
+    <div class="flag flag-en" [class.active]="translationService.getLanguage() === 'en'" (click)="translationService.setLanguage('en')" title="English"></div>
+    <div class="flag flag-de" [class.active]="translationService.getLanguage() === 'de'" (click)="translationService.setLanguage('de')" title="Deutsch"></div>
+  </div>
+  
   <div class="header-nav">
-    <button class="back-button" routerLink="/istoric">← Înapoi la Istoric</button>
-    <h1 class="title">Publicații</h1>
+    <button class="back-button" routerLink="/istoric">← {{ 'publicationsBackToHistory' | translate }}</button>
+    <h1 class="title">{{ 'publicationsTitle' | translate }}</h1>
   </div>
   
   <div class="category-selector">
-    <button [class.active]="selectedCategory === 'arhivaSomesana'" (click)="switchCategory('arhivaSomesana')">Arhiva Someșană</button>
-    <button [class.active]="selectedCategory === 'scanCoperti'" (click)="switchCategory('scanCoperti')">Reviste</button>
+    <button [class.active]="selectedCategory === 'arhivaSomesana'" (click)="switchCategory('arhivaSomesana')">{{ 'publicationsArhivaSomesana' | translate }}</button>
+    <button [class.active]="selectedCategory === 'scanCoperti'" (click)="switchCategory('scanCoperti')">{{ 'publicationsReviste' | translate }}</button>
   </div>
   
   <div class="publication-description" *ngIf="selectedCategory === 'arhivaSomesana'">
-    <h2>Arhiva Someșană</h2>
-    <p>Colecție de articole istorice și documente despre regiunea Someșană. Faceți click pe imagini pentru a le vizualiza în galerie.</p>
+    <h2>{{ 'publicationsArhivaSomesana' | translate }}</h2>
+    <p>{{ 'publicationsArhivaSomesanaDesc' | translate }}</p>
   </div>
   
   <div class="publication-description" *ngIf="selectedCategory === 'scanCoperti'">
-    <h2>Reviste</h2>
-    <p>Colecție de reviste istorice. Faceți click pe imagini pentru a le vizualiza în galerie.</p>
+    <h2>{{ 'publicationsReviste' | translate }}</h2>
+    <p>{{ 'publicationsRevisteDesc' | translate }}</p>
   </div>
   
   <div class="publications-grid" *ngIf="selectedCategory === 'arhivaSomesana'">
@@ -25,7 +32,7 @@
         <img [src]="image.url" [alt]="image.filename" class="publication-image" />
       </div>
       <div class="publication-info">
-        <p>{{ image.index >= 0 ? 'Pagina ' + (image.index + 1) : 'Coperta' }}</p>
+        <p>{{ image.index >= 0 ? (('publicationsPage' | translate) + ' ' + (image.index + 1)) : ('publicationsCover' | translate) }}</p>
       </div>
     </div>
   </div>
@@ -36,7 +43,7 @@
         <img [src]="image.url" [alt]="image.filename" class="publication-image" />
       </div>
       <div class="publication-info">
-        <p>{{ 'Revista ' + (image.index + 1) }}</p>
+        <p>{{ ('publicationsMagazine' | translate) + ' ' + (image.index + 1) }}</p>
       </div>
     </div>
   </div>
@@ -74,10 +81,10 @@
           <span class="gallery-counter">{{ currentImageIndex + 1 }} / {{ currentImages.length }}</span>
           
           <div class="zoom-controls">
-            <button class="zoom-button" (click)="zoomOut()" title="Micșorează">−</button>
+            <button class="zoom-button" (click)="zoomOut()" [title]="'publicationsZoomOut' | translate">−</button>
             <span class="zoom-level">{{ (zoomLevel * 100).toFixed(0) }}%</span>
-            <button class="zoom-button" (click)="zoomIn()" title="Mărește">+</button>
-            <button class="zoom-button" (click)="resetZoom()" title="Resetează zoom">↺</button>
+            <button class="zoom-button" (click)="zoomIn()" [title]="'publicationsZoomIn' | translate">+</button>
+            <button class="zoom-button" (click)="resetZoom()" [title]="'publicationsResetZoom' | translate">↺</button>
           </div>
         </div>
         
