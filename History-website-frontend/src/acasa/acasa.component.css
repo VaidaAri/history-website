@@ -548,7 +548,7 @@
     height: 100%; /* Toată înălțimea containerului */
     background-image: url('http://localhost:8080/images/Modele Pagina/model1.png');
     background-repeat: repeat-y;
-    background-size: 150px auto; /* Modelul mai mare - lățime fixă de 150px */
+    background-size: 170px auto; /* Modelul și mai mare - lățime fixă de 170px */
     background-position: center top;
     opacity: 0.85;
 }
@@ -562,7 +562,7 @@
     height: 100%; /* Toată înălțimea containerului */
     background-image: url('http://localhost:8080/images/Modele Pagina/model1.png');
     background-repeat: repeat-y;
-    background-size: 150px auto; /* Aceeași dimensiune ca bordura stângă */
+    background-size: 170px auto; /* Aceeași dimensiune ca bordura stângă */
     background-position: center top;
     opacity: 0.85;
     transform: scaleX(-1); /* Oglindește modelul pentru varietate */
