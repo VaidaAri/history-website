@@ -229,3 +229,80 @@ p, h4, li {
     padding-left: 0;
   }
 }
+
+/* =============================================== */
+/* BORDURI DECORATIVE CU MODELE POPULARE ROMÂNEȘTI */
+/* =============================================== */
+
+/* Container principal pentru bordurile decorative */
+.decorative-borders {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100vh; /* Minimul unei pagini întregi */
+    height: 100%; /* Și se extinde cu conținutul */
+    pointer-events: none; /* Permite click-urile prin borduri */
+    z-index: 1; /* Sub meniu dar peste fundal */
+}
+
+/* Bordura stângă */
+.decorative-border-left {
+    position: absolute;
+    left: 0; /* Lipit de marginea stângă */
+    top: 0;
+    width: 120px; /* Mai mare ca să fie mai vizibil */
+    height: 100%; /* Toată înălțimea containerului */
+    background-image: url('http://localhost:8080/images/Modele Pagina/model1.png');
+    background-repeat: repeat-y;
+    background-size: 170px auto; /* Modelul și mai mare - lățime fixă de 170px */
+    background-position: center top;
+    opacity: 0.85;
+}
+
+/* Bordura dreaptă */
+.decorative-border-right {
+    position: absolute;
+    right: 0; /* Lipit de marginea dreaptă */
+    top: 0;
+    width: 120px; /* Mai mare ca să fie mai vizibil */
+    height: 100%; /* Toată înălțimea containerului */
+    background-image: url('http://localhost:8080/images/Modele Pagina/model1.png');
+    background-repeat: repeat-y;
+    background-size: 170px auto; /* Aceeași dimensiune ca bordura stângă */
+    background-position: center top;
+    opacity: 0.85;
+    transform: scaleX(-1); /* Oglindește modelul pentru varietate */
+}
+
+/* Asigură-te că main-ul istoric are poziționare relativă pentru borduri */
+.istoric {
+    position: relative; /* Necesar pentru pozitionarea absolută a bordurilor */
+}
+
+/* Responsive - ajustează dimensiunile pe ecrane mici */
+@media (max-width: 1400px) {
+    .decorative-border-left {
+        width: 100px;
+    }
+    
+    .decorative-border-right {
+        width: 100px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .decorative-border-left {
+        width: 80px;
+    }
+    
+    .decorative-border-right {
+        width: 80px;
+    }
+}
+
+@media (max-width: 768px) {
+    .decorative-borders {
+        display: none; /* Ascunde complet pe mobile */
+    }
+}
