@@ -30,8 +30,14 @@ public class PostareController {
     }
 
     @PostMapping
-    public void createPost(@RequestBody Postare newPost){
-        postareService.createPost(newPost);
+    public Postare createPost(@RequestBody Postare newPost){
+        try {
+            postareService.createPost(newPost);
+            return newPost;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Eroare la crearea postării: " + e.getMessage());
+        }
     }
 
     @PutMapping

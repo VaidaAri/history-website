@@ -1,0 +1,19 @@
+
+> history-website-frontend@0.0.0 start
+> ng serve
+
+❯ Building...
+✔ Building...
+Initial chunk files | Names         |  Raw size
+main.js             | main          | 650.54 kB | 
+styles.css          | styles        |  97.58 kB | 
+polyfills.js        | polyfills     |  92.97 kB | 
+
+                    | Initial total | 841.09 kB
+
+Application bundle generation complete. [9.265 seconds]
+
+Watch mode enabled. Watching for file changes...
+NOTE: Raw file sizes do not reflect development server per-request transformations.
+Re-optimizing dependencies because vite config has changed
+  ➜  Local:   http://localhost:4200/

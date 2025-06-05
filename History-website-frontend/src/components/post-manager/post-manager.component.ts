@@ -229,9 +229,9 @@ export class PostManagerComponent implements OnInit {
           continue;
         }
         
-        // Limitează numărul de imagini la 5 per postare
-        if (this.images.length >= 5) {
-          alert('Poți adăuga maxim 5 imagini la o postare.');
+        // Limitează numărul de imagini la 30 per postare
+        if (this.images.length >= 30) {
+          alert('Poți adăuga maxim 30 de imagini la o postare.');
           break;
         }
         

@@ -24,6 +24,7 @@ public class Postare {
     @JoinColumn(name = "postare_id")
     private List<Imagine> images;
     
+    @Column(columnDefinition = "TEXT")
     private String description;
     
     private LocalDateTime createdAt;
