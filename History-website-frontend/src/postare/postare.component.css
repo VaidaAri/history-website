@@ -28,16 +28,38 @@
 
 .post-content {
   margin-bottom: 20px;
+  max-height: 280px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.post-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.post-content::-webkit-scrollbar-track {
+  background: rgba(234, 209, 150, 0.3);
+  border-radius: 4px;
+}
+
+.post-content::-webkit-scrollbar-thumb {
+  background: #7D5A50;
+  border-radius: 4px;
+}
+
+.post-content::-webkit-scrollbar-thumb:hover {
+  background: #5D4037;
 }
 
 .post p {
   color: #3E2723;
-  font-size: 1.25em;
-  line-height: 2;
-  margin-bottom: 25px;
+  font-size: 1.1em;
+  line-height: 1.7;
+  margin-bottom: 20px;
   white-space: pre-line;
   text-align: justify;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.2px;
+  font-weight: 400;
 }
 
 /* Stiluri pentru carusel */

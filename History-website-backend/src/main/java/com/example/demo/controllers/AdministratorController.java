@@ -48,7 +48,13 @@ public class AdministratorController {
     public ResponseEntity<String> login(@RequestBody Map<String, String> credentials) {
         String username = credentials.get("username");
         String password = credentials.get("password");
+        
+        System.out.println("LOGIN ATTEMPT: username=" + username + ", password=" + password);
+        
         boolean isAuthenticated = administratorService.authenticate(username, password);
+        
+        System.out.println("AUTHENTICATION RESULT: " + isAuthenticated);
+        
         if (isAuthenticated) {
             // Generăm un token simplu pentru acest exemplu
             // În producție, am folosi JWT sau alt mecanism securizat
