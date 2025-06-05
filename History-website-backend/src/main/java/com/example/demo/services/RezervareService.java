@@ -37,12 +37,12 @@ public class RezervareService {
         // Salvăm rezervarea
         Rezervare savedReservation = rezervareRepository.save(newBooking);
         
-        // Email-ul este comentat pentru testare
-        // try {
-        //     emailService.sendConfirmationEmail(savedReservation);
-        // } catch (Exception e) {
-        //     System.err.println("Eroare la trimiterea email-ului de confirmare: " + e.getMessage());
-        // }
+        // Trimitem email cu detaliile rezervării
+        try {
+            emailService.sendApprovalEmail(savedReservation);
+        } catch (Exception e) {
+            System.err.println("Eroare la trimiterea email-ului: " + e.getMessage());
+        }
     }
 
     public void updateBooking(Rezervare updatedBooking){
