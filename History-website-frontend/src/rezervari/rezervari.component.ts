@@ -415,8 +415,13 @@ export class RezervariComponent implements OnInit {
 
   onDateTimeSelectedFromCalendar(selection: {date: string, time: string}) {
     this.selectedDate = selection.date;
+    
+    // Generăm lista de ore disponibile ÎNAINTE de a seta ora
+    this.onDateSelected();
+    
+    // Acum setăm ora selectată DUPĂ ce lista este generată
     this.selectedTime = selection.time;
-    this.onDateSelected(); // Pentru a genera lista de ore disponibile
+    
     this.onTimeSelected(); // Pentru a actualiza datetime
     this.showSmartCalendar = false;
   }
