@@ -279,13 +279,64 @@
   z-index: -1;
 }
 
-.selected-file-info {
+.selected-files-info {
   background-color: rgba(234, 209, 150, 0.2);
-  padding: 8px 12px;
   border-radius: 6px;
   margin-top: 8px;
-  font-size: 0.9em;
   color: var(--primary-color);
+}
+
+.selected-files-header {
+  padding: 8px 12px;
+  font-size: 0.9em;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(125, 90, 80, 0.2);
+}
+
+.selected-files-list {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.selected-file-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 12px;
+  border-bottom: 1px solid rgba(125, 90, 80, 0.1);
+  font-size: 0.85em;
+}
+
+.selected-file-item:last-child {
+  border-bottom: none;
+}
+
+.file-name {
+  flex: 1;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  margin-right: 10px;
+}
+
+.remove-file-btn {
+  background: none;
+  border: none;
+  color: #C14953;
+  cursor: pointer;
+  font-size: 1.2em;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.remove-file-btn:hover {
+  background-color: rgba(193, 73, 83, 0.1);
+  transform: scale(1.1);
 }
 
 .upload-btn {
