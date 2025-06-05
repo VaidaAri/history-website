@@ -1,0 +1,402 @@
+.smart-calendar {
+  max-width: 800px;
+  margin: 0 auto;
+  font-family: 'Arial', sans-serif;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* Header */
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #7D5A50;
+  color: white;
+  padding: 20px;
+  gap: 15px;
+}
+
+.nav-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  font-size: 24px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.nav-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.month-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+  min-width: 200px;
+  text-align: center;
+}
+
+.today-btn {
+  background: #EAD196;
+  color: #5D4037;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.today-btn:hover {
+  background: #F5E6A3;
+}
+
+/* Legenda */
+.calendar-legend {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.legend-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+}
+
+.legend-color.available {
+  background: #28a745;
+}
+
+.legend-color.partial {
+  background: #ffc107;
+}
+
+.legend-color.full {
+  background: #dc3545;
+}
+
+/* Zilele săptămânii */
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  background: #6c757d;
+  color: white;
+}
+
+.weekday {
+  padding: 12px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/* Grid calendar */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px;
+  background: #e9ecef;
+  padding: 1px;
+}
+
+/* Zilele din calendar */
+.calendar-day {
+  background: white;
+  min-height: 80px;
+  padding: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.calendar-day:hover {
+  transform: scale(1.05);
+  z-index: 2;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.empty-day {
+  background: #f8f9fa;
+  min-height: 80px;
+}
+
+/* Statusuri zile */
+.day-available {
+  border-left: 4px solid #28a745;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fff8 100%);
+}
+
+.day-partial {
+  border-left: 4px solid #ffc107;
+  background: linear-gradient(135deg, #ffffff 0%, #fffbf0 100%);
+}
+
+.day-full {
+  border-left: 4px solid #dc3545;
+  background: linear-gradient(135deg, #ffffff 0%, #fff5f5 100%);
+  cursor: not-allowed;
+}
+
+.day-full:hover {
+  transform: none;
+}
+
+/* Conținutul zilelor */
+.day-number {
+  font-weight: bold;
+  font-size: 16px;
+  color: #333;
+}
+
+.day-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+}
+
+.status-emoji {
+  font-size: 16px;
+}
+
+.available-count {
+  font-size: 12px;
+  font-weight: bold;
+  background: rgba(0, 0, 0, 0.1);
+  padding: 2px 6px;
+  border-radius: 10px;
+  color: #333;
+}
+
+/* Popup detalii zi */
+.day-details-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.day-details-popup {
+  background: white;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  animation: popupSlideIn 0.3s ease;
+}
+
+@keyframes popupSlideIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #7D5A50;
+  color: white;
+  padding: 20px;
+  border-radius: 12px 12px 0 0;
+}
+
+.popup-header h3 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.popup-content {
+  padding: 20px;
+}
+
+.status-summary {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.badge-available {
+  background: #d4edda;
+  color: #155724;
+}
+
+.badge-partial {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.badge-full {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+/* Time slots */
+.time-slots h4 {
+  color: #333;
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+.slot-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.time-slot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.slot-available {
+  background: #f8fff8;
+  border-color: #28a745;
+}
+
+.slot-partial {
+  background: #fffbf0;
+  border-color: #ffc107;
+}
+
+.slot-full {
+  background: #fff5f5;
+  border-color: #dc3545;
+}
+
+.slot-time {
+  font-weight: bold;
+  color: #333;
+}
+
+.slot-count {
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.1);
+  font-size: 12px;
+}
+
+.slot-status {
+  font-size: 14px;
+}
+
+/* Acțiuni popup */
+.popup-actions {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.reserve-btn {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.reserve-btn:hover {
+  background: #218838;
+}
+
+.no-slots {
+  color: #dc3545;
+  font-weight: bold;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .calendar-header {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .calendar-legend {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .calendar-day {
+    min-height: 60px;
+    padding: 4px;
+  }
+  
+  .day-number {
+    font-size: 14px;
+  }
+  
+  .day-indicator {
+    flex-direction: column;
+    gap: 2px;
+  }
+}

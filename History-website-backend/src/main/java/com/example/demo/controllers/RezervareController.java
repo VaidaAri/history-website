@@ -101,4 +101,15 @@ public class RezervareController {
         }
     }
     
+    /**
+     * Endpoint pentru calendar heat-map - returnează densitatea rezervărilor pe luni
+     */
+    @GetMapping("/calendar-density/{year}/{month}")
+    public Map<String, Map<String, Object>> getCalendarDensity(
+            @PathVariable int year, 
+            @PathVariable int month) {
+        
+        return rezervareService.getCalendarDensityForMonth(year, month);
+    }
+    
 }

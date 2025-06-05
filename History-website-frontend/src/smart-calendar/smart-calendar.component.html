@@ -1,0 +1,97 @@
+<div class="smart-calendar">
+  <!-- Header cu navigare -->
+  <div class="calendar-header">
+    <button class="nav-btn" (click)="previousMonth()">‹</button>
+    <h2 class="month-title">{{ monthNames[currentMonth] }} {{ currentYear }}</h2>
+    <button class="nav-btn" (click)="nextMonth()">›</button>
+    <button class="today-btn" (click)="goToToday()">Astăzi</button>
+  </div>
+
+  <!-- Legenda -->
+  <div class="calendar-legend">
+    <div class="legend-item">
+      <span class="legend-color available"></span>
+      <span>Disponibil (0-1 rezervări)</span>
+    </div>
+    <div class="legend-item">
+      <span class="legend-color partial"></span>
+      <span>Parțial ocupat (unele ore ocupate)</span>
+    </div>
+    <div class="legend-item">
+      <span class="legend-color full"></span>
+      <span>Complet ocupat (nu se mai acceptă rezervări)</span>
+    </div>
+  </div>
+
+  <!-- Zilele săptămânii -->
+  <div class="calendar-weekdays">
+    <div class="weekday" *ngFor="let day of weekDays">{{ day }}</div>
+  </div>
+
+  <!-- Calendarul propriu-zis -->
+  <div class="calendar-grid">
+    <div 
+      *ngFor="let dayData of calendarDays" 
+      [class]="getDayClass(dayData)"
+      (click)="onDayClick(dayData)"
+      [title]="!dayData.isEmpty ? getStatusText(dayData.status) + ' - ' + dayData.availableSlots + ' locuri disponibile' : ''">
+      
+      <span class="day-number" *ngIf="!dayData.isEmpty">{{ dayData.day }}</span>
+      
+      <!-- Indicator de status -->
+      <div class="day-indicator" *ngIf="!dayData.isEmpty">
+        <span class="status-emoji">{{ getStatusEmoji(dayData.status) }}</span>
+        <span class="available-count">{{ dayData.availableSlots }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Popup cu detaliile zilei -->
+  <div class="day-details-overlay" *ngIf="showDayDetails" (click)="closeDayDetails()">
+    <div class="day-details-popup" (click)="$event.stopPropagation()" *ngIf="selectedDay">
+      <div class="popup-header">
+        <h3>{{ selectedDay.day }} {{ monthNames[currentMonth] }} {{ currentYear }}</h3>
+        <button class="close-btn" (click)="closeDayDetails()">×</button>
+      </div>
+      
+      <div class="popup-content">
+        <div class="status-summary">
+          <div class="status-badge" [class]="'badge-' + selectedDay.status">
+            {{ getStatusEmoji(selectedDay.status) }} {{ getStatusText(selectedDay.status) }}
+          </div>
+          <p><strong>{{ selectedDay.availableSlots }}</strong> locuri disponibile din <strong>{{ selectedDay.totalSlots }}</strong></p>
+        </div>
+
+        <!-- Detalii pe intervale orare -->
+        <div class="time-slots" *ngIf="selectedDay.timeSlots">
+          <h4>Disponibilitate pe intervale:</h4>
+          <div class="slot-list">
+            <div 
+              *ngFor="let slot of selectedDay.timeSlots | keyvalue" 
+              class="time-slot"
+              [class]="'slot-' + (getSlotValue(slot.value) >= 2 ? 'full' : getSlotValue(slot.value) === 1 ? 'partial' : 'available')">
+              <span class="slot-time">{{ slot.key }}</span>
+              <span class="slot-count">{{ getSlotValue(slot.value) }}/2</span>
+              <span class="slot-status">
+                {{ getSlotValue(slot.value) >= 2 ? '🔴 Ocupat' : getSlotValue(slot.value) === 1 ? '⚠️ 1 loc rămas' : '✅ Disponibil' }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Buton de rezervare -->
+        <div class="popup-actions">
+          <button 
+            class="reserve-btn" 
+            *ngIf="selectedDay.availableSlots > 0"
+            (click)="makeReservation(selectedDay.dateStr)">
+            Rezervă pentru această zi
+          </button>
+          <p *ngIf="selectedDay.availableSlots === 0" class="no-slots">
+            Nu mai sunt locuri disponibile pentru această zi
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
