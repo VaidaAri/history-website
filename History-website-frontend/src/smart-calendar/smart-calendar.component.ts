@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -11,6 +11,12 @@ import { Router } from '@angular/router';
   styleUrl: './smart-calendar.component.css'
 })
 export class SmartCalendarComponent implements OnInit {
+  @Input() isVisible: boolean = false;
+  @Input() selectedDate: string = '';
+  @Input() isReservationMode: boolean = false; // true când e folosit în pagina de rezervări
+  @Output() dateSelected = new EventEmitter<string>();
+  @Output() closeCalendar = new EventEmitter<void>();
+
   currentDate = new Date();
   currentYear = this.currentDate.getFullYear();
   currentMonth = this.currentDate.getMonth(); // 0-11
@@ -133,6 +139,7 @@ export class SmartCalendarComponent implements OnInit {
   onDayClick(dayData: any) {
     if (dayData.isEmpty) return;
     
+    // Afișăm mereu detaliile pentru a permite atât selecția datei cât și rezervarea directă
     this.selectedDay = dayData;
     this.showDayDetails = true;
   }
@@ -146,12 +153,29 @@ export class SmartCalendarComponent implements OnInit {
   }
 
   /**
-   * Navighează la pagina de rezervări pentru o zi specifică
+   * Închide calendarul
+   */
+  onCloseCalendar() {
+    this.closeCalendar.emit();
+  }
+
+  /**
+   * Navighează la pagina de rezervări pentru o zi specifică (doar pentru modul standalone)
    */
   makeReservation(dateStr: string) {
+    // Doar pentru modul standalone, când nu e folosit ca popup pentru rezervări
     this.router.navigate(['/rezervari'], { 
       queryParams: { selectedDate: dateStr } 
     });
+  }
+
+  /**
+   * Selectează data și închide calendarul (pentru modul popup în rezervări)
+   */
+  selectDate(dateStr: string) {
+    this.dateSelected.emit(dateStr);
+    this.closeDayDetails();
+    this.closeCalendar.emit();
   }
 
   /**

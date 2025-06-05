@@ -74,15 +74,25 @@
                 <div class="form-group">
                     <label>{{ 'rezervariDateTime' | translate }}:</label>
                     <div class="date-time-selector">
-                        <!-- Selector de dată -->
+                        <!-- Selector de dată cu calendar inteligent -->
                         <div class="date-select">
                             <label for="date">{{ 'rezervariDate' | translate }}:</label>
-                            <input type="date" id="date" name="date"
-                                  [(ngModel)]="selectedDate"
-                                  required
-                                  [min]="minDate"
-                                  [max]="maxDate"
-                                  (change)="onDateSelected()">
+                            <div class="date-input-container">
+                                <input type="text" 
+                                       id="date" 
+                                       name="date"
+                                       [(ngModel)]="selectedDate"
+                                       required
+                                       readonly
+                                       placeholder="Selectează o dată..."
+                                       class="date-display">
+                                <button type="button" 
+                                        class="calendar-btn" 
+                                        (click)="openSmartCalendar()"
+                                        title="Deschide calendarul">
+                                    📅
+                                </button>
+                            </div>
                         </div>
 
                         <!-- Selector de oră - dezactivat până când data este selectată -->
@@ -186,4 +196,14 @@
         </div>
     </div>
 </app-cadran>
+
+<!-- Smart Calendar Popup -->
+<app-smart-calendar 
+    [isVisible]="showSmartCalendar"
+    [selectedDate]="selectedDate"
+    [isReservationMode]="true"
+    (dateSelected)="onDateSelectedFromCalendar($event)"
+    (closeCalendar)="closeSmartCalendar()">
+</app-smart-calendar>
+
 </main>

@@ -10,11 +10,12 @@ import { ReservationService } from '../services/reservation.service';
 import { MuseumScheduleService, MuseumSchedule } from '../services/museum-schedule.service';
 import { TranslatePipe } from '../services/i18n/translate.pipe';
 import { TranslationService } from '../services/i18n/translation.service';
+import { SmartCalendarComponent } from '../smart-calendar/smart-calendar.component';
 
 @Component({
   selector: 'app-rezervari',
   standalone: true,
-  imports: [RouterModule, MeniuComponent, CommonModule, FormsModule, CadranComponent, TranslatePipe],
+  imports: [RouterModule, MeniuComponent, CommonModule, FormsModule, CadranComponent, TranslatePipe, SmartCalendarComponent],
   templateUrl: './rezervari.component.html',
   styleUrls: ['./rezervari.component.css'],
   providers: [TranslationService]
@@ -58,6 +59,9 @@ export class RezervariComponent implements OnInit {
   // Validare email
   emailValidationError: string = '';
   emailValidationSuccess: boolean = false;
+
+  // Smart calendar
+  showSmartCalendar: boolean = false;
 
   constructor(
     private http: HttpClient, 
@@ -392,6 +396,21 @@ export class RezervariComponent implements OnInit {
       case 'RESPINSA': return 'Respinsă';
       default: return 'În așteptare';
     }
+  }
+
+  // Smart calendar functions
+  openSmartCalendar() {
+    this.showSmartCalendar = true;
+  }
+
+  closeSmartCalendar() {
+    this.showSmartCalendar = false;
+  }
+
+  onDateSelectedFromCalendar(dateStr: string) {
+    this.selectedDate = dateStr;
+    this.onDateSelected(); // Apelăm logica existentă
+    this.showSmartCalendar = false;
   }
   
 }

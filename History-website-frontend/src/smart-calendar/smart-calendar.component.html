@@ -1,10 +1,14 @@
-<div class="smart-calendar">
+<div class="smart-calendar" *ngIf="isVisible">
+  <!-- Overlay pentru a închide calendarul când se face click în afara lui -->
+  <div class="calendar-overlay" (click)="onCloseCalendar()">
+    <div class="calendar-container" (click)="$event.stopPropagation()">
   <!-- Header cu navigare -->
   <div class="calendar-header">
     <button class="nav-btn" (click)="previousMonth()">‹</button>
     <h2 class="month-title">{{ monthNames[currentMonth] }} {{ currentYear }}</h2>
     <button class="nav-btn" (click)="nextMonth()">›</button>
     <button class="today-btn" (click)="goToToday()">Astăzi</button>
+    <button class="close-btn" (click)="onCloseCalendar()">×</button>
   </div>
 
   <!-- Legenda -->
@@ -79,19 +83,39 @@
           </div>
         </div>
 
-        <!-- Buton de rezervare -->
+        <!-- Butoane de acțiune -->
         <div class="popup-actions">
-          <button 
-            class="reserve-btn" 
-            *ngIf="selectedDay.availableSlots > 0"
-            (click)="makeReservation(selectedDay.dateStr)">
-            Rezervă pentru această zi
-          </button>
+          <!-- În modul rezervări, afișăm ambele opțiuni -->
+          <div *ngIf="isReservationMode" class="reservation-actions">
+            <button 
+              class="select-date-btn" 
+              (click)="selectDate(selectedDay.dateStr)">
+              Selectează această dată
+            </button>
+            <button 
+              class="reserve-btn" 
+              *ngIf="selectedDay.availableSlots > 0"
+              (click)="makeReservation(selectedDay.dateStr)">
+              Rezervă direct pentru această zi
+            </button>
+          </div>
+          
+          <!-- În modul standalone, doar rezervare -->
+          <div *ngIf="!isReservationMode">
+            <button 
+              class="reserve-btn" 
+              *ngIf="selectedDay.availableSlots > 0"
+              (click)="makeReservation(selectedDay.dateStr)">
+              Rezervă pentru această zi
+            </button>
+          </div>
+          
           <p *ngIf="selectedDay.availableSlots === 0" class="no-slots">
             Nu mai sunt locuri disponibile pentru această zi
           </p>
         </div>
       </div>
+    </div>
     </div>
   </div>
 </div>
