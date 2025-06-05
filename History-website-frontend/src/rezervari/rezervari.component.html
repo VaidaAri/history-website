@@ -115,7 +115,7 @@
                 
                 <div class="form-group">
                     <label for="numberOfPersons">{{ 'rezervariNumberOfPersons' | translate }}:</label>
-                    <input type="number" id="numberOfPersons" name="numberOfPersons" [(ngModel)]="newBooking.numberOfPersons" required min="1">
+                    <input type="number" id="numberOfPersons" name="numberOfPersons" [(ngModel)]="newBooking.numberOfPersons" required min="1" max="50">
                 </div>
                 
                 <div class="form-group checkbox-group">
