@@ -412,5 +412,13 @@ export class RezervariComponent implements OnInit {
     this.onDateSelected(); // Apelăm logica existentă
     this.showSmartCalendar = false;
   }
+
+  onDateTimeSelectedFromCalendar(selection: {date: string, time: string}) {
+    this.selectedDate = selection.date;
+    this.selectedTime = selection.time;
+    this.onDateSelected(); // Pentru a genera lista de ore disponibile
+    this.onTimeSelected(); // Pentru a actualiza datetime
+    this.showSmartCalendar = false;
+  }
   
 }

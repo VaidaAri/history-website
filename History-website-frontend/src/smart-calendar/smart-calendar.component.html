@@ -68,48 +68,39 @@
 
         <!-- Detalii pe intervale orare -->
         <div class="time-slots" *ngIf="selectedDay.timeSlots">
-          <h4>Disponibilitate pe intervale:</h4>
+          <h4>{{ isReservationMode ? 'Selectează un interval orar:' : 'Disponibilitate pe intervale:' }}</h4>
           <div class="slot-list">
             <div 
               *ngFor="let slot of selectedDay.timeSlots | keyvalue" 
               class="time-slot"
-              [class]="'slot-' + (getSlotValue(slot.value) >= 2 ? 'full' : getSlotValue(slot.value) === 1 ? 'partial' : 'available')">
+              [class]="'slot-' + (getSlotValue(slot.value) >= 2 ? 'full' : getSlotValue(slot.value) === 1 ? 'partial' : 'available') + (isReservationMode && getSlotValue(slot.value) < 2 ? ' clickable' : '')"
+              [style.cursor]="isReservationMode && getSlotValue(slot.value) < 2 ? 'pointer' : 'default'"
+              (click)="onTimeSlotClick(slot)">
               <span class="slot-time">{{ slot.key }}</span>
               <span class="slot-count">{{ getSlotValue(slot.value) }}/2</span>
               <span class="slot-status">
                 {{ getSlotValue(slot.value) >= 2 ? '🔴 Ocupat' : getSlotValue(slot.value) === 1 ? '⚠️ 1 loc rămas' : '✅ Disponibil' }}
               </span>
+              <span *ngIf="isReservationMode && getSlotValue(slot.value) < 2" class="click-hint">👆 Click pentru selecție</span>
             </div>
           </div>
         </div>
 
-        <!-- Butoane de acțiune -->
-        <div class="popup-actions">
-          <!-- În modul rezervări, afișăm ambele opțiuni -->
-          <div *ngIf="isReservationMode" class="reservation-actions">
-            <button 
-              class="select-date-btn" 
-              (click)="selectDate(selectedDay.dateStr)">
-              Selectează această dată
-            </button>
-            <button 
-              class="reserve-btn" 
-              *ngIf="selectedDay.availableSlots > 0"
-              (click)="makeReservation(selectedDay.dateStr)">
-              Rezervă direct pentru această zi
-            </button>
+        <!-- Mesaj pentru modul rezervări -->
+        <div class="popup-actions" *ngIf="isReservationMode">
+          <div class="instruction-text">
+            <p><strong>💡 Selectează un interval orar de mai sus pentru a completa rezervarea</strong></p>
           </div>
-          
-          <!-- În modul standalone, doar rezervare -->
-          <div *ngIf="!isReservationMode">
-            <button 
-              class="reserve-btn" 
-              *ngIf="selectedDay.availableSlots > 0"
-              (click)="makeReservation(selectedDay.dateStr)">
-              Rezervă pentru această zi
-            </button>
-          </div>
-          
+        </div>
+
+        <!-- Butoane pentru modul standalone -->
+        <div class="popup-actions" *ngIf="!isReservationMode">
+          <button 
+            class="reserve-btn" 
+            *ngIf="selectedDay.availableSlots > 0"
+            (click)="makeReservation(selectedDay.dateStr)">
+            Rezervă pentru această zi
+          </button>
           <p *ngIf="selectedDay.availableSlots === 0" class="no-slots">
             Nu mai sunt locuri disponibile pentru această zi
           </p>

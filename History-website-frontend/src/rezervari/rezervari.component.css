@@ -49,52 +49,59 @@
     margin-top: 10px;
 }
 
-/* Stiluri pentru input-ul de dată cu calendar inteligent */
-.date-input-container {
-    display: flex;
-    align-items: stretch;
+/* Secțiunea pentru calendarul inteligent */
+.smart-calendar-section {
+    background: linear-gradient(135deg, #7D5A50 0%, #6A4A42 100%);
+    color: white;
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(125, 90, 80, 0.3);
+    margin: 20px 0;
+}
+
+.smart-calendar-section h3 {
+    margin: 0 0 6px 0;
+    font-size: 20px;
+    font-weight: bold;
+    color: #5D4037;
+}
+
+.smart-calendar-btn {
+    background: #EAD196;
+    color: #5D4037;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.smart-calendar-btn:hover {
+    background: #F5E6A3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Stiluri pentru input-urile readonly */
+.date-display-readonly, .time-display-readonly {
+    width: 100%;
     border: 1px solid #ddd;
     border-radius: 4px;
-    background: white;
-    overflow: hidden;
-    position: relative;
-}
-
-.date-display {
-    flex: 1;
-    border: none;
     padding: 8px 12px;
-    padding-right: 40px; /* Fac loc pentru buton */
     font-size: 16px;
-    background: transparent;
-    cursor: pointer;
+    background: #f8f9fa;
+    cursor: not-allowed;
+    color: #6c757d;
 }
 
-.date-display:focus {
+.date-display-readonly:focus, .time-display-readonly:focus {
     outline: none;
-}
-
-.calendar-btn {
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    background: #7D5A50;
-    border: none;
-    color: white;
-    padding: 0;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background 0.3s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    border-radius: 0 3px 3px 0;
-}
-
-.calendar-btn:hover {
-    background: #6A4A42;
+    border-color: #7D5A50;
+    background: #fff;
 }
 
 .schedule-row {

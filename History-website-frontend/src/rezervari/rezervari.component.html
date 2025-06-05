@@ -71,37 +71,45 @@
                     </div>
                 </div>
                 
+                <!-- Buton pentru calendarul inteligent -->
+                <div class="form-group">
+                    <div class="smart-calendar-section">
+                        <h3>📅 Selectare dată și oră</h3>
+                        <button type="button" 
+                                class="smart-calendar-btn" 
+                                (click)="openSmartCalendar()">
+                            🗓️ Deschide Calendarul Inteligent
+                        </button>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label>{{ 'rezervariDateTime' | translate }}:</label>
                     <div class="date-time-selector">
-                        <!-- Selector de dată cu calendar inteligent -->
+                        <!-- Afișare dată selectată -->
                         <div class="date-select">
                             <label for="date">{{ 'rezervariDate' | translate }}:</label>
-                            <div class="date-input-container">
-                                <input type="text" 
-                                       id="date" 
-                                       name="date"
-                                       [(ngModel)]="selectedDate"
-                                       required
-                                       readonly
-                                       placeholder="Selectează o dată..."
-                                       class="date-display">
-                                <button type="button" 
-                                        class="calendar-btn" 
-                                        (click)="openSmartCalendar()"
-                                        title="Deschide calendarul">
-                                    📅
-                                </button>
-                            </div>
+                            <input type="text" 
+                                   id="date" 
+                                   name="date"
+                                   [(ngModel)]="selectedDate"
+                                   required
+                                   readonly
+                                   placeholder="Se va completa din calendar..."
+                                   class="date-display-readonly">
                         </div>
 
-                        <!-- Selector de oră - dezactivat până când data este selectată -->
+                        <!-- Afișare oră selectată -->
                         <div class="time-select">
                             <label for="time">{{ 'rezervariTime' | translate }}:</label>
-                            <select id="time" name="time" [(ngModel)]="selectedTime" required [disabled]="!selectedDate" (change)="onTimeSelected()">
-                                <option value="">-- {{ 'rezervariSelectTime' | translate }} --</option>
-                                <option *ngFor="let time of availableHours" [value]="time">{{ time }}</option>
-                            </select>
+                            <input type="text" 
+                                   id="time" 
+                                   name="time"
+                                   [(ngModel)]="selectedTime"
+                                   required
+                                   readonly
+                                   placeholder="Se va completa din calendar..."
+                                   class="time-display-readonly">
                         </div>
                     </div>
 
@@ -203,6 +211,7 @@
     [selectedDate]="selectedDate"
     [isReservationMode]="true"
     (dateSelected)="onDateSelectedFromCalendar($event)"
+    (dateTimeSelected)="onDateTimeSelectedFromCalendar($event)"
     (closeCalendar)="closeSmartCalendar()">
 </app-smart-calendar>
 

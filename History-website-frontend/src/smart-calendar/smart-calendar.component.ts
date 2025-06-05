@@ -15,6 +15,7 @@ export class SmartCalendarComponent implements OnInit {
   @Input() selectedDate: string = '';
   @Input() isReservationMode: boolean = false; // true când e folosit în pagina de rezervări
   @Output() dateSelected = new EventEmitter<string>();
+  @Output() dateTimeSelected = new EventEmitter<{date: string, time: string}>();
   @Output() closeCalendar = new EventEmitter<void>();
 
   currentDate = new Date();
@@ -176,6 +177,25 @@ export class SmartCalendarComponent implements OnInit {
     this.dateSelected.emit(dateStr);
     this.closeDayDetails();
     this.closeCalendar.emit();
+  }
+
+  /**
+   * Selectează data și ora și închide calendarul
+   */
+  selectDateAndTime(dateStr: string, timeSlot: string) {
+    this.dateTimeSelected.emit({ date: dateStr, time: timeSlot });
+    this.closeDayDetails();
+    this.closeCalendar.emit();
+  }
+
+  /**
+   * Gestionează click-ul pe un slot orar
+   */
+  onTimeSlotClick(slot: any) {
+    if (!this.isReservationMode) return;
+    if (this.getSlotValue(slot.value) >= 2) return; // Slot ocupat
+
+    this.selectDateAndTime(this.selectedDay.dateStr, slot.key);
   }
 
   /**

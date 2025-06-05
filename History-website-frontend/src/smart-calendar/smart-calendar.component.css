@@ -388,33 +388,51 @@
   font-size: 14px;
 }
 
+.click-hint {
+  font-size: 12px;
+  color: #666;
+  font-style: italic;
+}
+
+.time-slot.clickable {
+  transition: all 0.3s ease;
+}
+
+.time-slot.clickable:hover {
+  transform: scale(1.02);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.slot-available.clickable:hover {
+  background: #e8f5e8;
+  border-color: #28a745;
+}
+
+.slot-partial.clickable:hover {
+  background: #fff8e1;
+  border-color: #ffc107;
+}
+
 /* Acțiuni popup */
 .popup-actions {
   margin-top: 20px;
   text-align: center;
 }
 
-.reservation-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+.instruction-text {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 15px;
+  margin: 10px 0;
 }
 
-.select-date-btn {
-  background: #7D5A50;
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 25px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.3s;
+.instruction-text p {
+  margin: 0;
+  color: #495057;
+  font-size: 14px;
 }
 
-.select-date-btn:hover {
-  background: #6A4A42;
-}
 
 .reserve-btn {
   background: #28a745;
