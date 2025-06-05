@@ -190,8 +190,6 @@ public class EmailService {
                         <p><strong>Ghid inclus:</strong> %s</p>
                     </div>
                     
-                    <p><strong>Vă rugăm să ajungeți cu 10 minute înainte de ora programată</strong> pentru a facilita procesul de check-in.</p>
-                    
                     <p>În cazul în care aveți nevoie să modificați sau să anulați rezervarea, vă rugăm să ne contactați cât mai curând posibil la adresa %s.</p>
                     
                     <p>Vă mulțumim pentru interesul acordat muzeului nostru și vă așteptăm cu mare drag!</p>
