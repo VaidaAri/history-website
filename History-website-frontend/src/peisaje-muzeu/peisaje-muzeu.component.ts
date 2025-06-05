@@ -29,7 +29,8 @@ export class PeisajeMuzeuComponent implements OnInit {
   isAdmin: boolean = false;
   
   // Proprietăți pentru încărcare
-  selectedFile: File | null = null;
+  selectedFiles: File[] = [];
+  currentUploadIndex: number = 0;
   imageDescription: string = 'Peisaj din curtea muzeului';  // Valoare implicită
   isUploading: boolean = false;
   uploadMessage: string = '';
@@ -71,6 +72,15 @@ export class PeisajeMuzeuComponent implements OnInit {
     // Încarcă imaginile existente
     this.loadImages();
     this.setupKeyboardListeners();
+    
+    // Debug pentru input multiple
+    setTimeout(() => {
+      const input = document.getElementById('image-upload') as HTMLInputElement;
+      if (input) {
+        console.log('Input găsit, multiple attribute:', input.hasAttribute('multiple'));
+        console.log('Input multiple property:', input.multiple);
+      }
+    }, 1000);
   }
   
   // Încarcă imaginile din backend
@@ -109,52 +119,78 @@ export class PeisajeMuzeuComponent implements OnInit {
     return `http://localhost:8080/api/images/uploads/${imagePath}`;
   }
   
-  // Selectează un fișier pentru încărcare
+  // Selectează fișiere pentru încărcare
   onFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.selectedFile = file;
+    const files = Array.from(event.target.files) as File[];
+    console.log('Fișiere selectate:', files.length, files);
+    if (files.length > 0) {
+      this.selectedFiles = [...this.selectedFiles, ...files];
+      console.log('Total fișiere în listă:', this.selectedFiles.length);
     }
     
     // Reset input field
     event.target.value = '';
   }
   
-  // Încarcă imaginea selectată
-  uploadImage() {
-    if (!this.selectedFile) {
+  // Elimină un fișier din lista de fișiere selectate
+  removeFile(index: number) {
+    this.selectedFiles.splice(index, 1);
+  }
+  
+  // Încarcă toate imaginile selectate
+  uploadImages() {
+    console.log('uploadImages apelat, fișiere selectate:', this.selectedFiles.length);
+    if (this.selectedFiles.length === 0) {
       this.showUploadMessage = true;
-      this.uploadMessage = 'Selectați un fișier pentru încărcare.';
+      this.uploadMessage = 'Selectați cel puțin un fișier pentru încărcare.';
       setTimeout(() => this.showUploadMessage = false, 3000);
       return;
     }
+    
+    this.isUploading = true;
+    this.currentUploadIndex = 0;
+    console.log('Începe încărcarea fișierelor...');
+    this.uploadNextImage();
+  }
+  
+  // Încarcă următoarea imagine din listă
+  private uploadNextImage() {
+    if (this.currentUploadIndex >= this.selectedFiles.length) {
+      // Toate imaginile au fost încărcate
+      this.showUploadMessage = true;
+      this.uploadMessage = `Toate imaginile (${this.selectedFiles.length}) au fost încărcate cu succes!`;
+      setTimeout(() => this.showUploadMessage = false, 3000);
+      this.selectedFiles = [];
+      this.imageDescription = 'Peisaj din curtea muzeului';
+      this.isUploading = false;
+      this.currentUploadIndex = 0;
+      this.loadImages();
+      return;
+    }
+    
+    const currentFile = this.selectedFiles[this.currentUploadIndex];
     
     // Folosim valoarea implicită dacă nu este completată
     const description = this.imageDescription.trim() 
       ? this.imageDescription 
       : 'Peisaj din curtea muzeului';
     
-    this.isUploading = true;
     const formData = new FormData();
-    formData.append('image', this.selectedFile);
+    formData.append('image', currentFile);
     formData.append('description', 'PEISAJ: ' + description);
     
     this.http.post('http://localhost:8080/api/images/upload-image', formData).subscribe({
       next: () => {
-        this.showUploadMessage = true;
-        this.uploadMessage = 'Imaginea a fost încărcată cu succes!';
-        setTimeout(() => this.showUploadMessage = false, 3000);
-        this.selectedFile = null;
-        this.imageDescription = 'Peisaj din curtea muzeului';  // Resetăm la valoarea implicită
-        this.isUploading = false;
-        this.loadImages();
+        this.currentUploadIndex++;
+        this.uploadNextImage();
       },
       error: (err) => {
-        console.error('Eroare la încărcarea imaginii:', err);
+        console.error(`Eroare la încărcarea imaginii ${this.currentUploadIndex + 1}:`, err);
         this.showUploadMessage = true;
-        this.uploadMessage = 'A apărut o eroare la încărcarea imaginii.';
-        setTimeout(() => this.showUploadMessage = false, 3000);
+        this.uploadMessage = `Eroare la încărcarea imaginii ${currentFile.name}. Încarcările s-au oprit.`;
+        setTimeout(() => this.showUploadMessage = false, 5000);
         this.isUploading = false;
+        this.currentUploadIndex = 0;
       }
     });
   }

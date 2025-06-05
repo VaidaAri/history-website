@@ -44,27 +44,38 @@
           <div class="form-group">
             <label for="image-upload" class="file-upload-label">
               <span class="upload-icon">📷</span>
-              <span>Selectează imagine</span>
+              <span>Selectează imagini</span>
             </label>
             <input 
               type="file" 
               id="image-upload" 
               (change)="onFileSelected($event)" 
               accept="image/*" 
+              multiple
               class="file-input"
             >
-            <div *ngIf="selectedFile" class="selected-file-info">
-              Fișier selectat: {{ selectedFile.name }}
+            <div *ngIf="selectedFiles.length > 0" class="selected-files-info">
+              <div class="selected-files-header">
+                Fișiere selectate ({{ selectedFiles.length }}):
+              </div>
+              <div class="selected-files-list">
+                <div *ngFor="let file of selectedFiles; let i = index" class="selected-file-item">
+                  <span class="file-name">{{ file.name }}</span>
+                  <button type="button" class="remove-file-btn" (click)="removeFile(i)" title="Elimină fișierul">
+                    ×
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
           
           <button 
-            (click)="uploadImage()" 
-            [disabled]="isUploading || !selectedFile" 
+            (click)="uploadImages()" 
+            [disabled]="isUploading || selectedFiles.length === 0" 
             class="upload-btn"
           >
-            <span *ngIf="!isUploading">Încarcă imaginea</span>
-            <span *ngIf="isUploading">Se încarcă...</span>
+            <span *ngIf="!isUploading">Încarcă imaginile ({{ selectedFiles.length }})</span>
+            <span *ngIf="isUploading">Se încarcă {{ currentUploadIndex + 1 }}/{{ selectedFiles.length }}...</span>
           </button>
         </div>
       </div>
