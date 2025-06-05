@@ -382,29 +382,6 @@ export class RezervariComponent implements OnInit {
     }
   }
   
-  approveBooking(bookingId: number) {
-    if (confirm("Sigur doriți să aprobați această rezervare?")) {
-      this.reservationService.approveReservation(bookingId).subscribe({
-        next: (response) => {
-          // Actualizăm și starea în UI imediat, fără a aștepta reîncărcarea
-          const bookingIndex = this.bookings.findIndex((booking: any) => booking.id === bookingId);
-          if (bookingIndex !== -1) {
-            this.bookings[bookingIndex].status = 'APROBATA';
-            console.log(`Rezervare cu ID ${bookingId} actualizată la status APROBATA`);
-          }
-          
-          alert(response.message || "Rezervare aprobată cu succes!");
-          
-          // Reîncărcăm lista pentru a fi siguri că avem cele mai recente date
-          this.fetchBookings();
-        },
-        error: (err) => {
-          console.error("Error approving booking:", err);
-          alert("Eroare la aprobarea rezervării. Vă rugăm să încercați din nou.");
-        }
-      });
-    }
-  }
   
   getStatusDisplayName(status: string): string {
     switch(status) {
@@ -417,22 +394,4 @@ export class RezervariComponent implements OnInit {
     }
   }
   
-  rejectBooking(bookingId: number) {
-    const reason = prompt("Introduceți motivul respingerii (opțional):");
-    
-    if (confirm("Sigur doriți să respingeți această rezervare?")) {
-      const requestBody = reason ? { reason: reason } : {};
-      
-      this.reservationService.rejectReservation(bookingId, requestBody).subscribe({
-        next: (response) => {
-          alert(response.message || "Rezervare respinsă cu succes!");
-          this.fetchBookings();
-        },
-        error: (err) => {
-          console.error("Error rejecting booking:", err);
-          alert("Eroare la respingerea rezervării. Vă rugăm să încercați din nou.");
-        }
-      });
-    }
-  }
 }

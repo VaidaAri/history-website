@@ -165,8 +165,6 @@
                         </td>
                         <td class="actions-cell">
                             <div class="action-buttons">
-                                <button class="approve-btn" *ngIf="booking.status === 'CONFIRMATA' || booking.status === 'IN_ASTEPTARE'" (click)="approveBooking(booking.id)">{{ 'rezervariApprove' | translate }}</button>
-                                <button class="reject-btn" *ngIf="booking.status === 'CONFIRMATA' || booking.status === 'IN_ASTEPTARE'" (click)="rejectBooking(booking.id)">{{ 'rezervariReject' | translate }}</button>
                                 <button class="delete-btn" (click)="deleteBooking(booking.id)">{{ 'rezervariDelete' | translate }}</button>
                             </div>
                         </td>

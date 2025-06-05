@@ -26,22 +26,23 @@ public class RezervareService {
     }
 
     public void createBooking(Rezervare newBooking){
-        // Generăm token de confirmare și setăm status NECONFIRMATA
+        // Pentru testare: salvăm direct ca APROBATA (fără email)
+        // Păstrăm atributele pentru implementare viitoare
         String confirmationToken = emailService.generateConfirmationToken();
         newBooking.setConfirmationToken(confirmationToken);
-        newBooking.setTokenExpiry(LocalDateTime.now().plusHours(24)); // Expiră în 24 ore
-        newBooking.setStatus(ReservationStatus.NECONFIRMATA);
+        newBooking.setTokenExpiry(LocalDateTime.now().plusHours(24));
+        newBooking.setStatus(ReservationStatus.APROBATA); // Direct aprobată
+        newBooking.setConfirmedAt(LocalDateTime.now()); // Setăm și data confirmării
         
         // Salvăm rezervarea
         Rezervare savedReservation = rezervareRepository.save(newBooking);
         
-        // Trimitem email de confirmare
-        try {
-            emailService.sendConfirmationEmail(savedReservation);
-        } catch (Exception e) {
-            // Log error dar nu oprim procesul
-            System.err.println("Eroare la trimiterea email-ului de confirmare: " + e.getMessage());
-        }
+        // Email-ul este comentat pentru testare
+        // try {
+        //     emailService.sendConfirmationEmail(savedReservation);
+        // } catch (Exception e) {
+        //     System.err.println("Eroare la trimiterea email-ului de confirmare: " + e.getMessage());
+        // }
     }
 
     public void updateBooking(Rezervare updatedBooking){
@@ -127,10 +128,17 @@ public class RezervareService {
             return false; // Rezervarea nu este în status NECONFIRMATA
         }
         
-        // Confirmăm rezervarea
-        reservation.setStatus(ReservationStatus.CONFIRMATA);
+        // Confirmăm și aprobăm automat rezervarea
+        reservation.setStatus(ReservationStatus.APROBATA);
         reservation.setConfirmedAt(LocalDateTime.now());
         rezervareRepository.save(reservation);
+        
+        // Trimitem email de confirmare cu detaliile vizitei
+        try {
+            emailService.sendApprovalEmail(reservation);
+        } catch (Exception e) {
+            System.err.println("Eroare la trimiterea email-ului de confirmare: " + e.getMessage());
+        }
         
         return true;
     }

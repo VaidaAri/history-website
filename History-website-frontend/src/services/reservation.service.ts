@@ -33,14 +33,6 @@ export class ReservationService {
     return this.http.get<any>(`${this.apiUrl}/pending-count`);
   }
 
-  approveReservation(id: number): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${id}/approve`, {}).pipe(
-      tap(() => {
-        // Notifică componentele că o rezervare a fost actualizată
-        this.reservationUpdatedSubject.next();
-      })
-    );
-  }
 
   deleteReservation(id: number): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/${id}`).pipe(
@@ -64,12 +56,4 @@ export class ReservationService {
     return this.http.put<any>(this.apiUrl, reservation);
   }
 
-  rejectReservation(id: number, requestBody: any = {}): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${id}/reject`, requestBody).pipe(
-      tap(() => {
-        // Notifică componentele că o rezervare a fost actualizată
-        this.reservationUpdatedSubject.next();
-      })
-    );
-  }
 }

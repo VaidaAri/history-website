@@ -41,7 +41,7 @@ public class RezervareController {
     public ResponseEntity<Map<String, String>> createBooking(@RequestBody Rezervare newBooking){
         rezervareService.createBooking(newBooking);
         return ResponseEntity.ok(Map.of(
-            "message", "Rezervare creată cu succes. Verificați email-ul pentru confirmare.",
+            "message", "Rezervare creată și aprobată cu succes!",
             "status", newBooking.getStatus().getDisplayName()
         ));
     }
@@ -54,15 +54,6 @@ public class RezervareController {
     @DeleteMapping("/{id}")
     public void deleteBooking(@PathVariable Integer id){
         rezervareService.deleteBooking(id);
-    }
-    
-    @PutMapping("/{id}/approve")
-    public ResponseEntity<Map<String, String>> approveBooking(@PathVariable Integer id) {
-        rezervareService.approveBooking(id);
-        return ResponseEntity.ok(Map.of(
-            "message", "Rezervare aprobată cu succes.",
-            "status", "Aprobată"
-        ));
     }
     
     /**
@@ -110,17 +101,4 @@ public class RezervareController {
         }
     }
     
-    @PutMapping("/{id}/reject")
-    public ResponseEntity<Map<String, String>> rejectBooking(
-            @PathVariable Integer id, 
-            @RequestBody(required = false) Map<String, String> requestBody) {
-        
-        String reason = requestBody != null ? requestBody.get("reason") : null;
-        rezervareService.rejectBooking(id, reason);
-        
-        return ResponseEntity.ok(Map.of(
-            "message", "Rezervare respinsă cu succes.",
-            "status", "Respinsă"
-        ));
-    }
 }
