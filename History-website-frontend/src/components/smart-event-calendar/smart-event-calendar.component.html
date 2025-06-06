@@ -1,7 +1,15 @@
-<div class="smart-event-calendar" [class.visible]="isVisible" *ngIf="isVisible">
-  <div class="calendar-overlay" (click)="closeModal()"></div>
+<div class="smart-event-calendar" 
+     [class.visible]="isVisible" 
+     [class.embedded]="isEmbedded"
+     [class.popup]="!isEmbedded"
+     *ngIf="isVisible">
   
-  <div class="calendar-container" (click)="$event.stopPropagation()">
+  <div class="calendar-overlay" (click)="closeModal()" *ngIf="!isEmbedded"></div>
+  
+  <div class="calendar-container" 
+       [class.embedded-container]="isEmbedded"
+       [class.popup-container]="!isEmbedded"
+       (click)="isEmbedded ? null : $event.stopPropagation()">
     <!-- Header -->
     <div class="calendar-header">
       <div class="header-controls">
@@ -22,7 +30,7 @@
         <button class="today-btn" (click)="goToToday()" [disabled]="isLoading">
           Astăzi
         </button>
-        <button class="close-btn" (click)="closeModal()">
+        <button class="close-btn" (click)="closeModal()" *ngIf="!isEmbedded">
           <i class="fas fa-times"></i>
         </button>
       </div>
@@ -53,21 +61,37 @@
         </div>
         
         <div class="day-events" *ngIf="!dayData.isEmpty && dayData.totalEvents > 0">
-          <div class="events-count">
-            {{ dayData.totalEvents }} event{{ dayData.totalEvents !== 1 ? 'e' : '' }}
-          </div>
-          
-          <div class="events-indicators">
+          <!-- Liste de evenimente cu titluri pentru modul embedded -->
+          <div *ngIf="isEmbedded" class="event-list">
             <div 
-              *ngFor="let event of dayData.events" 
-              class="event-indicator"
+              *ngFor="let event of dayData.events; let i = index" 
+              class="event-item-mini"
               [class]="getEventStatusClass(event)"
-              [title]="event.name + ' - ' + event.participants + '/' + event.capacity">
+              [title]="event.name + ' - ' + event.participants + '/' + event.capacity + ' participanți'"
+              (click)="onEventClick(event)">
+              <div class="event-name-mini">{{ event.name }}</div>
+              <div class="event-capacity-mini">{{ event.participants }}/{{ event.capacity }}</div>
             </div>
           </div>
           
-          <div class="available-spots" *ngIf="dayData.totalAvailableSpots > 0">
-            {{ dayData.totalAvailableSpots }} locuri
+          <!-- Indicatori pentru modul popup -->
+          <div *ngIf="!isEmbedded">
+            <div class="events-count">
+              {{ dayData.totalEvents }} event{{ dayData.totalEvents !== 1 ? 'e' : '' }}
+            </div>
+            
+            <div class="events-indicators">
+              <div 
+                *ngFor="let event of dayData.events" 
+                class="event-indicator"
+                [class]="getEventStatusClass(event)"
+                [title]="event.name + ' - ' + event.participants + '/' + event.capacity">
+              </div>
+            </div>
+            
+            <div class="available-spots" *ngIf="dayData.totalAvailableSpots > 0">
+              {{ dayData.totalAvailableSpots }} locuri
+            </div>
           </div>
         </div>
         

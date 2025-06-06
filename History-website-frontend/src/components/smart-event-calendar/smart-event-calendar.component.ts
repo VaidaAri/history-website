@@ -10,9 +10,10 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
   styleUrl: './smart-event-calendar.component.css'
 })
 export class SmartEventCalendarComponent implements OnInit {
-  @Input() isVisible: boolean = false;
+  @Input() isVisible: boolean = true; // Always visible now
   @Input() isParticipantMode: boolean = false; // false = admin mode, true = participant mode
   @Input() maxCapacityPerEvent: number = 100;
+  @Input() isEmbedded: boolean = false; // New: true for embedded mode, false for popup mode
   
   @Output() daySelected = new EventEmitter<any>();
   @Output() eventSelected = new EventEmitter<any>();
@@ -148,7 +149,9 @@ export class SmartEventCalendarComponent implements OnInit {
 
   onEventClick(event: any) {
     this.eventSelected.emit(event);
-    this.closeDayDetails();
+    if (!this.isEmbedded) {
+      this.closeDayDetails();
+    }
   }
 
   closeDayDetails() {

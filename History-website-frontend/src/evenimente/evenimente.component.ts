@@ -25,8 +25,6 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
   events: any[] = [];
   showEventsList: boolean = false;
   
-  // Calendarul inteligent
-  showSmartCalendar: boolean = false;
   
   selectedEvent: any = null;
   showRegistrationModal: boolean = false;
@@ -244,23 +242,6 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
   }
 
   // Metode pentru calendarul inteligent
-  openSmartCalendar() {
-    this.showSmartCalendar = true;
-  }
-
-  closeSmartCalendar() {
-    this.showSmartCalendar = false;
-  }
-
-  onSmartCalendarDaySelected(dayData: any) {
-    console.log('Day selected from smart calendar:', dayData);
-    // Dacă este admin și ziua permite crearea de evenimente
-    if (this.isAdmin && dayData.canCreateEvent) {
-      // Redirect la calendarul principal pentru a crea eveniment
-      this.closeSmartCalendar();
-    }
-  }
-
   onSmartCalendarEventSelected(event: any) {
     console.log('Event selected from smart calendar:', event);
     // Pentru participanți - deschide modalul de înregistrare
@@ -273,6 +254,5 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
         availableSpots: event.availableSpots
       });
     }
-    this.closeSmartCalendar();
   }
 }
