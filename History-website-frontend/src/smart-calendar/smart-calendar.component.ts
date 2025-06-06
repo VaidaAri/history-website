@@ -229,8 +229,8 @@ export class SmartCalendarComponent implements OnInit {
    */
   getStatusText(status: string): string {
     switch (status) {
-      case 'available': return 'Disponibil (sub 50% ocupat)';
-      case 'partial': return 'Parțial ocupat (peste 50% rezervat)';
+      case 'available': return 'Disponibil (fără aglomerare)';
+      case 'partial': return 'Parțial ocupat (aglomerare moderată)';
       case 'full': return 'Complet ocupat (toate intervalele pline)';
       case 'past': return 'Data depășită';
       default: return 'Necunoscut';
@@ -280,17 +280,17 @@ export class SmartCalendarComponent implements OnInit {
       }
     });
 
-    // Logica nouă: 
+    // Logica actualizată: 
     // - Roșu: 100% din intervale sunt pline (2/2 rezervări)
-    // - Galben: ≥50% din intervale au cel puțin 1 rezervare
-    // - Verde: <50% din intervale au rezervări
+    // - Galben: ≥50% din intervale au cel puțin 1 rezervare SAU cel puțin un interval complet plin
+    // - Verde: <50% din intervale au rezervări ȘI niciun interval complet plin
     
     if (fullSlots === totalSlots) {
-      return 'full'; // Toți sunt pline (2/2)
-    } else if (occupiedSlots >= Math.ceil(totalSlots / 2)) {
-      return 'partial'; // Cel puțin jumătate au rezervări
+      return 'full'; // Toate intervalele sunt pline (2/2)
+    } else if (occupiedSlots >= Math.ceil(totalSlots / 2) || fullSlots > 0) {
+      return 'partial'; // Cel puțin jumătate au rezervări SAU cel puțin un interval e complet plin
     } else {
-      return 'available'; // Mai puțin de jumătate au rezervări
+      return 'available'; // Mai puțin de jumătate au rezervări și niciun interval complet plin
     }
   }
 }
