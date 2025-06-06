@@ -65,9 +65,15 @@
         </div>
       </div>
       
-      <p *ngIf="!isAdmin" class="events-description">
-        {{ 'eventsUserDescription' | translate }}
-      </p>
+      <div *ngIf="!isAdmin" class="user-controls">
+        <div class="events-description">
+          <p>{{ 'eventsUserDescription' | translate }}</p>
+          <button class="smart-calendar-btn" (click)="openSmartCalendar()">
+            <i class="fas fa-calendar-alt"></i>
+            Calendarul Inteligent
+          </button>
+        </div>
+      </div>
       
       <div class="calendar-container">
         <app-calendar></app-calendar>
@@ -160,6 +166,16 @@
     </form>
   </div>
 </div>
+
+<!-- Calendarul Inteligent -->
+<app-smart-event-calendar
+  [isVisible]="showSmartCalendar"
+  [isParticipantMode]="!isAdmin"
+  [maxCapacityPerEvent]="100"
+  (daySelected)="onSmartCalendarDaySelected($event)"
+  (eventSelected)="onSmartCalendarEventSelected($event)"
+  (closeCalendar)="closeSmartCalendar()">
+</app-smart-event-calendar>
 
 <!-- Sistem de notificări -->
 <div *ngIf="notification.show" class="notification-overlay">

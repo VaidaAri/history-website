@@ -1,0 +1,154 @@
+<div class="smart-event-calendar" [class.visible]="isVisible" *ngIf="isVisible">
+  <div class="calendar-overlay" (click)="closeModal()"></div>
+  
+  <div class="calendar-container" (click)="$event.stopPropagation()">
+    <!-- Header -->
+    <div class="calendar-header">
+      <div class="header-controls">
+        <button class="nav-btn" (click)="previousMonth()" [disabled]="isLoading">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        
+        <div class="month-year">
+          <h3>{{ getMonthName() }} {{ currentYear }}</h3>
+        </div>
+        
+        <button class="nav-btn" (click)="nextMonth()" [disabled]="isLoading">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+      
+      <div class="header-actions">
+        <button class="today-btn" (click)="goToToday()" [disabled]="isLoading">
+          Astăzi
+        </button>
+        <button class="close-btn" (click)="closeModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Loading indicator -->
+    <div class="loading-indicator" *ngIf="isLoading">
+      <i class="fas fa-spinner fa-spin"></i> Se încarcă...
+    </div>
+
+    <!-- Calendar -->
+    <div class="calendar-grid" *ngIf="!isLoading">
+      <!-- Day headers -->
+      <div class="day-header" *ngFor="let dayName of dayNames">
+        {{ dayName }}
+      </div>
+      
+      <!-- Calendar days -->
+      <div 
+        *ngFor="let dayData of calendarDays" 
+        class="calendar-day"
+        [class]="getDayStatusClass(dayData)"
+        [class.clickable]="!dayData.isEmpty && !dayData.isPast"
+        (click)="onDayClick(dayData)">
+        
+        <div class="day-number" *ngIf="!dayData.isEmpty">
+          {{ dayData.day }}
+        </div>
+        
+        <div class="day-events" *ngIf="!dayData.isEmpty && dayData.totalEvents > 0">
+          <div class="events-count">
+            {{ dayData.totalEvents }} event{{ dayData.totalEvents !== 1 ? 'e' : '' }}
+          </div>
+          
+          <div class="events-indicators">
+            <div 
+              *ngFor="let event of dayData.events" 
+              class="event-indicator"
+              [class]="getEventStatusClass(event)"
+              [title]="event.name + ' - ' + event.participants + '/' + event.capacity">
+            </div>
+          </div>
+          
+          <div class="available-spots" *ngIf="dayData.totalAvailableSpots > 0">
+            {{ dayData.totalAvailableSpots }} locuri
+          </div>
+        </div>
+        
+        <div class="no-events" *ngIf="!dayData.isEmpty && dayData.totalEvents === 0 && !dayData.isPast">
+          <small>Fără evenimente</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Legend -->
+    <div class="calendar-legend" *ngIf="!isLoading">
+      <div class="legend-title">Legendă:</div>
+      <div class="legend-items">
+        <div class="legend-item">
+          <div class="legend-color available-day"></div>
+          <span>Disponibil (0-30% ocupat)</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color partial-day"></div>
+          <span>Parțial ocupat (31-70%)</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color full-day"></div>
+          <span>Complet/Aproape plin (71-100%)</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color past-day"></div>
+          <span>Date trecute</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day Details Popup -->
+  <div class="day-details-popup" *ngIf="showDayDetails && selectedDayData" (click)="closeDayDetails()">
+    <div class="popup-content" (click)="$event.stopPropagation()">
+      <div class="popup-header">
+        <h4>{{ selectedDayData.day }} {{ getMonthName() }} {{ currentYear }}</h4>
+        <button class="close-btn" (click)="closeDayDetails()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div class="popup-body">
+        <div class="day-summary">
+          <div class="summary-item">
+            <span class="label">Total evenimente:</span>
+            <span class="value">{{ selectedDayData.totalEvents }}</span>
+          </div>
+          <div class="summary-item">
+            <span class="label">Locuri disponibile:</span>
+            <span class="value">{{ selectedDayData.totalAvailableSpots }}</span>
+          </div>
+        </div>
+        
+        <div class="events-list">
+          <div 
+            *ngFor="let event of selectedDayData.events" 
+            class="event-item"
+            [class]="getEventStatusClass(event)"
+            (click)="onEventClick(event)">
+            
+            <div class="event-info">
+              <div class="event-name">{{ event.name }}</div>
+              <div class="event-capacity">
+                {{ event.participants }}/{{ event.capacity }} participanți 
+                ({{ event.percentage }}%)
+              </div>
+              <div class="event-status-message">
+                {{ getEventStatusMessage(event) }}
+              </div>
+            </div>
+            
+            <div class="event-actions" *ngIf="canParticipate(event)">
+              <button class="participate-btn">
+                Înscrie-te
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

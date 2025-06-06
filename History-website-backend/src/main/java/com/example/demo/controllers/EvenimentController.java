@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/events")
@@ -48,5 +49,19 @@ public class EvenimentController {
     @DeleteMapping("/{id}")
     public void deleteEvent(@PathVariable Integer id){
         evenimentService.deleteEvent(id);
+    }
+
+    @GetMapping("/calendar-density/{year}/{month}")
+    public Map<String, Map<String, Object>> getEventDensity(@PathVariable int year, @PathVariable int month) {
+        try {
+            System.out.println("Getting event density for " + year + "/" + month);
+            Map<String, Map<String, Object>> density = evenimentService.getEventDensityForMonth(year, month);
+            System.out.println("Calculated density for " + density.size() + " days");
+            return density;
+        } catch (Exception e) {
+            System.err.println("Error calculating event density: " + e.getMessage());
+            e.printStackTrace();
+            throw e;
+        }
     }
 }

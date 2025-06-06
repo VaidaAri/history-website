@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MeniuComponent } from "../meniu/meniu.component";
 import { CalendarComponent } from '../calendar/calendar.component';
+import { SmartEventCalendarComponent } from '../components/smart-event-calendar/smart-event-calendar.component';
 import { CadranComponent } from "../cadran/cadran.component";
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
@@ -14,7 +15,7 @@ import { TranslationService } from '../services/i18n/translation.service';
 @Component({
   selector: 'app-evenimente',
   standalone: true,
-  imports: [CommonModule, RouterModule, HttpClientModule, FormsModule, MeniuComponent, CalendarComponent, CadranComponent, TranslatePipe],
+  imports: [CommonModule, RouterModule, HttpClientModule, FormsModule, MeniuComponent, CalendarComponent, SmartEventCalendarComponent, CadranComponent, TranslatePipe],
   templateUrl: './evenimente.component.html',
   styleUrl: './evenimente.component.css',
   providers: [TranslationService]
@@ -23,6 +24,9 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
   isAdmin: boolean = false;
   events: any[] = [];
   showEventsList: boolean = false;
+  
+  // Calendarul inteligent
+  showSmartCalendar: boolean = false;
   
   selectedEvent: any = null;
   showRegistrationModal: boolean = false;
@@ -237,5 +241,38 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
   // Metodă pentru ascunderea notificărilor
   hideNotification() {
     this.notification.show = false;
+  }
+
+  // Metode pentru calendarul inteligent
+  openSmartCalendar() {
+    this.showSmartCalendar = true;
+  }
+
+  closeSmartCalendar() {
+    this.showSmartCalendar = false;
+  }
+
+  onSmartCalendarDaySelected(dayData: any) {
+    console.log('Day selected from smart calendar:', dayData);
+    // Dacă este admin și ziua permite crearea de evenimente
+    if (this.isAdmin && dayData.canCreateEvent) {
+      // Redirect la calendarul principal pentru a crea eveniment
+      this.closeSmartCalendar();
+    }
+  }
+
+  onSmartCalendarEventSelected(event: any) {
+    console.log('Event selected from smart calendar:', event);
+    // Pentru participanți - deschide modalul de înregistrare
+    if (!this.isAdmin) {
+      this.showEventRegistration({
+        id: event.id,
+        name: event.name,
+        participants: event.participants,
+        capacity: event.capacity,
+        availableSpots: event.availableSpots
+      });
+    }
+    this.closeSmartCalendar();
   }
 }

@@ -39,6 +39,44 @@
   margin-bottom: 20px;
 }
 
+.user-controls {
+  margin-bottom: 20px;
+}
+
+.smart-calendar-btn {
+  background: linear-gradient(135deg, #7D5A50 0%, #5D4037 100%);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1em;
+  margin-top: 15px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 15px rgba(125, 90, 80, 0.3);
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.smart-calendar-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(125, 90, 80, 0.4);
+  background: linear-gradient(135deg, #8D6A60 0%, #6D5047 100%);
+}
+
+.smart-calendar-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(125, 90, 80, 0.3);
+}
+
+.smart-calendar-btn i {
+  font-size: 1.2em;
+}
+
 .toggle-list-btn {
   background-color: #7D5A50;
   color: white;
