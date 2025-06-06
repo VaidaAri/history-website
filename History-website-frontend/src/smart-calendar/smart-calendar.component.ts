@@ -90,11 +90,17 @@ export class SmartCalendarComponent implements OnInit {
       
       const dayData = this.densityData[dateStr] || { status: 'available', availableSlots: 0 };
       
+      // Calculăm statusul bazat pe procentajul de intervale ocupate
+      let calculatedStatus = 'available';
+      if (!isPastOrToday && dayData.timeSlots) {
+        calculatedStatus = this.calculateDayStatus(dayData.timeSlots);
+      }
+      
       this.calendarDays.push({
         day: day,
         dateStr: dateStr,
         isEmpty: false,
-        status: isPastOrToday ? 'past' : dayData.status,
+        status: isPastOrToday ? 'past' : calculatedStatus,
         availableSlots: isPastOrToday ? 0 : dayData.availableSlots,
         totalSlots: dayData.totalSlots,
         timeSlots: dayData.timeSlots,
@@ -223,9 +229,9 @@ export class SmartCalendarComponent implements OnInit {
    */
   getStatusText(status: string): string {
     switch (status) {
-      case 'available': return 'Complet disponibil';
-      case 'partial': return 'Parțial ocupat';
-      case 'full': return 'Complet ocupat';
+      case 'available': return 'Disponibil (sub 50% ocupat)';
+      case 'partial': return 'Parțial ocupat (peste 50% rezervat)';
+      case 'full': return 'Complet ocupat (toate intervalele pline)';
       case 'past': return 'Data depășită';
       default: return 'Necunoscut';
     }
@@ -249,5 +255,42 @@ export class SmartCalendarComponent implements OnInit {
    */
   getSlotValue(value: any): number {
     return Number(value) || 0;
+  }
+
+  /**
+   * Calculează statusul unei zile bazat pe procentajul de intervale ocupate
+   */
+  calculateDayStatus(timeSlots: any): string {
+    if (!timeSlots || Object.keys(timeSlots).length === 0) {
+      return 'available';
+    }
+
+    const totalSlots = Object.keys(timeSlots).length;
+    let occupiedSlots = 0;
+    let fullSlots = 0;
+
+    // Numărăm intervalele ocupate și pline
+    Object.values(timeSlots).forEach((value: any) => {
+      const slotValue = this.getSlotValue(value);
+      if (slotValue >= 1) {
+        occupiedSlots++;
+      }
+      if (slotValue >= 2) {
+        fullSlots++;
+      }
+    });
+
+    // Logica nouă: 
+    // - Roșu: 100% din intervale sunt pline (2/2 rezervări)
+    // - Galben: ≥50% din intervale au cel puțin 1 rezervare
+    // - Verde: <50% din intervale au rezervări
+    
+    if (fullSlots === totalSlots) {
+      return 'full'; // Toți sunt pline (2/2)
+    } else if (occupiedSlots >= Math.ceil(totalSlots / 2)) {
+      return 'partial'; // Cel puțin jumătate au rezervări
+    } else {
+      return 'available'; // Mai puțin de jumătate au rezervări
+    }
   }
 }
