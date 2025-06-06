@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { CadranComponent } from '../cadran/cadran.component';
 import { AuthService } from '../services/auth.service';
 import { ReservationService } from '../services/reservation.service';
+import { NotificationService } from '../services/notification.service';
 import { MuseumScheduleService, MuseumSchedule } from '../services/museum-schedule.service';
 import { TranslatePipe } from '../services/i18n/translate.pipe';
 import { TranslationService } from '../services/i18n/translation.service';
@@ -68,6 +69,7 @@ export class RezervariComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private reservationService: ReservationService,
+    private notificationService: NotificationService,
     private museumScheduleService: MuseumScheduleService
   ) {
     // Inițializăm limitele datei
@@ -301,17 +303,23 @@ export class RezervariComponent implements OnInit {
           ? `Rezervare adăugată cu succes! ${response.message}`
           : "Rezervare adăugată cu succes!";
 
-        alert(successMessage);
+        this.notificationService.showSuccess('Rezervare confirmată', successMessage);
 
         this.resetBookingForm();
 
         if (this.isAdmin) {
           this.fetchBookings();
         }
+        
+        // Auto-refresh pentru actualizarea calendarului
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
       },
       error: (err) => {
         console.error("Error adding booking:", err);
-        alert("Eroare la adăugarea rezervării. Vă rugăm să încercați din nou.");
+        const errorMessage = err.error?.message || "Eroare la adăugarea rezervării. Vă rugăm să încercați din nou.";
+        this.notificationService.showError('Eroare rezervare', errorMessage);
       }
     });
   }
@@ -371,16 +379,29 @@ export class RezervariComponent implements OnInit {
     this.emailValidationSuccess = false;
   }
 
-  deleteBooking(bookingId: number) {
-    if (confirm("Sigur doriți să ștergeți această rezervare?")) {
+  async deleteBooking(bookingId: number) {
+    const confirmed = await this.notificationService.showConfirm(
+      'Confirmare ștergere',
+      'Sigur doriți să ștergeți această rezervare? Această acțiune nu poate fi anulată.',
+      'Șterge',
+      'Anulează'
+    );
+    
+    if (confirmed) {
       this.reservationService.deleteReservation(bookingId).subscribe({
         next: (response) => {
-          alert("Rezervare ștearsă cu succes!");
+          this.notificationService.showSuccess('Rezervare ștearsă', 'Rezervarea a fost ștearsă cu succes!');
           this.fetchBookings();
+          
+          // Auto-refresh pentru actualizarea calendarului
+          setTimeout(() => {
+            window.location.reload();
+          }, 1500);
         },
         error: (err) => {
           console.error("Error deleting booking:", err);
-          alert("Eroare la ștergerea rezervării. Vă rugăm să încercați din nou.");
+          const errorMessage = err.error?.message || "Eroare la ștergerea rezervării. Vă rugăm să încercați din nou.";
+          this.notificationService.showError('Eroare ștergere', errorMessage);
         }
       });
     }

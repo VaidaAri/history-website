@@ -8,11 +8,12 @@ import { AuthService } from '../services/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { ReservationService } from '../services/reservation.service';
 import { Subscription, interval } from 'rxjs';
+import { NotificationContainerComponent } from '../components/notification-container/notification-container.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterModule, CommonModule],
+  imports: [RouterOutlet, RouterModule, CommonModule, NotificationContainerComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
