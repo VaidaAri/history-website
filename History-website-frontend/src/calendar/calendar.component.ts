@@ -217,6 +217,24 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.selectedEvent = info.event;
     this.currentImageIndex = 0; // Reset image index when opening a new event
     this.showEventDetailsModal = true;
+    
+    // Dacă nu este admin, emitem un eveniment pentru a permite înregistrarea
+    if (!this.isAdmin) {
+      const eventData = {
+        id: info.event.id,
+        name: info.event.title,
+        startDate: info.event.start,
+        endDate: info.event.end,
+        location: info.event.extendedProps?.location,
+        description: info.event.extendedProps?.description
+      };
+      
+      const customEvent = new CustomEvent('eventClicked', { 
+        detail: eventData 
+      });
+      window.dispatchEvent(customEvent);
+    }
+    
     return;
   }
   

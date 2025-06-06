@@ -96,4 +96,69 @@
     </div>
   
 </app-cadran>
+
+<!-- Modal pentru înregistrarea la evenimente -->
+<div *ngIf="showRegistrationModal" class="modal-overlay" (click)="closeRegistrationModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Înregistrare la eveniment</h3>
+      <button class="close-btn" (click)="closeRegistrationModal()">&times;</button>
+    </div>
+    
+    <div *ngIf="selectedEvent" class="event-details">
+      <h4>{{ selectedEvent.name }}</h4>
+      <p><strong>📅 Data:</strong> {{ selectedEvent.startDate | date:'dd.MM.yyyy HH:mm' }}</p>
+      <p><strong>📍 Locația:</strong> {{ selectedEvent.location }}</p>
+      <p *ngIf="selectedEvent.description"><strong>📝 Descriere:</strong> {{ selectedEvent.description }}</p>
+    </div>
+    
+    <form (ngSubmit)="registerForEvent()" class="registration-form">
+      <div class="form-group">
+        <label for="nume">Nume *</label>
+        <input
+          type="text"
+          id="nume"
+          [(ngModel)]="registrationForm.nume"
+          name="nume"
+          required
+          placeholder="Introduceți numele dumneavoastră"
+        />
+      </div>
+      
+      <div class="form-group">
+        <label for="prenume">Prenume *</label>
+        <input
+          type="text"
+          id="prenume"
+          [(ngModel)]="registrationForm.prenume"
+          name="prenume"
+          required
+          placeholder="Introduceți prenumele dumneavoastră"
+        />
+      </div>
+      
+      <div class="form-group">
+        <label for="email">Email *</label>
+        <input
+          type="email"
+          id="email"
+          [(ngModel)]="registrationForm.email"
+          name="email"
+          required
+          placeholder="nume@exemplu.com"
+        />
+      </div>
+      
+      <div class="form-actions">
+        <button type="button" class="cancel-btn" (click)="closeRegistrationModal()">
+          Anulează
+        </button>
+        <button type="submit" class="submit-btn">
+          Înregistrează-mă
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
 </main>

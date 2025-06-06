@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.models.Participant;
 import com.example.demo.models.Rezervare;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -267,6 +268,101 @@ public class EmailService {
                 fromEmail,
                 museumName,
                 fromEmail
+            );
+    }
+
+    public void sendEventInvitationEmail(Participant participant) {
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+            helper.setFrom(fromEmail, museumName);
+            helper.setTo(participant.getEmail());
+            helper.setSubject("Invitație eveniment - " + participant.getEveniment().getName() + " - " + museumName);
+
+            String htmlContent = createEventInvitationTemplate(participant);
+            helper.setText(htmlContent, true);
+
+            mailSender.send(message);
+        } catch (Exception e) {
+            throw new RuntimeException("Eroare la trimiterea email-ului de invitație", e);
+        }
+    }
+
+    private String createEventInvitationTemplate(Participant participant) {
+        return """
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <title>Invitație la eveniment</title>
+                <style>
+                    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }
+                    .header { background-color: #7D5A50; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0; }
+                    .content { background-color: #f9f9f9; padding: 30px; border-radius: 0 0 8px 8px; }
+                    .event-card { background-color: white; padding: 20px; border-left: 4px solid #EAD196; margin: 20px 0; border-radius: 5px; }
+                    .highlight { background-color: #EAD196; color: #5D4037; padding: 8px 16px; border-radius: 20px; display: inline-block; font-weight: bold; margin: 10px 0; }
+                    .footer { text-align: center; margin-top: 30px; font-size: 12px; color: #666; }
+                    .event-title { color: #7D5A50; font-size: 20px; font-weight: bold; margin-bottom: 15px; }
+                </style>
+            </head>
+            <body>
+                <div class="header">
+                    <h1>🎉 Invitație la Eveniment</h1>
+                    <p>%s</p>
+                </div>
+                
+                <div class="content">
+                    <p>Bună ziua <strong>%s %s</strong>,</p>
+                    
+                    <p>Vă mulțumim pentru înscrierea la evenimentul nostru! Iată detaliile evenimentului:</p>
+                    
+                    <div class="event-card">
+                        <div class="event-title">%s</div>
+                        
+                        <p><strong>📅 Data și ora:</strong> %s - %s</p>
+                        
+                        <p><strong>📍 Locația:</strong> %s</p>
+                        
+                        %s
+                        
+                        <div class="highlight">
+                            ✅ Înscrierea confirmată!
+                        </div>
+                    </div>
+                    
+                    <p><strong>Informații importante:</strong></p>
+                    <ul>
+                        <li>Vă rugăm să ajungeți cu 15 minute înainte de începerea evenimentului</li>
+                        <li>În cazul în care nu puteți participa, vă rugăm să ne anunțați la adresa %s</li>
+                        <li>Pentru întrebări suplimentare, nu ezitați să ne contactați</li>
+                    </ul>
+                    
+                    <p>Vă așteptăm cu mare drag la acest eveniment special!</p>
+                    
+                    <p>Cu stimă,<br><strong>Echipa %s</strong></p>
+                </div>
+                
+                <div class="footer">
+                    <p>Acest email a fost trimis automat. Pentru întrebări, contactați-ne la %s</p>
+                    <p>%s</p>
+                </div>
+            </body>
+            </html>
+            """.formatted(
+                museumName,
+                participant.getNume(), participant.getPrenume(),
+                participant.getEveniment().getName(),
+                participant.getEveniment().getStartDate().format(dateFormatter),
+                participant.getEveniment().getEndDate().format(dateFormatter),
+                participant.getEveniment().getLocation(),
+                participant.getEveniment().getDescription() != null && !participant.getEveniment().getDescription().isEmpty() 
+                    ? "<p><strong>📝 Descriere:</strong> " + participant.getEveniment().getDescription() + "</p>" 
+                    : "",
+                fromEmail,
+                museumName,
+                fromEmail,
+                museumName
             );
     }
 }

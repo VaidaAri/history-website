@@ -32,4 +32,7 @@ public class Eveniment {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "eveniment_id")
     private List<Imagine> images = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "eveniment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Participant> participanti = new ArrayList<>();
 }

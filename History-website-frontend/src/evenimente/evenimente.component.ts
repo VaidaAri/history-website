@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { MeniuComponent } from "../meniu/meniu.component";
 import { CalendarComponent } from '../calendar/calendar.component';
 import { CadranComponent } from "../cadran/cadran.component";
@@ -13,7 +14,7 @@ import { TranslationService } from '../services/i18n/translation.service';
 @Component({
   selector: 'app-evenimente',
   standalone: true,
-  imports: [CommonModule, RouterModule, HttpClientModule, MeniuComponent, CalendarComponent, CadranComponent, TranslatePipe],
+  imports: [CommonModule, RouterModule, HttpClientModule, FormsModule, MeniuComponent, CalendarComponent, CadranComponent, TranslatePipe],
   templateUrl: './evenimente.component.html',
   styleUrl: './evenimente.component.css',
   providers: [TranslationService]
@@ -22,6 +23,15 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
   isAdmin: boolean = false;
   events: any[] = [];
   showEventsList: boolean = false;
+  
+  selectedEvent: any = null;
+  showRegistrationModal: boolean = false;
+  
+  registrationForm = {
+    nume: '',
+    prenume: '',
+    email: ''
+  };
 
   @ViewChild(CalendarComponent) calendarComponent!: CalendarComponent;
 
@@ -54,18 +64,31 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
     // Ascultăm pentru evenimente de adăugare sau actualizare de evenimente
     window.addEventListener('eventAdded', this.handleEventAdded.bind(this));
     window.addEventListener('eventUpdated', this.handleEventAdded.bind(this));
+    
+    // Ascultăm pentru click-uri pe evenimente (pentru înregistrare)
+    if (!this.isAdmin) {
+      window.addEventListener('eventClicked', this.handleEventClicked.bind(this));
+    }
   }
   
   // Curățăm la distrugerea componentei
   ngOnDestroy() {
     window.removeEventListener('eventAdded', this.handleEventAdded.bind(this));
     window.removeEventListener('eventUpdated', this.handleEventAdded.bind(this));
+    window.removeEventListener('eventClicked', this.handleEventClicked.bind(this));
   }
   
   // Handler pentru evenimentul custom de adăugare eveniment
   handleEventAdded(e: any) {
     if (this.isAdmin) {
       this.loadEvents();
+    }
+  }
+
+  // Handler pentru click pe eveniment (pentru înregistrare)
+  handleEventClicked(e: any) {
+    if (!this.isAdmin && e.detail) {
+      this.showEventRegistration(e.detail);
     }
   }
   
@@ -126,5 +149,63 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
   // Metoda pentru redirecționare către pagina de autentificare
   goToLogin() {
     this.router.navigate(['/administrator-login']);
+  }
+
+  // Metoda pentru afișarea modalului de înregistrare la eveniment
+  showEventRegistration(event: any) {
+    this.selectedEvent = event;
+    this.showRegistrationModal = true;
+    this.registrationForm = { nume: '', prenume: '', email: '' };
+  }
+
+  // Metoda pentru închiderea modalului
+  closeRegistrationModal() {
+    this.showRegistrationModal = false;
+    this.selectedEvent = null;
+  }
+
+  // Metoda pentru înscrierea la eveniment
+  registerForEvent() {
+    if (!this.selectedEvent || !this.registrationForm.nume.trim() || 
+        !this.registrationForm.prenume.trim() || !this.registrationForm.email.trim()) {
+      alert('Vă rugăm să completați toate câmpurile!');
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(this.registrationForm.email)) {
+      alert('Vă rugăm să introduceți o adresă de email validă!');
+      return;
+    }
+
+    const registrationData = {
+      evenimentId: this.selectedEvent.id,
+      nume: this.registrationForm.nume.trim(),
+      prenume: this.registrationForm.prenume.trim(),
+      email: this.registrationForm.email.trim()
+    };
+
+    console.log('Trimitem datele de înregistrare:', registrationData);
+    console.log('selectedEvent:', this.selectedEvent);
+
+    this.http.post('http://localhost:8080/api/participants/inscriere', registrationData)
+      .subscribe({
+        next: (response: any) => {
+          if (response.success) {
+            alert('Înscrierea s-a făcut cu succes! Veți primi un email de confirmare.');
+            this.closeRegistrationModal();
+          } else {
+            alert('Eroare: ' + response.message);
+          }
+        },
+        error: (error) => {
+          console.error('Eroare la înregistrare:', error);
+          if (error.error && error.error.message) {
+            alert('Eroare: ' + error.error.message);
+          } else {
+            alert('A apărut o eroare la înregistrare. Vă rugăm să încercați din nou.');
+          }
+        }
+      });
   }
 }
