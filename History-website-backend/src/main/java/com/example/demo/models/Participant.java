@@ -1,5 +1,6 @@
 package com.example.demo.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,6 +34,7 @@ public class Participant {
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "eveniment_id", nullable = false)
+    @JsonIgnore
     private Eveniment eveniment;
     
     @PrePersist

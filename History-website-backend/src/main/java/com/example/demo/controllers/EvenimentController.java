@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/events")
+@CrossOrigin(origins = "http://localhost:4200")
 public class EvenimentController {
 
     @Autowired
@@ -16,7 +17,16 @@ public class EvenimentController {
 
     @GetMapping
     public List<Eveniment> getAllEvents(){
-        return evenimentService.getAllEvents();
+        try {
+            System.out.println("Getting all events...");
+            List<Eveniment> events = evenimentService.getAllEvents();
+            System.out.println("Found " + events.size() + " events");
+            return events;
+        } catch (Exception e) {
+            System.err.println("Error getting events: " + e.getMessage());
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     @GetMapping("/{id}")

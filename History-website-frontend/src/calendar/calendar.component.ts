@@ -184,24 +184,37 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   loadEvents() {
-    this.http.get<any[]>('http://localhost:8080/api/events').subscribe(data => {
-      this.events = data.map(event => {
-        const startDate = new Date(event.startDate);
-        const endDate = new Date(event.endDate);
-        
-        return {
-          id: event.id,
-          title: event.name,
-          start: startDate,
-          end: endDate,
-          color: '#7D5A50',
-          allDay: true,
-          description: event.description,
-          location: event.location,
-          images: event.images
-        };
-      });
-      this.updateCalendar();
+    this.http.get<any[]>('http://localhost:8080/api/events').subscribe({
+      next: (data) => {
+        console.log('Events loaded successfully:', data);
+        this.events = data.map(event => {
+          const startDate = new Date(event.startDate);
+          const endDate = new Date(event.endDate);
+          
+          return {
+            id: event.id,
+            title: event.name,
+            start: startDate,
+            end: endDate,
+            color: '#7D5A50',
+            allDay: true,
+            description: event.description,
+            location: event.location,
+            images: event.images
+          };
+        });
+        this.updateCalendar();
+      },
+      error: (error) => {
+        console.error('Error loading events:', error);
+        console.error('Error details:', {
+          status: error.status,
+          statusText: error.statusText,
+          message: error.message,
+          url: error.url,
+          ok: error.ok
+        });
+      }
     });
   }
 
