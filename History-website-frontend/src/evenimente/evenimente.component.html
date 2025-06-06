@@ -154,10 +154,26 @@
           Anulează
         </button>
         <button type="submit" class="submit-btn">
-          Înregistrează-mă
+          Înscrie-te
         </button>
       </div>
     </form>
+  </div>
+</div>
+
+<!-- Sistem de notificări -->
+<div *ngIf="notification.show" class="notification-overlay">
+  <div class="notification" [ngClass]="'notification-' + notification.type">
+    <div class="notification-header">
+      <span class="notification-icon">
+        <span *ngIf="notification.type === 'success'">✅</span>
+        <span *ngIf="notification.type === 'error'">❌</span>
+        <span *ngIf="notification.type === 'warning'">⚠️</span>
+      </span>
+      <h4 class="notification-title">{{ notification.title }}</h4>
+      <button class="notification-close" (click)="hideNotification()">&times;</button>
+    </div>
+    <p class="notification-message">{{ notification.message }}</p>
   </div>
 </div>
 

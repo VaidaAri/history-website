@@ -32,7 +32,7 @@ public class ParticipantService {
         
         // Verificăm dacă utilizatorul nu este deja înscris
         if (participantRepository.existsByEvenimentIdAndEmail(evenimentId, email)) {
-            throw new RuntimeException("Sunteți deja înscris la acest eveniment");
+            throw new RuntimeException("Sunteti deja inscris la acest eveniment");
         }
         
         System.out.println("Utilizatorul nu este deja înscris, continuăm...");

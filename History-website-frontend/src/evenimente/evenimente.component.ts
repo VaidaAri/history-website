@@ -32,6 +32,14 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
     prenume: '',
     email: ''
   };
+  
+  // Sistem de notificări
+  notification = {
+    show: false,
+    type: 'success', // 'success', 'error', 'warning'
+    title: '',
+    message: ''
+  };
 
   @ViewChild(CalendarComponent) calendarComponent!: CalendarComponent;
 
@@ -192,20 +200,42 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (response: any) => {
           if (response.success) {
-            alert('Înscrierea s-a făcut cu succes! Veți primi un email de confirmare.');
+            this.showNotification('success', 'Înscrierea reușită!', 'Înscrierea s-a făcut cu succes! Veți primi un email cu invitația dumneavoastră.');
             this.closeRegistrationModal();
           } else {
-            alert('Eroare: ' + response.message);
+            this.showNotification('error', 'Eroare la înscriere', response.message);
           }
         },
         error: (error) => {
-          console.error('Eroare la înregistrare:', error);
-          if (error.error && error.error.message) {
-            alert('Eroare: ' + error.error.message);
+          const message = error.error?.message || '';
+          
+          if (message.includes('deja inscris') || message.includes('deja înscris')) {
+            this.showNotification('warning', 'Deja înscris', 'Sunteți deja înscris la acest eveniment! Verificați email-ul pentru invitația dumneavoastră.');
           } else {
-            alert('A apărut o eroare la înregistrare. Vă rugăm să încercați din nou.');
+            this.showNotification('error', 'Eroare', message || 'A apărut o eroare la înregistrare.');
           }
         }
       });
+  }
+
+  // Metodă pentru afișarea notificărilor
+  showNotification(type: 'success' | 'error' | 'warning', title: string, message: string) {
+    this.notification = {
+      show: true,
+      type: type,
+      title: title,
+      message: message
+    };
+
+    // Auto-hide după 5 secunde pentru success, 7 secunde pentru warning/error
+    const hideAfter = type === 'success' ? 5000 : 7000;
+    setTimeout(() => {
+      this.hideNotification();
+    }, hideAfter);
+  }
+
+  // Metodă pentru ascunderea notificărilor
+  hideNotification() {
+    this.notification.show = false;
   }
 }
