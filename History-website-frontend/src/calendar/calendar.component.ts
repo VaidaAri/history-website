@@ -52,7 +52,9 @@ export class CalendarComponent implements OnInit, OnDestroy {
       right: ''
     },
     locale: 'ro',
-    fixedWeekCount: false
+    fixedWeekCount: false,
+    dayMaxEvents: 3, // Limitează la maxim 3 evenimente vizibile per zi
+    moreLinkClick: 'popover' // Afișează popover pentru evenimente suplimentare
   };
 
   private dateOrderValidator(): ValidatorFn {
@@ -407,6 +409,18 @@ export class CalendarComponent implements OnInit, OnDestroy {
     const validRange = this.getValidDateRange();
     if (startDate < validRange.start || endDate > validRange.end) {
       alert(`Poți selecta doar date între ${this.formatDate(validRange.start.toISOString())} și ${this.formatDate(validRange.end.toISOString())}`);
+      return;
+    }
+    
+    // Verifică numărul de evenimente pe ziua selectată
+    const selectedDateStr = this.formatDateForInput(startDate);
+    const eventsOnSelectedDate = this.events.filter(event => {
+      const eventDate = this.formatDateForInput(new Date(event.start));
+      return eventDate === selectedDateStr;
+    });
+    
+    if (eventsOnSelectedDate.length >= 3) {
+      alert('Limita maximă de 3 evenimente pe zi a fost atinsă pentru această dată. Vă rugăm să selectați o altă zi.');
       return;
     }
     
