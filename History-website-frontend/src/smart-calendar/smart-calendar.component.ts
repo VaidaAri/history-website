@@ -69,6 +69,10 @@ export class SmartCalendarComponent implements OnInit {
     // Ultima zi a lunii
     const lastDay = new Date(this.currentYear, this.currentMonth + 1, 0);
     
+    // Ziua curentă pentru comparație
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Resetăm ora pentru comparație precisă
+    
     // Ziua săptămânii pentru prima zi (0 = duminică, convertim la 0 = luni)
     let startDayOfWeek = firstDay.getDay();
     startDayOfWeek = startDayOfWeek === 0 ? 6 : startDayOfWeek - 1; // Convertim duminica de la 0 la 6
@@ -81,19 +85,23 @@ export class SmartCalendarComponent implements OnInit {
     // Adăugăm zilele lunii
     for (let day = 1; day <= lastDay.getDate(); day++) {
       const dateStr = `${this.currentYear}-${String(this.currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+      const currentDayDate = new Date(this.currentYear, this.currentMonth, day);
+      const isPastOrToday = currentDayDate <= today;
+      
       const dayData = this.densityData[dateStr] || { status: 'available', availableSlots: 0 };
       
       this.calendarDays.push({
         day: day,
         dateStr: dateStr,
         isEmpty: false,
-        status: dayData.status,
-        availableSlots: dayData.availableSlots,
+        status: isPastOrToday ? 'past' : dayData.status,
+        availableSlots: isPastOrToday ? 0 : dayData.availableSlots,
         totalSlots: dayData.totalSlots,
         timeSlots: dayData.timeSlots,
         fullSlots: dayData.fullSlots,
         partialSlots: dayData.partialSlots,
-        emptySlots: dayData.emptySlots
+        emptySlots: dayData.emptySlots,
+        isPastOrToday: isPastOrToday
       });
     }
   }
@@ -138,9 +146,9 @@ export class SmartCalendarComponent implements OnInit {
    * Click pe o zi din calendar
    */
   onDayClick(dayData: any) {
-    if (dayData.isEmpty) return;
+    if (dayData.isEmpty || dayData.isPastOrToday) return;
     
-    // Afișăm mereu detaliile pentru a permite atât selecția datei cât și rezervarea directă
+    // Afișăm detaliile doar pentru zilele viitoare
     this.selectedDay = dayData;
     this.showDayDetails = true;
   }
@@ -218,6 +226,7 @@ export class SmartCalendarComponent implements OnInit {
       case 'available': return 'Complet disponibil';
       case 'partial': return 'Parțial ocupat';
       case 'full': return 'Complet ocupat';
+      case 'past': return 'Data depășită';
       default: return 'Necunoscut';
     }
   }
@@ -230,6 +239,7 @@ export class SmartCalendarComponent implements OnInit {
       case 'available': return '✅';
       case 'partial': return '⚠️';
       case 'full': return '🔴';
+      case 'past': return '🕰️';
       default: return '❓';
     }
   }

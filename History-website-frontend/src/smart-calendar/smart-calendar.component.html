@@ -25,6 +25,10 @@
       <span class="legend-color full"></span>
       <span>Complet ocupat (nu se mai acceptă rezervări)</span>
     </div>
+    <div class="legend-item">
+      <span class="legend-color past"></span>
+      <span>Date depășite (nu se pot selecta)</span>
+    </div>
   </div>
 
   <!-- Zilele săptămânii -->
@@ -38,7 +42,7 @@
       *ngFor="let dayData of calendarDays" 
       [class]="getDayClass(dayData)"
       (click)="onDayClick(dayData)"
-      [title]="!dayData.isEmpty ? getStatusText(dayData.status) + ' - ' + dayData.availableSlots + ' locuri disponibile' : ''">
+      [title]="!dayData.isEmpty ? (dayData.isPastOrToday ? 'Data depășită - nu se pot face rezervări' : getStatusText(dayData.status) + ' - ' + dayData.availableSlots + ' locuri disponibile') : ''">
       
       <span class="day-number" *ngIf="!dayData.isEmpty">{{ dayData.day }}</span>
       

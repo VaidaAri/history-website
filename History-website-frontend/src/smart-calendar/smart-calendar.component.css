@@ -137,6 +137,10 @@
   background: #dc3545;
 }
 
+.legend-color.past {
+  background: #6c757d;
+}
+
 /* Zilele săptămânii */
 .calendar-weekdays {
   display: grid;
@@ -174,7 +178,7 @@
   justify-content: space-between;
 }
 
-.calendar-day:hover {
+.calendar-day:hover:not(.day-past):not(.day-full) {
   transform: scale(1.05);
   z-index: 2;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -202,7 +206,14 @@
   cursor: not-allowed;
 }
 
-.day-full:hover {
+.day-past {
+  border-left: 4px solid #6c757d;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.day-full:hover, .day-past:hover {
   transform: none;
 }
 
@@ -332,6 +343,11 @@
 .badge-full {
   background: #f8d7da;
   color: #721c24;
+}
+
+.badge-past {
+  background: #e2e3e5;
+  color: #383d41;
 }
 
 /* Time slots */
