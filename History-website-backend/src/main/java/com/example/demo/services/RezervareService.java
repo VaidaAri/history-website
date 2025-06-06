@@ -26,22 +26,22 @@ public class RezervareService {
     }
 
     public void createBooking(Rezervare newBooking){
-        // Pentru testare: salvăm direct ca APROBATA (fără email)
-        // Păstrăm atributele pentru implementare viitoare
+        // Fluxul nou: creăm rezervarea cu status NECONFIRMATA și trimitem email de confirmare
         String confirmationToken = emailService.generateConfirmationToken();
         newBooking.setConfirmationToken(confirmationToken);
         newBooking.setTokenExpiry(LocalDateTime.now().plusHours(24));
-        newBooking.setStatus(ReservationStatus.APROBATA); // Direct aprobată
-        newBooking.setConfirmedAt(LocalDateTime.now()); // Setăm și data confirmării
+        newBooking.setStatus(ReservationStatus.NECONFIRMATA); // Status inițial neconfirmat
+        // Nu setăm confirmedAt încă
         
         // Salvăm rezervarea
         Rezervare savedReservation = rezervareRepository.save(newBooking);
         
-        // Trimitem email cu detaliile rezervării
+        // Trimitem email de confirmare cu link-ul
         try {
-            emailService.sendApprovalEmail(savedReservation);
+            emailService.sendConfirmationEmail(savedReservation);
         } catch (Exception e) {
-            System.err.println("Eroare la trimiterea email-ului: " + e.getMessage());
+            System.err.println("Eroare la trimiterea email-ului de confirmare: " + e.getMessage());
+            // În caz de eroare la email, păstrăm rezervarea pentru retrimitere
         }
     }
 

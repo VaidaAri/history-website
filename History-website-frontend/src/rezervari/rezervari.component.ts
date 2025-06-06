@@ -298,12 +298,12 @@ export class RezervariComponent implements OnInit {
     
     this.reservationService.createReservation(this.newBooking).subscribe({
       next: (response) => {
-        // Verificăm dacă răspunsul are proprietatea message înainte de a o folosi
+        // Mesaj pentru noul flux de confirmare prin email
         const successMessage = response && response.message
-          ? `Rezervare adăugată cu succes! ${response.message}`
-          : "Rezervare adăugată cu succes!";
+          ? response.message
+          : "Rezervarea a fost înregistrată cu succes! Vă rugăm să verificați email-ul pentru a o confirma.";
 
-        this.notificationService.showSuccess('Rezervare confirmată', successMessage);
+        this.notificationService.showSuccess('Rezervare înregistrată', successMessage);
 
         this.resetBookingForm();
 
@@ -311,10 +311,8 @@ export class RezervariComponent implements OnInit {
           this.fetchBookings();
         }
         
-        // Auto-refresh pentru actualizarea calendarului
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
+        // Nu mai facem auto-refresh pentru că rezervarea încă nu este confirmată
+        // Calendarul se va actualiza doar după confirmarea prin email
       },
       error: (err) => {
         console.error("Error adding booking:", err);
