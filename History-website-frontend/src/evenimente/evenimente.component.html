@@ -89,22 +89,73 @@
     </div>
     
     <div class="events-info">
-      <div class="event-info-box">
-        <div class="event-icon">📅</div>
-        <h3>{{ 'eventsVisitUsTitle' | translate }}</h3>
-        <p>{{ 'eventsVisitUsDesc' | translate }}</p>
+      <!-- Cartonaș 1: Următorul eveniment -->
+      <div class="event-info-box interactive-box next-event" 
+           [class.has-event]="eventStats.nextEvent"
+           (click)="eventStats.nextEvent && loadFullEventDetails(eventStats.nextEvent)">
+        <div class="event-icon">🗓️</div>
+        <h3>Următorul eveniment</h3>
+        
+        <div *ngIf="eventStats.nextEvent; else noNextEvent" class="event-preview">
+          <div class="event-name">{{ eventStats.nextEvent.name }}</div>
+          <div class="event-date">{{ eventStats.nextEvent.startDate | date:'dd MMM yyyy, HH:mm' }}</div>
+          <div class="event-location" *ngIf="eventStats.nextEvent.location">
+            📍 {{ eventStats.nextEvent.location }}
+          </div>
+          <div class="cta-text">Click pentru detalii complete</div>
+        </div>
+        
+        <ng-template #noNextEvent>
+          <p>Nu există evenimente programate în perioada următoare.</p>
+          <div class="cta-text">Verifică calendarul pentru actualizări</div>
+        </ng-template>
       </div>
       
-      <div class="event-info-box">
-        <div class="event-icon">🎭</div>
-        <h3>{{ 'eventsSpecialTitle' | translate }}</h3>
-        <p>{{ 'eventsSpecialDesc' | translate }}</p>
+      <!-- Cartonaș 2: Cel mai popular eveniment -->
+      <div class="event-info-box interactive-box popular-event"
+           [class.has-event]="eventStats.popularEvent"
+           (click)="eventStats.popularEvent && loadFullEventDetails(eventStats.popularEvent)">
+        <div class="event-icon">🎯</div>
+        <h3>Eveniment recomandat</h3>
+        
+        <div *ngIf="eventStats.popularEvent; else noPopularEvent" class="event-preview">
+          <div class="event-name">{{ eventStats.popularEvent.name }}</div>
+          <div class="event-date">{{ eventStats.popularEvent.startDate | date:'dd MMM yyyy' }}</div>
+          <div class="popularity-indicator">
+            <span class="trending-badge">🔥 Trending</span>
+          </div>
+          <div class="cta-text">Descoperă de ce este popular</div>
+        </div>
+        
+        <ng-template #noPopularEvent>
+          <p>Explorează calendarul pentru a găsi evenimente interesante.</p>
+          <div class="cta-text">Vezi toate evenimentele</div>
+        </ng-template>
       </div>
       
-      <div class="event-info-box">
-        <div class="event-icon">🔔</div>
-        <h3>{{ 'eventsAnnouncementsTitle' | translate }}</h3>
-        <p>{{ 'eventsAnnouncementsDesc' | translate }}</p>
+      <!-- Cartonaș 3: Statistici live -->
+      <div class="event-info-box interactive-box stats-box" (click)="scrollToCalendarAndHighlight()">
+        <div class="event-icon">📊</div>
+        <h3>Statistici luna aceasta</h3>
+        
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-number">{{ eventStats.totalEventsThisMonth }}</div>
+            <div class="stat-label">Evenimente totale</div>
+          </div>
+          
+          <div class="stat-item">
+            <div class="stat-number">{{ eventStats.totalAvailableSpots }}</div>
+            <div class="stat-label">Locuri disponibile</div>
+          </div>
+          
+          <div class="stat-item" *ngIf="eventStats.fullEvents > 0">
+            <div class="stat-number warning">{{ eventStats.fullEvents }}</div>
+            <div class="stat-label">Evenimente complete</div>
+          </div>
+        </div>
+        
+        <div class="cta-text">Explorează calendarul complet</div>
       </div>
     </div>
   

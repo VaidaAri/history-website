@@ -32,6 +32,15 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
   showImageModal: boolean = false;
   selectedImage: any = null;
   
+  // Statistici live pentru cartonașe
+  eventStats = {
+    nextEvent: null as any,
+    popularEvent: null as any,
+    totalEventsThisMonth: 0,
+    totalAvailableSpots: 0,
+    fullEvents: 0
+  };
+  
   registrationForm = {
     nume: '',
     prenume: '',
@@ -73,6 +82,9 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
     if (this.isAdmin) {
       this.loadEvents();
     }
+    
+    // Încărcăm statisticile pentru cartonașe (pentru toți utilizatorii)
+    this.loadEventStats();
 
     // Ascultăm pentru evenimente de adăugare sau actualizare de evenimente
     window.addEventListener('eventAdded', this.handleEventAdded.bind(this));
@@ -301,5 +313,80 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
         this.showNotification('error', 'Eroare', 'Nu s-au putut încărca detaliile evenimentului.');
       }
     });
+  }
+
+  // Metodă pentru încărcarea statisticilor evenimente
+  loadEventStats() {
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth() + 1;
+    
+    // Încărcăm densitatea pentru luna curentă pentru a obține statistici
+    this.http.get<any>(`http://localhost:8080/api/events/calendar-density/${currentYear}/${currentMonth}`).subscribe({
+      next: (densityData) => {
+        this.calculateStatsFromDensity(densityData);
+      },
+      error: (error) => {
+        console.error('Error loading event stats:', error);
+      }
+    });
+    
+    // Încărcăm toate evenimentele pentru a găsi următorul și cel mai popular
+    this.http.get<any[]>('http://localhost:8080/api/events').subscribe({
+      next: (allEvents) => {
+        this.findNextAndPopularEvents(allEvents);
+      },
+      error: (error) => {
+        console.error('Error loading all events:', error);
+      }
+    });
+  }
+
+  // Calculează statistici din datele de densitate
+  calculateStatsFromDensity(densityData: any) {
+    let totalEvents = 0;
+    let totalAvailable = 0;
+    let fullEvents = 0;
+    
+    Object.values(densityData).forEach((dayData: any) => {
+      if (dayData.events) {
+        totalEvents += dayData.totalEvents || 0;
+        totalAvailable += dayData.totalAvailableSpots || 0;
+        fullEvents += dayData.fullEvents || 0;
+      }
+    });
+    
+    this.eventStats.totalEventsThisMonth = totalEvents;
+    this.eventStats.totalAvailableSpots = totalAvailable;
+    this.eventStats.fullEvents = fullEvents;
+  }
+
+  // Găsește următorul eveniment și cel mai popular
+  findNextAndPopularEvents(allEvents: any[]) {
+    const now = new Date();
+    
+    // Filtrează evenimente viitoare și le sortează
+    const futureEvents = allEvents
+      .filter(event => new Date(event.startDate) > now)
+      .sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+    
+    // Următorul eveniment
+    this.eventStats.nextEvent = futureEvents.length > 0 ? futureEvents[0] : null;
+    
+    // Pentru evenimente populare, simulăm popularitatea pe baza ID-ului (în lipsa datelor reale de participare)
+    // În realitate, aici ai putea calcula pe baza numărului de participanți
+    const popularEvents = allEvents
+      .filter(event => new Date(event.startDate) > now)
+      .sort((a, b) => b.id - a.id); // Simulare: ID mai mare = mai popular
+    
+    this.eventStats.popularEvent = popularEvents.length > 0 ? popularEvents[0] : null;
+  }
+
+  // Metodă pentru navigarea la calendarul inteligent pentru un eveniment specific
+  scrollToCalendarAndHighlight(eventDate?: string) {
+    const calendarElement = document.querySelector('.calendar-container');
+    if (calendarElement) {
+      calendarElement.scrollIntoView({ behavior: 'smooth' });
+    }
   }
 }
