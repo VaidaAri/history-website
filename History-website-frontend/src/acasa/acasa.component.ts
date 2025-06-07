@@ -74,19 +74,6 @@ export class AcasaComponent implements OnInit {
     this.loadPosts();
   }
 
-  // Aceste metode sunt păstrate pentru viitor, dar nu mai sunt utilizate activ
-  // getPostsForSection(sectionId: number): any[] {
-  //   if (sectionId === 0) {
-  //     return this.posts;
-  //   }
-  //   return [];
-  // }
-  
-  // hasPosts(sectionId: number): boolean {
-  //   return this.getPostsForSection(sectionId).length > 0;
-  // }
-
-  // Încarcă toate postările din backend
   loadPosts() {
     this.postService.getPosts().subscribe({
       next: (data) => {
@@ -107,7 +94,6 @@ export class AcasaComponent implements OnInit {
     });
   }
 
-  // Șterge o postare
   deletePost(id: number) {
     if (!this.isAdmin) {
       alert('Trebuie să fiți autentificat ca administrator pentru a șterge o postare!');
@@ -127,7 +113,7 @@ export class AcasaComponent implements OnInit {
     }
   }
 
-  // Începe editarea unei postări
+ 
   editPost(post: any) {
     if (!this.isAdmin) {
       alert('Trebuie să fiți autentificat ca administrator pentru a edita o postare!');
@@ -137,54 +123,45 @@ export class AcasaComponent implements OnInit {
     this.editingPostId = post.id;
   }
 
-  // Anulează editarea
   cancelEdit() {
     this.editingPostId = null;
   }
 
-  // Actualizează postarea după modificare
   onPostUpdated() {
     this.editingPostId = null;
     this.loadPosts();
   }
 
-  // Gestionează evenimentul de creare a postării din componenta PostManager
   onPostCreated() {
     this.loadPosts();
   }
   
-  // Funcție pentru deconectare
   logout() {
     this.authService.logout();
     alert('V-ați deconectat cu succes!');
-    // Nu mai reîncărcăm pagina - interfața se va actualiza automat prin AuthService
   }
   
-  // Adăugăm un link pentru pagina de login pentru administratori
+
   goToLogin() {
     this.router.navigate(['/administrator-login']);
   }
   
-  // Gestionează selecția de fișiere
   onFileSelected(event: any) {
     const files = event.target.files;
     if (files) {
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         
-        // Verifică dacă fișierul este o imagine
         if (file.type.match(/image\/*/) == null) {
           alert('Doar fișierele de tip imagine sunt permise!');
           continue;
         }
         
-        // Limitează numărul de imagini la 5 per postare
         if (this.newPostImages.length >= 5) {
           alert('Poți adăuga maxim 5 imagini la o postare.');
           break;
         }
-        
-        // Citește fișierul și adaugă-l la lista de imagini
+
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = () => {
@@ -196,16 +173,13 @@ export class AcasaComponent implements OnInit {
       }
     }
     
-    // Resetează input-ul pentru a permite reîncărcarea aceluiași fișier
     event.target.value = '';
   }
 
-  // Elimină o imagine din lista de imagini selectate
   removeImage(index: number) {
     this.newPostImages.splice(index, 1);
   }
 
-  // Adaugă postare (fără secțiune obligatorie)
   addPostToSelectedSection() {
     if (!this.newPostDescription.trim()) {
       alert('Descrierea nu poate fi goală!');
@@ -215,7 +189,7 @@ export class AcasaComponent implements OnInit {
     const newPost = { 
       description: this.newPostDescription, 
       images: this.newPostImages
-      // sectionId nu mai este necesar
+
     };
 
     this.postService.addPost(newPost).subscribe({
