@@ -234,30 +234,67 @@
   margin-bottom: 5px;
 }
 
-/* Day Status Colors */
+/* Day Status Colors - Gradient de culori pentru ocuparea evenimentelor */
+
+/* 0-9% - Verde */
 .available-day {
-  background-color: #e8f5e8 !important;
+  background-color: #d4edda !important;
   border-left: 4px solid #28a745;
 }
-
 .available-day .day-number {
   color: #155724;
 }
 
-.partial-day {
+/* 10-24% - Verde deschis */
+.very-low-day {
+  background-color: #e8f5e9 !important;
+  border-left: 4px solid #4caf50;
+}
+.very-low-day .day-number {
+  color: #2e7d32;
+}
+
+/* 25-39% - Verde-galben */
+.low-day {
+  background-color: #f3e5ab !important;
+  border-left: 4px solid #8bc34a;
+}
+.low-day .day-number {
+  color: #558b2f;
+}
+
+/* 40-54% - Galben */
+.medium-day {
   background-color: #fff3cd !important;
   border-left: 4px solid #ffc107;
 }
-
-.partial-day .day-number {
+.medium-day .day-number {
   color: #856404;
 }
 
+/* 55-69% - Galben-portocaliu */
+.high-day {
+  background-color: #ffe0b3 !important;
+  border-left: 4px solid #ff9800;
+}
+.high-day .day-number {
+  color: #f57c00;
+}
+
+/* 70-84% - Portocaliu */
+.very-high-day {
+  background-color: #ffcc99 !important;
+  border-left: 4px solid #ff5722;
+}
+.very-high-day .day-number {
+  color: #d84315;
+}
+
+/* 85-100% - Roșu */
 .full-day {
   background-color: #f8d7da !important;
   border-left: 4px solid #dc3545;
 }
-
 .full-day .day-number {
   color: #721c24;
 }
@@ -307,12 +344,29 @@
   flex-shrink: 0;
 }
 
+/* Event Status Colors */
 .event-available {
   background-color: #28a745;
 }
 
-.event-partial {
+.event-very-low {
+  background-color: #4caf50;
+}
+
+.event-low {
+  background-color: #8bc34a;
+}
+
+.event-medium {
   background-color: #ffc107;
+}
+
+.event-high {
+  background-color: #ff9800;
+}
+
+.event-very-high {
+  background-color: #ff5722;
 }
 
 .event-full {
@@ -361,9 +415,27 @@
   background-color: #28a745;
 }
 
-.event-item-mini.event-partial {
+.event-item-mini.event-very-low {
+  background-color: #4caf50;
+}
+
+.event-item-mini.event-low {
+  background-color: #8bc34a;
+  color: #333;
+}
+
+.event-item-mini.event-medium {
   background-color: #ffc107;
   color: #333;
+}
+
+.event-item-mini.event-high {
+  background-color: #ff9800;
+  color: #333;
+}
+
+.event-item-mini.event-very-high {
+  background-color: #ff5722;
 }
 
 .event-item-mini.event-full {

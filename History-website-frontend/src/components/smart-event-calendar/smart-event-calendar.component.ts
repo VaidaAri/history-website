@@ -176,9 +176,13 @@ export class SmartEventCalendarComponent implements OnInit {
     if (dayData.isPast) return 'past-day';
     
     switch (dayData.status) {
-      case 'available': return 'available-day';
-      case 'partial': return 'partial-day';
-      case 'full': return 'full-day';
+      case 'available': return 'available-day';        // 0-9% - Verde
+      case 'very-low': return 'very-low-day';          // 10-24% - Verde-galben
+      case 'low': return 'low-day';                    // 25-39% - Galben
+      case 'medium': return 'medium-day';              // 40-54% - Galben-portocaliu
+      case 'high': return 'high-day';                  // 55-69% - Portocaliu
+      case 'very-high': return 'very-high-day';        // 70-84% - Portocaliu închis
+      case 'full': return 'full-day';                  // 85-100% - Roșu închis
       case 'no-events': return 'no-events-day';
       default: return '';
     }
@@ -187,7 +191,11 @@ export class SmartEventCalendarComponent implements OnInit {
   getEventStatusClass(event: any): string {
     switch (event.status) {
       case 'available': return 'event-available';
-      case 'partial': return 'event-partial';
+      case 'very-low': return 'event-very-low';
+      case 'low': return 'event-low';
+      case 'medium': return 'event-medium';
+      case 'high': return 'event-high';
+      case 'very-high': return 'event-very-high';
       case 'full': return 'event-full';
       default: return '';
     }

@@ -20,7 +20,7 @@ public class EvenimentService {
     ParticipantRepository participantRepository;
     
     private static final int MAX_EVENTS_PER_DAY = 3;
-    private static final int MAX_PARTICIPANTS_PER_EVENT = 100;
+    private static final int MAX_PARTICIPANTS_PER_EVENT = 70;
 
     public List<Eveniment> getAllEvents(){
         return evenimentRepository.findAll();
@@ -99,14 +99,26 @@ public class EvenimentService {
                 double percentage = (double) participantCount / MAX_PARTICIPANTS_PER_EVENT * 100;
                 
                 String eventStatus;
-                if (percentage >= 71) {
-                    eventStatus = "full";
+                if (percentage >= 85) {
+                    eventStatus = "full";        // 85-100% - Roșu închis
                     fullEvents++;
-                } else if (percentage >= 31) {
-                    eventStatus = "partial";
+                } else if (percentage >= 70) {
+                    eventStatus = "very-high";   // 70-84% - Portocaliu închis  
                     partialEvents++;
+                } else if (percentage >= 55) {
+                    eventStatus = "high";        // 55-69% - Portocaliu
+                    partialEvents++;
+                } else if (percentage >= 40) {
+                    eventStatus = "medium";      // 40-54% - Galben-portocaliu
+                    partialEvents++;
+                } else if (percentage >= 25) {
+                    eventStatus = "low";         // 25-39% - Galben
+                    partialEvents++;
+                } else if (percentage >= 10) {
+                    eventStatus = "very-low";    // 10-24% - Verde-galben
+                    availableEvents++;
                 } else {
-                    eventStatus = "available";
+                    eventStatus = "available";   // 0-9% - Verde
                     availableEvents++;
                 }
                 
@@ -122,14 +134,28 @@ public class EvenimentService {
                 eventDetails.add(eventInfo);
             }
             
-            // Determinăm statusul general al zilei
+            // Determinăm statusul general al zilei pe baza procentajului mediu de ocupare
             String dayStatus;
-            if (fullEvents == totalEvents) {
-                dayStatus = "full"; // Toate evenimentele sunt pline
-            } else if (fullEvents > 0 || partialEvents >= Math.ceil(totalEvents / 2.0)) {
-                dayStatus = "partial"; // Unele evenimente pline sau majoritatea parțiale
+            double totalCapacity = totalEvents * MAX_PARTICIPANTS_PER_EVENT;
+            double totalParticipants = eventDetails.stream()
+                .mapToLong(e -> (Long) e.get("participants"))
+                .sum();
+            double averageOccupancy = totalCapacity > 0 ? (totalParticipants / totalCapacity * 100) : 0;
+            
+            if (averageOccupancy >= 85) {
+                dayStatus = "full";
+            } else if (averageOccupancy >= 70) {
+                dayStatus = "very-high";
+            } else if (averageOccupancy >= 55) {
+                dayStatus = "high";
+            } else if (averageOccupancy >= 40) {
+                dayStatus = "medium";
+            } else if (averageOccupancy >= 25) {
+                dayStatus = "low";
+            } else if (averageOccupancy >= 10) {
+                dayStatus = "very-low";
             } else {
-                dayStatus = "available"; // Majoritatea evenimentelor au locuri disponibile
+                dayStatus = "available";
             }
             
             // Verificăm dacă data este în trecut

@@ -81,7 +81,7 @@
           [isVisible]="true"
           [isEmbedded]="true"
           [isParticipantMode]="true"
-          [maxCapacityPerEvent]="100"
+          [maxCapacityPerEvent]="70"
           (eventSelected)="onSmartCalendarEventSelected($event)">
         </app-smart-event-calendar>
       </div>
@@ -138,7 +138,7 @@
         <div class="event-icon">📊</div>
         <h3>Statistici luna aceasta</h3>
         
-        <div class="stats-grid">
+        <div class="stats-grid" *ngIf="statsLoaded; else loadingStats">
           <div class="stat-item">
             <div class="stat-number">{{ eventStats.totalEventsThisMonth }}</div>
             <div class="stat-label">Evenimente totale</div>
@@ -154,6 +154,13 @@
             <div class="stat-label">Evenimente complete</div>
           </div>
         </div>
+        
+        <ng-template #loadingStats>
+          <div class="loading-stats">
+            <div class="loading-spinner">📊</div>
+            <div class="loading-text">Se încarcă statisticile...</div>
+          </div>
+        </ng-template>
         
         <div class="cta-text">Explorează calendarul complet</div>
       </div>

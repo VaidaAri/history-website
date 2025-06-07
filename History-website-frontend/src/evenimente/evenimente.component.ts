@@ -41,6 +41,9 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
     fullEvents: 0
   };
   
+  // Flag pentru a urmări dacă statisticile s-au încărcat
+  statsLoaded = false;
+  
   registrationForm = {
     nume: '',
     prenume: '',
@@ -317,13 +320,17 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
 
   // Metodă pentru încărcarea statisticilor evenimente
   loadEventStats() {
+    console.log('Loading event stats...');
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
     const currentMonth = currentDate.getMonth() + 1;
     
+    console.log(`Loading density for ${currentYear}/${currentMonth}`);
+    
     // Încărcăm densitatea pentru luna curentă pentru a obține statistici
     this.http.get<any>(`http://localhost:8080/api/events/calendar-density/${currentYear}/${currentMonth}`).subscribe({
       next: (densityData) => {
+        console.log('Received density data:', densityData);
         this.calculateStatsFromDensity(densityData);
       },
       error: (error) => {
@@ -334,6 +341,7 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
     // Încărcăm toate evenimentele pentru a găsi următorul și cel mai popular
     this.http.get<any[]>('http://localhost:8080/api/events').subscribe({
       next: (allEvents) => {
+        console.log('Received all events:', allEvents);
         this.findNextAndPopularEvents(allEvents);
       },
       error: (error) => {
@@ -349,16 +357,27 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
     let fullEvents = 0;
     
     Object.values(densityData).forEach((dayData: any) => {
-      if (dayData.events) {
-        totalEvents += dayData.totalEvents || 0;
-        totalAvailable += dayData.totalAvailableSpots || 0;
-        fullEvents += dayData.fullEvents || 0;
+      if (dayData.events && Array.isArray(dayData.events)) {
+        totalEvents += dayData.events.length;
+        
+        // Calculăm locurile disponibile și evenimentele complete
+        dayData.events.forEach((event: any) => {
+          totalAvailable += event.availableSpots || 0;
+          
+          // Considerăm evenimentele "very-high" și "full" ca fiind aproape/complet ocupate
+          if (event.status === 'full' || event.status === 'very-high') {
+            fullEvents++;
+          }
+        });
       }
     });
     
     this.eventStats.totalEventsThisMonth = totalEvents;
     this.eventStats.totalAvailableSpots = totalAvailable;
     this.eventStats.fullEvents = fullEvents;
+    this.statsLoaded = true;
+    
+    console.log('Updated stats:', this.eventStats);
   }
 
   // Găsește următorul eveniment și cel mai popular
