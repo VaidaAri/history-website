@@ -142,9 +142,17 @@ export class SmartEventCalendarComponent implements OnInit {
       return;
     }
 
-    // Zi cu evenimente - afișăm popup cu detalii
-    this.selectedDayData = dayData;
-    this.showDayDetails = true;
+    // În modul embedded pentru participanți, dacă ziua are un singur eveniment, îl deschidem direct
+    if (this.isEmbedded && this.isParticipantMode && dayData.events.length === 1) {
+      this.onEventClick(dayData.events[0]);
+      return;
+    }
+
+    // Zi cu evenimente - afișăm popup cu detalii doar în modul non-embedded
+    if (!this.isEmbedded) {
+      this.selectedDayData = dayData;
+      this.showDayDetails = true;
+    }
   }
 
   onEventClick(event: any) {

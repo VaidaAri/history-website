@@ -28,6 +28,9 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
   
   selectedEvent: any = null;
   showRegistrationModal: boolean = false;
+  showEventDetailsModal: boolean = false;
+  showImageModal: boolean = false;
+  selectedImage: any = null;
   
   registrationForm = {
     nume: '',
@@ -95,10 +98,10 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Handler pentru click pe eveniment (pentru înregistrare)
+  // Handler pentru click pe eveniment (pentru afișarea detaliilor)
   handleEventClicked(e: any) {
     if (!this.isAdmin && e.detail) {
-      this.showEventRegistration(e.detail);
+      this.showEventDetails(e.detail);
     }
   }
   
@@ -161,17 +164,46 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
     this.router.navigate(['/administrator-login']);
   }
 
-  // Metoda pentru afișarea modalului de înregistrare la eveniment
-  showEventRegistration(event: any) {
+  // Metoda pentru afișarea detaliilor evenimentului
+  showEventDetails(event: any) {
     this.selectedEvent = event;
+    this.showEventDetailsModal = true;
+  }
+
+  // Metoda pentru afișarea modalului de înregistrare la eveniment
+  showEventRegistration(event: any = null) {
+    if (event) {
+      this.selectedEvent = event;
+    }
+    this.showEventDetailsModal = false;
     this.showRegistrationModal = true;
     this.registrationForm = { nume: '', prenume: '', email: '' };
   }
 
-  // Metoda pentru închiderea modalului
+  // Metoda pentru închiderea modalului de detalii
+  closeEventDetailsModal() {
+    this.showEventDetailsModal = false;
+    this.selectedEvent = null;
+  }
+
+  // Metoda pentru deschiderea modalului cu imaginea
+  openImageModal(image: any) {
+    this.selectedImage = image;
+    this.showImageModal = true;
+  }
+
+  // Metoda pentru închiderea modalului cu imaginea
+  closeImageModal() {
+    this.showImageModal = false;
+    this.selectedImage = null;
+  }
+
+  // Metoda pentru închiderea modalului de înregistrare
   closeRegistrationModal() {
     this.showRegistrationModal = false;
-    this.selectedEvent = null;
+    if (!this.showEventDetailsModal) {
+      this.selectedEvent = null;
+    }
   }
 
   // Metoda pentru înscrierea la eveniment
@@ -244,11 +276,16 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
   // Metode pentru calendarul inteligent
   onSmartCalendarEventSelected(event: any) {
     console.log('Event selected from smart calendar:', event);
-    // Pentru participanți - deschide modalul de înregistrare
+    // Pentru participanți - deschide modalul cu detaliile evenimentului
     if (!this.isAdmin) {
-      this.showEventRegistration({
+      this.showEventDetails({
         id: event.id,
         name: event.name,
+        startDate: event.startDate,
+        endDate: event.endDate,
+        location: event.location,
+        description: event.description,
+        images: event.images,
         participants: event.participants,
         capacity: event.capacity,
         availableSpots: event.availableSpots

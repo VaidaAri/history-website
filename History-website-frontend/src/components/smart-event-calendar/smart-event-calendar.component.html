@@ -125,8 +125,8 @@
     </div>
   </div>
 
-  <!-- Day Details Popup -->
-  <div class="day-details-popup" *ngIf="showDayDetails && selectedDayData" (click)="closeDayDetails()">
+  <!-- Day Details Popup - doar în modul non-embedded -->
+  <div class="day-details-popup" *ngIf="!isEmbedded && showDayDetails && selectedDayData" (click)="closeDayDetails()">
     <div class="popup-content" (click)="$event.stopPropagation()">
       <div class="popup-header">
         <h4>{{ selectedDayData.day }} {{ getMonthName() }} {{ currentYear }}</h4>

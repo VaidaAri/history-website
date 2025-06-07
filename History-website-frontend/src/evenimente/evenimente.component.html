@@ -110,6 +110,96 @@
   
 </app-cadran>
 
+<!-- Modal pentru detaliile evenimentului -->
+<div *ngIf="showEventDetailsModal" class="modal-overlay" (click)="closeEventDetailsModal()">
+  <div class="modal-content event-details-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Detalii eveniment</h3>
+      <button class="close-btn" (click)="closeEventDetailsModal()">&times;</button>
+    </div>
+    
+    <div *ngIf="selectedEvent" class="event-full-details">
+      <div class="event-main-info">
+        <h2 class="event-title">{{ selectedEvent.name }}</h2>
+        
+        <div class="event-meta">
+          <div class="meta-item">
+            <i class="icon">📅</i>
+            <span class="label">Data începerii:</span>
+            <span class="value">{{ selectedEvent.startDate | date:'dd.MM.yyyy HH:mm' }}</span>
+          </div>
+          
+          <div class="meta-item" *ngIf="selectedEvent.endDate">
+            <i class="icon">🏁</i>
+            <span class="label">Data încheierii:</span>
+            <span class="value">{{ selectedEvent.endDate | date:'dd.MM.yyyy HH:mm' }}</span>
+          </div>
+          
+          <div class="meta-item" *ngIf="selectedEvent.location">
+            <i class="icon">📍</i>
+            <span class="label">Locația:</span>
+            <span class="value">{{ selectedEvent.location }}</span>
+          </div>
+          
+          <div class="meta-item" *ngIf="selectedEvent.capacity">
+            <i class="icon">👥</i>
+            <span class="label">Capacitate:</span>
+            <span class="value">{{ selectedEvent.participants || 0 }}/{{ selectedEvent.capacity }} participanți</span>
+          </div>
+          
+          <div class="meta-item" *ngIf="selectedEvent.availableSpots !== undefined">
+            <i class="icon">✅</i>
+            <span class="label">Locuri disponibile:</span>
+            <span class="value">{{ selectedEvent.availableSpots }}</span>
+          </div>
+        </div>
+        
+        <div class="event-description" *ngIf="selectedEvent.description">
+          <h4>Descriere</h4>
+          <p>{{ selectedEvent.description }}</p>
+        </div>
+      </div>
+      
+      <!-- Galerie foto -->
+      <div class="event-gallery" *ngIf="selectedEvent.images && selectedEvent.images.length > 0">
+        <h4>Galerie foto</h4>
+        <div class="image-gallery">
+          <div *ngFor="let image of selectedEvent.images" class="gallery-item">
+            <img [src]="'http://localhost:8080' + image.url" 
+                 [alt]="image.filename"
+                 class="gallery-image"
+                 (click)="openImageModal(image)"
+                 loading="lazy">
+          </div>
+        </div>
+      </div>
+      
+      <!-- Buton de înscriere -->
+      <div class="event-actions">
+        <div class="availability-status" 
+             [ngClass]="selectedEvent.availableSpots === 0 ? 'full' : (selectedEvent.availableSpots <= 5 ? 'limited' : 'available')">
+          <span *ngIf="selectedEvent.availableSpots === 0" class="status-message">
+            🚫 Eveniment complet
+          </span>
+          <span *ngIf="selectedEvent.availableSpots > 0 && selectedEvent.availableSpots <= 5" class="status-message">
+            ⚠️ Doar {{ selectedEvent.availableSpots }} locuri rămase!
+          </span>
+          <span *ngIf="selectedEvent.availableSpots > 5" class="status-message">
+            ✅ {{ selectedEvent.availableSpots }} locuri disponibile
+          </span>
+        </div>
+        
+        <button class="register-btn" 
+                [disabled]="selectedEvent.availableSpots === 0"
+                (click)="showEventRegistration()">
+          <i class="btn-icon">✉️</i>
+          {{ selectedEvent.availableSpots === 0 ? 'Complet' : 'Înscrie-te la eveniment' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Modal pentru înregistrarea la evenimente -->
 <div *ngIf="showRegistrationModal" class="modal-overlay" (click)="closeRegistrationModal()">
   <div class="modal-content" (click)="$event.stopPropagation()">
@@ -174,6 +264,19 @@
   </div>
 </div>
 
+
+<!-- Modal pentru imaginea mărită -->
+<div *ngIf="showImageModal" class="image-modal-overlay" (click)="closeImageModal()">
+  <div class="image-modal-content" (click)="$event.stopPropagation()">
+    <button class="image-close-btn" (click)="closeImageModal()">&times;</button>
+    <img [src]="'http://localhost:8080' + selectedImage?.url" 
+         [alt]="selectedImage?.filename"
+         class="modal-image">
+    <div class="image-caption" *ngIf="selectedImage?.filename">
+      {{ selectedImage.filename }}
+    </div>
+  </div>
+</div>
 
 <!-- Sistem de notificări -->
 <div *ngIf="notification.show" class="notification-overlay">
