@@ -165,8 +165,8 @@
         <h4>Galerie foto</h4>
         <div class="image-gallery">
           <div *ngFor="let image of selectedEvent.images" class="gallery-item">
-            <img [src]="'http://localhost:8080' + image.url" 
-                 [alt]="image.filename"
+            <img [src]="'http://localhost:8080/api/images/uploads/' + image.path" 
+                 [alt]="image.description || 'Imagine din eveniment'"
                  class="gallery-image"
                  (click)="openImageModal(image)"
                  loading="lazy">
@@ -269,12 +269,9 @@
 <div *ngIf="showImageModal" class="image-modal-overlay" (click)="closeImageModal()">
   <div class="image-modal-content" (click)="$event.stopPropagation()">
     <button class="image-close-btn" (click)="closeImageModal()">&times;</button>
-    <img [src]="'http://localhost:8080' + selectedImage?.url" 
-         [alt]="selectedImage?.filename"
+    <img [src]="'http://localhost:8080/api/images/uploads/' + selectedImage?.path" 
+         [alt]="selectedImage?.description || 'Imagine din eveniment'"
          class="modal-image">
-    <div class="image-caption" *ngIf="selectedImage?.filename">
-      {{ selectedImage.filename }}
-    </div>
   </div>
 </div>
 

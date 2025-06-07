@@ -101,7 +101,7 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
   // Handler pentru click pe eveniment (pentru afișarea detaliilor)
   handleEventClicked(e: any) {
     if (!this.isAdmin && e.detail) {
-      this.showEventDetails(e.detail);
+      this.loadFullEventDetails(e.detail);
     }
   }
   
@@ -276,20 +276,30 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
   // Metode pentru calendarul inteligent
   onSmartCalendarEventSelected(event: any) {
     console.log('Event selected from smart calendar:', event);
-    // Pentru participanți - deschide modalul cu detaliile evenimentului
+    // Pentru participanți - preia detaliile complete ale evenimentului
     if (!this.isAdmin) {
-      this.showEventDetails({
-        id: event.id,
-        name: event.name,
-        startDate: event.startDate,
-        endDate: event.endDate,
-        location: event.location,
-        description: event.description,
-        images: event.images,
-        participants: event.participants,
-        capacity: event.capacity,
-        availableSpots: event.availableSpots
-      });
+      this.loadFullEventDetails(event);
     }
+  }
+
+  // Metodă pentru încărcarea detaliilor complete ale evenimentului
+  loadFullEventDetails(calendarEvent: any) {
+    this.http.get(`http://localhost:8080/api/events/${calendarEvent.id}`).subscribe({
+      next: (fullEvent: any) => {
+        console.log('Full event details loaded:', fullEvent);
+        this.showEventDetails({
+          ...fullEvent,
+          participants: calendarEvent.participants,
+          capacity: calendarEvent.capacity,
+          availableSpots: calendarEvent.availableSpots,
+          percentage: calendarEvent.percentage,
+          status: calendarEvent.status
+        });
+      },
+      error: (error) => {
+        console.error('Error loading full event details:', error);
+        this.showNotification('error', 'Eroare', 'Nu s-au putut încărca detaliile evenimentului.');
+      }
+    });
   }
 }
