@@ -616,11 +616,6 @@ export class TranslationService {
       'en': 'The reservation will become active only after confirming the email by clicking on the received link.',
       'de': 'Die Reservierung wird erst aktiv, nachdem Sie die E-Mail durch Klicken auf den erhaltenen Link bestätigt haben.'
     },
-    'rezervariSpamCheck': {
-      'ro': 'Verificați și folderul spam/junk dacă nu găsiți email-ul în inbox.',
-      'en': 'Also check your spam/junk folder if you don\'t find the email in your inbox.',
-      'de': 'Überprüfen Sie auch Ihren Spam-/Junk-Ordner, falls Sie die E-Mail nicht in Ihrem Posteingang finden.'
-    },
     'rezervariChanges': {
       'ro': 'Pentru modificări sau anulări, vă rugăm să contactați muzeul la numărul de telefon afișat pe pagina de contact.',
       'en': 'For changes or cancellations, please contact the museum at the phone number displayed on the contact page.',

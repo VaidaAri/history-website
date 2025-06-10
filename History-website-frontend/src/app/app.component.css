@@ -366,6 +366,33 @@
   border-color: #EAD196;
 }
 
+/* Stiluri pentru informațiile de locație */
+.location-info {
+  margin-bottom: 20px;
+}
+
+.location-info h4 {
+  color: #EAD196;
+  font-size: 1.1em;
+  font-family: 'Merriweather', serif;
+  margin: 0 0 8px 0;
+  font-weight: 600;
+}
+
+.location-info p {
+  color: #F8F4E3;
+  font-size: 0.9em;
+  margin: 0;
+  opacity: 0.9;
+}
+
+.location-info i {
+  color: #EAD196;
+  margin-right: 8px;
+  width: 16px;
+  text-align: center;
+}
+
 /* Element central */
 .footer-center {
   position: absolute;
