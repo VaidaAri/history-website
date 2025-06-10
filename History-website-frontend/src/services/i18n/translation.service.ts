@@ -729,6 +729,145 @@ export class TranslationService {
       'ro': 'Abia în anul 1967, în urma eforturilor susţinute ale scriitorului Anton Coşbuc, s-a reuşit dezvelirea bustului lui Vasile Naşcu, operă în bronz a renumitului sculptor Corneliu Medrea. Respectivul bust se găseşte amplasat în curtea principală a Muzeului Grăniceresc Năsăudean.',
       'en': 'Only in 1967, following the sustained efforts of writer Anton Coșbuc, was the unveiling of Vasile Nașcu\'s bust achieved, a bronze work by the renowned sculptor Corneliu Medrea. The respective bust is located in the main courtyard of the Năsăud Border Guard Museum.',
       'de': 'Erst 1967, nach anhaltenden Bemühungen des Schriftstellers Anton Coșbuc, wurde die Enthüllung der Büste von Vasile Nașcu erreicht, ein Bronzewerk des renommierten Bildhauers Corneliu Medrea. Die jeweilige Büste befindet sich im Haupthof des Năsăuder Grenzwachtmuseums.'
+    },
+    
+    // Footer translations
+    'footerLocation': {
+      'ro': 'Locația',
+      'en': 'Location',
+      'de': 'Standort'
+    },
+    'footerAddress': {
+      'ro': 'Strada Grănicerilor, nr 19',
+      'en': 'Grănicerilor Street, no. 19',
+      'de': 'Grănicerilor Straße, Nr. 19'
+    },
+
+    // Permanent Exhibitions translations
+    'exhibitionsBackHome': {
+      'ro': '← Înapoi la pagina principală',
+      'en': '← Back to main page',
+      'de': '← Zurück zur Hauptseite'
+    },
+    'exhibitionsPermanentTitle': {
+      'ro': 'Expoziții Permanente',
+      'en': 'Permanent Exhibitions',
+      'de': 'Dauerausstellungen'
+    },
+    'exhibitionsIntroText': {
+      'ro': 'Muzeul Grăniceresc Năsăudean găzduiește trei expoziții permanente care pun în valoare istoria, cultura și tradițiile regiunii. Vă invităm să descoperiți bogăția patrimoniului nostru prin intermediul acestor colecții valoroase.',
+      'en': 'The Năsăud Border Guard Museum hosts three permanent exhibitions that highlight the history, culture and traditions of the region. We invite you to discover the richness of our heritage through these valuable collections.',
+      'de': 'Das Năsăuder Grenzwacht-Museum beherbergt drei Dauerausstellungen, die die Geschichte, Kultur und Traditionen der Region hervorheben. Wir laden Sie ein, den Reichtum unseres Erbes durch diese wertvollen Sammlungen zu entdecken.'
+    },
+    'exhibitionsHistoryBtn': {
+      'ro': 'Expoziția de Istorie',
+      'en': 'History Exhibition',
+      'de': 'Geschichtsausstellung'
+    },
+    'exhibitionsEthnographyBtn': {
+      'ro': 'Expoziția de Etnografie',
+      'en': 'Ethnography Exhibition',
+      'de': 'Ethnographische Ausstellung'
+    },
+    'exhibitionsOutdoorBtn': {
+      'ro': 'Secția în Aer Liber',
+      'en': 'Outdoor Section',
+      'de': 'Freiluftbereich'
+    },
+    'exhibitionsHistoryTitle': {
+      'ro': 'Expoziția Permanentă de Istorie',
+      'en': 'Permanent History Exhibition',
+      'de': 'Permanente Geschichtsausstellung'
+    },
+    'exhibitionsHistoryInaugurated': {
+      'ro': 'Inaugurată în decembrie 2011',
+      'en': 'Inaugurated in December 2011',
+      'de': 'Eingeweiht im Dezember 2011'
+    },
+    'exhibitionsHistoryDescription': {
+      'ro': 'Această expoziție permanentă prezintă istoria fascinantă a Regimentului II Românesc de Graniță și impactul său asupra dezvoltării zonei Năsăud. Vizitatorii pot descoperi documentele, armele, uniformele și obiectele personale care ilustrează viața și activitatea grănicerilor năsăudeni. De asemenea, expoziția include o secțiune dedicată personalităților marcante care au contribuit la dezvoltarea culturală și istorică a regiunii.',
+      'en': 'This permanent exhibition presents the fascinating history of the 2nd Romanian Border Regiment and its impact on the development of the Năsăud area. Visitors can discover the documents, weapons, uniforms and personal objects that illustrate the life and activity of the Năsăud border guards. The exhibition also includes a section dedicated to prominent personalities who contributed to the cultural and historical development of the region.',
+      'de': 'Diese Dauerausstellung präsentiert die faszinierende Geschichte des 2. Rumänischen Grenzregiments und seinen Einfluss auf die Entwicklung des Gebiets Năsăud. Besucher können die Dokumente, Waffen, Uniformen und persönlichen Gegenstände entdecken, die das Leben und die Tätigkeit der Năsăuder Grenzwachen veranschaulichen. Die Ausstellung umfasst auch einen Bereich, der prominenten Persönlichkeiten gewidmet ist, die zur kulturellen und historischen Entwicklung der Region beigetragen haben.'
+    },
+    'exhibitionsEthnographyTitle': {
+      'ro': 'Expoziția de Etnografie',
+      'en': 'Ethnography Exhibition',
+      'de': 'Ethnographische Ausstellung'
+    },
+    'exhibitionsEthnographyInaugurated': {
+      'ro': 'Inaugurată în mai 2009, de "Zilele Năsăudului"',
+      'en': 'Inaugurated in May 2009, during "Năsăud Days"',
+      'de': 'Eingeweiht im Mai 2009, während der "Năsăud Tage"'
+    },
+    'exhibitionsEthnographyDescription': {
+      'ro': 'Expoziția de etnografie prezintă tradițiile, costumele și obiceiurile specifice zonei Năsăud și Țării Năsăudului. Colecția cuprinde costume populare autentice, obiecte de uz casnic tradițional, instrumente de lucru și piese de artizanat local. Această expoziție oferă o perspectivă completă asupra vieții și culturii tradiționale din regiunea grănicerească năsăudeană.',
+      'en': 'The ethnography exhibition presents the traditions, costumes and customs specific to the Năsăud area and Năsăud Land. The collection includes authentic folk costumes, traditional household objects, working tools and local handicraft pieces. This exhibition offers a complete perspective on traditional life and culture in the Năsăud border region.',
+      'de': 'Die ethnographische Ausstellung präsentiert die Traditionen, Kostüme und Bräuche, die für das Gebiet Năsăud und das Năsăud-Land spezifisch sind. Die Sammlung umfasst authentische Volkstrachten, traditionelle Haushaltsgegenstände, Arbeitsgeräte und lokale Handwerksstücke. Diese Ausstellung bietet eine vollständige Perspektive auf das traditionelle Leben und die Kultur in der Năsăuder Grenzregion.'
+    },
+    'exhibitionsOutdoorTitle': {
+      'ro': 'Secția în Aer Liber',
+      'en': 'Outdoor Section',
+      'de': 'Freiluftbereich'
+    },
+    'exhibitionsOutdoorCompleted': {
+      'ro': 'Finalizată în 2010, inaugurată în decembrie 2010',
+      'en': 'Completed in 2010, inaugurated in December 2010',
+      'de': 'Abgeschlossen 2010, eingeweiht im Dezember 2010'
+    },
+    'exhibitionsOutdoorDescription': {
+      'ro': 'Situată în curtea din spate a muzeului, secția în aer liber cu specific etnografic reprezintă o atracție unică. Centrul de atracție îl constituie o veche casă cu specific țărănesc, strămutată din localitatea Ilva Mare și reconstruită fidel în incinta muzeului. Această casă tradițională oferă vizitatorilor posibilitatea de a experimenta direct arhitectura și stilul de viață din satele năsăudene de odinioară.',
+      'en': 'Located in the back courtyard of the museum, the outdoor section with ethnographic specifics represents a unique attraction. The center of attraction is an old peasant house, relocated from the village of Ilva Mare and faithfully reconstructed within the museum premises. This traditional house offers visitors the opportunity to directly experience the architecture and lifestyle of old Năsăud villages.',
+      'de': 'Der im Hinterhof des Museums gelegene Freiluftbereich mit ethnographischen Besonderheiten stellt eine einzigartige Attraktion dar. Das Zentrum der Aufmerksamkeit ist ein altes Bauernhaus, das aus dem Dorf Ilva Mare verlegt und originalgetreu innerhalb des Museumsgeländes rekonstruiert wurde. Dieses traditionelle Haus bietet Besuchern die Möglichkeit, die Architektur und den Lebensstil alter Năsăuder Dörfer direkt zu erleben.'
+    },
+    'exhibitionsPrevious': {
+      'ro': '❮ Anterior',
+      'en': '❮ Previous',
+      'de': '❮ Vorherige'
+    },
+    'exhibitionsNext': {
+      'ro': 'Următorul ❯',
+      'en': 'Next ❯',
+      'de': 'Nächste ❯'
+    },
+    'exhibitionsPageInfo': {
+      'ro': 'Pagina {currentPage} din {totalPages} ({totalImages} imagini în total)',
+      'en': 'Page {currentPage} of {totalPages} ({totalImages} images in total)',
+      'de': 'Seite {currentPage} von {totalPages} ({totalImages} Bilder insgesamt)'
+    },
+    'exhibitionsVisitingSchedule': {
+      'ro': 'Program de vizitare',
+      'en': 'Visiting schedule',
+      'de': 'Besuchszeiten'
+    },
+    'exhibitionsVisitingDescription': {
+      'ro': 'Expozițiile permanente pot fi vizitate în timpul programului normal al muzeului:',
+      'en': 'The permanent exhibitions can be visited during the museum\'s normal hours:',
+      'de': 'Die Dauerausstellungen können während der normalen Öffnungszeiten des Museums besucht werden:'
+    },
+    'exhibitionsTuesdayFriday': {
+      'ro': 'Marți - Vineri:',
+      'en': 'Tuesday - Friday:',
+      'de': 'Dienstag - Freitag:'
+    },
+    'exhibitionsSaturdaySunday': {
+      'ro': 'Sâmbătă - Duminică:',
+      'en': 'Saturday - Sunday:',
+      'de': 'Samstag - Sonntag:'
+    },
+    'exhibitionsMonday': {
+      'ro': 'Luni:',
+      'en': 'Monday:',
+      'de': 'Montag:'
+    },
+    'exhibitionsClosed': {
+      'ro': 'Închis',
+      'en': 'Closed',
+      'de': 'Geschlossen'
+    },
+    'exhibitionsGroupBooking': {
+      'ro': 'Pentru grupuri organizate, vă rugăm să faceți o rezervare în prealabil.',
+      'en': 'For organized groups, please make a reservation in advance.',
+      'de': 'Für organisierte Gruppen bitten wir um eine Voranmeldung.'
     }
   };
 

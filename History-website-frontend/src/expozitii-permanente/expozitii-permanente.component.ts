@@ -3,6 +3,8 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MeniuComponent } from '../meniu/meniu.component';
 import { CadranComponent } from '../cadran/cadran.component';
+import { TranslatePipe } from '../services/i18n/translate.pipe';
+import { TranslationService } from '../services/i18n/translation.service';
 
 interface ExhibitionImage {
   url: string;
@@ -14,12 +16,14 @@ interface ExhibitionImage {
 @Component({
   selector: 'app-expozitii-permanente',
   standalone: true,
-  imports: [RouterModule, CommonModule, MeniuComponent, CadranComponent],
+  imports: [RouterModule, CommonModule, MeniuComponent, CadranComponent, TranslatePipe],
   templateUrl: './expozitii-permanente.component.html',
   styleUrl: './expozitii-permanente.component.css'
 })
 export class ExpozitiiPermanenteComponent implements OnInit {
   selectedSection: string = 'istorie';
+
+  constructor(private translationService: TranslationService) {}
 
   // Gallery functionality
   showGallery: boolean = false;
@@ -424,12 +428,20 @@ export class ExpozitiiPermanenteComponent implements OnInit {
     if (!this.currentImage) return '';
     
     const sectionTitles: { [key: string]: string } = {
-      'istorie': 'Expoziția de Istorie',
-      'etnografie': 'Expoziția de Etnografie', 
-      'aerLiber': 'Secția în Aer Liber'
+      'istorie': this.translationService.translate('exhibitionsHistoryBtn'),
+      'etnografie': this.translationService.translate('exhibitionsEthnographyBtn'), 
+      'aerLiber': this.translationService.translate('exhibitionsOutdoorBtn')
     };
     
-    return sectionTitles[this.selectedSection] || 'Expoziție Permanentă';
+    return sectionTitles[this.selectedSection] || this.translationService.translate('exhibitionsPermanentTitle');
+  }
+
+  getPageInfoText(): string {
+    const template = this.translationService.translate('exhibitionsPageInfo');
+    return template
+      .replace('{currentPage}', this.currentPage.toString())
+      .replace('{totalPages}', this.totalPages.toString())
+      .replace('{totalImages}', this.getCurrentSectionImages().length.toString());
   }
 
   // Zoom functionality

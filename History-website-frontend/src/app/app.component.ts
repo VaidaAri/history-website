@@ -9,11 +9,12 @@ import { HttpClient } from '@angular/common/http';
 import { ReservationService } from '../services/reservation.service';
 import { Subscription, interval } from 'rxjs';
 import { NotificationContainerComponent } from '../components/notification-container/notification-container.component';
+import { TranslatePipe } from '../services/i18n/translate.pipe';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterModule, CommonModule, NotificationContainerComponent],
+  imports: [RouterOutlet, RouterModule, CommonModule, NotificationContainerComponent, TranslatePipe],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
