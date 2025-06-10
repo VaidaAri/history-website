@@ -234,71 +234,48 @@
   margin-bottom: 5px;
 }
 
-/* Day Status Colors - Gradient de culori pentru ocuparea evenimentelor */
+/* Seasonal Day Colors - Culori sezoniere pentru zilele calendarului */
 
-/* 0-9% - Verde */
-.available-day {
-  background-color: #d4edda !important;
-  border-left: 4px solid #28a745;
+/* Primăvara (Martie-Mai) - Verde proaspăt light */
+.season-spring {
+  background: linear-gradient(135deg, #f9fdf9 0%, #f1f8e9 100%) !important;
+  border-left: 4px solid #66bb6a;
 }
-.available-day .day-number {
-  color: #155724;
-}
-
-/* 10-24% - Verde deschis */
-.very-low-day {
-  background-color: #e8f5e9 !important;
-  border-left: 4px solid #4caf50;
-}
-.very-low-day .day-number {
+.season-spring .day-number {
   color: #2e7d32;
+  font-weight: 600;
 }
 
-/* 25-39% - Verde-galben */
-.low-day {
-  background-color: #f3e5ab !important;
-  border-left: 4px solid #8bc34a;
+/* Vara (Iunie-August) - Galben foarte light */
+.season-summer {
+  background: linear-gradient(135deg, #fefff8 0%, #fffde7 100%) !important;
+  border-left: 4px solid #ffca28;
 }
-.low-day .day-number {
-  color: #558b2f;
-}
-
-/* 40-54% - Galben */
-.medium-day {
-  background-color: #fff3cd !important;
-  border-left: 4px solid #ffc107;
-}
-.medium-day .day-number {
-  color: #856404;
+.season-summer .day-number {
+  color: #f57f17;
+  font-weight: 600;
 }
 
-/* 55-69% - Galben-portocaliu */
-.high-day {
-  background-color: #ffe0b3 !important;
-  border-left: 4px solid #ff9800;
+/* Toamna (Septembrie-Noiembrie) - Portocaliu light */
+.season-autumn {
+  background: linear-gradient(135deg, #fffaf6 0%, #fff3e0 100%) !important;
+  border-left: 4px solid #ff8a65;
 }
-.high-day .day-number {
-  color: #f57c00;
-}
-
-/* 70-84% - Portocaliu */
-.very-high-day {
-  background-color: #ffcc99 !important;
-  border-left: 4px solid #ff5722;
-}
-.very-high-day .day-number {
+.season-autumn .day-number {
   color: #d84315;
+  font-weight: 600;
 }
 
-/* 85-100% - Roșu */
-.full-day {
-  background-color: #f8d7da !important;
-  border-left: 4px solid #dc3545;
+/* Iarna (Decembrie-Februarie) - Albastru foarte light */
+.season-winter {
+  background: linear-gradient(135deg, #f8fcff 0%, #e3f2fd 100%) !important;
+  border-left: 4px solid #42a5f5;
 }
-.full-day .day-number {
-  color: #721c24;
+.season-winter .day-number {
+  color: #0d47a1;
+  font-weight: 600;
 }
-
+/* Zilele trecute - Gri */
 .past-day {
   background-color: #f8f9fa !important;
   border-left: 4px solid #6c757d;
@@ -307,14 +284,6 @@
 
 .past-day .day-number {
   color: #495057;
-}
-
-.no-events-day {
-  background-color: #ffffff !important;
-}
-
-.no-events-day .day-number {
-  color: #666;
 }
 
 /* Event indicators */

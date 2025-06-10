@@ -88,6 +88,7 @@ export class SmartEventCalendarComponent implements OnInit {
         isEmpty: false,
         isPast: isPast,
         status: isPast ? 'past' : dayData.status,
+        season: this.getSeason(this.currentMonth),
         events: dayData.events || [],
         totalEvents: dayData.totalEvents || 0,
         fullEvents: dayData.fullEvents || 0,
@@ -175,17 +176,15 @@ export class SmartEventCalendarComponent implements OnInit {
     if (dayData.isEmpty) return '';
     if (dayData.isPast) return 'past-day';
     
-    switch (dayData.status) {
-      case 'available': return 'available-day';        // 0-9% - Verde
-      case 'very-low': return 'very-low-day';          // 10-24% - Verde-galben
-      case 'low': return 'low-day';                    // 25-39% - Galben
-      case 'medium': return 'medium-day';              // 40-54% - Galben-portocaliu
-      case 'high': return 'high-day';                  // 55-69% - Portocaliu
-      case 'very-high': return 'very-high-day';        // 70-84% - Portocaliu închis
-      case 'full': return 'full-day';                  // 85-100% - Roșu închis
-      case 'no-events': return 'no-events-day';
-      default: return '';
-    }
+    // Returnăm clasa sezonieră pentru zilele normale
+    return `season-${dayData.season}`;
+  }
+
+  getSeason(month: number): string {
+    if (month >= 3 && month <= 5) return 'spring';    // Primăvara: Martie-Mai
+    if (month >= 6 && month <= 8) return 'summer';    // Vara: Iunie-August  
+    if (month >= 9 && month <= 11) return 'autumn';   // Toamna: Septembrie-Noiembrie
+    return 'winter';                                  // Iarna: Decembrie-Februarie
   }
 
   getEventStatusClass(event: any): string {
