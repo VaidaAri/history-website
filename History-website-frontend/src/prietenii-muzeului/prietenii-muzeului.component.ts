@@ -6,6 +6,8 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MeniuComponent } from '../meniu/meniu.component';
 import { CadranComponent } from '../cadran/cadran.component';
 import { AuthService } from '../services/auth.service';
+import { TranslatePipe } from '../services/i18n/translate.pipe';
+import { TranslationService } from '../services/i18n/translation.service';
 
 interface PrieteniImage {
   id?: number;
@@ -17,7 +19,7 @@ interface PrieteniImage {
 @Component({
   selector: 'app-prietenii-muzeului',
   standalone: true,
-  imports: [RouterModule, CommonModule, MeniuComponent, CadranComponent, FormsModule, HttpClientModule],
+  imports: [RouterModule, CommonModule, MeniuComponent, CadranComponent, FormsModule, HttpClientModule, TranslatePipe],
   templateUrl: './prietenii-muzeului.component.html',
   styleUrl: './prietenii-muzeului.component.css'
 })
@@ -60,7 +62,8 @@ export class PrieteniiMuzeuluiComponent implements OnInit {
   
   constructor(
     private http: HttpClient,
-    private authService: AuthService
+    private authService: AuthService,
+    private translationService: TranslationService
   ) {}
   
   ngOnInit() {
@@ -385,5 +388,30 @@ export class PrieteniiMuzeuluiComponent implements OnInit {
 
   stopDrag() {
     this.isDragging = false;
+  }
+
+  // Translation methods
+  getSelectedFilesText(): string {
+    const template = this.translationService.translate('friendsSelectedFiles');
+    return template.replace('{count}', this.selectedFiles.length.toString());
+  }
+
+  getUploadButtonText(): string {
+    const template = this.translationService.translate('friendsUploadImages');
+    return template.replace('{count}', this.selectedFiles.length.toString());
+  }
+
+  getUploadingText(): string {
+    const template = this.translationService.translate('friendsUploading');
+    return template
+      .replace('{current}', (this.currentUploadIndex + 1).toString())
+      .replace('{total}', this.selectedFiles.length.toString());
+  }
+
+  getPageInfoText(): string {
+    const template = this.translationService.translate('friendsPageInfo');
+    return template
+      .replace('{currentPage}', this.currentPage.toString())
+      .replace('{totalPages}', this.totalPages.toString());
   }
 }

@@ -6,6 +6,8 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MeniuComponent } from '../meniu/meniu.component';
 import { CadranComponent } from '../cadran/cadran.component';
 import { AuthService } from '../services/auth.service';
+import { TranslatePipe } from '../services/i18n/translate.pipe';
+import { TranslationService } from '../services/i18n/translation.service';
 
 interface PeisajImage {
   id?: number;
@@ -17,7 +19,7 @@ interface PeisajImage {
 @Component({
   selector: 'app-peisaje-muzeu',
   standalone: true,
-  imports: [RouterModule, CommonModule, MeniuComponent, CadranComponent, FormsModule, HttpClientModule],
+  imports: [RouterModule, CommonModule, MeniuComponent, CadranComponent, FormsModule, HttpClientModule, TranslatePipe],
   templateUrl: './peisaje-muzeu.component.html',
   styleUrl: './peisaje-muzeu.component.css'
 })
@@ -60,7 +62,8 @@ export class PeisajeMuzeuComponent implements OnInit {
   
   constructor(
     private http: HttpClient,
-    private authService: AuthService
+    private authService: AuthService,
+    private translationService: TranslationService
   ) {}
   
   ngOnInit() {
@@ -394,5 +397,30 @@ export class PeisajeMuzeuComponent implements OnInit {
 
   stopDrag() {
     this.isDragging = false;
+  }
+
+  // Translation methods
+  getSelectedFilesText(): string {
+    const template = this.translationService.translate('landscapesSelectedFiles');
+    return template.replace('{count}', this.selectedFiles.length.toString());
+  }
+
+  getUploadButtonText(): string {
+    const template = this.translationService.translate('landscapesUploadImages');
+    return template.replace('{count}', this.selectedFiles.length.toString());
+  }
+
+  getUploadingText(): string {
+    const template = this.translationService.translate('landscapesUploading');
+    return template
+      .replace('{current}', (this.currentUploadIndex + 1).toString())
+      .replace('{total}', this.selectedFiles.length.toString());
+  }
+
+  getPageInfoText(): string {
+    const template = this.translationService.translate('landscapesPageInfo');
+    return template
+      .replace('{currentPage}', this.currentPage.toString())
+      .replace('{totalPages}', this.totalPages.toString());
   }
 }

@@ -868,6 +868,240 @@ export class TranslationService {
       'ro': 'Pentru grupuri organizate, vă rugăm să faceți o rezervare în prealabil.',
       'en': 'For organized groups, please make a reservation in advance.',
       'de': 'Für organisierte Gruppen bitten wir um eine Voranmeldung.'
+    },
+
+    // Museum Landscapes (Peisaje Muzeu) translations
+    'landscapesBackHome': {
+      'ro': '← Înapoi la pagina principală',
+      'en': '← Back to main page',
+      'de': '← Zurück zur Hauptseite'
+    },
+    'landscapesTitle': {
+      'ro': 'Peisaje din curtea muzeului',
+      'en': 'Museum Courtyard Landscapes',
+      'de': 'Museumshof-Landschaften'
+    },
+    'landscapesIntroText': {
+      'ro': 'Muzeul Grăniceresc Năsăudean este înconjurat de o curte minunată, cu peisaje ce reflectă frumusețea istorică și naturală a zonei. Aceste imagini surprind diversele perspective și elemente care compun spațiul exterior al muzeului.',
+      'en': 'The Năsăud Border Guard Museum is surrounded by a wonderful courtyard, with landscapes that reflect the historical and natural beauty of the area. These images capture the various perspectives and elements that make up the exterior space of the museum.',
+      'de': 'Das Năsăuder Grenzwacht-Museum ist von einem wunderschönen Hof umgeben, mit Landschaften, die die historische und natürliche Schönheit der Gegend widerspiegeln. Diese Bilder erfassen die verschiedenen Perspektiven und Elemente, die den Außenbereich des Museums ausmachen.'
+    },
+    'landscapesAdminSection': {
+      'ro': 'Administrare imagini',
+      'en': 'Image management',
+      'de': 'Bildverwaltung'
+    },
+    'landscapesImageDescription': {
+      'ro': 'Descriere imagine:',
+      'en': 'Image description:',
+      'de': 'Bildbeschreibung:'
+    },
+    'landscapesImageDescriptionPlaceholder': {
+      'ro': 'Adaugă o descriere pentru imagine...',
+      'en': 'Add a description for the image...',
+      'de': 'Fügen Sie eine Beschreibung für das Bild hinzu...'
+    },
+    'landscapesSelectImages': {
+      'ro': 'Selectează imagini',
+      'en': 'Select images',
+      'de': 'Bilder auswählen'
+    },
+    'landscapesSelectedFiles': {
+      'ro': 'Fișiere selectate ({count}):',
+      'en': 'Selected files ({count}):',
+      'de': 'Ausgewählte Dateien ({count}):'
+    },
+    'landscapesRemoveFile': {
+      'ro': 'Elimină fișierul',
+      'en': 'Remove file',
+      'de': 'Datei entfernen'
+    },
+    'landscapesUploadImages': {
+      'ro': 'Încarcă imaginile ({count})',
+      'en': 'Upload images ({count})',
+      'de': 'Bilder hochladen ({count})'
+    },
+    'landscapesUploading': {
+      'ro': 'Se încarcă {current}/{total}...',
+      'en': 'Uploading {current}/{total}...',
+      'de': 'Laden {current}/{total}...'
+    },
+    'landscapesNoImages': {
+      'ro': 'Nu există imagini disponibile momentan.',
+      'en': 'No images available at the moment.',
+      'de': 'Momentan sind keine Bilder verfügbar.'
+    },
+    'landscapesDeleteImage': {
+      'ro': 'Șterge imaginea',
+      'en': 'Delete image',
+      'de': 'Bild löschen'
+    },
+    'landscapesPrevious': {
+      'ro': '❮ Anterior',
+      'en': '❮ Previous',
+      'de': '❮ Vorherige'
+    },
+    'landscapesNext': {
+      'ro': 'Următorul ❯',
+      'en': 'Next ❯',
+      'de': 'Nächste ❯'
+    },
+    'landscapesPageInfo': {
+      'ro': 'Pagina {currentPage} din {totalPages}',
+      'en': 'Page {currentPage} of {totalPages}',
+      'de': 'Seite {currentPage} von {totalPages}'
+    },
+    'landscapesPreviousImage': {
+      'ro': 'Imaginea anterioară (←)',
+      'en': 'Previous image (←)',
+      'de': 'Vorheriges Bild (←)'
+    },
+    'landscapesNextImage': {
+      'ro': 'Imaginea următoare (→)',
+      'en': 'Next image (→)',
+      'de': 'Nächstes Bild (→)'
+    },
+    'landscapesZoomOut': {
+      'ro': 'Micșorează (-)',
+      'en': 'Zoom out (-)',
+      'de': 'Verkleinern (-)'
+    },
+    'landscapesZoomIn': {
+      'ro': 'Mărește (+)',
+      'en': 'Zoom in (+)',
+      'de': 'Vergrößern (+)'
+    },
+    'landscapesResetZoom': {
+      'ro': 'Resetează zoom (0)',
+      'en': 'Reset zoom (0)',
+      'de': 'Zoom zurücksetzen (0)'
+    },
+    'landscapesFullscreen': {
+      'ro': 'Mod ecran complet (F)',
+      'en': 'Fullscreen mode (F)',
+      'de': 'Vollbildmodus (F)'
+    },
+    'landscapesExitFullscreen': {
+      'ro': 'Ieșire din ecran complet (Esc)',
+      'en': 'Exit fullscreen (Esc)',
+      'de': 'Vollbild verlassen (Esc)'
+    },
+
+    // Friends of the Museum (Prietenii Muzeului) translations
+    'friendsBackHome': {
+      'ro': '← Înapoi la pagina principală',
+      'en': '← Back to main page',
+      'de': '← Zurück zur Hauptseite'
+    },
+    'friendsTitle': {
+      'ro': 'Prietenii Muzeului',
+      'en': 'Friends of the Museum',
+      'de': 'Freunde des Museums'
+    },
+    'friendsIntroText': {
+      'ro': 'Muzeul Grăniceresc Năsăudean este un loc plin de viață, unde istoria prinde culoare prin zâmbetele copiilor din școlile care ne vizitează cu entuziasm! Prietenii noștri sunt clasele pline de elevi curioși care descoperă cu ochii mari exponatele, voluntarii care ne ajută la târgurile de Crăciun și evenimentele speciale, familiile care petrec weekenduri frumoase explorând trecutul, și toți cei care își deschid inimile pentru patrimoniul cultural al Năsăudului. Fiecare vizitator, fiecare mână de ajutor, fiecare poveste împărtășită face din muzeul nostru un spațiu al comunității!',
+      'en': 'The Năsăud Border Guard Museum is a lively place, where history comes to life through the smiles of children from schools who visit us with enthusiasm! Our friends are the classes full of curious students who discover the exhibits with wide eyes, the volunteers who help us at Christmas fairs and special events, the families who spend beautiful weekends exploring the past, and all those who open their hearts to the cultural heritage of Năsăud. Every visitor, every helping hand, every shared story makes our museum a community space!',
+      'de': 'Das Năsăuder Grenzwacht-Museum ist ein lebendiger Ort, wo Geschichte durch die Lächeln der Kinder aus Schulen zum Leben erwacht, die uns mit Begeisterung besuchen! Unsere Freunde sind die Klassen voller neugieriger Schüler, die die Exponate mit großen Augen entdecken, die Freiwilligen, die uns bei Weihnachtsmärkten und besonderen Veranstaltungen helfen, die Familien, die schöne Wochenenden mit der Erkundung der Vergangenheit verbringen, und alle, die ihre Herzen für das kulturelle Erbe von Năsăud öffnen. Jeder Besucher, jede helfende Hand, jede geteilte Geschichte macht unser Museum zu einem Gemeinschaftsraum!'
+    },
+    'friendsAdminSection': {
+      'ro': 'Administrare imagini',
+      'en': 'Image management',
+      'de': 'Bildverwaltung'
+    },
+    'friendsImageDescription': {
+      'ro': 'Descriere imagine:',
+      'en': 'Image description:',
+      'de': 'Bildbeschreibung:'
+    },
+    'friendsImageDescriptionPlaceholder': {
+      'ro': 'Adaugă o descriere pentru imagine...',
+      'en': 'Add a description for the image...',
+      'de': 'Fügen Sie eine Beschreibung für das Bild hinzu...'
+    },
+    'friendsSelectImages': {
+      'ro': 'Selectează imagini',
+      'en': 'Select images',
+      'de': 'Bilder auswählen'
+    },
+    'friendsSelectedFiles': {
+      'ro': 'Fișiere selectate ({count}):',
+      'en': 'Selected files ({count}):',
+      'de': 'Ausgewählte Dateien ({count}):'
+    },
+    'friendsRemoveFile': {
+      'ro': 'Elimină fișierul',
+      'en': 'Remove file',
+      'de': 'Datei entfernen'
+    },
+    'friendsUploadImages': {
+      'ro': 'Încarcă imaginile ({count})',
+      'en': 'Upload images ({count})',
+      'de': 'Bilder hochladen ({count})'
+    },
+    'friendsUploading': {
+      'ro': 'Se încarcă {current}/{total}...',
+      'en': 'Uploading {current}/{total}...',
+      'de': 'Laden {current}/{total}...'
+    },
+    'friendsNoImages': {
+      'ro': 'Nu există imagini disponibile momentan.',
+      'en': 'No images available at the moment.',
+      'de': 'Momentan sind keine Bilder verfügbar.'
+    },
+    'friendsDeleteImage': {
+      'ro': 'Șterge imaginea',
+      'en': 'Delete image',
+      'de': 'Bild löschen'
+    },
+    'friendsPrevious': {
+      'ro': '❮ Anterior',
+      'en': '❮ Previous',
+      'de': '❮ Vorherige'
+    },
+    'friendsNext': {
+      'ro': 'Următorul ❯',
+      'en': 'Next ❯',
+      'de': 'Nächste ❯'
+    },
+    'friendsPageInfo': {
+      'ro': 'Pagina {currentPage} din {totalPages}',
+      'en': 'Page {currentPage} of {totalPages}',
+      'de': 'Seite {currentPage} von {totalPages}'
+    },
+    'friendsPreviousImage': {
+      'ro': 'Imaginea anterioară (←)',
+      'en': 'Previous image (←)',
+      'de': 'Vorheriges Bild (←)'
+    },
+    'friendsNextImage': {
+      'ro': 'Imaginea următoare (→)',
+      'en': 'Next image (→)',
+      'de': 'Nächstes Bild (→)'
+    },
+    'friendsZoomOut': {
+      'ro': 'Micșorează (-)',
+      'en': 'Zoom out (-)',
+      'de': 'Verkleinern (-)'
+    },
+    'friendsZoomIn': {
+      'ro': 'Mărește (+)',
+      'en': 'Zoom in (+)',
+      'de': 'Vergrößern (+)'
+    },
+    'friendsResetZoom': {
+      'ro': 'Resetează zoom (0)',
+      'en': 'Reset zoom (0)',
+      'de': 'Zoom zurücksetzen (0)'
+    },
+    'friendsFullscreen': {
+      'ro': 'Mod ecran complet (F)',
+      'en': 'Fullscreen mode (F)',
+      'de': 'Vollbildmodus (F)'
+    },
+    'friendsExitFullscreen': {
+      'ro': 'Ieșire din ecran complet (Esc)',
+      'en': 'Exit fullscreen (Esc)',
+      'de': 'Vollbild verlassen (Esc)'
     }
   };
 

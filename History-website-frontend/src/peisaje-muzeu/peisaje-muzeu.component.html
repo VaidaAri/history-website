@@ -9,20 +9,18 @@
   <app-cadran>
     <div class="container">
       <div class="header-nav">
-        <button class="back-button" routerLink="/">← Înapoi la pagina principală</button>
-        <h1 class="title">Peisaje din curtea muzeului</h1>
+        <button class="back-button" routerLink="/">{{ 'landscapesBackHome' | translate }}</button>
+        <h1 class="title">{{ 'landscapesTitle' | translate }}</h1>
       </div>
       
       <p class="intro-text">
-        Muzeul Grăniceresc Năsăudean este înconjurat de o curte minunată, cu peisaje ce reflectă frumusețea 
-        istorică și naturală a zonei. Aceste imagini surprind diversele perspective și elemente care compun 
-        spațiul exterior al muzeului.
+        {{ 'landscapesIntroText' | translate }}
       </p>
 
       <!-- Secțiunea de administrare (vizibilă doar pentru administratori) -->
       <div *ngIf="isAdmin" class="admin-section">
         <div class="admin-header">
-          <h3>Administrare imagini</h3>
+          <h3>{{ 'landscapesAdminSection' | translate }}</h3>
         </div>
         
         <div class="upload-form">
@@ -31,12 +29,12 @@
           </div>
           
           <div class="form-group">
-            <label for="image-description">Descriere imagine:</label>
+            <label for="image-description">{{ 'landscapesImageDescription' | translate }}</label>
             <input 
               type="text" 
               id="image-description" 
               [(ngModel)]="imageDescription" 
-              placeholder="Adaugă o descriere pentru imagine..."
+              [placeholder]="'landscapesImageDescriptionPlaceholder' | translate"
               class="description-input"
             >
           </div>
@@ -44,7 +42,7 @@
           <div class="form-group">
             <label for="image-upload" class="file-upload-label">
               <span class="upload-icon">📷</span>
-              <span>Selectează imagini</span>
+              <span>{{ 'landscapesSelectImages' | translate }}</span>
             </label>
             <input 
               type="file" 
@@ -56,12 +54,12 @@
             >
             <div *ngIf="selectedFiles.length > 0" class="selected-files-info">
               <div class="selected-files-header">
-                Fișiere selectate ({{ selectedFiles.length }}):
+                {{ getSelectedFilesText() }}
               </div>
               <div class="selected-files-list">
                 <div *ngFor="let file of selectedFiles; let i = index" class="selected-file-item">
                   <span class="file-name">{{ file.name }}</span>
-                  <button type="button" class="remove-file-btn" (click)="removeFile(i)" title="Elimină fișierul">
+                  <button type="button" class="remove-file-btn" (click)="removeFile(i)" [title]="'landscapesRemoveFile' | translate">
                     ×
                   </button>
                 </div>
@@ -74,15 +72,15 @@
             [disabled]="isUploading || selectedFiles.length === 0" 
             class="upload-btn"
           >
-            <span *ngIf="!isUploading">Încarcă imaginile ({{ selectedFiles.length }})</span>
-            <span *ngIf="isUploading">Se încarcă {{ currentUploadIndex + 1 }}/{{ selectedFiles.length }}...</span>
+            <span *ngIf="!isUploading">{{ getUploadButtonText() }}</span>
+            <span *ngIf="isUploading">{{ getUploadingText() }}</span>
           </button>
         </div>
       </div>
 
       <!-- Mesaj când nu există imagini -->
       <div *ngIf="peisajeImages.length === 0" class="no-images">
-        <p>Nu există imagini disponibile momentan.</p>
+        <p>{{ 'landscapesNoImages' | translate }}</p>
       </div>
 
       <!-- Grid de imagini similar cu expozitii-permanente -->
@@ -97,7 +95,7 @@
                 <button 
                   (click)="deleteImage(image.id); $event.stopPropagation()" 
                   class="admin-delete-btn" 
-                  title="Șterge imaginea"
+                  [title]="'landscapesDeleteImage' | translate"
                 >
                   <span class="delete-icon">🗑️</span>
                 </button>
@@ -112,7 +110,7 @@
         <!-- Controale de paginare -->
         <div class="pagination-controls" *ngIf="totalPages > 1">
           <button class="pagination-btn" (click)="prevPage()" [disabled]="currentPage === 1">
-            ❮ Anterior
+            {{ 'landscapesPrevious' | translate }}
           </button>
           
           <div class="page-numbers">
@@ -126,12 +124,12 @@
           </div>
           
           <button class="pagination-btn" (click)="nextPage()" [disabled]="currentPage === totalPages">
-            Următorul ❯
+            {{ 'landscapesNext' | translate }}
           </button>
         </div>
         
         <div class="pagination-info" *ngIf="totalPages > 1">
-          <p>Pagina {{ currentPage }} din {{ totalPages }}</p>
+          <p>{{ getPageInfoText() }}</p>
         </div>
       </div>
       
@@ -145,7 +143,7 @@
         <button class="gallery-close" (click)="closeGallery()">×</button>
         
         <div class="gallery-title">
-          <h3>Peisaje din curtea muzeului</h3>
+          <h3>{{ 'landscapesTitle' | translate }}</h3>
         </div>
         
         <div class="gallery-image-container" 
@@ -163,7 +161,7 @@
         
         <div class="gallery-controls">
           <div class="controls-left">
-            <button class="gallery-nav prev" (click)="prevModalImage()" title="Imaginea anterioară (←)">❮</button>
+            <button class="gallery-nav prev" (click)="prevModalImage()" [title]="'landscapesPreviousImage' | translate">❮</button>
           </div>
           
           <div class="controls-center">
@@ -171,17 +169,17 @@
             
             <div class="action-controls">
               <div class="zoom-controls">
-                <button class="control-button" (click)="zoomOut()" title="Micșorează (-)">−</button>
+                <button class="control-button" (click)="zoomOut()" [title]="'landscapesZoomOut' | translate">−</button>
                 <span class="zoom-level">{{ (zoomLevel * 100).toFixed(0) }}%</span>
-                <button class="control-button" (click)="zoomIn()" title="Mărește (+)">+</button>
-                <button class="control-button" (click)="resetZoom()" title="Resetează zoom (0)">↺</button>
+                <button class="control-button" (click)="zoomIn()" [title]="'landscapesZoomIn' | translate">+</button>
+                <button class="control-button" (click)="resetZoom()" [title]="'landscapesResetZoom' | translate">↺</button>
               </div>
               
               <div class="transform-controls">
                 <button class="control-button" (click)="resetImageTransforms()" title="Resetează transformările">
                   🔄
                 </button>
-                <button class="control-button fullscreen-btn" (click)="toggleFullscreen()" [title]="isFullscreen ? 'Ieși din fullscreen (F)' : 'Fullscreen (F)'">
+                <button class="control-button fullscreen-btn" (click)="toggleFullscreen()" [title]="isFullscreen ? ('landscapesExitFullscreen' | translate) : ('landscapesFullscreen' | translate)">
                   <span *ngIf="!isFullscreen">⛶</span>
                   <span *ngIf="isFullscreen">⧉</span>
                 </button>
@@ -196,7 +194,7 @@
           </div>
           
           <div class="controls-right">
-            <button class="gallery-nav next" (click)="nextModalImage()" title="Imaginea următoare (→)">❯</button>
+            <button class="gallery-nav next" (click)="nextModalImage()" [title]="'landscapesNextImage' | translate">❯</button>
           </div>
         </div>
       </div>
