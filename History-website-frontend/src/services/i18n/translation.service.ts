@@ -527,14 +527,14 @@ export class TranslationService {
       'de': 'Reservierungsliste'
     },
     'rezervariTableLastName': {
-      'ro': 'Nume<br>reprezentant',
-      'en': 'Last Name<br>Representative',
-      'de': 'Nachname<br>Vertreter'
+      'ro': 'Nume',
+      'en': 'Last Name',
+      'de': 'Nachname'
     },
     'rezervariTableFirstName': {
-      'ro': 'Prenume<br>reprezentant',
-      'en': 'First Name<br>Representative',
-      'de': 'Vorname<br>Vertreter'
+      'ro': 'Prenume',
+      'en': 'First Name',
+      'de': 'Vorname'
     },
     'rezervariTableEmail': {
       'ro': 'Email',
@@ -542,14 +542,14 @@ export class TranslationService {
       'de': 'E-Mail'
     },
     'rezervariTableDateTime': {
-      'ro': 'Data și Ora<br>Vizitei',
-      'en': 'Date and Time<br>of Visit',
-      'de': 'Datum und Uhrzeit<br>des Besuchs'
+      'ro': 'Data și Ora Vizitei',
+      'en': 'Date and Time of Visit',
+      'de': 'Datum und Uhrzeit des Besuchs'
     },
     'rezervariTableCreatedAt': {
-      'ro': 'Data<br>Creării',
-      'en': 'Creation<br>Date',
-      'de': 'Erstellungs-<br>datum'
+      'ro': 'Data Creării',
+      'en': 'Creation Date',
+      'de': 'Erstellungsdatum'
     },
     'rezervariTablePersons': {
       'ro': 'Persoane',

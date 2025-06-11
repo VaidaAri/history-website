@@ -442,15 +442,16 @@ td:nth-child(5) {
 }
 
 /* Ajustăm lățimile coloanelor pentru un layout mai bun */
-th:nth-child(1), td:nth-child(1) { width: 11%; } /* Nume */
-th:nth-child(2), td:nth-child(2) { width: 11%; } /* Prenume */
-th:nth-child(3), td:nth-child(3) { width: 15%; } /* Email */
-th:nth-child(4), td:nth-child(4) { width: 12%; } /* Data vizitei */
-th:nth-child(5), td:nth-child(5) { width: 10%; } /* Data creării - redusă */
-th:nth-child(6), td:nth-child(6) { width: 8%; text-align: center; } /* Persoane - mărită și apropiată */
-th:nth-child(7), td:nth-child(7) { width: 8%; text-align: center; } /* Ghid */
-th:nth-child(8), td:nth-child(8) { width: 10%; } /* Status */
-th:nth-child(9), td:nth-child(9) { width: 15%; } /* Acțiuni */
+th:nth-child(1), td:nth-child(1) { width: 10%; } /* Nume */
+th:nth-child(2), td:nth-child(2) { width: 10%; } /* Prenume */
+th:nth-child(3), td:nth-child(3) { width: 14%; } /* Email */
+th:nth-child(4), td:nth-child(4) { width: 11%; } /* Data vizitei */
+th:nth-child(5), td:nth-child(5) { width: 9%; } /* Data creării */
+th:nth-child(6), td:nth-child(6) { width: 7%; text-align: center; } /* Persoane */
+th:nth-child(7), td:nth-child(7) { width: 12%; text-align: center; } /* Categoria de vârstă */
+th:nth-child(8), td:nth-child(8) { width: 7%; text-align: center; } /* Ghid */
+th:nth-child(9), td:nth-child(9) { width: 9%; } /* Status */
+th:nth-child(10), td:nth-child(10) { width: 11%; } /* Acțiuni */
 
 /* Stiluri pentru status */
 .status-badge {
@@ -758,15 +759,16 @@ input[type="date"]:focus, select:focus {
     }
 
     /* Ajustăm lățimile coloanelor pentru un layout mai bun pe mobile */
-    th:nth-child(1), td:nth-child(1) { width: 9%; }  /* Nume */
-    th:nth-child(2), td:nth-child(2) { width: 9%; }  /* Prenume */
-    th:nth-child(3), td:nth-child(3) { width: 16%; } /* Email */
-    th:nth-child(4), td:nth-child(4) { width: 13%; } /* Data vizitei */
-    th:nth-child(5), td:nth-child(5) { width: 13%; } /* Data creării */
+    th:nth-child(1), td:nth-child(1) { width: 8%; }  /* Nume */
+    th:nth-child(2), td:nth-child(2) { width: 8%; }  /* Prenume */
+    th:nth-child(3), td:nth-child(3) { width: 14%; } /* Email */
+    th:nth-child(4), td:nth-child(4) { width: 11%; } /* Data vizitei */
+    th:nth-child(5), td:nth-child(5) { width: 11%; } /* Data creării */
     th:nth-child(6), td:nth-child(6) { width: 6%; }  /* Persoane */
-    th:nth-child(7), td:nth-child(7) { width: 6%; }  /* Ghid */
-    th:nth-child(8), td:nth-child(8) { width: 12%; } /* Status */
-    th:nth-child(9), td:nth-child(9) { width: 16%; } /* Acțiuni */
+    th:nth-child(7), td:nth-child(7) { width: 11%; } /* Categoria de vârstă */
+    th:nth-child(8), td:nth-child(8) { width: 6%; }  /* Ghid */
+    th:nth-child(9), td:nth-child(9) { width: 10%; } /* Status */
+    th:nth-child(10), td:nth-child(10) { width: 15%; } /* Acțiuni */
 
     /* Optimizări pentru afișarea pe ecran mic */
     .status-badge {
@@ -831,9 +833,10 @@ input[type="date"]:focus, select:focus {
     td:nth-of-type(4):before { content: "Data vizitei:"; }
     td:nth-of-type(5):before { content: "Data creării:"; }
     td:nth-of-type(6):before { content: "Persoane:"; }
-    td:nth-of-type(7):before { content: "Ghid:"; }
-    td:nth-of-type(8):before { content: "Status:"; }
-    td:nth-of-type(9):before { content: "Acțiuni:"; }
+    td:nth-of-type(7):before { content: "Categoria:"; }
+    td:nth-of-type(8):before { content: "Ghid:"; }
+    td:nth-of-type(9):before { content: "Status:"; }
+    td:nth-of-type(10):before { content: "Acțiuni:"; }
 
     /* Ajustări pentru butoane pe ecrane mici */
     .actions-cell {
