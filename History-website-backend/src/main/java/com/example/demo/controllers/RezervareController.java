@@ -41,7 +41,7 @@ public class RezervareController {
     public ResponseEntity<Map<String, String>> createBooking(@RequestBody Rezervare newBooking){
         rezervareService.createBooking(newBooking);
         return ResponseEntity.ok(Map.of(
-            "message", "Rezervare creată și aprobată cu succes!",
+            "message", "Rezervarea a fost înregistrată cu succes! Vă rugăm să verificați email-ul pentru confirmare.",
             "status", newBooking.getStatus().getDisplayName()
         ));
     }

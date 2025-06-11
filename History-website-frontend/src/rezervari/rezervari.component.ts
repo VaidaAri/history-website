@@ -310,9 +310,9 @@ export class RezervariComponent implements OnInit {
         // Mesaj pentru noul flux de confirmare prin email
         const successMessage = response && response.message
           ? response.message
-          : "Rezervarea a fost înregistrată cu succes! Vă rugăm să verificați email-ul pentru a o confirma.";
+          : "Rezervarea a fost înregistrată cu succes! Vă rugăm să verificați email-ul pentru confirmare.";
 
-        this.notificationService.showSuccess('Rezervare înregistrată', successMessage);
+        this.notificationService.showSuccess('Rezervare înregistrată', successMessage, 7000);
 
         this.resetBookingForm();
 
