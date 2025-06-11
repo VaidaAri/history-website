@@ -49,6 +49,8 @@ public class Rezervare {
     private LocalDateTime tokenExpiry;
     
     private LocalDateTime confirmedAt;
+    
+    private String ageGroup;
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime createdAt;

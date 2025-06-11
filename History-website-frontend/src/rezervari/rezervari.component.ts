@@ -41,8 +41,17 @@ export class RezervariComponent implements OnInit {
     datetime: '',
     numberOfPersons: 1,
     guideRequired: false,
-    status: 'IN_ASTEPTARE'
+    status: 'IN_ASTEPTARE',
+    ageGroup: ''
   };
+  
+  // Opțiuni pentru grupa de vârstă
+  ageGroupOptions = [
+    { value: 'COPII', label: 'Copii (sub 18 ani)', icon: '👶' },
+    { value: 'STUDENTI', label: 'Studenți', icon: '👨‍🎓' },
+    { value: 'ADULTI', label: 'Adulți', icon: '👨‍💼' },
+    { value: 'PENSIONARI', label: 'Pensionari', icon: '👵' }
+  ];
   
   // Programul muzeului
   currentSchedule: MuseumSchedule | null = null;
@@ -367,7 +376,8 @@ export class RezervariComponent implements OnInit {
       datetime: '',
       numberOfPersons: 1,
       guideRequired: false,
-      status: 'IN_ASTEPTARE'
+      status: 'IN_ASTEPTARE',
+      ageGroup: ''
     };
     this.selectedDate = '';
     this.selectedTime = '';
@@ -415,6 +425,11 @@ export class RezervariComponent implements OnInit {
       case 'RESPINSA': return 'Respinsă';
       default: return 'În așteptare';
     }
+  }
+
+  getAgeGroupDisplayName(ageGroup: string): string {
+    const option = this.ageGroupOptions.find(opt => opt.value === ageGroup);
+    return option ? `${option.icon} ${option.label}` : 'Nespecificat';
   }
 
   // Smart calendar functions

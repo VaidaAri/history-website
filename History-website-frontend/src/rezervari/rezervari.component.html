@@ -136,6 +136,19 @@
                     <input type="number" id="numberOfPersons" name="numberOfPersons" [(ngModel)]="newBooking.numberOfPersons" required min="1" max="50">
                 </div>
                 
+                <div class="form-group">
+                    <label for="ageGroup">Categoria de vârstă pentru grup:</label>
+                    <select id="ageGroup" name="ageGroup" [(ngModel)]="newBooking.ageGroup" required class="age-group-select">
+                        <option value="">Selectați categoria de vârstă...</option>
+                        <option *ngFor="let option of ageGroupOptions" [value]="option.value">
+                            {{ option.icon }} {{ option.label }}
+                        </option>
+                    </select>
+                    <div class="age-group-note">
+                        <p><em>📝 Nota: Pentru grupuri cu mai multe persoane, selectați categoria care se aplică tuturor membrilor grupului.</em></p>
+                    </div>
+                </div>
+                
                 <div class="form-group checkbox-group">
                     <label for="guideRequired">{{ 'rezervariGuideRequired' | translate }} </label>
                     <input type="checkbox" id="guideRequired" name="guideRequired" [(ngModel)]="newBooking.guideRequired">
@@ -157,6 +170,7 @@
                         <th>{{ 'rezervariTableDateTime' | translate }}</th>
                         <th>{{ 'rezervariTableCreatedAt' | translate }}</th>
                         <th>{{ 'rezervariTablePersons' | translate }}</th>
+                        <th>Categoria de vârstă</th>
                         <th>{{ 'rezervariTableGuide' | translate }}</th>
                         <th>{{ 'rezervariTableStatus' | translate }}</th>
                         <th>{{ 'rezervariTableActions' | translate }}</th>
@@ -170,6 +184,7 @@
                         <td>{{ booking.datetime | date: 'dd MMM' }}<br>{{ booking.datetime | date: 'yyyy, HH:mm' }}</td>
                         <td>{{ booking.createdAt | date: 'dd MMM' }}<br>{{ booking.createdAt | date: 'yyyy, HH:mm' }}</td>
                         <td>{{booking.numberOfPersons}}</td>
+                        <td>{{ getAgeGroupDisplayName(booking.ageGroup) }}</td>
                         <td>{{ booking.guideRequired ? ('rezervariYes' | translate) : ('rezervariNo' | translate) }}</td>
                         <td>
                             <span class="status-badge" [ngClass]="{
@@ -188,7 +203,7 @@
                         </td>
                     </tr>
                     <tr *ngIf="bookings.length === 0">
-                        <td colspan="9" class="empty-table">{{ 'rezervariNoBookings' | translate }}</td>
+                        <td colspan="10" class="empty-table">{{ 'rezervariNoBookings' | translate }}</td>
                     </tr>
                 </tbody>
             </table>

@@ -927,3 +927,41 @@ input[type="date"]:focus, select:focus {
         display: none;
     }
 }
+
+/* Stiluri pentru selectorul de categorie de vârstă */
+.age-group-select {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #EAD196;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #FFF9E6;
+  color: #5D4037;
+  font-family: 'Merriweather', serif;
+  transition: border-color 0.3s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='%235D4037' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 30px;
+}
+
+.age-group-select:focus {
+  border-color: #7D5A50;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(125, 90, 80, 0.2);
+}
+
+.age-group-note {
+  margin-top: 8px;
+  padding: 10px;
+  background-color: #F8F4E3;
+  border: 1px solid #EAD196;
+  border-radius: 5px;
+}
+
+.age-group-note p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #5D4037;
+}
