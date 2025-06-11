@@ -1,0 +1,17 @@
+.statistici-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.statistici-container h2 {
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.statistici-container p {
+  text-align: center;
+  color: #666;
+  font-size: 1.1rem;
+}

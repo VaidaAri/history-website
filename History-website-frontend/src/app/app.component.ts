@@ -25,7 +25,6 @@ export class AppComponent implements OnInit, OnDestroy {
   adminName = '';
   showAdminModal = false;
   admins: any[] = [];
-  pendingReservationsCount = 0;
   private refreshSubscription: Subscription | null = null;
   
   constructor(
@@ -45,34 +44,6 @@ export class AppComponent implements OnInit, OnDestroy {
     this.authService.isAuthenticated$.subscribe(isAuthenticated => {
       this.isAdmin = isAuthenticated;
       
-      if (isAuthenticated) {
-        // Inițializăm contorizarea rezervărilor în așteptare
-        this.loadPendingReservationsCount();
-        
-        // Actualizăm numărul la fiecare 30 de secunde
-        this.refreshSubscription = interval(30000).subscribe(() => {
-          this.loadPendingReservationsCount();
-        });
-        
-        // Ne abonăm la toate evenimentele de schimbare a rezervărilor
-        this.reservationService.reservationCreated$.subscribe(() => {
-          this.loadPendingReservationsCount();
-        });
-        
-        this.reservationService.reservationUpdated$.subscribe(() => {
-          this.loadPendingReservationsCount();
-        });
-        
-        this.reservationService.reservationDeleted$.subscribe(() => {
-          this.loadPendingReservationsCount();
-        });
-      } else {
-        // Dacă nu mai suntem autentificați, oprim actualizarea automată
-        if (this.refreshSubscription) {
-          this.refreshSubscription.unsubscribe();
-          this.refreshSubscription = null;
-        }
-      }
     });
     
     this.authService.adminName$.subscribe(name => {
@@ -90,19 +61,6 @@ export class AppComponent implements OnInit, OnDestroy {
     // Astfel starea de autentificare va persista între reîmprospătări ale paginii
   }
   
-  // Încarcă numărul de rezervări în așteptare
-  loadPendingReservationsCount() {
-    if (this.isAdmin) {
-      this.reservationService.getPendingReservationsCount().subscribe({
-        next: (data) => {
-          this.pendingReservationsCount = data.count;
-        },
-        error: (err) => {
-          console.error('Eroare la obținerea numărului de rezervări în așteptare:', err);
-        }
-      });
-    }
-  }
   
   showAdminList() {
     this.loadAdmins();
