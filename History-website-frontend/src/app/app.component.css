@@ -330,6 +330,42 @@
   position: relative;
 }
 
+/* Stiluri pentru deviza muzeului */
+.footer-center {
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.museum-motto {
+  color: white;
+  font-family: 'Merriweather', serif;
+}
+
+.motto-latin {
+  font-size: 1.4em;
+  font-weight: bold;
+  font-style: italic;
+  color: #EAD196;
+  margin-bottom: 8px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.motto-translation {
+  font-size: 1em;
+  color: #F8F4E3;
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.motto-year {
+  font-size: 0.8em;
+  color: rgba(248, 244, 227, 0.8);
+  font-style: italic;
+}
+
 /* Elementele laterale */
 .footer-left, .admin-login-container {
   flex: 1;

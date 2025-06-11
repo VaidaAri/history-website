@@ -1102,6 +1102,18 @@ export class TranslationService {
       'ro': 'Ieșire din ecran complet (Esc)',
       'en': 'Exit fullscreen (Esc)',
       'de': 'Vollbild verlassen (Esc)'
+    },
+
+    // Footer Motto translations
+    'footerMotto': {
+      'ro': 'Intri bun, ieși și mai bun',
+      'en': 'Enter good, leave even better',
+      'de': 'Komm gut herein, geh noch besser hinaus'
+    },
+    'footerMottoYear': {
+      'ro': '(Deviza muzeului din anul înființării - 1931)',
+      'en': '(Museum motto since its founding - 1931)',
+      'de': '(Museumsmotto seit der Gründung - 1931)'
     }
   };
 
