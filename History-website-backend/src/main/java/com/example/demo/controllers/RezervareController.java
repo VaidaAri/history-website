@@ -32,6 +32,11 @@ public class RezervareController {
         return rezervareService.getConfirmedBookings(); // Doar rezervările confirmate pentru admin
     }
 
+    @GetMapping("/all")
+    public List<Rezervare> getAllBookingsForStatistics(){
+        return rezervareService.getAllBookings(); // Toate rezervările pentru statistici
+    }
+
     @GetMapping("/{id}")
     public Rezervare getBookingById(@PathVariable Integer id){
         return rezervareService.findBookingById(id);
