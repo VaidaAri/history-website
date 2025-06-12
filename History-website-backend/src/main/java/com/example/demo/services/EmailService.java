@@ -126,13 +126,12 @@ public class EmailService {
                         <h3>Detaliile rezervării:</h3>
                         <p><strong>Data și ora vizitei:</strong> %s</p>
                         <p><strong>Numărul de persoane:</strong> %d</p>
+                        <p><strong>Categoria de vârstă:</strong> %s</p>
                         <p><strong>Ghid solicitat:</strong> %s</p>
                         <p><strong>Email contact:</strong> %s</p>
                     </div>
                     
                     <p><strong>Important:</strong> Acest link este valabil timp de 24 de ore. Dacă nu confirmați rezervarea în acest interval, aceasta va fi anulată automat.</p>
-                    
-                    <p>După confirmarea email-ului, rezervarea dumneavoastră va fi procesată de echipa muzeului și veți primi un email de confirmare finală.</p>
                     
                     <p>Pentru întrebări sau modificări, ne puteți contacta la adresa de email %s.</p>
                     
@@ -151,6 +150,7 @@ public class EmailService {
                 confirmationUrl,
                 rezervare.getDatetime().format(dateFormatter),
                 rezervare.getNumberOfPersons(),
+                getAgeGroupDisplayName(rezervare.getAgeGroup()),
                 rezervare.isGuideRequired() ? "Da" : "Nu",
                 rezervare.getEmail(),
                 fromEmail,
@@ -269,6 +269,21 @@ public class EmailService {
                 museumName,
                 fromEmail
             );
+    }
+
+    private String getAgeGroupDisplayName(String ageGroup) {
+        if (ageGroup == null || ageGroup.trim().isEmpty()) {
+            return "Nespecificată";
+        }
+        
+        switch (ageGroup) {
+            case "COPII": return "Copii (0-12 ani)";
+            case "ADOLESCENTI": return "Adolescenți (13-17 ani)";
+            case "ADULTI": return "Adulți (18-64 ani)";
+            case "SENIORI": return "Seniori (65+ ani)";
+            case "MIXT": return "Grup mixt";
+            default: return ageGroup;
+        }
     }
 
     public void sendEventInvitationEmail(Participant participant) {
