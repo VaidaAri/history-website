@@ -189,8 +189,7 @@
                         <td>
                             <span class="status-badge" [ngClass]="{
                                 'status-confirmed': booking.status === 'CONFIRMATA',
-                                'status-pending': booking.status === 'IN_ASTEPTARE',
-                                'status-approved': booking.status === 'APROBATA',
+                                'status-pending': booking.status === 'NECONFIRMATA',
                                 'status-rejected': booking.status === 'RESPINSA'
                             }">
                                 {{ getStatusDisplayName(booking.status) }}

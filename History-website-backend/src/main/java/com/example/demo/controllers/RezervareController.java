@@ -57,10 +57,10 @@ public class RezervareController {
     }
     
     /**
-     * Endpoint pentru obținerea numărului de rezervări aprobate pentru o anumită dată și interval orar
+     * Endpoint pentru obținerea numărului de rezervări confirmate pentru o anumită dată și interval orar
      */
-    @GetMapping("/approved-count")
-    public Map<String, Object> getApprovedBookingsCount(
+    @GetMapping("/confirmed-count")
+    public Map<String, Object> getConfirmedBookingsCount(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
             @RequestParam(required = false) Integer startHour,
             @RequestParam(required = false) Integer endHour) {
@@ -70,14 +70,14 @@ public class RezervareController {
         
         // Dacă sunt specificate startHour și endHour, returnăm contorul pentru intervalul specificat
         if (startHour != null && endHour != null) {
-            int count = rezervareService.getApprovedBookingsCountForTimeInterval(date, startHour, endHour);
+            int count = rezervareService.getConfirmedBookingsCountForTimeInterval(date, startHour, endHour);
             response.put("startHour", startHour);
             response.put("endHour", endHour);
             response.put("count", count);
         } 
         // Altfel, returnăm contoarele pentru toate intervalele de 2 ore din ziua respectivă
         else {
-            Map<String, Integer> timeSlotCounts = rezervareService.getApprovedBookingsCountByTimeSlots(date);
+            Map<String, Integer> timeSlotCounts = rezervareService.getConfirmedBookingsCountByTimeSlots(date);
             response.put("timeSlots", timeSlotCounts);
         }
         

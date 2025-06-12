@@ -63,8 +63,6 @@ public class Rezervare {
     public enum ReservationStatus {
         NECONFIRMATA("Neconfirmată"),
         CONFIRMATA("Confirmată"),
-        IN_ASTEPTARE("În așteptare"),
-        APROBATA("Aprobată"),
         RESPINSA("Respinsă");
 
         private final String displayName;

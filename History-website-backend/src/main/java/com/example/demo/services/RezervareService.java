@@ -61,7 +61,7 @@ public class RezervareService {
     
     public void approveBooking(Integer bookingId) {
         Rezervare booking = findBookingById(bookingId);
-        booking.setStatus(ReservationStatus.APROBATA);
+        booking.setStatus(ReservationStatus.CONFIRMATA);
         rezervareRepository.save(booking);
         
         // Trimitem email de aprobare
@@ -73,31 +73,31 @@ public class RezervareService {
     }
     
     public int getPendingBookingsCount() {
-        return rezervareRepository.countByStatus(ReservationStatus.IN_ASTEPTARE);
+        return rezervareRepository.countByStatus(ReservationStatus.NECONFIRMATA);
     }
     
     /**
-     * Obține numărul de rezervări aprobate pentru o anumită dată și interval orar
+     * Obține numărul de rezervări confirmate pentru o anumită dată și interval orar
      * @param date Data pentru care se verifică rezervările
      * @param startHour Ora de început a intervalului (inclusiv)
      * @param endHour Ora de sfârșit a intervalului (inclusiv)
-     * @return Numărul de rezervări aprobate
+     * @return Numărul de rezervări confirmate
      */
-    public int getApprovedBookingsCountForTimeInterval(LocalDate date, int startHour, int endHour) {
-        return rezervareRepository.countApprovedBookingsByDateAndTimeInterval(date, startHour, endHour);
+    public int getConfirmedBookingsCountForTimeInterval(LocalDate date, int startHour, int endHour) {
+        return rezervareRepository.countConfirmedBookingsByDateAndTimeInterval(date, startHour, endHour);
     }
     
     /**
      * Obține contoarele pentru toate intervalele de 2 ore disponibile într-o zi
      * @param date Data pentru care se calculează contoarele
-     * @return Un map cu intervalele orare ca cheie și numărul de rezervări aprobate ca valoare
+     * @return Un map cu intervalele orare ca cheie și numărul de rezervări confirmate ca valoare
      */
-    public Map<String, Integer> getApprovedBookingsCountByTimeSlots(LocalDate date) {
+    public Map<String, Integer> getConfirmedBookingsCountByTimeSlots(LocalDate date) {
         Map<String, Integer> counters = new HashMap<>();
         
         // Generează intervale de câte 2 ore (8-10, 10-12, 12-14, etc)
         for (int hour = 8; hour < 18; hour += 2) {
-            int count = rezervareRepository.countApprovedBookingsByDateAndTimeInterval(date, hour, hour + 1);
+            int count = rezervareRepository.countConfirmedBookingsByDateAndTimeInterval(date, hour, hour + 1);
             String timeSlot = String.format("%02d:00-%02d:00", hour, hour + 2);
             counters.put(timeSlot, count);
         }
@@ -128,8 +128,8 @@ public class RezervareService {
             return false; // Rezervarea nu este în status NECONFIRMATA
         }
         
-        // Confirmăm și aprobăm automat rezervarea
-        reservation.setStatus(ReservationStatus.APROBATA);
+        // Confirmăm rezervarea
+        reservation.setStatus(ReservationStatus.CONFIRMATA);
         reservation.setConfirmedAt(LocalDateTime.now());
         rezervareRepository.save(reservation);
         
@@ -145,9 +145,7 @@ public class RezervareService {
     
     public List<Rezervare> getConfirmedBookings() {
         return rezervareRepository.findByStatusIn(List.of(
-            ReservationStatus.CONFIRMATA,
-            ReservationStatus.IN_ASTEPTARE,
-            ReservationStatus.APROBATA
+            ReservationStatus.CONFIRMATA
         ));
     }
     
@@ -180,7 +178,7 @@ public class RezervareService {
         // Pentru fiecare zi din lună
         for (LocalDate date = firstDay; !date.isAfter(lastDay); date = date.plusDays(1)) {
             // Obținem rezervările pentru fiecare interval de 2 ore
-            Map<String, Integer> timeSlots = getApprovedBookingsCountByTimeSlots(date);
+            Map<String, Integer> timeSlots = getConfirmedBookingsCountByTimeSlots(date);
             
             // Calculăm densitatea zilei
             int totalSlots = timeSlots.size();

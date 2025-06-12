@@ -158,8 +158,6 @@ export class StatisticiLunareComponent implements OnInit {
     switch (status) {
       case 'NECONFIRMATA': return 'Neconfirmată';
       case 'CONFIRMATA': return 'Confirmată';
-      case 'IN_ASTEPTARE': return 'În așteptare';
-      case 'APROBATA': return 'Aprobată';
       case 'RESPINSA': return 'Respinsă';
       case 'PENDING': return 'În așteptare';
       case 'CONFIRMED': return 'Confirmată';

@@ -41,7 +41,7 @@ export class RezervariComponent implements OnInit {
     datetime: '',
     numberOfPersons: 1,
     guideRequired: false,
-    status: 'IN_ASTEPTARE',
+    status: 'NECONFIRMATA',
     ageGroup: ''
   };
   
@@ -376,7 +376,7 @@ export class RezervariComponent implements OnInit {
       datetime: '',
       numberOfPersons: 1,
       guideRequired: false,
-      status: 'IN_ASTEPTARE',
+      status: 'NECONFIRMATA',
       ageGroup: ''
     };
     this.selectedDate = '';
@@ -420,10 +420,8 @@ export class RezervariComponent implements OnInit {
     switch(status) {
       case 'NECONFIRMATA': return 'Neconfirmată';
       case 'CONFIRMATA': return 'Confirmată';
-      case 'IN_ASTEPTARE': return 'În așteptare';
-      case 'APROBATA': return 'Aprobată';
       case 'RESPINSA': return 'Respinsă';
-      default: return 'În așteptare';
+      default: return 'Neconfirmată';
     }
   }
 
