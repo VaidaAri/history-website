@@ -112,9 +112,6 @@
   transition: transform 0.3s ease;
 }
 
-/* .image-item:hover .gallery-image {
-  transform: scale(1.05);
-} */
 
 /* Admin overlay for grid items */
 .admin-overlay {
@@ -372,28 +369,12 @@
 
 
 /* Responsive Design */
-@media (max-width: 992px) {
-  .main-image-container {
-    height: 450px;
-  }
-  
-  .page-title {
-    font-size: 2.2rem;
-  }
-}
 
 @media (max-width: 768px) {
   .container {
     padding: 15px;
   }
   
-  .page-title {
-    font-size: 1.8rem;
-  }
-  
-  .page-description {
-    font-size: 1rem;
-  }
   
   .images-grid {
     grid-template-columns: 1fr;
@@ -404,31 +385,14 @@
     height: 250px;
   }
   
-  .gallery-nav {
-    width: 40px;
-    height: 40px;
-    font-size: 20px;
-  }
 }
 
 @media (max-width: 576px) {
-  .page-title {
-    font-size: 1.5rem;
-  }
-  
-  .decoration-line {
-    width: 60px;
-  }
   
   .image-container {
     height: 200px;
   }
   
-  .gallery-nav {
-    width: 35px;
-    height: 35px;
-    font-size: 16px;
-  }
 }
 
 /* Gallery Modal Styles - moved inline for reliability */
