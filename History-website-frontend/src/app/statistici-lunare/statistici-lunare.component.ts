@@ -40,18 +40,11 @@ export class StatisticiLunareComponent implements OnInit {
   }
 
   loadVisitStatistics() {
-    console.log('🔄 Începem încărcarea statisticilor...');
     // Încărcăm rezervările
     this.http.get<any[]>('http://localhost:8080/api/bookings').subscribe({
       next: (reservations) => {
-        console.log('✅ SUCCESS - Rezervări încărcate pentru statistici:', reservations);
-        console.log('📊 Numărul total de rezervări confirmate:', reservations.length);
-        console.log('ℹ️ NOTĂ: Afișăm doar rezervările confirmate, nu toate rezervările');
-        
         this.totalReservations = reservations.length;
         this.totalVisitors = reservations.reduce((sum, res) => sum + (res.numberOfPersons || 0), 0);
-        
-        console.log('👥 Total vizitatori calculat:', this.totalVisitors);
         
         // Calculăm statisticile pe categorii de vârstă
         this.calculateAgeGroupStatistics(reservations);
@@ -66,19 +59,9 @@ export class StatisticiLunareComponent implements OnInit {
             date: this.formatDate(res.datetime),
             status: this.getStatusLabel(res.status)
           }));
-          
-        console.log('📝 Rezervări recente procesate:', this.recentReservations);
       },
       error: (err) => {
-        console.error('❌ EROARE la încărcarea statisticilor vizite:', err);
-        console.error('📍 Status error:', err.status);
-        console.error('📍 URL încercat:', 'http://localhost:8080/api/bookings/all');
-        
-        if (err.status === 0) {
-          console.error('🔌 Backend-ul nu răspunde! Verifică dacă rulează pe port 8080');
-        } else if (err.status === 404) {
-          console.error('🔍 Endpoint-ul nu există! Verifică /api/bookings/all');
-        }
+        console.error('Eroare la încărcarea statisticilor vizite:', err);
       }
     });
   }
@@ -150,7 +133,7 @@ export class StatisticiLunareComponent implements OnInit {
           }));
       },
       error: (err) => {
-        console.error('Eroare la încărcarea statisticilor evenimente:', err);
+        console.error('Eroare la încărcarea evenimentelor:', err);
       }
     });
 
