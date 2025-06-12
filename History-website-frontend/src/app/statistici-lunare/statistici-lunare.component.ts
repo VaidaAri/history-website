@@ -16,8 +16,9 @@ export class StatisticiLunareComponent implements OnInit {
   // Statistici Vizite
   totalReservations: number = 0;
   totalVisitors: number = 0;
-  pendingReservations: number = 0;
-  confirmedReservations: number = 0;
+  ageGroupStats: any[] = [];
+  noAgeGroupCount: number = 0;
+  noAgeGroupPercentage: number = 0;
   recentReservations: any[] = [];
 
   // Statistici Evenimente
@@ -44,17 +45,18 @@ export class StatisticiLunareComponent implements OnInit {
       next: (reservations) => {
         this.totalReservations = reservations.length;
         this.totalVisitors = reservations.reduce((sum, res) => sum + (res.numberOfPersons || 0), 0);
-        this.pendingReservations = reservations.filter(res => res.status === 'PENDING').length;
-        this.confirmedReservations = reservations.filter(res => res.status === 'CONFIRMED').length;
+        
+        // Calculăm statisticile pe categorii de vârstă
+        this.calculateAgeGroupStatistics(reservations);
         
         // Ultimele 5 rezervări
         this.recentReservations = reservations
-          .sort((a, b) => new Date(b.createdAt || b.date).getTime() - new Date(a.createdAt || a.date).getTime())
+          .sort((a, b) => new Date(b.createdAt || b.datetime).getTime() - new Date(a.createdAt || a.datetime).getTime())
           .slice(0, 5)
           .map(res => ({
-            name: res.name,
+            name: `${res.nume || res.name || ''} ${res.prenume || ''}`.trim(),
             numberOfPersons: res.numberOfPersons,
-            date: this.formatDate(res.date),
+            date: this.formatDate(res.datetime),
             status: this.getStatusLabel(res.status)
           }));
       },
@@ -62,6 +64,43 @@ export class StatisticiLunareComponent implements OnInit {
         console.error('Eroare la încărcarea statisticilor vizite:', err);
       }
     });
+  }
+
+  calculateAgeGroupStatistics(reservations: any[]) {
+    // Grupăm rezervările pe categorii de vârstă
+    const ageGroups: { [key: string]: number } = {};
+    let noAgeGroup = 0;
+
+    reservations.forEach(reservation => {
+      const ageGroup = reservation.ageGroup;
+      if (ageGroup && ageGroup.trim() !== '') {
+        ageGroups[ageGroup] = (ageGroups[ageGroup] || 0) + 1;
+      } else {
+        noAgeGroup++;
+      }
+    });
+
+    // Convertim în array pentru afișare
+    const total = reservations.length;
+    this.ageGroupStats = Object.entries(ageGroups).map(([group, count]) => ({
+      label: this.getAgeGroupLabel(group),
+      count: count,
+      percentage: total > 0 ? Math.round((count / total) * 100) : 0
+    }));
+
+    this.noAgeGroupCount = noAgeGroup;
+    this.noAgeGroupPercentage = total > 0 ? Math.round((noAgeGroup / total) * 100) : 0;
+  }
+
+  getAgeGroupLabel(ageGroup: string): string {
+    const ageGroupLabels: { [key: string]: string } = {
+      'COPII': 'Copii (0-12 ani)',
+      'ADOLESCENTI': 'Adolescenți (13-17 ani)', 
+      'ADULTI': 'Adulți (18-64 ani)',
+      'SENIORI': 'Seniori (65+ ani)',
+      'MIXT': 'Grup mixt'
+    };
+    return ageGroupLabels[ageGroup] || ageGroup;
   }
 
   loadEventStatistics() {
@@ -117,6 +156,11 @@ export class StatisticiLunareComponent implements OnInit {
 
   private getStatusLabel(status: string): string {
     switch (status) {
+      case 'NECONFIRMATA': return 'Neconfirmată';
+      case 'CONFIRMATA': return 'Confirmată';
+      case 'IN_ASTEPTARE': return 'În așteptare';
+      case 'APROBATA': return 'Aprobată';
+      case 'RESPINSA': return 'Respinsă';
       case 'PENDING': return 'În așteptare';
       case 'CONFIRMED': return 'Confirmată';
       case 'CANCELLED': return 'Anulată';

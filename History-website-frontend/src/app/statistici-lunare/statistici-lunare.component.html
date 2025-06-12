@@ -34,17 +34,24 @@
       
       <div class="stat-card">
         <div class="stat-number">{{ totalVisitors }}</div>
-        <div class="stat-label">Total Vizitatori</div>
+        <div class="stat-label">Total Persoane</div>
       </div>
-      
-      <div class="stat-card">
-        <div class="stat-number">{{ pendingReservations }}</div>
-        <div class="stat-label">Rezervări în Așteptare</div>
-      </div>
-      
-      <div class="stat-card">
-        <div class="stat-number">{{ confirmedReservations }}</div>
-        <div class="stat-label">Rezervări Confirmate</div>
+    </div>
+
+    <!-- Statistici pe categorii de vârstă -->
+    <div class="age-stats-section">
+      <h4>📊 Rezervări pe Categorii de Vârstă</h4>
+      <div class="age-stats-grid">
+        <div class="age-stat-card" *ngFor="let ageStat of ageGroupStats">
+          <div class="age-stat-number">{{ ageStat.count }}</div>
+          <div class="age-stat-label">{{ ageStat.label }}</div>
+          <div class="age-stat-percentage">{{ ageStat.percentage }}%</div>
+        </div>
+        <div class="age-stat-card no-age" *ngIf="noAgeGroupCount > 0">
+          <div class="age-stat-number">{{ noAgeGroupCount }}</div>
+          <div class="age-stat-label">Fără categorie</div>
+          <div class="age-stat-percentage">{{ noAgeGroupPercentage }}%</div>
+        </div>
       </div>
     </div>
 

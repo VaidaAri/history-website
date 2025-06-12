@@ -168,6 +168,78 @@
   font-size: 0.9em;
 }
 
+/* Statistici categorii de vârstă */
+.age-stats-section {
+  background-color: white;
+  border-radius: 12px;
+  padding: 25px;
+  margin-bottom: 30px;
+  border: 2px solid #EAD196;
+}
+
+.age-stats-section h4 {
+  color: #5D4037;
+  font-size: 1.5em;
+  margin-bottom: 20px;
+  text-align: center;
+  border-bottom: 1px solid #EAD196;
+  padding-bottom: 10px;
+}
+
+.age-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.age-stat-card {
+  background-color: #F8F4E3;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  border: 2px solid #EAD196;
+  transition: all 0.3s ease;
+}
+
+.age-stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  background-color: #EAD196;
+}
+
+.age-stat-card.no-age {
+  border-color: #ccc;
+  background-color: #f5f5f5;
+}
+
+.age-stat-card.no-age:hover {
+  background-color: #e0e0e0;
+}
+
+.age-stat-number {
+  font-size: 2.5em;
+  font-weight: bold;
+  color: #5D4037;
+  margin-bottom: 8px;
+}
+
+.age-stat-label {
+  font-size: 1em;
+  color: #7D5A50;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.age-stat-percentage {
+  font-size: 0.9em;
+  color: #5D4037;
+  font-weight: bold;
+  background-color: rgba(93, 64, 55, 0.1);
+  padding: 4px 8px;
+  border-radius: 15px;
+  display: inline-block;
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
   .statistici-container {
@@ -184,11 +256,11 @@
     max-width: 300px;
   }
   
-  .stats-grid {
+  .stats-grid, .age-stats-grid {
     grid-template-columns: 1fr;
   }
   
-  .stat-number {
+  .stat-number, .age-stat-number {
     font-size: 2.5em;
   }
 }
