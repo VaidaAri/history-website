@@ -172,7 +172,6 @@
                         <th>{{ 'rezervariTablePersons' | translate }}</th>
                         <th>Categoria de vârstă</th>
                         <th>{{ 'rezervariTableGuide' | translate }}</th>
-                        <th>{{ 'rezervariTableStatus' | translate }}</th>
                         <th>{{ 'rezervariTableActions' | translate }}</th>
                     </tr>
                 </thead>
@@ -186,15 +185,6 @@
                         <td>{{booking.numberOfPersons}}</td>
                         <td>{{ getAgeGroupDisplayName(booking.ageGroup) }}</td>
                         <td>{{ booking.guideRequired ? ('rezervariYes' | translate) : ('rezervariNo' | translate) }}</td>
-                        <td>
-                            <span class="status-badge" [ngClass]="{
-                                'status-confirmed': booking.status === 'CONFIRMATA',
-                                'status-pending': booking.status === 'NECONFIRMATA',
-                                'status-rejected': booking.status === 'RESPINSA'
-                            }">
-                                {{ getStatusDisplayName(booking.status) }}
-                            </span>
-                        </td>
                         <td class="actions-cell">
                             <div class="action-buttons">
                                 <button class="delete-btn" (click)="deleteBooking(booking.id)">{{ 'rezervariDelete' | translate }}</button>
@@ -202,7 +192,7 @@
                         </td>
                     </tr>
                     <tr *ngIf="bookings.length === 0">
-                        <td colspan="10" class="empty-table">{{ 'rezervariNoBookings' | translate }}</td>
+                        <td colspan="9" class="empty-table">{{ 'rezervariNoBookings' | translate }}</td>
                     </tr>
                 </tbody>
             </table>
