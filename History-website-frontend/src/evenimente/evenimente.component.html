@@ -133,37 +133,23 @@
         </ng-template>
       </div>
       
-      <!-- Cartonaș 3: Statistici live -->
-      <div class="event-info-box interactive-box stats-box" (click)="scrollToCalendarAndHighlight()">
-        <div class="event-icon">📊</div>
-        <h3>Statistici luna aceasta</h3>
+      <!-- Cartonaș 3: Mesaj pentru urmărire -->
+      <div class="event-info-box interactive-box follow-us-box">
+        <div class="event-icon">🌟</div>
+        <h3>Rămâi conectat!</h3>
         
-        <div class="stats-grid" *ngIf="statsLoaded; else loadingStats">
-          <div class="stat-item">
-            <div class="stat-number">{{ eventStats.totalEventsThisMonth }}</div>
-            <div class="stat-label">Evenimente totale</div>
-          </div>
-          
-          <div class="stat-item">
-            <div class="stat-number">{{ eventStats.totalAvailableSpots }}</div>
-            <div class="stat-label">Locuri disponibile</div>
-          </div>
-          
-          <div class="stat-item" *ngIf="eventStats.fullEvents > 0">
-            <div class="stat-number warning">{{ eventStats.fullEvents }}</div>
-            <div class="stat-label">Evenimente complete</div>
+        <div class="follow-message">
+          <p>Urmărește-ne pentru evenimente speciale, expoziții tematice, ateliere creative și târguri sezoniere!</p>
+          <div class="features-highlight">
+            <span class="feature-tag">🎨 Ateliere</span>
+            <span class="feature-tag">🎭 Expoziții</span>
+            <span class="feature-tag">🎪 Târguri</span>
           </div>
         </div>
         
-        <ng-template #loadingStats>
-          <div class="loading-stats">
-            <div class="loading-spinner">📊</div>
-            <div class="loading-text">Se încarcă statisticile...</div>
-          </div>
-        </ng-template>
-        
-        <div class="cta-text">Explorează calendarul complet</div>
+        <div class="cta-text">Descoperă experiențe unice</div>
       </div>
+      
     </div>
   
 </app-cadran>
