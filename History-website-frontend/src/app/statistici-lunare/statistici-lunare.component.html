@@ -1,6 +1,113 @@
 <app-meniu></app-meniu>
 
 <div class="statistici-container">
-  <h2>Statistici</h2>
-  <p>Pagina de statistici va fi implementată în curând...</p>
+  <h2>Statistici Muzeu</h2>
+  
+  <!-- Navigare între secțiuni -->
+  <div class="section-nav">
+    <button 
+      class="nav-button" 
+      [class.active]="currentSection === 'vizite'"
+      (click)="changeSection('vizite')">
+      📊 Statistici Vizite
+    </button>
+    <button 
+      class="nav-button" 
+      [class.active]="currentSection === 'evenimente'"
+      (click)="changeSection('evenimente')">
+      🎯 Statistici Evenimente
+    </button>
+  </div>
+
+  <!-- Secțiunea Statistici Vizite -->
+  <div *ngIf="currentSection === 'vizite'" class="stats-section">
+    <div class="section-header">
+      <h3>📊 Statistici pentru Vizite la Muzeu</h3>
+      <p>Analiza rezervărilor și vizitelor la muzeu</p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-number">{{ totalReservations }}</div>
+        <div class="stat-label">Total Rezervări</div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-number">{{ totalVisitors }}</div>
+        <div class="stat-label">Total Vizitatori</div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-number">{{ pendingReservations }}</div>
+        <div class="stat-label">Rezervări în Așteptare</div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-number">{{ confirmedReservations }}</div>
+        <div class="stat-label">Rezervări Confirmate</div>
+      </div>
+    </div>
+
+    <div class="detailed-stats">
+      <h4>Detalii Rezervări Recent</h4>
+      <div *ngIf="recentReservations.length === 0" class="no-data">
+        Nu există rezervări recent
+      </div>
+      <div *ngIf="recentReservations.length > 0" class="reservations-list">
+        <div *ngFor="let reservation of recentReservations" class="reservation-item">
+          <div class="reservation-info">
+            <strong>{{reservation.name}}</strong> - {{reservation.numberOfPersons}} persoane
+            <br>
+            <small>{{reservation.date}} | Status: {{reservation.status}}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Secțiunea Statistici Evenimente -->
+  <div *ngIf="currentSection === 'evenimente'" class="stats-section">
+    <div class="section-header">
+      <h3>🎯 Statistici pentru Evenimente</h3>
+      <p>Analiza evenimentelor și participanților</p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-number">{{ totalEvents }}</div>
+        <div class="stat-label">Total Evenimente</div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-number">{{ activeEvents }}</div>
+        <div class="stat-label">Evenimente Active</div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-number">{{ totalParticipants }}</div>
+        <div class="stat-label">Total Participanți</div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-number">{{ upcomingEvents }}</div>
+        <div class="stat-label">Evenimente Viitoare</div>
+      </div>
+    </div>
+
+    <div class="detailed-stats">
+      <h4>Evenimente Recent</h4>
+      <div *ngIf="recentEvents.length === 0" class="no-data">
+        Nu există evenimente recent
+      </div>
+      <div *ngIf="recentEvents.length > 0" class="events-list">
+        <div *ngFor="let event of recentEvents" class="event-item">
+          <div class="event-info">
+            <strong>{{event.title}}</strong>
+            <br>
+            <small>{{event.startDate}} - {{event.endDate}} | {{event.location}}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
