@@ -26,50 +26,79 @@
       <p>Analiza rezervărilor și vizitelor la muzeu</p>
     </div>
 
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-number">{{ totalReservations }}</div>
-        <div class="stat-label">Rezervări Confirmate</div>
-      </div>
-      
-      <div class="stat-card">
-        <div class="stat-number">{{ totalVisitors }}</div>
-        <div class="stat-label">Total Persoane</div>
-      </div>
-    </div>
-
-    <!-- Statistici pe categorii de vârstă -->
-    <div class="age-stats-section">
-      <h4>📊 Rezervări pe Categorii de Vârstă</h4>
-      <div class="age-stats-grid">
-        <div class="age-stat-card" *ngFor="let ageStat of ageGroupStats">
-          <div class="age-stat-number">{{ ageStat.count }}</div>
-          <div class="age-stat-label">{{ ageStat.label }}</div>
-          <div class="age-stat-percentage">{{ ageStat.percentage }}%</div>
-        </div>
-        <div class="age-stat-card no-age" *ngIf="noAgeGroupCount > 0">
-          <div class="age-stat-number">{{ noAgeGroupCount }}</div>
-          <div class="age-stat-label">Fără categorie</div>
-          <div class="age-stat-percentage">{{ noAgeGroupPercentage }}%</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="detailed-stats">
-      <h4>Detalii Rezervări Recent</h4>
-      <div *ngIf="recentReservations.length === 0" class="no-data">
-        Nu există rezervări recent
-      </div>
-      <div *ngIf="recentReservations.length > 0" class="reservations-list">
-        <div *ngFor="let reservation of recentReservations" class="reservation-item">
-          <div class="reservation-info">
-            <strong>{{reservation.name}}</strong> - {{reservation.numberOfPersons}} persoane
-            <br>
-            <small>{{reservation.date}} | Status: {{reservation.status}}</small>
+    <!-- Cartonașe cu statistici în stilul din pagina de evenimente -->
+    <div class="events-info-stats">
+      <!-- Cartonaș 1: Rezervări Confirmate -->
+      <div class="event-info-box interactive-box stats-box-green has-event">
+        <div class="event-icon">✅</div>
+        <h3>Rezervări Confirmate</h3>
+        
+        <div class="stats-grid-evenimente">
+          <div class="stat-item-evenimente">
+            <div class="stat-number-green">{{ totalReservations }}</div>
+            <div class="stat-label-evenimente">Total rezervări</div>
+          </div>
+          
+          <div class="stat-item-evenimente">
+            <div class="stat-number-green">{{ totalVisitors }}</div>
+            <div class="stat-label-evenimente">Total persoane</div>
           </div>
         </div>
+        
+        <div class="cta-text-evenimente">Vizitatori confirmați</div>
+      </div>
+      
+      <!-- Cartonaș 2: Categorii de Vârstă -->
+      <div class="event-info-box interactive-box stats-box-orange has-event">
+        <div class="event-icon">👥</div>
+        <h3>Distribuție pe Vârstă</h3>
+        
+        <div class="stats-grid-age" *ngIf="ageGroupStats.length > 0; else noAgeData">
+          <div class="stat-item-age" *ngFor="let ageStat of ageGroupStats.slice(0, 4)">
+            <div class="stat-number-orange">{{ ageStat.count }}</div>
+            <div class="stat-label-age">{{ ageStat.label.split(' ')[0] }}</div>
+            <div class="stat-percentage">{{ ageStat.percentage }}%</div>
+          </div>
+        </div>
+        
+        <ng-template #noAgeData>
+          <div class="loading-stats-evenimente">
+            <div class="loading-text-evenimente">Nu există date pe categorii</div>
+          </div>
+        </ng-template>
+        
+        <div class="cta-text-evenimente">Profilul vizitatorilor</div>
+      </div>
+      
+      <!-- Cartonaș 3: Activitate Recentă -->
+      <div class="event-info-box interactive-box stats-box-purple has-event">
+        <div class="event-icon">📈</div>
+        <h3>Activitate Recentă</h3>
+        
+        <div class="stats-grid-recent" *ngIf="recentReservations.length > 0; else noRecentData">
+          <div class="recent-stat">
+            <div class="stat-number-purple">{{ recentReservations.length }}</div>
+            <div class="stat-label-recent">Rezervări recente</div>
+          </div>
+          
+          <div class="recent-activity">
+            <div class="recent-item" *ngFor="let reservation of recentReservations.slice(0, 2)">
+              <div class="recent-name">{{ reservation.name }}</div>
+              <div class="recent-details">{{ reservation.numberOfPersons }} pers.</div>
+            </div>
+          </div>
+        </div>
+        
+        <ng-template #noRecentData>
+          <div class="loading-stats-evenimente">
+            <div class="loading-text-evenimente">Nu există rezervări recente</div>
+          </div>
+        </ng-template>
+        
+        <div class="cta-text-evenimente">Ultimele rezervări</div>
       </div>
     </div>
+
   </div>
 
   <!-- Secțiunea Statistici Evenimente -->
