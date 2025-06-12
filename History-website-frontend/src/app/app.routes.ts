@@ -1,37 +1,22 @@
 import { Routes } from '@angular/router';
-import { IstoricComponent } from '../istoric/istoric.component';
 import { AcasaComponent } from '../acasa/acasa.component';
-import { MeniuComponent } from '../meniu/meniu.component';
-import { RezervariComponent } from '../rezervari/rezervari.component';
-import { TarifeComponent } from '../tarife/tarife.component';
-import { EvenimenteComponent } from '../evenimente/evenimente.component';
-import { ImagineComponent } from '../imagine/imagine.component';
-import { AdministratorLoginComponent } from '../administrator-login/administrator-login.component';
-import { PublicatiiComponent } from '../publicatii/publicatii.component';
-import { CreeareContComponent } from '../creeare-cont/creeare-cont.component';
-import { AdministratorComponent } from '../administrator/administrator.component';
-import { CadranComponent } from '../cadran/cadran.component';
-import { PeisajeMuzeuComponent } from '../peisaje-muzeu/peisaje-muzeu.component';
-import { ExpozitiiPermanenteComponent } from '../expozitii-permanente/expozitii-permanente.component';
-import { PrieteniiMuzeuluiComponent } from '../prietenii-muzeului/prietenii-muzeului.component';
-import { ConfirmReservationComponent } from '../confirm-reservation/confirm-reservation.component';
-import { StatisticiLunareComponent } from './statistici-lunare/statistici-lunare.component';
 
-export const routes: Routes = [{path:'', component: AcasaComponent},
-    {path:'istoric', component: IstoricComponent },
-    {path:'meniu', component: MeniuComponent},
-    {path:'rezervari', component: RezervariComponent},
-    {path:'tarife', component: TarifeComponent},
-    {path:'evenimente', component: EvenimenteComponent},
-    {path:'imagine', component:ImagineComponent},
-    {path:'administrator-login', component: AdministratorLoginComponent},
-    {path:'publicatii', component: PublicatiiComponent},
-    {path:'creeare-cont', component: CreeareContComponent},
-    {path: 'administrator', component: AdministratorComponent},
-    {path: 'cadran', component: CadranComponent},
-    {path: 'peisaje-muzeu', component: PeisajeMuzeuComponent},
-    {path: 'expozitii-permanente', component: ExpozitiiPermanenteComponent},
-    {path: 'prietenii-muzeului', component: PrieteniiMuzeuluiComponent},
-    {path: 'confirm-reservation/:token', component: ConfirmReservationComponent},
-    {path: 'statistici', component: StatisticiLunareComponent},
+export const routes: Routes = [
+    {path:'', component: AcasaComponent},
+    {path:'istoric', loadComponent: () => import('../istoric/istoric.component').then(m => m.IstoricComponent)},
+    {path:'meniu', loadComponent: () => import('../meniu/meniu.component').then(m => m.MeniuComponent)},
+    {path:'rezervari', loadComponent: () => import('../rezervari/rezervari.component').then(m => m.RezervariComponent)},
+    {path:'tarife', loadComponent: () => import('../tarife/tarife.component').then(m => m.TarifeComponent)},
+    {path:'evenimente', loadComponent: () => import('../evenimente/evenimente.component').then(m => m.EvenimenteComponent)},
+    {path:'imagine', loadComponent: () => import('../imagine/imagine.component').then(m => m.ImagineComponent)},
+    {path:'administrator-login', loadComponent: () => import('../administrator-login/administrator-login.component').then(m => m.AdministratorLoginComponent)},
+    {path:'publicatii', loadComponent: () => import('../publicatii/publicatii.component').then(m => m.PublicatiiComponent)},
+    {path:'creeare-cont', loadComponent: () => import('../creeare-cont/creeare-cont.component').then(m => m.CreeareContComponent)},
+    {path: 'administrator', loadComponent: () => import('../administrator/administrator.component').then(m => m.AdministratorComponent)},
+    {path: 'cadran', loadComponent: () => import('../cadran/cadran.component').then(m => m.CadranComponent)},
+    {path: 'peisaje-muzeu', loadComponent: () => import('../peisaje-muzeu/peisaje-muzeu.component').then(m => m.PeisajeMuzeuComponent)},
+    {path: 'expozitii-permanente', loadComponent: () => import('../expozitii-permanente/expozitii-permanente.component').then(m => m.ExpozitiiPermanenteComponent)},
+    {path: 'prietenii-muzeului', loadComponent: () => import('../prietenii-muzeului/prietenii-muzeului.component').then(m => m.PrieteniiMuzeuluiComponent)},
+    {path: 'confirm-reservation/:token', loadComponent: () => import('../confirm-reservation/confirm-reservation.component').then(m => m.ConfirmReservationComponent)},
+    {path: 'statistici', loadComponent: () => import('./statistici-lunare/statistici-lunare.component').then(m => m.StatisticiLunareComponent)},
 ];
