@@ -79,42 +79,37 @@
       <p>Analiza evenimentelor și participanților</p>
     </div>
 
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-number">{{ totalEvents }}</div>
-        <div class="stat-label">Total Evenimente</div>
-      </div>
-      
-      <div class="stat-card">
-        <div class="stat-number">{{ activeEvents }}</div>
-        <div class="stat-label">Evenimente Active</div>
-      </div>
-      
-      <div class="stat-card">
-        <div class="stat-number">{{ totalParticipants }}</div>
-        <div class="stat-label">Total Participanți</div>
-      </div>
-      
-      <div class="stat-card">
-        <div class="stat-number">{{ upcomingEvents }}</div>
-        <div class="stat-label">Evenimente Viitoare</div>
-      </div>
-    </div>
 
-    <div class="detailed-stats">
-      <h4>Evenimente Recent</h4>
-      <div *ngIf="recentEvents.length === 0" class="no-data">
-        Nu există evenimente recent
-      </div>
-      <div *ngIf="recentEvents.length > 0" class="events-list">
-        <div *ngFor="let event of recentEvents" class="event-item">
-          <div class="event-info">
-            <strong>{{event.title}}</strong>
-            <br>
-            <small>{{event.startDate}} - {{event.endDate}} | {{event.location}}</small>
-          </div>
+    <!-- Cartonaș cu statistici în stilul din pagina de evenimente -->
+    <div class="events-info-box stats-box-evenimente">
+      <div class="event-icon">📊</div>
+      <h3>Statistici luna aceasta</h3>
+      
+      <div class="stats-grid-evenimente" *ngIf="totalEvents > 0; else loadingStats">
+        <div class="stat-item-evenimente">
+          <div class="stat-number-evenimente">{{ totalEvents }}</div>
+          <div class="stat-label-evenimente">Evenimente totale</div>
+        </div>
+        
+        <div class="stat-item-evenimente">
+          <div class="stat-number-evenimente">{{ availableSpots }}</div>
+          <div class="stat-label-evenimente">Locuri disponibile</div>
+        </div>
+        
+        <div class="stat-item-evenimente" *ngIf="eventsThisMonth > 0">
+          <div class="stat-number-evenimente">{{ eventsThisMonth }}</div>
+          <div class="stat-label-evenimente">Evenimente luna aceasta</div>
         </div>
       </div>
+      
+      <ng-template #loadingStats>
+        <div class="loading-stats-evenimente">
+          <div class="loading-spinner-evenimente">📊</div>
+          <div class="loading-text-evenimente">Se încarcă statisticile...</div>
+        </div>
+      </ng-template>
+      
+      <div class="cta-text-evenimente">Vezi toate evenimentele</div>
     </div>
   </div>
 </div>

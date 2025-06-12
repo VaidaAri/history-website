@@ -23,10 +23,10 @@ export class StatisticiLunareComponent implements OnInit {
 
   // Statistici Evenimente
   totalEvents: number = 0;
-  activeEvents: number = 0;
-  totalParticipants: number = 0;
   upcomingEvents: number = 0;
-  recentEvents: any[] = [];
+  availableSpots: number = 0;
+  eventsThisMonth: number = 0;
+  totalParticipants: number = 0;
 
   constructor(private http: HttpClient) {}
 
@@ -110,36 +110,69 @@ export class StatisticiLunareComponent implements OnInit {
         this.totalEvents = events.length;
         
         const now = new Date();
-        this.activeEvents = events.filter(event => {
-          const startDate = new Date(event.startDate);
-          const endDate = new Date(event.endDate);
-          return startDate <= now && endDate >= now;
-        }).length;
-
+        const currentMonth = now.getMonth();
+        const currentYear = now.getFullYear();
+        
+        // Evenimente viitoare
         this.upcomingEvents = events.filter(event => {
           const startDate = new Date(event.startDate);
           return startDate > now;
         }).length;
 
-        // Ultimele 5 evenimente
-        this.recentEvents = events
-          .sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime())
-          .slice(0, 5)
-          .map(event => ({
-            title: event.title,
-            startDate: this.formatDate(event.startDate),
-            endDate: this.formatDate(event.endDate),
-            location: event.location
-          }));
+        // Evenimente în luna curentă
+        this.eventsThisMonth = events.filter(event => {
+          const eventDate = new Date(event.startDate);
+          return eventDate.getMonth() === currentMonth && eventDate.getFullYear() === currentYear;
+        }).length;
+
+        // Calculăm locurile disponibile pentru evenimente viitoare
+        const upcomingEventsForSpots = events.filter(event => {
+          const startDate = new Date(event.startDate);
+          return startDate > now;
+        });
+        
+        this.availableSpots = upcomingEventsForSpots.length * 70; // 70 locuri per eveniment
+        
+        // Calculăm participanții pentru evenimente trecute și curente
+        this.calculateTotalParticipants(events.filter(event => {
+          const startDate = new Date(event.startDate);
+          return startDate <= now;
+        }));
+
       },
       error: (err) => {
         console.error('Eroare la încărcarea evenimentelor:', err);
       }
     });
+  }
 
-    // Pentru participanți, îi calculăm pe baza evenimentelor
-    // Nu există un endpoint general /api/participants, doar pe evenimente specifice
-    this.totalParticipants = 0; // Va fi calculat când se încarcă evenimentele
+  calculateTotalParticipants(pastEvents: any[]) {
+    // Pentru fiecare eveniment trecut, încercăm să obținem numărul de participanți
+    let totalCalculated = 0;
+    let eventsProcessed = 0;
+    
+    if (pastEvents.length === 0) {
+      this.totalParticipants = 0;
+      return;
+    }
+
+    pastEvents.forEach(event => {
+      this.http.get<any>(`http://localhost:8080/api/participants/count/${event.id}`).subscribe({
+        next: (response) => {
+          totalCalculated += response.count || 0;
+          eventsProcessed++;
+          if (eventsProcessed === pastEvents.length) {
+            this.totalParticipants = totalCalculated;
+          }
+        },
+        error: () => {
+          eventsProcessed++;
+          if (eventsProcessed === pastEvents.length) {
+            this.totalParticipants = totalCalculated;
+          }
+        }
+      });
+    });
   }
 
   private formatDate(dateString: string): string {
