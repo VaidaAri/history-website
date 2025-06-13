@@ -24,40 +24,32 @@ interface PrieteniImage {
   styleUrl: './prietenii-muzeului.component.css'
 })
 export class PrieteniiMuzeuluiComponent implements OnInit {
-  // Array cu imagini despre prietenii muzeului
   prieteniImages: PrieteniImage[] = [];
   
-  // Proprietăți pentru administrare
   isAdmin: boolean = false;
   
-  // Proprietăți pentru încărcare
   selectedFiles: File[] = [];
   currentUploadIndex: number = 0;
-  imageDescription: string = 'Momentele frumoase cu prietenii muzeului';  // Valoare implicită
+  imageDescription: string = 'Momentele frumoase cu prietenii muzeului';  
   isUploading: boolean = false;
   uploadMessage: string = '';
   showUploadMessage: boolean = false;
   
-  // Gallery functionality
   showGallery: boolean = false;
   currentImage: PrieteniImage | null = null;
   currentModalImageIndex: number = 0;
   
-  // Zoom and drag functionality
   zoomLevel: number = 1;
   isDragging: boolean = false;
   dragStart: { x: number, y: number } = { x: 0, y: 0 };
   imagePosition: { x: number, y: number } = { x: 0, y: 0 };
   
-  // Fullscreen functionality
   isFullscreen: boolean = false;
 
-  // Pagination functionality
   currentPage: number = 1;
   imagesPerPage: number = 4;
   totalPages: number = 1;
   
-  // Proprietăți pentru galeria clasică (păstrate pentru compatibilitate)
   currentImageIndex: number = 0;
   
   constructor(
@@ -67,21 +59,17 @@ export class PrieteniiMuzeuluiComponent implements OnInit {
   ) {}
   
   ngOnInit() {
-    // Verifică dacă utilizatorul este administrator
     this.authService.isAuthenticated$.subscribe(isAuth => {
       this.isAdmin = isAuth;
     });
     
-    // Încarcă imaginile existente
     this.loadImages();
     this.setupKeyboardListeners();
   }
   
-  // Încarcă imaginile din backend
   loadImages() {
     this.http.get<PrieteniImage[]>('http://localhost:8080/api/images').subscribe({
       next: (images) => {
-        // Filtrăm doar imaginile pentru prietenii muzeului (cele care au description ce începe cu "PRIETENI:")
         this.prieteniImages = images.filter(img => 
           img.description && img.description.startsWith('PRIETENI:')
         ).map(img => ({
@@ -89,7 +77,6 @@ export class PrieteniiMuzeuluiComponent implements OnInit {
           description: img.description.replace('PRIETENI:', '').trim()
         }));
         
-        // Resetăm indexul imaginii curente dacă e cazul
         if (this.prieteniImages.length > 0 && this.currentImageIndex >= this.prieteniImages.length) {
           this.currentImageIndex = 0;
         }
@@ -102,7 +89,6 @@ export class PrieteniiMuzeuluiComponent implements OnInit {
     });
   }
   
-  // Metoda pentru a construi URL-ul imaginii
   getImageUrl(imagePath: string): string {
     if (!imagePath) return '';
     
@@ -113,7 +99,6 @@ export class PrieteniiMuzeuluiComponent implements OnInit {
     return `http://localhost:8080/api/images/uploads/${imagePath}`;
   }
   
-  // Selectează fișiere pentru încărcare
   onFileSelected(event: any) {
     const files = Array.from(event.target.files) as File[];
     console.log('Fișiere selectate:', files.length, files);
@@ -122,16 +107,13 @@ export class PrieteniiMuzeuluiComponent implements OnInit {
       console.log('Total fișiere în listă:', this.selectedFiles.length);
     }
     
-    // Reset input field
     event.target.value = '';
   }
   
-  // Elimină un fișier din lista de fișiere selectate
   removeFile(index: number) {
     this.selectedFiles.splice(index, 1);
   }
   
-  // Încarcă toate imaginile selectate
   uploadImages() {
     console.log('uploadImages apelat, fișiere selectate:', this.selectedFiles.length);
     if (this.selectedFiles.length === 0) {
@@ -147,10 +129,8 @@ export class PrieteniiMuzeuluiComponent implements OnInit {
     this.uploadNextImage();
   }
   
-  // Încarcă următoarea imagine din listă
   private uploadNextImage() {
     if (this.currentUploadIndex >= this.selectedFiles.length) {
-      // Toate imaginile au fost încărcate
       this.showUploadMessage = true;
       this.uploadMessage = `Toate imaginile (${this.selectedFiles.length}) au fost încărcate cu succes!`;
       setTimeout(() => this.showUploadMessage = false, 3000);
@@ -164,7 +144,6 @@ export class PrieteniiMuzeuluiComponent implements OnInit {
     
     const currentFile = this.selectedFiles[this.currentUploadIndex];
     
-    // Folosim valoarea implicită dacă nu este completată
     const description = this.imageDescription.trim() 
       ? this.imageDescription 
       : 'Momentele frumoase cu prietenii muzeului';
@@ -189,7 +168,6 @@ export class PrieteniiMuzeuluiComponent implements OnInit {
     });
   }
   
-  // Șterge o imagine
   deleteImage(imageId: number | undefined) {
     if (!imageId) return;
     
@@ -200,12 +178,10 @@ export class PrieteniiMuzeuluiComponent implements OnInit {
           this.uploadMessage = 'Imaginea a fost ștearsă cu succes!';
           setTimeout(() => this.showUploadMessage = false, 3000);
           
-          // Dacă am șters ultima imagine și indexul curent este acum invalid
           if (this.currentImageIndex >= this.prieteniImages.length - 1) {
             this.currentImageIndex = Math.max(0, this.prieteniImages.length - 2);
           }
           
-          // Dacă ștergem imaginea curentă din modal, închidem modalul
           if (this.showGallery && this.currentImage && this.currentImage.id === imageId) {
             this.closeGallery();
           }
@@ -222,26 +198,22 @@ export class PrieteniiMuzeuluiComponent implements OnInit {
     }
   }
   
-  // Navigare la imaginea anterioară
   prevImage() {
     if (this.prieteniImages.length === 0) return;
     this.currentImageIndex = (this.currentImageIndex - 1 + this.prieteniImages.length) % this.prieteniImages.length;
   }
   
-  // Navigare la imaginea următoare
   nextImage() {
     if (this.prieteniImages.length === 0) return;
     this.currentImageIndex = (this.currentImageIndex + 1) % this.prieteniImages.length;
   }
   
-  // Setează imaginea curentă (pentru thumbnail-uri)
   setCurrentImage(index: number) {
     if (index >= 0 && index < this.prieteniImages.length) {
       this.currentImageIndex = index;
     }
   }
   
-  // Pagination methods
   updatePagination() {
     this.totalPages = Math.ceil(this.prieteniImages.length / this.imagesPerPage);
   }
@@ -274,7 +246,6 @@ export class PrieteniiMuzeuluiComponent implements OnInit {
     return Array.from({length: this.totalPages}, (_, i) => i + 1);
   }
   
-  // Gallery modal methods
   setupKeyboardListeners() {
     document.addEventListener('keydown', (event) => {
       if (this.showGallery) {
@@ -337,7 +308,6 @@ export class PrieteniiMuzeuluiComponent implements OnInit {
     }
   }
 
-  // Zoom functionality
   zoomIn() {
     this.zoomLevel = Math.min(this.zoomLevel * 1.2, 3);
   }
@@ -351,7 +321,6 @@ export class PrieteniiMuzeuluiComponent implements OnInit {
     this.imagePosition = { x: 0, y: 0 };
   }
 
-  // Fullscreen functionality
   toggleFullscreen() {
     this.isFullscreen = !this.isFullscreen;
   }
@@ -368,7 +337,6 @@ export class PrieteniiMuzeuluiComponent implements OnInit {
     };
   }
 
-  // Drag functionality
   startDrag(event: MouseEvent) {
     if (this.zoomLevel > 1) {
       this.isDragging = true;
@@ -390,7 +358,6 @@ export class PrieteniiMuzeuluiComponent implements OnInit {
     this.isDragging = false;
   }
 
-  // Translation methods
   getSelectedFilesText(): string {
     const template = this.translationService.translate('friendsSelectedFiles');
     return template.replace('{count}', this.selectedFiles.length.toString());
