@@ -32,7 +32,6 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
   showImageModal: boolean = false;
   selectedImage: any = null;
   
-  // Statistici live pentru cartonașe
   eventStats = {
     nextEvent: null as any,
     popularEvent: null as any,
@@ -41,7 +40,6 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
     fullEvents: 0
   };
   
-  // Flag pentru a urmări dacă statisticile s-au încărcat
   statsLoaded = false;
   
   registrationForm = {
@@ -50,10 +48,9 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
     email: ''
   };
   
-  // Sistem de notificări
   notification = {
     show: false,
-    type: 'success', // 'success', 'error', 'warning'
+    type: 'success', 
     title: '',
     message: ''
   };
@@ -68,52 +65,42 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    // Verificăm dacă utilizatorul este administrator
     this.isAdmin = this.authService.isAuthenticated();
 
-    // Abonăm pentru a detecta schimbări în starea de autentificare
     this.authService.isAuthenticated$.subscribe(isAuthenticated => {
       this.isAdmin = isAuthenticated;
 
-      // Încărcăm lista de evenimente dacă utilizatorul este administrator
       if (isAuthenticated) {
         this.loadEvents();
       }
     });
 
-    // Încărcăm lista de evenimente dacă utilizatorul este administrator
     if (this.isAdmin) {
       this.loadEvents();
     }
     
-    // Încărcăm statisticile pentru cartonașe (pentru toți utilizatorii)
     this.loadEventStats();
 
-    // Ascultăm pentru evenimente de adăugare sau actualizare de evenimente
     window.addEventListener('eventAdded', this.handleEventAdded.bind(this));
     window.addEventListener('eventUpdated', this.handleEventAdded.bind(this));
     
-    // Ascultăm pentru click-uri pe evenimente (pentru înregistrare)
     if (!this.isAdmin) {
       window.addEventListener('eventClicked', this.handleEventClicked.bind(this));
     }
   }
   
-  // Curățăm la distrugerea componentei
   ngOnDestroy() {
     window.removeEventListener('eventAdded', this.handleEventAdded.bind(this));
     window.removeEventListener('eventUpdated', this.handleEventAdded.bind(this));
     window.removeEventListener('eventClicked', this.handleEventClicked.bind(this));
   }
   
-  // Handler pentru evenimentul custom de adăugare eveniment
   handleEventAdded(e: any) {
     if (this.isAdmin) {
       this.loadEvents();
     }
   }
 
-  // Handler pentru click pe eveniment (pentru afișarea detaliilor)
   handleEventClicked(e: any) {
     if (!this.isAdmin && e.detail) {
       this.loadFullEventDetails(e.detail);
@@ -131,7 +118,6 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
   }
   
   editEvent(event: any) {
-    // Convertim evenimentul în formatul așteptat de CalendarComponent
     const calendarEvent = {
       id: event.id,
       title: event.name,
@@ -144,10 +130,8 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
       }
     };
 
-    // Setăm evenimentul selectat în CalendarComponent
     this.calendarComponent.selectedEvent = calendarEvent;
 
-    // Apelăm metoda de editare din CalendarComponent
     this.calendarComponent.editEvent();
   }
   
@@ -157,7 +141,6 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
         alert('Eveniment șters cu succes!');
         this.loadEvents();
         
-        // Emitem un eveniment pentru a notifica alte componente (calendar) despre ștergerea evenimentului
         const eventDeletedEvent = new CustomEvent('eventDeleted', { 
           detail: { eventId: id }
         });
@@ -169,23 +152,19 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Metoda pentru deconectare
   logout() {
     this.authService.logout();
   }
 
-  // Metoda pentru redirecționare către pagina de autentificare
   goToLogin() {
     this.router.navigate(['/administrator-login']);
   }
 
-  // Metoda pentru afișarea detaliilor evenimentului
   showEventDetails(event: any) {
     this.selectedEvent = event;
     this.showEventDetailsModal = true;
   }
 
-  // Metoda pentru afișarea modalului de înregistrare la eveniment
   showEventRegistration(event: any = null) {
     if (event) {
       this.selectedEvent = event;
@@ -195,25 +174,21 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
     this.registrationForm = { nume: '', prenume: '', email: '' };
   }
 
-  // Metoda pentru închiderea modalului de detalii
   closeEventDetailsModal() {
     this.showEventDetailsModal = false;
     this.selectedEvent = null;
   }
 
-  // Metoda pentru deschiderea modalului cu imaginea
   openImageModal(image: any) {
     this.selectedImage = image;
     this.showImageModal = true;
   }
 
-  // Metoda pentru închiderea modalului cu imaginea
   closeImageModal() {
     this.showImageModal = false;
     this.selectedImage = null;
   }
 
-  // Metoda pentru închiderea modalului de înregistrare
   closeRegistrationModal() {
     this.showRegistrationModal = false;
     if (!this.showEventDetailsModal) {
@@ -221,7 +196,6 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Metoda pentru înscrierea la eveniment
   registerForEvent() {
     if (!this.selectedEvent || !this.registrationForm.nume.trim() || 
         !this.registrationForm.prenume.trim() || !this.registrationForm.email.trim()) {
@@ -267,7 +241,6 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
       });
   }
 
-  // Metodă pentru afișarea notificărilor
   showNotification(type: 'success' | 'error' | 'warning', title: string, message: string) {
     this.notification = {
       show: true,
@@ -276,28 +249,23 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
       message: message
     };
 
-    // Auto-hide după 5 secunde pentru success, 7 secunde pentru warning/error
     const hideAfter = type === 'success' ? 5000 : 7000;
     setTimeout(() => {
       this.hideNotification();
     }, hideAfter);
   }
 
-  // Metodă pentru ascunderea notificărilor
   hideNotification() {
     this.notification.show = false;
   }
 
-  // Metode pentru calendarul inteligent
   onSmartCalendarEventSelected(event: any) {
     console.log('Event selected from smart calendar:', event);
-    // Pentru participanți - preia detaliile complete ale evenimentului
     if (!this.isAdmin) {
       this.loadFullEventDetails(event);
     }
   }
 
-  // Metodă pentru încărcarea detaliilor complete ale evenimentului
   loadFullEventDetails(calendarEvent: any) {
     this.http.get(`http://localhost:8080/api/events/${calendarEvent.id}`).subscribe({
       next: (fullEvent: any) => {
@@ -318,7 +286,6 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
     });
   }
 
-  // Metodă pentru încărcarea statisticilor evenimente
   loadEventStats() {
     console.log('Loading event stats...');
     const currentDate = new Date();
@@ -327,7 +294,6 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
     
     console.log(`Loading density for ${currentYear}/${currentMonth}`);
     
-    // Încărcăm densitatea pentru luna curentă pentru a obține statistici
     this.http.get<any>(`http://localhost:8080/api/events/calendar-density/${currentYear}/${currentMonth}`).subscribe({
       next: (densityData) => {
         console.log('Received density data:', densityData);
@@ -338,7 +304,6 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
       }
     });
     
-    // Încărcăm toate evenimentele pentru a găsi următorul și cel mai popular
     this.http.get<any[]>('http://localhost:8080/api/events').subscribe({
       next: (allEvents) => {
         console.log('Received all events:', allEvents);
@@ -350,7 +315,6 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
     });
   }
 
-  // Calculează statistici din datele de densitate
   calculateStatsFromDensity(densityData: any) {
     let totalEvents = 0;
     let totalAvailable = 0;
@@ -360,11 +324,9 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
       if (dayData.events && Array.isArray(dayData.events)) {
         totalEvents += dayData.events.length;
         
-        // Calculăm locurile disponibile și evenimentele complete
         dayData.events.forEach((event: any) => {
           totalAvailable += event.availableSpots || 0;
           
-          // Considerăm evenimentele "very-high" și "full" ca fiind aproape/complet ocupate
           if (event.status === 'full' || event.status === 'very-high') {
             fullEvents++;
           }
@@ -380,28 +342,22 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
     console.log('Updated stats:', this.eventStats);
   }
 
-  // Găsește următorul eveniment și cel mai popular
   findNextAndPopularEvents(allEvents: any[]) {
     const now = new Date();
     
-    // Filtrează evenimente viitoare și le sortează
     const futureEvents = allEvents
       .filter(event => new Date(event.startDate) > now)
       .sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
     
-    // Următorul eveniment
     this.eventStats.nextEvent = futureEvents.length > 0 ? futureEvents[0] : null;
-    
-    // Pentru evenimente populare, simulăm popularitatea pe baza ID-ului (în lipsa datelor reale de participare)
-    // În realitate, aici ai putea calcula pe baza numărului de participanți
+
     const popularEvents = allEvents
       .filter(event => new Date(event.startDate) > now)
-      .sort((a, b) => b.id - a.id); // Simulare: ID mai mare = mai popular
+      .sort((a, b) => b.id - a.id);
     
     this.eventStats.popularEvent = popularEvents.length > 0 ? popularEvents[0] : null;
   }
 
-  // Metodă pentru navigarea la calendarul inteligent pentru un eveniment specific
   scrollToCalendarAndHighlight(eventDate?: string) {
     const calendarElement = document.querySelector('.calendar-container');
     if (calendarElement) {
