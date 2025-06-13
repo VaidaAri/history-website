@@ -107,11 +107,9 @@ h4 {
   position: relative;
   font-family: 'Merriweather', serif;
   font-weight: bold;
-  /* Eliminat text-transform: uppercase; */
   letter-spacing: 0.1em;
 }
 
-/* Eliminată sublinierea de sub titluri */
 
 ul {
   margin: 25px 0 25px 40px;
@@ -133,7 +131,6 @@ li {
   font-size: 1.15em;
 }
 
-/* Stilizare pentru butonul de publicații */
 .publications-button-container {
   display: flex;
   justify-content: flex-end;
@@ -163,12 +160,10 @@ li {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* Stilizare fără animație pentru text */
 p, h4, li {
   opacity: 1;
 }
 
-/* Responsive design */
 @media (max-width: 768px) {
   .standard-image, 
   .standard-image.left, 
@@ -178,7 +173,6 @@ p, h4, li {
     display: block;
   }
   
-  /* Format vertical pentru portrete în versiunea mobilă */
   .standard-image[src*="Florian Porcius"],
   .standard-image[src*="Iulian Martian"],
   .standard-image[src*="Virgil Sotropa"],
@@ -188,7 +182,6 @@ p, h4, li {
     height: 420px;
   }
   
-  /* Format orizontal pentru imagini landscape în versiunea mobilă */
   .standard-image[src*="cladire veche muz"],
   .standard-image[src*="bust Vasile Nascu"] {
     width: 380px;
@@ -218,7 +211,6 @@ p, h4, li {
     font-size: 1.3em;
   }
   
-  /* Adaptăm listele pentru dispozitive mobile */
   ul {
     margin: 20px 10px;
     padding: 12px 12px 12px 24px;
@@ -230,57 +222,48 @@ p, h4, li {
   }
 }
 
-/* =============================================== */
-/* BORDURI DECORATIVE CU MODELE POPULARE ROMÂNEȘTI */
-/* =============================================== */
-
-/* Container principal pentru bordurile decorative */
 .decorative-borders {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    min-height: 100vh; /* Minimul unei pagini întregi */
-    height: 100%; /* Și se extinde cu conținutul */
-    pointer-events: none; /* Permite click-urile prin borduri */
-    z-index: 1; /* Sub meniu dar peste fundal */
+    min-height: 100vh; 
+    height: 100%; 
+    pointer-events: none; 
+    z-index: 1; 
 }
 
-/* Bordura stângă */
 .decorative-border-left {
     position: absolute;
-    left: 0; /* Lipit de marginea stângă */
+    left: 0; 
     top: 0;
-    width: 120px; /* Mai mare ca să fie mai vizibil */
-    height: 100%; /* Toată înălțimea containerului */
+    width: 120px; 
+    height: 100%; 
     background-image: url('http://localhost:8080/images/Modele Pagina/model1.png');
     background-repeat: repeat-y;
-    background-size: 170px auto; /* Modelul și mai mare - lățime fixă de 170px */
+    background-size: 170px auto;
     background-position: center top;
     opacity: 0.85;
 }
 
-/* Bordura dreaptă */
 .decorative-border-right {
     position: absolute;
-    right: 0; /* Lipit de marginea dreaptă */
+    right: 0; 
     top: 0;
-    width: 120px; /* Mai mare ca să fie mai vizibil */
-    height: 100%; /* Toată înălțimea containerului */
+    width: 120px; 
+    height: 100%; 
     background-image: url('http://localhost:8080/images/Modele Pagina/model1.png');
     background-repeat: repeat-y;
-    background-size: 170px auto; /* Aceeași dimensiune ca bordura stângă */
+    background-size: 170px auto; 
     background-position: center top;
     opacity: 0.85;
-    transform: scaleX(-1); /* Oglindește modelul pentru varietate */
+    transform: scaleX(-1); 
 }
 
-/* Asigură-te că main-ul istoric are poziționare relativă pentru borduri */
 .istoric {
-    position: relative; /* Necesar pentru pozitionarea absolută a bordurilor */
+    position: relative;  
 }
 
-/* Responsive - ajustează dimensiunile pe ecrane mici */
 @media (max-width: 1400px) {
     .decorative-border-left {
         width: 100px;
@@ -303,6 +286,6 @@ p, h4, li {
 
 @media (max-width: 768px) {
     .decorative-borders {
-        display: none; /* Ascunde complet pe mobile */
+        display: none; 
     }
 }

@@ -28,7 +28,6 @@
     font-family: 'Merriweather', serif;
 }
 
-/* Stilizare scrollbar pentru body */
 body::-webkit-scrollbar {
     width: 8px;
 }
@@ -48,7 +47,6 @@ body::-webkit-scrollbar-thumb:hover {
     background-color: #5D4037;
 }
 
-/* Responsive design */
 @media (max-width: 768px) {
     .cadran {
         width: 92%;

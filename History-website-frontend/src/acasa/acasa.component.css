@@ -7,7 +7,7 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    position: relative; /* Necesar pentru pozitionarea absolută a bordurilor */
+    position: relative; 
 }
 
 .home-container {
@@ -15,9 +15,6 @@
     max-width: 1200px;
     margin: 0 auto;
 }
-
-/* Secțiunea de bun venit */
-/* Am eliminat stilurile pentru welcome-section deoarece folosim standardizarea globală pentru h2 */
 
 
 .title-accent {
@@ -32,7 +29,6 @@
     line-height: 1.6;
 }
 
-/* Secțiunea de navigare rapidă */
 .quick-nav-section {
     margin: 30px 0;
 }
@@ -107,12 +103,10 @@
     line-height: 1.4;
 }
 
-/* Secțiunea de galerie */
 .gallery-section {
     margin-bottom: 30px;
 }
 
-/* Secțiunea de postări */
 .posts-section {
     margin-top: 40px;
     padding-top: 20px;
@@ -123,7 +117,6 @@
     margin-bottom: 20px;
 }
 
-/* Nu folosim stilizarea globală pentru h3 pe această pagină */
 .posts-header h3 {
     color: #5D4037;
     font-size: 1.4em;
@@ -134,7 +127,6 @@
     border-bottom: none;
 }
 
-/* Formular administrator pentru adăugare postări */
 .admin-post-form {
     background-color: #F8F4E3;
     border-radius: 12px;
@@ -210,7 +202,6 @@
 }
 
 
-/* Admin Indicator */
 .admin-indicator {
     margin: 15px 0;
     text-align: center;
@@ -255,9 +246,6 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* Stilurile pentru admin-footer au fost mutate în app.component.css */
-
-/* Formular pentru adăugare postare */
 .add-post-form {
     background-color: #F8F4E3;
     border-radius: 12px;
@@ -412,7 +400,6 @@
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* Lista de postări */
 .posts-list {
     display: flex;
     flex-direction: column;
@@ -484,7 +471,6 @@
     margin-right: 2px;
 }
 
-/* Responsive design */
 @media (max-width: 768px) {
     .image-input-container {
         flex-direction: column;
@@ -523,53 +509,45 @@
     }
 }
 
-/* =============================================== */
-/* BORDURI DECORATIVE CU MODELE POPULARE ROMÂNEȘTI */
-/* =============================================== */
-
-/* Container principal pentru bordurile decorative */
 .decorative-borders {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    min-height: 100vh; /* Minimul unei pagini întregi */
-    height: 100%; /* Și se extinde cu conținutul */
-    pointer-events: none; /* Permite click-urile prin borduri */
-    z-index: 1; /* Sub meniu dar peste fundal */
+    min-height: 100vh; 
+    height: 100%; 
+    pointer-events: none; 
+    z-index: 1; 
 }
 
-/* Bordura stângă */
 .decorative-border-left {
     position: absolute;
-    left: 0; /* Lipit de marginea stângă */
+    left: 0; 
     top: 0;
-    width: 120px; /* Mai mare ca să fie mai vizibil */
-    height: 100%; /* Toată înălțimea containerului */
+    width: 120px;
+    height: 100%;
     background-image: url('http://localhost:8080/images/Modele Pagina/model1.png');
     background-repeat: repeat-y;
-    background-size: 170px auto; /* Modelul și mai mare - lățime fixă de 170px */
+    background-size: 170px auto; 
     background-position: center top;
     opacity: 0.85;
 }
 
-/* Bordura dreaptă */
 .decorative-border-right {
     position: absolute;
-    right: 0; /* Lipit de marginea dreaptă */
+    right: 0; 
     top: 0;
-    width: 120px; /* Mai mare ca să fie mai vizibil */
-    height: 100%; /* Toată înălțimea containerului */
+    width: 120px; 
+    height: 100%; 
     background-image: url('http://localhost:8080/images/Modele Pagina/model1.png');
     background-repeat: repeat-y;
-    background-size: 170px auto; /* Aceeași dimensiune ca bordura stângă */
+    background-size: 170px auto; 
     background-position: center top;
     opacity: 0.85;
-    transform: scaleX(-1); /* Oglindește modelul pentru varietate */
+    transform: scaleX(-1); 
 }
 
 
-/* Responsive - ajustează dimensiunile pe ecrane mici */
 @media (max-width: 1400px) {
     .decorative-border-left {
         width: 100px;
@@ -592,6 +570,6 @@
 
 @media (max-width: 768px) {
     .decorative-borders {
-        display: none; /* Ascunde complet pe mobile */
+        display: none; 
     }
 }

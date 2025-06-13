@@ -62,7 +62,6 @@
   font-weight: 400;
 }
 
-/* Stiluri pentru carusel */
 .carousel-container {
   position: relative;
   margin: 35px 0;
@@ -104,7 +103,6 @@
   cursor: pointer;
 }
 
-/* Stiluri pentru butoane de navigare */
 .carousel-btn {
   position: absolute;
   top: 50%;
@@ -141,7 +139,6 @@
   cursor: not-allowed;
 }
 
-/* Dots indicator */
 .carousel-dots {
   display: flex;
   justify-content: center;
@@ -166,7 +163,6 @@
   background-color: rgba(125, 90, 80, 0.7);
 }
 
-/* Responsive styles */
 @media (max-width: 768px) {
   .post {
     padding: 25px;

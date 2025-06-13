@@ -31,7 +31,6 @@
   animation: popupSlideIn 0.3s ease;
 }
 
-/* Header */
 .calendar-header {
   display: flex;
   align-items: center;
@@ -100,7 +99,6 @@
   background: rgba(255, 255, 255, 0.3);
 }
 
-/* Legenda */
 .calendar-legend {
   display: flex;
   justify-content: center;
@@ -141,7 +139,6 @@
   background: #6c757d;
 }
 
-/* Zilele săptămânii */
 .calendar-weekdays {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -156,7 +153,6 @@
   font-size: 14px;
 }
 
-/* Grid calendar */
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -165,7 +161,6 @@
   padding: 1px;
 }
 
-/* Zilele din calendar */
 .calendar-day {
   background: white;
   min-height: 80px;
@@ -189,7 +184,6 @@
   min-height: 80px;
 }
 
-/* Statusuri zile */
 .day-available {
   border-left: 4px solid #28a745;
   background: linear-gradient(135deg, #ffffff 0%, #f8fff8 100%);
@@ -217,7 +211,6 @@
   transform: none;
 }
 
-/* Conținutul zilelor */
 .day-number {
   font-weight: bold;
   font-size: 16px;
@@ -244,7 +237,6 @@
   color: #333;
 }
 
-/* Popup detalii zi */
 .day-details-overlay {
   position: fixed;
   top: 0;
@@ -350,7 +342,6 @@
   color: #383d41;
 }
 
-/* Time slots */
 .time-slots h4 {
   color: #333;
   margin-bottom: 15px;
@@ -429,7 +420,6 @@
   border-color: #ffc107;
 }
 
-/* Acțiuni popup */
 .popup-actions {
   margin-top: 20px;
   text-align: center;
@@ -472,7 +462,6 @@
   margin: 0;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .calendar-header {
     flex-direction: column;

@@ -15,7 +15,6 @@
     padding: 40px 20px;
 }
 
-/* Loading Section */
 .loading-section {
     text-align: center;
     background-color: #F8F4E3;
@@ -40,7 +39,6 @@
     100% { transform: rotate(360deg); }
 }
 
-/* Success Section */
 .success-section {
     text-align: center;
     background-color: #F8F4E3;
@@ -62,7 +60,6 @@
     margin-bottom: 30px;
 }
 
-/* Error Section */
 .error-section {
     text-align: center;
     background-color: #F8F4E3;
@@ -84,7 +81,6 @@
     margin-bottom: 30px;
 }
 
-/* Common Styles */
 h2 {
     color: #5D4037;
     margin-bottom: 15px;
@@ -97,7 +93,6 @@ h3 {
     font-size: 1.3em;
 }
 
-/* Info Box */
 .info-box {
     background-color: rgba(234, 209, 150, 0.2);
     border-left: 4px solid #7D5A50;
@@ -123,7 +118,6 @@ h3 {
     line-height: 1.5;
 }
 
-/* Actions */
 .actions {
     margin: 30px 0;
     display: flex;
@@ -171,7 +165,6 @@ h3 {
     transform: translateY(-2px);
 }
 
-/* Redirect Notice */
 .redirect-notice {
     margin-top: 20px;
     padding: 15px;
@@ -186,7 +179,6 @@ h3 {
     font-size: 0.9em;
 }
 
-/* Help Section */
 .help-section {
     margin-top: 30px;
     padding: 20px;
@@ -200,7 +192,6 @@ h3 {
     color: #5D4037;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
     .confirmation-container {
         padding: 20px 15px;

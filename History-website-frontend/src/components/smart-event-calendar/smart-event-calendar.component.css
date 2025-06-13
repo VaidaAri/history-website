@@ -15,7 +15,6 @@
   pointer-events: none;
 }
 
-/* Modul embedded - fără overlay, pozitionare relativă */
 .smart-event-calendar.embedded {
   position: relative;
   top: auto;
@@ -56,7 +55,6 @@
   animation: slideInUp 0.3s ease-out;
 }
 
-/* Container pentru modul embedded */
 .calendar-container.embedded-container {
   background-color: white;
   border-radius: 15px;
@@ -80,7 +78,6 @@
   }
 }
 
-/* Header */
 .calendar-header {
   background: linear-gradient(135deg, #7D5A50 0%, #5D4037 100%);
   color: white;
@@ -170,7 +167,6 @@
   background: rgba(255, 255, 255, 0.2);
 }
 
-/* Loading */
 .loading-indicator {
   text-align: center;
   padding: 40px;
@@ -183,7 +179,6 @@
   font-size: 1.2em;
 }
 
-/* Calendar Grid */
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -213,7 +208,6 @@
   transition: all 0.2s ease;
 }
 
-/* Înălțime mai mare pentru zilele cu evenimente în modul embedded */
 .embedded .calendar-day {
   min-height: 120px;
 }
@@ -234,9 +228,6 @@
   margin-bottom: 5px;
 }
 
-/* Seasonal Day Colors - Culori sezoniere pentru zilele calendarului */
-
-/* Primăvara (Martie-Mai) - Verde proaspăt light */
 .season-spring {
   background: linear-gradient(135deg, #f9fdf9 0%, #f1f8e9 100%) !important;
   border-left: 4px solid #66bb6a;
@@ -246,7 +237,6 @@
   font-weight: 600;
 }
 
-/* Vara (Iunie-August) - Galben foarte light */
 .season-summer {
   background: linear-gradient(135deg, #fefff8 0%, #fffde7 100%) !important;
   border-left: 4px solid #ffca28;
@@ -256,7 +246,6 @@
   font-weight: 600;
 }
 
-/* Toamna (Septembrie-Noiembrie) - Portocaliu light */
 .season-autumn {
   background: linear-gradient(135deg, #fffaf6 0%, #fff3e0 100%) !important;
   border-left: 4px solid #ff8a65;
@@ -266,7 +255,6 @@
   font-weight: 600;
 }
 
-/* Iarna (Decembrie-Februarie) - Albastru foarte light */
 .season-winter {
   background: linear-gradient(135deg, #f8fcff 0%, #e3f2fd 100%) !important;
   border-left: 4px solid #42a5f5;
@@ -275,7 +263,6 @@
   color: #0d47a1;
   font-weight: 600;
 }
-/* Zilele trecute - Gri */
 .past-day {
   background-color: #f8f9fa !important;
   border-left: 4px solid #6c757d;
@@ -286,7 +273,6 @@
   color: #495057;
 }
 
-/* Event indicators */
 .day-events {
   flex: 1;
   display: flex;
@@ -313,7 +299,6 @@
   flex-shrink: 0;
 }
 
-/* Event Status Colors */
 .event-available {
   background-color: #28a745;
 }
@@ -355,7 +340,6 @@
   margin-top: auto;
 }
 
-/* Stiluri pentru evenimente mini în modul embedded */
 .event-list {
   display: flex;
   flex-direction: column;
@@ -425,7 +409,6 @@
   font-weight: 400;
 }
 
-/* Legend */
 .calendar-legend {
   padding: 20px;
   background-color: #f8f9fa;
@@ -458,7 +441,6 @@
   border-left: 3px solid;
 }
 
-/* Day Details Popup */
 .day-details-popup {
   position: fixed;
   top: 0;
@@ -635,7 +617,6 @@
   background-color: #6a4c42;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .calendar-container {
     width: 95%;

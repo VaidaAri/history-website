@@ -115,7 +115,6 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-/* Stilul pentru dialogul modal */
 .admin-modal-overlay {
   position: fixed;
   top: 0;
@@ -295,15 +294,14 @@
   background-color: rgba(255, 255, 255, 0.2);
 }
 
-/* Stiluri footer simplu */
 .simple-footer {
   background-color: #7D5A50;
   background-image: linear-gradient(to right, #5D4037, #7D5A50, #5D4037);
-  height: 150px; /* Footer mai mare pe verticală */
+  height: 150px; 
   width: 100%;
-  margin-top: 20px; /* Distanță mai mică față de conținut */
+  margin-top: 20px;
   position: relative;
-  border-top: 4px solid #EAD196; /* Linie aurie în partea de sus */
+  border-top: 4px solid #EAD196; 
   box-shadow: 0px -6px 18px rgba(0, 0, 0, 0.15);
 }
 
@@ -318,7 +316,6 @@
   z-index: -1;
 }
 
-/* Stiluri pentru conținutul footer-ului */
 .footer-content {
   display: flex;
   justify-content: space-between;
@@ -330,7 +327,7 @@
   position: relative;
 }
 
-/* Stiluri pentru deviza muzeului */
+
 .footer-center {
   position: absolute;
   left: 50%;
@@ -366,12 +363,10 @@
   font-style: italic;
 }
 
-/* Elementele laterale */
 .footer-left, .admin-login-container {
   flex: 1;
 }
 
-/* Iconițe rețele sociale */
 .social-icons {
   display: flex;
   gap: 15px;
@@ -402,7 +397,6 @@
   border-color: #EAD196;
 }
 
-/* Stiluri pentru informațiile de locație */
 .location-info {
   margin-bottom: 20px;
 }
@@ -429,7 +423,6 @@
   text-align: center;
 }
 
-/* Element central */
 .footer-center {
   position: absolute;
   left: 50%;
@@ -444,7 +437,6 @@
   margin: 0;
 }
 
-/* Stiluri pentru butonul de autentificare administrator */
 .admin-login-container {
   opacity: 0.7;
   transition: opacity 0.3s ease;
@@ -474,7 +466,6 @@
   transform: translateY(-2px);
 }
 
-/* Ajustări responsive */
 @media (max-width: 768px) {
   .admin-badge {
     display: none;
@@ -488,7 +479,6 @@
     font-size: 0.9em;
   }
   
-  /* Responsive footer */
   .simple-footer {
     height: auto;
     padding: 30px 0 15px;

@@ -132,7 +132,6 @@
   color: #495057;
 }
 
-/* Animații */
 @keyframes slideInRight {
   from {
     transform: translateX(100%);
@@ -159,7 +158,6 @@
   }
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .notification-container {
     left: 20px;
@@ -194,7 +192,6 @@
   }
 }
 
-/* Dark theme support (opțional) */
 @media (prefers-color-scheme: dark) {
   .notification {
     background: #2d3748;

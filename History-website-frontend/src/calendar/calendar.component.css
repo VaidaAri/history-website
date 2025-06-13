@@ -11,7 +11,6 @@
   min-height: 500px;
 }
 
-/* Header calendar (lun, an, butoane) */
 ::ng-deep .fc-header-toolbar {
   margin-bottom: 1.5em !important;
   background-color: rgba(93, 64, 55, 0.08);
@@ -27,7 +26,6 @@
   text-transform: capitalize;
 }
 
-/* Butoane */
 ::ng-deep .fc-button-primary {
   background-color: #7D5A50 !important;
   border-color: #7D5A50 !important;
@@ -48,7 +46,6 @@
   opacity: 0.7;
 }
 
-/* Zilele sptm�nii */
 ::ng-deep .fc-col-header-cell {
   background-color: #EAD196;
   padding: 10px 0;
@@ -64,7 +61,6 @@
   text-decoration: none !important;
 }
 
-/* Celule zile */
 ::ng-deep .fc-daygrid-day {
   transition: background-color 0.2s ease;
 }
@@ -74,7 +70,7 @@
 }
 
 ::ng-deep .fc-daygrid-day-frame {
-  min-height: 90px; /* Celule cu înălțime intermediară pentru zile */
+  min-height: 90px; 
 }
 
 ::ng-deep .fc-daygrid-day-number {
@@ -84,13 +80,11 @@
   text-decoration: none !important;
 }
 
-/* Zile din alte luni */
 ::ng-deep .fc-day-other .fc-daygrid-day-number {
   color: #999;
   opacity: 0.7;
 }
 
-/* Ziua de azi */
 ::ng-deep .fc-day-today {
   background-color: rgba(234, 209, 150, 0.3) !important;
 }
@@ -107,7 +101,6 @@
   margin: 5px;
 }
 
-/* Evenimente */
 ::ng-deep .fc-event {
   background-color: #7D5A50 !important;
   border: none !important;
@@ -129,18 +122,15 @@
   font-weight: 500;
 }
 
-/* Stiluri pentru eveniment selectat */
 ::ng-deep .fc-event-selected {
   box-shadow: 0 0 0 2px #EAD196 !important;
 }
 
-/* Stiluri pentru evenimentele mai lungi (multiple zile) */
 ::ng-deep .fc-event-main-frame {
   display: flex;
   align-items: center;
 }
 
-/* Stiluri pentru modal */
 .event-modal, .event-details-modal {
   position: fixed;
   top: 0;
@@ -235,7 +225,6 @@
   flex: 1;
 }
 
-/* Stiluri pentru modalul de detalii eveniment */
 .event-details-modal .modal-content {
   max-width: 700px;
 }
@@ -422,7 +411,6 @@
   cursor: pointer;
 }
 
-/* Stilizare pentru inputurile de tip date */
 input[type="date"] {
   appearance: none;
   -webkit-appearance: none;
@@ -441,7 +429,6 @@ input[type="date"]:focus {
   box-shadow: 0 0 0 3px rgba(125, 90, 80, 0.2);
 }
 
-/* Pentru Chrome/Edge/Safari */
 input[type="date"]::-webkit-calendar-picker-indicator {
   background-color: transparent;
   cursor: pointer;
@@ -645,7 +632,6 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   box-shadow: none;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   ::ng-deep .fc-header-toolbar {
     flex-direction: column;

@@ -14,7 +14,6 @@
   padding-bottom: 15px;
 }
 
-/* Navigare între secțiuni */
 .section-nav {
   display: flex;
   justify-content: center;
@@ -46,7 +45,6 @@
   border-color: #5D4037;
 }
 
-/* Secțiuni statistici */
 .stats-section {
   background-color: #F8F4E3;
   border-radius: 15px;
@@ -73,7 +71,6 @@
   font-style: italic;
 }
 
-/* Grid pentru cardurile de statistici */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -111,7 +108,6 @@
   letter-spacing: 1px;
 }
 
-/* Secțiuni detaliate */
 .detailed-stats {
   background-color: white;
   border-radius: 12px;
@@ -135,7 +131,6 @@
   padding: 20px;
 }
 
-/* Liste rezervări și evenimente */
 .reservations-list, .events-list {
   display: flex;
   flex-direction: column;
@@ -168,7 +163,6 @@
   font-size: 0.9em;
 }
 
-/* Statistici categorii de vârstă */
 .age-stats-section {
   background-color: white;
   border-radius: 12px;
@@ -240,9 +234,6 @@
   display: inline-block;
 }
 
-/* =============================================== */
-/* STILURI PENTRU CARTONAȘUL ÎN STILUL PAGINII DE EVENIMENTE */
-/* =============================================== */
 
 .events-info-box {
   flex: 1;
@@ -274,13 +265,11 @@
   font-size: 1.2em;
 }
 
-/* Cartonaș statistici cu gradient albastru ca în pagina de evenimente */
 .stats-box-evenimente {
   background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
   border-left: 4px solid #2196f3;
 }
 
-/* Grid pentru statistici în stilul paginii de evenimente */
 .stats-grid-evenimente {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -323,7 +312,6 @@
   opacity: 1;
 }
 
-/* Loading state pentru statistici în stilul paginii de evenimente */
 .loading-stats-evenimente {
   text-align: center;
   padding: 20px 0;
@@ -346,10 +334,6 @@
   100% { opacity: 0.6; }
 }
 
-/* =============================================== */
-/* STILURI PENTRU CARTONAȘELE COLORATE DE VIZITE */
-/* =============================================== */
-
 .events-info-stats {
   display: flex;
   flex-wrap: wrap;
@@ -371,25 +355,21 @@
   border: 1px solid rgba(234, 209, 150, 0.3);
 }
 
-/* Cartonaș verde pentru rezervări confirmate */
 .stats-box-green {
   background: linear-gradient(135deg, #e8f5e8 0%, #d4edda 100%);
   border-left: 4px solid #28a745;
 }
 
-/* Cartonaș portocaliu pentru categorii de vârstă */
 .stats-box-orange {
   background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
   border-left: 4px solid #ff9800;
 }
 
-/* Cartonaș mov pentru activitate recentă */
 .stats-box-purple {
   background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
   border-left: 4px solid #9c27b0;
 }
 
-/* Stiluri pentru cartonașele interactive ca pe pagina de evenimente */
 .interactive-box {
   cursor: pointer;
   transition: all 0.3s ease;
@@ -406,7 +386,6 @@
   border-left: 4px solid #7D5A50;
 }
 
-/* Override pentru barele colorate specifice */
 .stats-box-green.has-event {
   border-left-color: #28a745;
 }
@@ -419,7 +398,6 @@
   border-left-color: #9c27b0;
 }
 
-/* Stiluri pentru numere colorate */
 .stat-number-green {
   font-size: 1.8em;
   font-weight: 700;
@@ -444,7 +422,6 @@
   margin-bottom: 5px;
 }
 
-/* Grid special pentru categorii de vârstă */
 .stats-grid-age {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -485,7 +462,6 @@
   margin-top: 5px;
 }
 
-/* Grid pentru activitate recentă */
 .stats-grid-recent {
   margin: 20px 0;
   flex-grow: 1;
@@ -538,7 +514,6 @@
   font-style: italic;
 }
 
-/* Responsive design */
 @media (max-width: 768px) {
   .statistici-container {
     padding: 1rem;

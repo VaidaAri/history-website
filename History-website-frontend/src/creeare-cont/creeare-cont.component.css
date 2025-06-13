@@ -232,7 +232,6 @@ input::placeholder {
   font-size: 1.1em;
 }
 
-/* Stilizare tabel */
 .table-container {
   padding: 20px;
   overflow-x: auto;
@@ -302,13 +301,11 @@ input::placeholder {
   color: #7D5A50;
 }
 
-/* Animations */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Responsive design */
 @media (max-width: 900px) {
   .admin-container {
     flex-direction: column;

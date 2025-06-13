@@ -1,7 +1,5 @@
-/* Import Angular Material stylesheet */
 @import "@angular/material/prebuilt-themes/indigo-pink.css";
 
-/* Global styles */
 html, body {
   margin: 0;
   padding: 0;
@@ -18,7 +16,6 @@ html, body {
   box-sizing: border-box;
 }
 
-/* Stilizare standardizată pentru headinguri */
 h2 {
   color: #5D4037;
   text-align: center;
