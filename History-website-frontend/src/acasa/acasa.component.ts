@@ -13,7 +13,7 @@ import { PostService } from '../services/post.service';
 import { TranslatePipe } from '../services/i18n/translate.pipe';
 import { TranslationService } from '../services/i18n/translation.service';
 
-// Interfață pentru secțiune
+
 interface Section {
   id: number;
   title: string;
@@ -40,7 +40,7 @@ interface Section {
   providers: [TranslationService]
 })
 export class AcasaComponent implements OnInit {
-  // Definim secțiunile statice
+
   sections: Section[] = [
     { id: 0, title: 'Noutăți și Articole', posts: [] },
     { id: 1, title: 'Peisaje din curtea muzeului', posts: [] },
@@ -63,27 +63,27 @@ export class AcasaComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Verifică starea autentificării
+
     this.authService.isAuthenticated$.subscribe(
       isAuthenticated => {
         this.isAdmin = isAuthenticated;
       }
     );
     
-    // Încarcă postările
+
     this.loadPosts();
   }
 
   loadPosts() {
     this.postService.getPosts().subscribe({
       next: (data) => {
-        // Filtrăm postările goale (cele fără descriere sau cu descriere goală)
+
         this.posts = data.filter(post => 
           post.description && 
           post.description.trim().length > 0
         );
         
-        // Sortare postări - cele mai noi primele
+
         this.posts.sort((a, b) => {
           return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
         });

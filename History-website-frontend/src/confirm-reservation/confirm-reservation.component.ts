@@ -46,7 +46,7 @@ export class ConfirmReservationComponent implements OnInit {
           this.message = response.message || 'Rezervarea a fost confirmată cu succes!';
           this.isLoading = false;
           
-          // Redirecționăm către pagina de rezervări după 5 secunde
+
           setTimeout(() => {
             this.router.navigate(['/rezervari']);
           }, 5000);

@@ -28,7 +28,7 @@ export class CreeareContComponent {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    // Nu mai este nevoie să încărcăm lista de administratori aici
+
   }
 
   togglePasswordVisibility() {
@@ -52,7 +52,7 @@ export class CreeareContComponent {
     this.http.post("http://localhost:8080/api/administrators", this.newAdmin).subscribe({
       next: () => {
         alert("Administrator adăugat cu succes!");
-        this.newAdmin = { firstName: '', lastName: '', username: '', password: '', email: '' }; // Resetează formularul
+        this.newAdmin = { firstName: '', lastName: '', username: '', password: '', email: '' }; 
         this.passwordError = '';
       },
       error: (err) => {
@@ -62,5 +62,5 @@ export class CreeareContComponent {
     });
   }
 
-  // Funcția de ștergere a fost mutată în panoul de administrare
+
 }

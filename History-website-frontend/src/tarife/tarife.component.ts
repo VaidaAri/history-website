@@ -15,6 +15,6 @@ import { TranslationService } from '../services/i18n/translation.service';
 })
 export class TarifeComponent {
   constructor(private translationService: TranslationService) {
-    // Serviciul este injectat pentru a fi disponibil în template
+
   }
 }

@@ -27,7 +27,7 @@ export class AdministratorLoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    // Dacă utilizatorul este deja autentificat, redirecționează la pagina principală
+
     if (this.authService.isAuthenticated()) {
       this.router.navigate(['/']);
     }
