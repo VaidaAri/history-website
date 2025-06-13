@@ -10,7 +10,6 @@
        [class.embedded-container]="isEmbedded"
        [class.popup-container]="!isEmbedded"
        (click)="isEmbedded ? null : $event.stopPropagation()">
-    <!-- Header -->
     <div class="calendar-header">
       <div class="header-controls">
         <button class="nav-btn" (click)="previousMonth()" [disabled]="isLoading">
@@ -36,19 +35,15 @@
       </div>
     </div>
 
-    <!-- Loading indicator -->
     <div class="loading-indicator" *ngIf="isLoading">
       <i class="fas fa-spinner fa-spin"></i> Se încarcă...
     </div>
 
-    <!-- Calendar -->
     <div class="calendar-grid" *ngIf="!isLoading">
-      <!-- Day headers -->
       <div class="day-header" *ngFor="let dayName of dayNames">
         {{ dayName }}
       </div>
       
-      <!-- Calendar days -->
       <div 
         *ngFor="let dayData of calendarDays" 
         class="calendar-day"
@@ -61,7 +56,6 @@
         </div>
         
         <div class="day-events" *ngIf="!dayData.isEmpty && dayData.totalEvents > 0">
-          <!-- Liste de evenimente cu titluri pentru modul embedded -->
           <div *ngIf="isEmbedded" class="event-list">
             <div 
               *ngFor="let event of dayData.events; let i = index" 
@@ -74,7 +68,6 @@
             </div>
           </div>
           
-          <!-- Indicatori pentru modul popup -->
           <div *ngIf="!isEmbedded">
             <div class="events-count">
               {{ dayData.totalEvents }} event{{ dayData.totalEvents !== 1 ? 'e' : '' }}
@@ -101,7 +94,6 @@
       </div>
     </div>
 
-    <!-- Legend -->
     <div class="calendar-legend" *ngIf="!isLoading">
       <div class="legend-title">Legendă ocupare evenimente:</div>
       <div class="legend-items">
@@ -141,7 +133,6 @@
     </div>
   </div>
 
-  <!-- Day Details Popup - doar în modul non-embedded -->
   <div class="day-details-popup" *ngIf="!isEmbedded && showDayDetails && selectedDayData" (click)="closeDayDetails()">
     <div class="popup-content" (click)="$event.stopPropagation()">
       <div class="popup-header">

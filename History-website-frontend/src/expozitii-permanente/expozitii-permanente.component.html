@@ -1,5 +1,4 @@
 <main class="expozitii-permanente">
-  <!-- Borduri decorative cu modele populare românești -->
   <div class="decorative-borders">
     <div class="decorative-border-left"></div>
     <div class="decorative-border-right"></div>
@@ -23,7 +22,6 @@
         <button [class.active]="selectedSection === 'aerLiber'" (click)="switchSection('aerLiber')">{{ 'exhibitionsOutdoorBtn' | translate }}</button>
       </div>
 
-      <!-- Expoziția de Istorie -->
       <div class="section-description" *ngIf="selectedSection === 'istorie'">
         <h2>{{ 'exhibitionsHistoryTitle' | translate }}</h2>
         <p><em>{{ 'exhibitionsHistoryInaugurated' | translate }}</em></p>
@@ -35,13 +33,9 @@
             <div class="exhibition-image-container">
               <img [src]="image.url" [alt]="image.filename" class="exhibition-image" loading="lazy" />
             </div>
-            <!-- <div class="exhibition-info">
-              <p>{{ image.description || 'Vedere din expoziția de istorie' }}</p>
-            </div> -->
           </div>
         </div>
         
-        <!-- Pagination Controls -->
         <div class="pagination-controls" *ngIf="totalPages > 1">
           <button class="pagination-btn" (click)="prevPage()" [disabled]="currentPage === 1">
             {{ 'exhibitionsPrevious' | translate }}
@@ -67,7 +61,6 @@
         </div>
       </div>
 
-      <!-- Expoziția de Etnografie -->
       <div class="section-description" *ngIf="selectedSection === 'etnografie'">
         <h2>{{ 'exhibitionsEthnographyTitle' | translate }}</h2>
         <p><em>{{ 'exhibitionsEthnographyInaugurated' | translate }}</em></p>
@@ -79,13 +72,9 @@
             <div class="exhibition-image-container">
               <img [src]="image.url" [alt]="image.filename" class="exhibition-image" loading="lazy" />
             </div>
-            <!-- <div class="exhibition-info">
-              <p>{{ image.description || 'Vedere din expoziția de etnografie' }}</p>
-            </div> -->
           </div>
         </div>
         
-        <!-- Pagination Controls -->
         <div class="pagination-controls" *ngIf="totalPages > 1">
           <button class="pagination-btn" (click)="prevPage()" [disabled]="currentPage === 1">
             {{ 'exhibitionsPrevious' | translate }}
@@ -111,7 +100,6 @@
         </div>
       </div>
 
-      <!-- Secția în Aer Liber -->
       <div class="section-description" *ngIf="selectedSection === 'aerLiber'">
         <h2>{{ 'exhibitionsOutdoorTitle' | translate }}</h2>
         <p><em>{{ 'exhibitionsOutdoorCompleted' | translate }}</em></p>
@@ -123,13 +111,9 @@
             <div class="exhibition-image-container">
               <img [src]="image.url" [alt]="image.filename" class="exhibition-image" loading="lazy" />
             </div>
-            <!-- <div class="exhibition-info">
-              <p>{{ image.description || 'Vedere din secția în aer liber' }}</p>
-            </div> -->
           </div>
         </div>
         
-        <!-- Pagination Controls -->
         <div class="pagination-controls" *ngIf="totalPages > 1">
           <button class="pagination-btn" (click)="prevPage()" [disabled]="currentPage === 1">
             {{ 'exhibitionsPrevious' | translate }}
@@ -166,7 +150,6 @@
         <p>{{ 'exhibitionsGroupBooking' | translate }}</p>
       </div>
 
-      <!-- Gallery modal -->
       <div class="gallery-modal" *ngIf="showGallery" [class.fullscreen]="isFullscreen">
         <div class="gallery-overlay" (click)="closeGallery()"></div>
         

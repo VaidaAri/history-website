@@ -1,5 +1,4 @@
 <main class="rezervari">
-<!-- Borduri decorative cu modele populare românești -->
 <div class="decorative-borders">
   <div class="decorative-border-left"></div>
   <div class="decorative-border-right"></div>
@@ -9,7 +8,6 @@
 <app-cadran>
     <h2>{{ 'rezervariTitle' | translate }}</h2>
     
-    <!-- Program muzeu -->
     <div class="museum-schedule" *ngIf="currentSchedule">
         <div class="schedule-header">
             <h3>{{ 'rezervariScheduleTitle' | translate }}: <span class="season">{{ currentSchedule.seasonName }}</span></h3>
@@ -60,18 +58,15 @@
                            (input)="validateEmail()"
                            [class.invalid]="emailValidationError">
                     
-                    <!-- Mesaj de validare email -->
                     <div *ngIf="emailValidationError" class="error-message">
                         {{ emailValidationError }}
                     </div>
                     
-                    <!-- Indicator email valid -->
                     <div *ngIf="emailValidationSuccess" class="success-message">
                         ✓ {{ 'rezervariEmailValid' | translate }}
                     </div>
                 </div>
                 
-                <!-- Buton pentru calendarul inteligent -->
                 <div class="form-group">
                     <div class="smart-calendar-section">
                         <h3>📅 Selectare dată și oră</h3>
@@ -86,7 +81,6 @@
                 <div class="form-group">
                     <label>{{ 'rezervariDateTime' | translate }}:</label>
                     <div class="date-time-selector">
-                        <!-- Afișare dată selectată -->
                         <div class="date-select">
                             <label for="date">{{ 'rezervariDate' | translate }}:</label>
                             <input type="text" 
@@ -99,7 +93,6 @@
                                    class="date-display-readonly">
                         </div>
 
-                        <!-- Afișare oră selectată -->
                         <div class="time-select">
                             <label for="time">{{ 'rezervariTime' | translate }}:</label>
                             <input type="text" 
@@ -113,12 +106,10 @@
                         </div>
                     </div>
 
-                    <!-- Mesaj de eroare pentru data/ora -->
                     <div *ngIf="dateTimeError" class="error-message">
                         {{ dateTimeError }}
                     </div>
 
-                    <!-- Informații despre program -->
                     <div class="booking-time-info" *ngIf="currentSchedule">
                         <p>{{ 'rezervariBookingNote' | translate }}:</p>
                         <ul>
@@ -127,7 +118,6 @@
                         </ul>
                     </div>
 
-                    <!-- Input ascuns pentru a stoca valoarea datetime completă pentru backend -->
                     <input type="hidden" name="datetime" [(ngModel)]="newBooking.datetime">
                 </div>
                 
@@ -158,7 +148,6 @@
             </form>
         </div>
 
-        <!-- Lista rezervărilor - vizibilă doar pentru administratori -->
         <div class="table-section" *ngIf="isAdmin">
             <h2>{{ 'rezervariListTitle' | translate }}</h2>
             <table>
@@ -198,7 +187,6 @@
             </table>
         </div>
         
-        <!-- Mesaj de confirmare pentru utilizatorii normali după rezervare -->
         <div *ngIf="!isAdmin" class="confirmation-message">
             <p><strong>{{ 'rezervariImportant' | translate }}</strong> {{ 'rezervariConfirmationEmail' | translate }}</p>
             <p>{{ 'rezervariActivation' | translate }}</p>
@@ -208,7 +196,6 @@
     </div>
 </app-cadran>
 
-<!-- Smart Calendar Popup -->
 <app-smart-calendar 
     [isVisible]="showSmartCalendar"
     [selectedDate]="selectedDate"

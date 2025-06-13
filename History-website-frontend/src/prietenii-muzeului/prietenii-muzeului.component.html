@@ -1,5 +1,4 @@
 <main class="prietenii-muzeului">
-  <!-- Borduri decorative cu modele populare românești -->
   <div class="decorative-borders">
     <div class="decorative-border-left"></div>
     <div class="decorative-border-right"></div>
@@ -17,7 +16,6 @@
         {{ 'friendsIntroText' | translate }}
       </p>
 
-      <!-- Secțiunea de administrare (vizibilă doar pentru administratori) -->
       <div *ngIf="isAdmin" class="admin-section">
         <div class="admin-header">
           <h3>{{ 'friendsAdminSection' | translate }}</h3>
@@ -78,19 +76,16 @@
         </div>
       </div>
 
-      <!-- Mesaj când nu există imagini -->
       <div *ngIf="prieteniImages.length === 0" class="no-images">
         <p>{{ 'friendsNoImages' | translate }}</p>
       </div>
 
-      <!-- Grid de imagini similar cu expozitii-permanente -->
       <div *ngIf="prieteniImages.length > 0" class="prieteni-gallery">
         <div class="images-grid">
           <div class="image-item" *ngFor="let image of getPaginatedImages()" (click)="openGallery(image)">
             <div class="image-container">
               <img [src]="getImageUrl(image.path)" [alt]="image.description" class="gallery-image" loading="lazy" />
               
-              <!-- Overlay cu informații administrative pentru admin -->
               <div *ngIf="isAdmin" class="admin-overlay">
                 <button 
                   (click)="deleteImage(image.id); $event.stopPropagation()" 
@@ -101,13 +96,9 @@
                 </button>
               </div>
             </div>
-            <!-- <div class="image-info">
-              <p>{{ image.description }}</p>
-            </div> -->
           </div>
         </div>
         
-        <!-- Controale de paginare -->
         <div class="pagination-controls" *ngIf="totalPages > 1">
           <button class="pagination-btn" (click)="prevPage()" [disabled]="currentPage === 1">
             {{ 'friendsPrevious' | translate }}
@@ -145,7 +136,6 @@
       
     </div>
 
-    <!-- Galeria modal -->
     <div class="gallery-modal" *ngIf="showGallery" [class.fullscreen]="isFullscreen">
       <div class="gallery-overlay" (click)="closeGallery()"></div>
       
@@ -196,7 +186,6 @@
               </div>
             </div>
             
-            <!-- Informații administrative pentru admin -->
             <div *ngIf="isAdmin && currentImage" class="admin-modal-info">
               <div class="admin-detail">ID: {{ currentImage.id }}</div>
               <div class="admin-detail">{{ currentImage.description }}</div>

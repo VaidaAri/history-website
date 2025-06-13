@@ -1,6 +1,5 @@
 <full-calendar [options]="calendarOptions"></full-calendar>
 
-<!-- Modal pentru adăugare eveniment -->
 <div class="event-modal" *ngIf="showEventModal">
   <div class="modal-content">
     <div class="modal-header">
@@ -142,7 +141,6 @@
   </div>
 </div>
 
-<!-- Modal pentru afișare detalii eveniment -->
 <div class="event-details-modal" *ngIf="showEventDetailsModal">
   <div class="modal-content">
     <div class="modal-header">
@@ -184,11 +182,9 @@
         </div>
       </div>
     </div>
-    <!-- Modal footer removed, using only the X button in the header -->
   </div>
 </div>
 
-<!-- Modal pentru editare eveniment -->
 <div class="event-modal" *ngIf="showEditEventModal">
   <div class="modal-content">
     <div class="modal-header">

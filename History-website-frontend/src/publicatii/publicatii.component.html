@@ -1,5 +1,4 @@
 <div class="publicatii-container">
-  <!-- Language selector -->
   <div class="language-selector">
     <div class="flag flag-ro" [class.active]="translationService.getLanguage() === 'ro'" (click)="translationService.setLanguage('ro')" title="Română"></div>
     <div class="flag flag-en" [class.active]="translationService.getLanguage() === 'en'" (click)="translationService.setLanguage('en')" title="English"></div>
@@ -48,7 +47,6 @@
     </div>
   </div>
   
-  <!-- Gallery modal -->
   <div class="gallery-modal" *ngIf="showGallery">
     <div class="gallery-overlay" (click)="closeGallery()"></div>
     

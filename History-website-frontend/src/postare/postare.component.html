@@ -9,7 +9,6 @@
     <p>{{ post.description }}</p>
   </div>
 
-  <!-- Carusel imagini -->
   <div *ngIf="post.images?.length > 0" class="carousel-container">
     <div class="carousel-wrapper">
       <div class="carousel-slides" [ngStyle]="{'transform': 'translateX(' + (-currentImageIndex * 100) + '%)'}">
@@ -18,7 +17,6 @@
         </div>
       </div>
       
-      <!-- Butoane navigare -->
       <button *ngIf="post.images.length > 1" (click)="prevImage()" class="carousel-btn carousel-btn-prev" [ngClass]="{'disabled': currentImageIndex === 0}">
         <span>❮</span>
       </button>
@@ -27,7 +25,6 @@
       </button>
     </div>
     
-    <!-- Indicator imagini -->
     <div *ngIf="post.images.length > 1" class="carousel-dots">
       <span *ngFor="let image of post.images; let i = index" 
             class="carousel-dot" 
