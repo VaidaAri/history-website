@@ -1,5 +1,4 @@
 <main class="evenimente">
-<!-- Borduri decorative cu modele populare românești -->
 <div class="decorative-borders">
   <div class="decorative-border-left"></div>
   <div class="decorative-border-right"></div>
@@ -72,10 +71,8 @@
       </div>
       
       <div class="calendar-container">
-        <!-- Calendarul Clasic pentru Admini (pentru crearea evenimentelor) -->
         <app-calendar *ngIf="isAdmin"></app-calendar>
         
-        <!-- Calendarul Inteligent pentru utilizatori obișnuiți -->
         <app-smart-event-calendar
           *ngIf="!isAdmin"
           [isVisible]="true"
@@ -89,7 +86,6 @@
     </div>
     
     <div class="events-info">
-      <!-- Cartonaș 1: Următorul eveniment -->
       <div class="event-info-box interactive-box next-event" 
            [class.has-event]="eventStats.nextEvent"
            (click)="eventStats.nextEvent && loadFullEventDetails(eventStats.nextEvent)">
@@ -111,7 +107,6 @@
         </ng-template>
       </div>
       
-      <!-- Cartonaș 2: Cel mai popular eveniment -->
       <div class="event-info-box interactive-box popular-event"
            [class.has-event]="eventStats.popularEvent"
            (click)="eventStats.popularEvent && loadFullEventDetails(eventStats.popularEvent)">
@@ -133,7 +128,6 @@
         </ng-template>
       </div>
       
-      <!-- Cartonaș 3: Mesaj pentru urmărire -->
       <div class="event-info-box interactive-box follow-us-box">
         <div class="event-icon">🌟</div>
         <h3>Rămâi conectat!</h3>
@@ -154,7 +148,6 @@
   
 </app-cadran>
 
-<!-- Modal pentru detaliile evenimentului -->
 <div *ngIf="showEventDetailsModal" class="modal-overlay" (click)="closeEventDetailsModal()">
   <div class="modal-content event-details-modal" (click)="$event.stopPropagation()">
     <div class="modal-header">
@@ -204,7 +197,6 @@
         </div>
       </div>
       
-      <!-- Galerie foto -->
       <div class="event-gallery" *ngIf="selectedEvent.images && selectedEvent.images.length > 0">
         <h4>Galerie foto</h4>
         <div class="image-gallery">
@@ -218,7 +210,6 @@
         </div>
       </div>
       
-      <!-- Buton de înscriere -->
       <div class="event-actions">
         <div class="availability-status" 
              [ngClass]="selectedEvent.availableSpots === 0 ? 'full' : (selectedEvent.availableSpots <= 5 ? 'limited' : 'available')">
@@ -244,7 +235,6 @@
   </div>
 </div>
 
-<!-- Modal pentru înregistrarea la evenimente -->
 <div *ngIf="showRegistrationModal" class="modal-overlay" (click)="closeRegistrationModal()">
   <div class="modal-content" (click)="$event.stopPropagation()">
     <div class="modal-header">
@@ -309,7 +299,6 @@
 </div>
 
 
-<!-- Modal pentru imaginea mărită -->
 <div *ngIf="showImageModal" class="image-modal-overlay" (click)="closeImageModal()">
   <div class="image-modal-content" (click)="$event.stopPropagation()">
     <button class="image-close-btn" (click)="closeImageModal()">&times;</button>
@@ -319,7 +308,6 @@
   </div>
 </div>
 
-<!-- Sistem de notificări -->
 <div *ngIf="notification.show" class="notification-overlay">
   <div class="notification" [ngClass]="'notification-' + notification.type">
     <div class="notification-header">
