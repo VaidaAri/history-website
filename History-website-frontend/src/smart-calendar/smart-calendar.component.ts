@@ -13,14 +13,14 @@ import { Router } from '@angular/router';
 export class SmartCalendarComponent implements OnInit {
   @Input() isVisible: boolean = false;
   @Input() selectedDate: string = '';
-  @Input() isReservationMode: boolean = false; // true când e folosit în pagina de rezervări
+  @Input() isReservationMode: boolean = false; 
   @Output() dateSelected = new EventEmitter<string>();
   @Output() dateTimeSelected = new EventEmitter<{date: string, time: string}>();
   @Output() closeCalendar = new EventEmitter<void>();
 
   currentDate = new Date();
   currentYear = this.currentDate.getFullYear();
-  currentMonth = this.currentDate.getMonth(); // 0-11
+  currentMonth = this.currentDate.getMonth(); 
   calendarDays: any[] = [];
   densityData: any = {};
   monthNames = [
@@ -39,18 +39,16 @@ export class SmartCalendarComponent implements OnInit {
     this.generateCalendarDays();
   }
 
-  /**
-   * Încarcă densitatea rezervărilor pentru luna curentă
-   */
+
   loadCalendarDensity() {
     const year = this.currentYear;
-    const month = this.currentMonth + 1; // FullCalendar folosește 0-11, backend 1-12
+    const month = this.currentMonth + 1;
     
     this.http.get<any>(`http://localhost:8080/api/bookings/calendar-density/${year}/${month}`)
       .subscribe({
         next: (data) => {
           this.densityData = data;
-          this.generateCalendarDays(); // Regenerăm după primirea datelor
+          this.generateCalendarDays(); 
         },
         error: (err) => {
           console.error('Eroare la încărcarea densității:', err);
@@ -58,31 +56,22 @@ export class SmartCalendarComponent implements OnInit {
       });
   }
 
-  /**
-   * Generează zilele pentru calendar
-   */
   generateCalendarDays() {
     this.calendarDays = [];
     
-    // Prima zi a lunii
     const firstDay = new Date(this.currentYear, this.currentMonth, 1);
-    // Ultima zi a lunii
     const lastDay = new Date(this.currentYear, this.currentMonth + 1, 0);
     
-    // Ziua curentă pentru comparație
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // Resetăm ora pentru comparație precisă
-    
-    // Ziua săptămânii pentru prima zi (0 = duminică, convertim la 0 = luni)
+    today.setHours(0, 0, 0, 0); 
+
     let startDayOfWeek = firstDay.getDay();
-    startDayOfWeek = startDayOfWeek === 0 ? 6 : startDayOfWeek - 1; // Convertim duminica de la 0 la 6
+    startDayOfWeek = startDayOfWeek === 0 ? 6 : startDayOfWeek - 1; 
     
-    // Adăugăm zilele goale la început
     for (let i = 0; i < startDayOfWeek; i++) {
       this.calendarDays.push({ day: '', isEmpty: true });
     }
     
-    // Adăugăm zilele lunii
     for (let day = 1; day <= lastDay.getDate(); day++) {
       const dateStr = `${this.currentYear}-${String(this.currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
       const currentDayDate = new Date(this.currentYear, this.currentMonth, day);
@@ -90,7 +79,6 @@ export class SmartCalendarComponent implements OnInit {
       
       const dayData = this.densityData[dateStr] || { status: 'available', availableSlots: 0 };
       
-      // Calculăm statusul bazat pe procentajul de intervale ocupate
       let calculatedStatus = 'available';
       if (!isPastOrToday && dayData.timeSlots) {
         calculatedStatus = this.calculateDayStatus(dayData.timeSlots);
@@ -112,9 +100,6 @@ export class SmartCalendarComponent implements OnInit {
     }
   }
 
-  /**
-   * Navighează la luna anterioară
-   */
   previousMonth() {
     if (this.currentMonth === 0) {
       this.currentMonth = 11;
@@ -125,9 +110,6 @@ export class SmartCalendarComponent implements OnInit {
     this.loadCalendarDensity();
   }
 
-  /**
-   * Navighează la luna următoare
-   */
   nextMonth() {
     if (this.currentMonth === 11) {
       this.currentMonth = 0;
@@ -138,9 +120,6 @@ export class SmartCalendarComponent implements OnInit {
     this.loadCalendarDensity();
   }
 
-  /**
-   * Navighează la luna curentă
-   */
   goToToday() {
     const today = new Date();
     this.currentYear = today.getFullYear();
@@ -148,73 +127,47 @@ export class SmartCalendarComponent implements OnInit {
     this.loadCalendarDensity();
   }
 
-  /**
-   * Click pe o zi din calendar
-   */
   onDayClick(dayData: any) {
     if (dayData.isEmpty || dayData.isPastOrToday) return;
     
-    // Afișăm detaliile doar pentru zilele viitoare
     this.selectedDay = dayData;
     this.showDayDetails = true;
   }
 
-  /**
-   * Închide popup-ul cu detalii
-   */
   closeDayDetails() {
     this.showDayDetails = false;
     this.selectedDay = null;
   }
 
-  /**
-   * Închide calendarul
-   */
   onCloseCalendar() {
     this.closeCalendar.emit();
   }
 
-  /**
-   * Navighează la pagina de rezervări pentru o zi specifică (doar pentru modul standalone)
-   */
   makeReservation(dateStr: string) {
-    // Doar pentru modul standalone, când nu e folosit ca popup pentru rezervări
     this.router.navigate(['/rezervari'], { 
       queryParams: { selectedDate: dateStr } 
     });
   }
 
-  /**
-   * Selectează data și închide calendarul (pentru modul popup în rezervări)
-   */
   selectDate(dateStr: string) {
     this.dateSelected.emit(dateStr);
     this.closeDayDetails();
     this.closeCalendar.emit();
   }
 
-  /**
-   * Selectează data și ora și închide calendarul
-   */
   selectDateAndTime(dateStr: string, timeSlot: string) {
     this.dateTimeSelected.emit({ date: dateStr, time: timeSlot });
     this.closeDayDetails();
     this.closeCalendar.emit();
   }
 
-  /**
-   * Gestionează click-ul pe un slot orar
-   */
   onTimeSlotClick(slot: any) {
     if (!this.isReservationMode) return;
-    if (this.getSlotValue(slot.value) >= 2) return; // Slot ocupat
+    if (this.getSlotValue(slot.value) >= 2) return; 
 
     this.selectDateAndTime(this.selectedDay.dateStr, slot.key);
   }
 
-  /**
-   * Obține clasa CSS pentru o zi în funcție de status
-   */
   getDayClass(dayData: any): string {
     if (dayData.isEmpty) return 'empty-day';
     
@@ -224,9 +177,6 @@ export class SmartCalendarComponent implements OnInit {
     return `${baseClass} ${statusClass}`;
   }
 
-  /**
-   * Obține textul descriptiv pentru status
-   */
   getStatusText(status: string): string {
     switch (status) {
       case 'available': return 'Disponibil (fără aglomerare)';
@@ -237,9 +187,6 @@ export class SmartCalendarComponent implements OnInit {
     }
   }
 
-  /**
-   * Obține emoji-ul pentru status
-   */
   getStatusEmoji(status: string): string {
     switch (status) {
       case 'available': return '✅';
@@ -250,16 +197,10 @@ export class SmartCalendarComponent implements OnInit {
     }
   }
 
-  /**
-   * Helper pentru a converti slot.value la număr
-   */
   getSlotValue(value: any): number {
     return Number(value) || 0;
   }
 
-  /**
-   * Calculează statusul unei zile bazat pe procentajul de intervale ocupate
-   */
   calculateDayStatus(timeSlots: any): string {
     if (!timeSlots || Object.keys(timeSlots).length === 0) {
       return 'available';
@@ -269,7 +210,6 @@ export class SmartCalendarComponent implements OnInit {
     let occupiedSlots = 0;
     let fullSlots = 0;
 
-    // Numărăm intervalele ocupate și pline
     Object.values(timeSlots).forEach((value: any) => {
       const slotValue = this.getSlotValue(value);
       if (slotValue >= 1) {
@@ -280,17 +220,12 @@ export class SmartCalendarComponent implements OnInit {
       }
     });
 
-    // Logica actualizată: 
-    // - Roșu: 100% din intervale sunt pline (2/2 rezervări)
-    // - Galben: ≥50% din intervale au cel puțin 1 rezervare SAU cel puțin un interval complet plin
-    // - Verde: <50% din intervale au rezervări ȘI niciun interval complet plin
-    
     if (fullSlots === totalSlots) {
-      return 'full'; // Toate intervalele sunt pline (2/2)
+      return 'full'; 
     } else if (occupiedSlots >= Math.ceil(totalSlots / 2) || fullSlots > 0) {
-      return 'partial'; // Cel puțin jumătate au rezervări SAU cel puțin un interval e complet plin
+      return 'partial'; 
     } else {
-      return 'available'; // Mai puțin de jumătate au rezervări și niciun interval complet plin
+      return 'available'; 
     }
   }
 }

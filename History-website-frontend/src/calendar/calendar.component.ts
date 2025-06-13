@@ -53,8 +53,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
     },
     locale: 'ro',
     fixedWeekCount: false,
-    dayMaxEvents: 3, // Limitează la maxim 3 evenimente vizibile per zi
-    moreLinkClick: 'popover' // Afișează popover pentru evenimente suplimentare
+    dayMaxEvents: 3, 
+    moreLinkClick: 'popover' 
   };
 
   private dateOrderValidator(): ValidatorFn {
@@ -123,19 +123,15 @@ export class CalendarComponent implements OnInit, OnDestroy {
       this.updateCalendarPermissions();
     });
     
-    // Ascultăm pentru evenimentul de ștergere a unui eveniment din listă
     window.addEventListener('eventDeleted', this.handleEventDeleted.bind(this));
   }
   
   ngOnDestroy() {
-    // Curățăm event listener la distrugerea componentei
     window.removeEventListener('eventDeleted', this.handleEventDeleted.bind(this));
   }
   
-  // Handler pentru evenimentul de ștergere eveniment
   handleEventDeleted(e: any) {
     console.log('Event deleted event received in calendar:', e.detail);
-    // Actualizăm lista de evenimente pentru a reflecta schimbarea
     this.loadEvents();
   }
   
@@ -228,12 +224,10 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   handleEventClick(info: any) {
-    // Deschide modalul de detalii eveniment în loc de alert
     this.selectedEvent = info.event;
-    this.currentImageIndex = 0; // Reset image index when opening a new event
+    this.currentImageIndex = 0; 
     this.showEventDetailsModal = true;
     
-    // Dacă nu este admin, emitem un eveniment pentru a permite înregistrarea
     if (!this.isAdmin) {
       const eventData = {
         id: info.event.id,
@@ -278,7 +272,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
     this.selectedEventId = this.selectedEvent.id;
 
-    // Populează formularul cu datele evenimentului selectat
     const startDate = new Date(this.selectedEvent.start);
     const endDate = new Date(this.selectedEvent.end);
 
@@ -290,13 +283,11 @@ export class CalendarComponent implements OnInit, OnDestroy {
       endDate: this.formatDateForInput(endDate)
     });
 
-    // Copiază imaginile existente
     this.editEventImages = [];
     if (this.selectedEvent.extendedProps?.images) {
       this.editEventImages = [...this.selectedEvent.extendedProps.images];
     }
 
-    // Ascunde modalul de detalii și arată pe cel de editare
     this.showEventDetailsModal = false;
     this.showEditEventModal = true;
   }
@@ -364,7 +355,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
     endDate.setHours(23, 59, 59, 999);
 
-    // Convertim obiectele imagine în formatul așteptat de backend
     const processedImages = this.editEventImages.map(img => {
       return {
         path: img.path,
@@ -382,13 +372,11 @@ export class CalendarComponent implements OnInit, OnDestroy {
       images: processedImages
     };
 
-    // Adăugăm id-ul în URL pentru a corespunde cu endpoint-ul din backend
     this.http.put(`http://localhost:8080/api/events/${this.selectedEventId}`, updatedEvent).subscribe(() => {
       alert('Eveniment actualizat cu succes!');
       this.loadEvents();
       this.closeEditModal();
 
-      // Emitem un eveniment custom pentru a notifica alte componente despre actualizarea unui eveniment
       const eventUpdatedEvent = new CustomEvent('eventUpdated', {
         detail: { event: updatedEvent }
       });
@@ -412,7 +400,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
       return;
     }
     
-    // Verifică numărul de evenimente pe ziua selectată
     const selectedDateStr = this.formatDateForInput(startDate);
     const eventsOnSelectedDate = this.events.filter(event => {
       const eventDate = this.formatDateForInput(new Date(event.start));
@@ -491,8 +478,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.uploadProgress = 0;
   }
   
-  // Metoda nu mai este necesară, am înlocuit-o cu uploadImage()
-  // Păstrăm totuși metoda pentru compatibilitate în caz că este apelată undeva în cod
   addImage() {
     if (this.selectedFile) {
       this.uploadImage();
@@ -525,7 +510,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
     
     endDate.setHours(23, 59, 59, 999);
     
-    // Convertim obiectele imagine în formatul așteptat de backend
     const processedImages = this.selectedImages.map(img => {
       return {
         path: img.path,
@@ -547,7 +531,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
       this.loadEvents();
       this.closeModal();
       
-      // Emitem un eveniment custom pentru a notifica alte componente despre adăugarea unui eveniment
       const eventAddedEvent = new CustomEvent('eventAdded', { 
         detail: { event: newEvent }
       });
@@ -563,7 +546,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
     
     endDate.setHours(23, 59, 59, 999);
     
-    // Convertim obiectele imagine în formatul așteptat de backend
     const processedImages = this.selectedImages.map(img => {
       return {
         path: img.path,
@@ -586,7 +568,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
       this.loadEvents();
       this.closeModal();
       
-      // Emitem un eveniment custom pentru a notifica alte componente despre adăugarea unei expoziții
       const eventAddedEvent = new CustomEvent('eventAdded', { 
         detail: { event: newExhibition }
       });

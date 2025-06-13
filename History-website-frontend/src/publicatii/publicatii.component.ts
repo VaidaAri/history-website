@@ -26,7 +26,6 @@ export class PublicatiiComponent implements OnInit {
   selectedCategory: string = 'arhivaSomesana';
   apiBaseUrl = 'http://localhost:8080/api/staticresources';
   
-  // Proprietăți pentru galerie
   showGallery: boolean = false;
   currentImageIndex: number = 0;
   currentImages: PublicationImage[] = [];
@@ -45,7 +44,6 @@ export class PublicatiiComponent implements OnInit {
   }
   
   loadArhivaSomesanaImages() {
-    // Imaginile sunt de la img100.jpg până la img178.jpg
     const folderName = 'Coperti Arhiva Somesana';
     const encodedFolder = encodeURIComponent(folderName);
     
@@ -59,7 +57,6 @@ export class PublicatiiComponent implements OnInit {
         index: i - 100
       });
     }
-    // Adăugăm și coperta
     const copertaFilename = 'coperta arhiva somesana 2023-0.jpg';
     const encodedCopertaFilename = encodeURIComponent(copertaFilename);
     this.arhivaSomesanaImages.unshift({
@@ -71,7 +68,6 @@ export class PublicatiiComponent implements OnInit {
   }
   
   loadScanCopertiImages() {
-    // Imaginile sunt de la scan001.jpg până la scan023.jpg
     const folderName = 'Scan coperti';
     const encodedFolder = encodeURIComponent(folderName);
     
@@ -92,7 +88,6 @@ export class PublicatiiComponent implements OnInit {
     this.showGallery = false;
   }
   
-  // Funcții pentru galerie
   openGallery(image: PublicationImage) {
     this.currentImages = this.selectedCategory === 'arhivaSomesana' 
       ? this.arhivaSomesanaImages 
@@ -113,7 +108,6 @@ export class PublicatiiComponent implements OnInit {
     if (this.currentImageIndex > 0) {
       this.currentImageIndex--;
     } else {
-      // Rulează de la ultimul la primul
       this.currentImageIndex = this.currentImages.length - 1;
     }
     this.resetZoomAndPosition();
@@ -123,7 +117,6 @@ export class PublicatiiComponent implements OnInit {
     if (this.currentImageIndex < this.currentImages.length - 1) {
       this.currentImageIndex++;
     } else {
-      // Rulează de la primul la ultimul
       this.currentImageIndex = 0;
     }
     this.resetZoomAndPosition();
@@ -146,7 +139,6 @@ export class PublicatiiComponent implements OnInit {
       this.zoomLevel -= 0.2;
     }
     
-    // Resetează poziția dacă imaginea este micșorată sub nivelul inițial
     if (this.zoomLevel <= 1) {
       this.imageTranslateX = 0;
       this.imageTranslateY = 0;
@@ -157,7 +149,6 @@ export class PublicatiiComponent implements OnInit {
     this.resetZoomAndPosition();
   }
   
-  // Funcții pentru drag/pan imagine
   startDrag(event: MouseEvent) {
     if (this.zoomLevel > 1) {
       this.isDragging = true;
@@ -171,7 +162,6 @@ export class PublicatiiComponent implements OnInit {
       this.imageTranslateX = event.clientX - this.dragStartX;
       this.imageTranslateY = event.clientY - this.dragStartY;
       
-      // Limitează pan-ul pentru a nu deplasa imaginea prea departe
       const maxTranslate = 200 * this.zoomLevel;
       this.imageTranslateX = Math.max(Math.min(this.imageTranslateX, maxTranslate), -maxTranslate);
       this.imageTranslateY = Math.max(Math.min(this.imageTranslateY, maxTranslate), -maxTranslate);
@@ -190,7 +180,6 @@ export class PublicatiiComponent implements OnInit {
     };
   }
   
-  // Ascultă evenimentele de tastatură pentru navigare și zoom
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     if (!this.showGallery) return;
@@ -218,22 +207,18 @@ export class PublicatiiComponent implements OnInit {
     }
   }
   
-  // Ascultă evenimentul de scroll pentru zoom
   @HostListener('wheel', ['$event'])
   onScroll(event: WheelEvent) {
     if (!this.showGallery) return;
     
     event.preventDefault();
     if (event.deltaY < 0) {
-      // Scroll în sus = zoom in
       this.zoomIn();
     } else {
-      // Scroll în jos = zoom out
       this.zoomOut();
     }
   }
   
-  // Obține imaginea curentă din galerie
   get currentImage(): PublicationImage | null {
     if (this.currentImages && this.currentImages.length > 0) {
       return this.currentImages[this.currentImageIndex];
@@ -241,7 +226,6 @@ export class PublicatiiComponent implements OnInit {
     return null;
   }
   
-  // Obține titlul imaginii curente
   getCurrentImageTitle(): string {
     const img = this.currentImage;
     if (img) {
