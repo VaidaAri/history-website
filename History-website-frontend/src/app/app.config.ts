@@ -7,9 +7,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideClientHydration } from '@angular/platform-browser';
 import { LOCALE_ID } from '@angular/core';
 
-// Funcție pentru a determina limba locală
 function getLocaleProvider() {
-  // În browserul client, obține limba din URL sau localStorage
   if (typeof window !== 'undefined') {
     const urlParams = new URLSearchParams(window.location.search);
     const langParam = urlParams.get('lang');
@@ -24,7 +22,6 @@ function getLocaleProvider() {
     }
   }
   
-  // Default la română dacă nu avem altă limbă selectată
   return { provide: LOCALE_ID, useValue: 'ro' };
 }
 

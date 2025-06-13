@@ -33,7 +33,6 @@ export class AdministratorComponent implements OnInit {
   }
 
   checkAuthentication() {
-    // Folosim serviciul AuthService injectat în constructor
     if (!this.authService.isAuthenticated()) {
       this.router.navigate(['/administrator-login']);
     }
@@ -105,8 +104,6 @@ export class AdministratorComponent implements OnInit {
   }
   
   editEvent(event: any) {
-    // Implementarea editării va necesita o funcționalitate mai complexă
-    // care va fi adăugată într-o fază ulterioară
     alert('Funcționalitatea de editare a evenimentelor va fi disponibilă în curând!');
   }
   
@@ -116,7 +113,6 @@ export class AdministratorComponent implements OnInit {
         alert('Eveniment șters cu succes!');
         this.loadEvents();
         
-        // Emitem un eveniment pentru a notifica alte componente (calendar) despre ștergerea evenimentului
         const eventDeletedEvent = new CustomEvent('eventDeleted', { 
           detail: { eventId: id }
         });
@@ -133,7 +129,6 @@ export class AdministratorComponent implements OnInit {
   }
 
   logout() {
-    // Folosim metoda logout a serviciului AuthService
     this.authService.logout();
   }
 }

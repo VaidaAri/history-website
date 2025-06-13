@@ -33,11 +33,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private reservationService: ReservationService
   ) {}
   
-  // Detectează când utilizatorul închide pagina sau reîmprospătează browser-ul
   @HostListener('window:beforeunload', ['$event'])
   unloadHandler(event: Event) {
-    // Nu mai deconectăm administratorul la reîmprospătarea paginii
-    // Token-ul rămâne în localStorage pentru persistență
   }
   
   ngOnInit() {
@@ -52,13 +49,10 @@ export class AppComponent implements OnInit, OnDestroy {
   }
   
   ngOnDestroy() {
-    // Ne asigurăm că dezabonăm pentru a evita memory leaks
     if (this.refreshSubscription) {
       this.refreshSubscription.unsubscribe();
     }
     
-    // Nu mai deconectăm administratorul când componentul este distrus
-    // Astfel starea de autentificare va persista între reîmprospătări ale paginii
   }
   
   

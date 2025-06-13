@@ -7,7 +7,6 @@
     <button class="nav-tab" (click)="changeSection('admins')" [class.active]="currentSection === 'admins'">Administratori</button>
   </div>
 
-  <!-- Secțiunea de postări -->
   <div *ngIf="currentSection === 'posts'">
     <div class="dashboard-section">
       <h3>Adaugă postare nouă</h3>
@@ -39,7 +38,6 @@
     </div>
   </div>
 
-  <!-- Secțiunea de evenimente -->
   <div *ngIf="currentSection === 'events'">
     <div class="dashboard-section">
       <h3>Evenimente</h3>
@@ -92,7 +90,6 @@
     </div>
   </div>
 
-  <!-- Secțiunea de administratori -->
   <div *ngIf="currentSection === 'admins'">
     <div class="dashboard-section">
       <h3>Administratori înregistrați</h3>
