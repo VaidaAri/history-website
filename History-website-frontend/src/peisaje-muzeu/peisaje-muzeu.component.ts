@@ -24,40 +24,32 @@ interface PeisajImage {
   styleUrl: './peisaje-muzeu.component.css'
 })
 export class PeisajeMuzeuComponent implements OnInit {
-  // Array cu imagini din curtea muzeului
   peisajeImages: PeisajImage[] = [];
   
-  // Proprietăți pentru administrare
   isAdmin: boolean = false;
   
-  // Proprietăți pentru încărcare
   selectedFiles: File[] = [];
   currentUploadIndex: number = 0;
-  imageDescription: string = 'Peisaj din curtea muzeului';  // Valoare implicită
+  imageDescription: string = 'Peisaj din curtea muzeului';
   isUploading: boolean = false;
   uploadMessage: string = '';
   showUploadMessage: boolean = false;
   
-  // Gallery functionality
   showGallery: boolean = false;
   currentImage: PeisajImage | null = null;
   currentModalImageIndex: number = 0;
   
-  // Zoom and drag functionality
   zoomLevel: number = 1;
   isDragging: boolean = false;
   dragStart: { x: number, y: number } = { x: 0, y: 0 };
   imagePosition: { x: number, y: number } = { x: 0, y: 0 };
   
-  // Fullscreen functionality
   isFullscreen: boolean = false;
 
-  // Pagination functionality
   currentPage: number = 1;
   imagesPerPage: number = 4;
   totalPages: number = 1;
   
-  // Proprietăți pentru galeria clasică (păstrate pentru compatibilitate)
   currentImageIndex: number = 0;
   
   constructor(
@@ -67,16 +59,13 @@ export class PeisajeMuzeuComponent implements OnInit {
   ) {}
   
   ngOnInit() {
-    // Verifică dacă utilizatorul este administrator
     this.authService.isAuthenticated$.subscribe(isAuth => {
       this.isAdmin = isAuth;
     });
     
-    // Încarcă imaginile existente
     this.loadImages();
     this.setupKeyboardListeners();
     
-    // Debug pentru input multiple
     setTimeout(() => {
       const input = document.getElementById('image-upload') as HTMLInputElement;
       if (input) {
@@ -86,11 +75,9 @@ export class PeisajeMuzeuComponent implements OnInit {
     }, 1000);
   }
   
-  // Încarcă imaginile din backend
   loadImages() {
     this.http.get<PeisajImage[]>('http://localhost:8080/api/images').subscribe({
       next: (images) => {
-        // Filtrăm doar imaginile pentru peisaje (cele care au description ce începe cu "PEISAJ:")
         this.peisajeImages = images.filter(img => 
           img.description && img.description.startsWith('PEISAJ:')
         ).map(img => ({
@@ -98,7 +85,6 @@ export class PeisajeMuzeuComponent implements OnInit {
           description: img.description.replace('PEISAJ:', '').trim()
         }));
         
-        // Resetăm indexul imaginii curente dacă e cazul
         if (this.peisajeImages.length > 0 && this.currentImageIndex >= this.peisajeImages.length) {
           this.currentImageIndex = 0;
         }
@@ -111,7 +97,6 @@ export class PeisajeMuzeuComponent implements OnInit {
     });
   }
   
-  // Metoda pentru a construi URL-ul imaginii
   getImageUrl(imagePath: string): string {
     if (!imagePath) return '';
     
@@ -122,7 +107,6 @@ export class PeisajeMuzeuComponent implements OnInit {
     return `http://localhost:8080/api/images/uploads/${imagePath}`;
   }
   
-  // Selectează fișiere pentru încărcare
   onFileSelected(event: any) {
     const files = Array.from(event.target.files) as File[];
     console.log('Fișiere selectate:', files.length, files);
@@ -131,16 +115,13 @@ export class PeisajeMuzeuComponent implements OnInit {
       console.log('Total fișiere în listă:', this.selectedFiles.length);
     }
     
-    // Reset input field
     event.target.value = '';
   }
   
-  // Elimină un fișier din lista de fișiere selectate
   removeFile(index: number) {
     this.selectedFiles.splice(index, 1);
   }
   
-  // Încarcă toate imaginile selectate
   uploadImages() {
     console.log('uploadImages apelat, fișiere selectate:', this.selectedFiles.length);
     if (this.selectedFiles.length === 0) {
@@ -156,10 +137,8 @@ export class PeisajeMuzeuComponent implements OnInit {
     this.uploadNextImage();
   }
   
-  // Încarcă următoarea imagine din listă
   private uploadNextImage() {
     if (this.currentUploadIndex >= this.selectedFiles.length) {
-      // Toate imaginile au fost încărcate
       this.showUploadMessage = true;
       this.uploadMessage = `Toate imaginile (${this.selectedFiles.length}) au fost încărcate cu succes!`;
       setTimeout(() => this.showUploadMessage = false, 3000);
@@ -173,7 +152,6 @@ export class PeisajeMuzeuComponent implements OnInit {
     
     const currentFile = this.selectedFiles[this.currentUploadIndex];
     
-    // Folosim valoarea implicită dacă nu este completată
     const description = this.imageDescription.trim() 
       ? this.imageDescription 
       : 'Peisaj din curtea muzeului';
@@ -198,7 +176,6 @@ export class PeisajeMuzeuComponent implements OnInit {
     });
   }
   
-  // Șterge o imagine
   deleteImage(imageId: number | undefined) {
     if (!imageId) return;
     
@@ -209,12 +186,10 @@ export class PeisajeMuzeuComponent implements OnInit {
           this.uploadMessage = 'Imaginea a fost ștearsă cu succes!';
           setTimeout(() => this.showUploadMessage = false, 3000);
           
-          // Dacă am șters ultima imagine și indexul curent este acum invalid
           if (this.currentImageIndex >= this.peisajeImages.length - 1) {
             this.currentImageIndex = Math.max(0, this.peisajeImages.length - 2);
           }
           
-          // Dacă ștergem imaginea curentă din modal, închidem modalul
           if (this.showGallery && this.currentImage && this.currentImage.id === imageId) {
             this.closeGallery();
           }
@@ -231,26 +206,22 @@ export class PeisajeMuzeuComponent implements OnInit {
     }
   }
   
-  // Navigare la imaginea anterioară
   prevImage() {
     if (this.peisajeImages.length === 0) return;
     this.currentImageIndex = (this.currentImageIndex - 1 + this.peisajeImages.length) % this.peisajeImages.length;
   }
   
-  // Navigare la imaginea următoare
   nextImage() {
     if (this.peisajeImages.length === 0) return;
     this.currentImageIndex = (this.currentImageIndex + 1) % this.peisajeImages.length;
   }
   
-  // Setează imaginea curentă (pentru thumbnail-uri)
   setCurrentImage(index: number) {
     if (index >= 0 && index < this.peisajeImages.length) {
       this.currentImageIndex = index;
     }
   }
   
-  // Pagination methods
   updatePagination() {
     this.totalPages = Math.ceil(this.peisajeImages.length / this.imagesPerPage);
   }
@@ -283,7 +254,6 @@ export class PeisajeMuzeuComponent implements OnInit {
     return Array.from({length: this.totalPages}, (_, i) => i + 1);
   }
   
-  // Gallery modal methods
   setupKeyboardListeners() {
     document.addEventListener('keydown', (event) => {
       if (this.showGallery) {
@@ -346,7 +316,6 @@ export class PeisajeMuzeuComponent implements OnInit {
     }
   }
 
-  // Zoom functionality
   zoomIn() {
     this.zoomLevel = Math.min(this.zoomLevel * 1.2, 3);
   }
@@ -360,7 +329,6 @@ export class PeisajeMuzeuComponent implements OnInit {
     this.imagePosition = { x: 0, y: 0 };
   }
 
-  // Fullscreen functionality
   toggleFullscreen() {
     this.isFullscreen = !this.isFullscreen;
   }
@@ -377,7 +345,6 @@ export class PeisajeMuzeuComponent implements OnInit {
     };
   }
 
-  // Drag functionality
   startDrag(event: MouseEvent) {
     if (this.zoomLevel > 1) {
       this.isDragging = true;
@@ -399,7 +366,6 @@ export class PeisajeMuzeuComponent implements OnInit {
     this.isDragging = false;
   }
 
-  // Translation methods
   getSelectedFilesText(): string {
     const template = this.translationService.translate('landscapesSelectedFiles');
     return template.replace('{count}', this.selectedFiles.length.toString());
