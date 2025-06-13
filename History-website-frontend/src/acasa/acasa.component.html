@@ -1,5 +1,4 @@
 <main class="main">
-    <!-- Borduri decorative cu modele populare românești -->
     <div class="decorative-borders">
         <div class="decorative-border-left"></div>
         <div class="decorative-border-right"></div>
@@ -11,7 +10,6 @@
         <div class="home-container">
             <h2>{{ 'welcomeTitle' | translate }}</h2>
             
-            <!-- Secțiunea de navigare rapidă -->
             <div class="quick-nav-section">
                 <h3>{{ 'exploreMuseum' | translate }}</h3>
                 <div class="nav-cards-container">
@@ -33,28 +31,23 @@
                 </div>
             </div>
             
-            <!-- Componenta de administrare va fi folosită pentru adăugarea postărilor -->
             
-            <!-- Afișare unificată a tuturor postărilor -->
             <div id="posts-section" class="posts-section">
                 <div class="posts-header">
                     <h3>{{ 'news' | translate }}</h3>
                     
-                    <!-- Componenta de administrare postări - vizibilă doar pentru administratori -->
                     <app-post-manager 
                         *ngIf="isAdmin" 
                         (postCreated)="onPostCreated()"
                     ></app-post-manager>
                 </div>
                 
-                <!-- Lista de postări -->
                 <div class="posts-list">
                     <div *ngIf="posts.length === 0" class="no-posts">
                         <p>{{ 'noPosts' | translate }}</p>
                     </div>
                     
                     <div *ngFor="let post of posts" class="post-item">
-                        <!-- Arată postarea în mod normal dacă nu este în modul de editare -->
                         <div *ngIf="editingPostId !== post.id">
                             <app-postare [post]="post"></app-postare>
                             <div *ngIf="isAdmin" class="post-admin-actions">
@@ -67,7 +60,6 @@
                             </div>
                         </div>
 
-                        <!-- Arată formularul de editare dacă postarea este în mod de editare -->
                         <div *ngIf="editingPostId === post.id">
                             <app-post-editor 
                                 [postId]="post.id" 

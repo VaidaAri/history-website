@@ -3,7 +3,6 @@
 <div class="statistici-container">
   <h2>Statistici Muzeu</h2>
   
-  <!-- Navigare între secțiuni -->
   <div class="section-nav">
     <button 
       class="nav-button" 
@@ -19,16 +18,13 @@
     </button>
   </div>
 
-  <!-- Secțiunea Statistici Vizite -->
   <div *ngIf="currentSection === 'vizite'" class="stats-section">
     <div class="section-header">
       <h3>📊 Statistici pentru Vizite la Muzeu</h3>
       <p>Analiza rezervărilor și vizitelor la muzeu</p>
     </div>
 
-    <!-- Cartonașe cu statistici în stilul din pagina de evenimente -->
     <div class="events-info-stats">
-      <!-- Cartonaș 1: Rezervări Confirmate -->
       <div class="event-info-box interactive-box stats-box-green has-event">
         <div class="event-icon">✅</div>
         <h3>Rezervări Confirmate</h3>
@@ -48,7 +44,6 @@
         <div class="cta-text-evenimente">Vizitatori confirmați</div>
       </div>
       
-      <!-- Cartonaș 2: Categorii de Vârstă -->
       <div class="event-info-box interactive-box stats-box-orange has-event">
         <div class="event-icon">👥</div>
         <h3>Distribuție pe Vârstă</h3>
@@ -70,7 +65,6 @@
         <div class="cta-text-evenimente">Profilul vizitatorilor</div>
       </div>
       
-      <!-- Cartonaș 3: Activitate Recentă -->
       <div class="event-info-box interactive-box stats-box-purple has-event">
         <div class="event-icon">📈</div>
         <h3>Activitate Recentă</h3>
@@ -101,7 +95,6 @@
 
   </div>
 
-  <!-- Secțiunea Statistici Evenimente -->
   <div *ngIf="currentSection === 'evenimente'" class="stats-section">
     <div class="section-header">
       <h3>🎯 Statistici pentru Evenimente</h3>
@@ -109,7 +102,6 @@
     </div>
 
 
-    <!-- Cartonaș cu statistici în stilul din pagina de evenimente -->
     <div class="events-info-box stats-box-evenimente">
       <div class="event-icon">📊</div>
       <h3>Statistici luna aceasta</h3>

@@ -1,5 +1,4 @@
 
-<!-- Bara de administrare -->
 <div *ngIf="isAdmin" class="admin-bar">
   <div class="admin-bar-title">
     <span class="admin-icon">👑</span>
@@ -20,7 +19,6 @@
   </div>
 </div>
 
-<!-- Dialog modal pentru lista de administratori -->
 <div *ngIf="showAdminModal" class="admin-modal-overlay">
   <div class="admin-modal">
     <div class="admin-modal-header">
@@ -67,10 +65,8 @@
   <router-outlet />
 </div>
 
-<!-- Container pentru notificări -->
 <app-notification-container></app-notification-container>
 
-<!-- Footer complet -->
 <footer class="simple-footer">
   <div class="footer-content">
     <div class="footer-left">
