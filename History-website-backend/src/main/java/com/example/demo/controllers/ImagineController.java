@@ -61,13 +61,11 @@ public class ImagineController {
                 return ResponseEntity.badRequest().body(Map.of("error", "Fișierul este gol"));
             }
             
-            // Generează un nume de fișier unic bazat pe timestamp
             String originalFilename = file.getOriginalFilename();
             String fileName = System.currentTimeMillis() + "_" + originalFilename;
             
             System.out.println("Încărcare fișier: " + fileName + ", dimensiune: " + file.getSize() + " bytes");
             
-            // Verifică și creează directorul de upload dacă nu există
             Path uploadPath = Paths.get(UPLOAD_DIR).toAbsolutePath().normalize();
             System.out.println("Cale director upload: " + uploadPath);
             
@@ -76,21 +74,18 @@ public class ImagineController {
                 Files.createDirectories(uploadPath);
             }
             
-            // Copiază fișierul în directorul de upload
             Path targetLocation = uploadPath.resolve(fileName);
             System.out.println("Destinație fișier: " + targetLocation);
             
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
             System.out.println("Fișier încărcat cu succes la: " + targetLocation);
             
-            // Salvează informațiile în baza de date
             Imagine image = new Imagine();
             image.setPath(fileName);
             image.setDescription(description);
             imagineService.createImage(image);
             System.out.println("Imagine salvată în baza de date cu id: " + image.getId());
 
-            // Returnează răspunsul
             Map<String, String> response = new HashMap<>();
             response.put("imagePath", image.getPath());
             return ResponseEntity.ok(response);
@@ -110,13 +105,10 @@ public class ImagineController {
     @GetMapping("/uploads/{filename}")
     public ResponseEntity<Resource> getImage(@PathVariable String filename) {
         try {
-            // Resolve the file path
             Path filePath = Paths.get("uploads/").resolve(filename).normalize();
             Resource resource = new UrlResource(filePath.toUri());
 
-            // Check if file exists and is readable
             if (resource.exists() && resource.isReadable()) {
-                // Detect the file's content type (e.g., image/png, image/jpeg)
                 String contentType = Files.probeContentType(filePath);
 
                 return ResponseEntity.ok()

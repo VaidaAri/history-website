@@ -22,7 +22,6 @@ public class ParticipantController {
         try {
             System.out.println("Request received: " + request);
             
-            // Conversie mai sigură pentru evenimentId
             Integer evenimentId;
             Object evenimentIdObj = request.get("evenimentId");
             if (evenimentIdObj instanceof String) {

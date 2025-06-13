@@ -18,19 +18,18 @@ public class MuseumSchedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     
-    private String seasonName; // "Vară" sau "Iarnă"
+    private String seasonName;
     
-    private String weekdaysOpen;  // Ex: "09:00"
-    private String weekdaysClose; // Ex: "17:00"
+    private String weekdaysOpen;
+    private String weekdaysClose;
     
-    private String weekendOpen;   // Ex: "10:00"
-    private String weekendClose;  // Ex: "15:00"
+    private String weekendOpen;
+    private String weekendClose;
     
-    private String specialNotes;  // Observații speciale
+    private String specialNotes;
     
-    private boolean isActive;     // Dacă programul este activ
+    private boolean isActive;
     
-    // Lunile în care programul este valid (0 = Jan, 11 = Dec)
     @ElementCollection
     private List<Integer> validMonths;
 }

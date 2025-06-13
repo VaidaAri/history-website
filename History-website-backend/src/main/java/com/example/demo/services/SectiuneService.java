@@ -49,12 +49,12 @@ public class SectiuneService {
         Sectiune sectiune = getSectiuneById(sectiuneId);
         postare.setSectiune(sectiune);
         postareService.createPost(postare);
-        return getSectiuneById(sectiuneId); // Reîncărcăm secțiunea pentru a avea lista actualizată de postări
+        return getSectiuneById(sectiuneId);
     }
     
     public Sectiune stergePostare(Integer sectiuneId, Integer postareId) {
         Sectiune sectiune = getSectiuneById(sectiuneId);
         postareService.deletePost(postareId);
-        return getSectiuneById(sectiuneId); // Reîncărcăm secțiunea pentru a avea lista actualizată de postări
+        return getSectiuneById(sectiuneId);
     }
 }

@@ -26,22 +26,17 @@ public class RezervareService {
     }
 
     public void createBooking(Rezervare newBooking){
-        // Fluxul nou: creăm rezervarea cu status NECONFIRMATA și trimitem email de confirmare
         String confirmationToken = emailService.generateConfirmationToken();
         newBooking.setConfirmationToken(confirmationToken);
         newBooking.setTokenExpiry(LocalDateTime.now().plusHours(24));
-        newBooking.setStatus(ReservationStatus.NECONFIRMATA); // Status inițial neconfirmat
-        // Nu setăm confirmedAt încă
+        newBooking.setStatus(ReservationStatus.NECONFIRMATA);
         
-        // Salvăm rezervarea
         Rezervare savedReservation = rezervareRepository.save(newBooking);
         
-        // Trimitem email de confirmare cu link-ul
         try {
             emailService.sendConfirmationEmail(savedReservation);
         } catch (Exception e) {
             System.err.println("Eroare la trimiterea email-ului de confirmare: " + e.getMessage());
-            // În caz de eroare la email, păstrăm rezervarea pentru retrimitere
         }
     }
 
@@ -63,8 +58,6 @@ public class RezervareService {
         Rezervare booking = findBookingById(bookingId);
         booking.setStatus(ReservationStatus.CONFIRMATA);
         rezervareRepository.save(booking);
-        
-        // Trimitem email de aprobare
         try {
             emailService.sendApprovalEmail(booking);
         } catch (Exception e) {
@@ -76,26 +69,12 @@ public class RezervareService {
         return rezervareRepository.countByStatus(ReservationStatus.NECONFIRMATA);
     }
     
-    /**
-     * Obține numărul de rezervări confirmate pentru o anumită dată și interval orar
-     * @param date Data pentru care se verifică rezervările
-     * @param startHour Ora de început a intervalului (inclusiv)
-     * @param endHour Ora de sfârșit a intervalului (inclusiv)
-     * @return Numărul de rezervări confirmate
-     */
     public int getConfirmedBookingsCountForTimeInterval(LocalDate date, int startHour, int endHour) {
         return rezervareRepository.countConfirmedBookingsByDateAndTimeInterval(date, startHour, endHour);
     }
     
-    /**
-     * Obține contoarele pentru toate intervalele de 2 ore disponibile într-o zi
-     * @param date Data pentru care se calculează contoarele
-     * @return Un map cu intervalele orare ca cheie și numărul de rezervări confirmate ca valoare
-     */
     public Map<String, Integer> getConfirmedBookingsCountByTimeSlots(LocalDate date) {
         Map<String, Integer> counters = new HashMap<>();
-        
-        // Generează intervale de câte 2 ore (8-10, 10-12, 12-14, etc)
         for (int hour = 8; hour < 18; hour += 2) {
             int count = rezervareRepository.countConfirmedBookingsByDateAndTimeInterval(date, hour, hour + 1);
             String timeSlot = String.format("%02d:00-%02d:00", hour, hour + 2);
@@ -113,27 +92,21 @@ public class RezervareService {
         Optional<Rezervare> optionalReservation = findByConfirmationToken(token);
         
         if (optionalReservation.isEmpty()) {
-            return false; // Token nu există
+            return false;
         }
         
         Rezervare reservation = optionalReservation.get();
         
-        // Verificăm dacă token-ul a expirat
         if (reservation.getTokenExpiry().isBefore(LocalDateTime.now())) {
-            return false; // Token expirat
+            return false;
         }
         
-        // Verificăm dacă rezervarea este în status corect
         if (reservation.getStatus() != ReservationStatus.NECONFIRMATA) {
-            return false; // Rezervarea nu este în status NECONFIRMATA
+            return false;
         }
-        
-        // Confirmăm rezervarea
         reservation.setStatus(ReservationStatus.CONFIRMATA);
         reservation.setConfirmedAt(LocalDateTime.now());
         rezervareRepository.save(reservation);
-        
-        // Trimitem email de confirmare cu detaliile vizitei
         try {
             emailService.sendApprovalEmail(reservation);
         } catch (Exception e) {
@@ -153,8 +126,6 @@ public class RezervareService {
         Rezervare booking = findBookingById(bookingId);
         booking.setStatus(ReservationStatus.RESPINSA);
         rezervareRepository.save(booking);
-        
-        // Trimitem email de respingere
         try {
             emailService.sendRejectionEmail(booking, reason);
         } catch (Exception e) {
@@ -162,29 +133,18 @@ public class RezervareService {
         }
     }
     
-    /**
-     * Calculează densitatea rezervărilor pentru calendar heat-map
-     * @param year Anul pentru care se calculează
-     * @param month Luna pentru care se calculează (1-12)
-     * @return Map cu datele și densitatea pentru fiecare zi
-     */
     public Map<String, Map<String, Object>> getCalendarDensityForMonth(int year, int month) {
         Map<String, Map<String, Object>> calendarData = new HashMap<>();
-        
-        // Calculăm prima și ultima zi a lunii
         LocalDate firstDay = LocalDate.of(year, month, 1);
         LocalDate lastDay = firstDay.withDayOfMonth(firstDay.lengthOfMonth());
         
-        // Pentru fiecare zi din lună
         for (LocalDate date = firstDay; !date.isAfter(lastDay); date = date.plusDays(1)) {
-            // Obținem rezervările pentru fiecare interval de 2 ore
             Map<String, Integer> timeSlots = getConfirmedBookingsCountByTimeSlots(date);
             
-            // Calculăm densitatea zilei
             int totalSlots = timeSlots.size();
-            int fullSlots = 0; // Slot-uri cu 2/2 rezervări
-            int partialSlots = 0; // Slot-uri cu 1/2 rezervări
-            int emptySlots = 0; // Slot-uri cu 0/2 rezervări
+            int fullSlots = 0;
+            int partialSlots = 0;
+            int emptySlots = 0;
             
             for (Integer count : timeSlots.values()) {
                 if (count >= 2) {
@@ -196,24 +156,20 @@ public class RezervareService {
                 }
             }
             
-            // Determinăm statusul zilei
             String dayStatus;
             if (fullSlots == totalSlots) {
-                dayStatus = "full"; // Toate slot-urile sunt ocupate (roșu)
+                dayStatus = "full";
             } else if (partialSlots > 0 || fullSlots > 0) {
-                dayStatus = "partial"; // Unele slot-uri ocupate (galben)
+                dayStatus = "partial";
             } else {
-                dayStatus = "available"; // Toate slot-urile libere (verde)
+                dayStatus = "available";
             }
             
-            // Calculăm slot-urile disponibile
-            int availableSlots = (emptySlots * 2) + partialSlots; // Fiecare slot gol = 2 locuri, partial = 1 loc
-            
-            // Adăugăm în rezultat
+            int availableSlots = (emptySlots * 2) + partialSlots;
             Map<String, Object> dayData = new HashMap<>();
             dayData.put("status", dayStatus);
             dayData.put("availableSlots", availableSlots);
-            dayData.put("totalSlots", totalSlots * 2); // Total posibil = slots * 2 rezervări per slot
+            dayData.put("totalSlots", totalSlots * 2);
             dayData.put("timeSlots", timeSlots);
             dayData.put("fullSlots", fullSlots);
             dayData.put("partialSlots", partialSlots);

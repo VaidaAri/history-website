@@ -39,7 +39,6 @@ public class AdministratorService {
     public boolean authenticate(String username, String password) {
         System.out.println("SEARCHING FOR: username=" + username + ", password=" + password);
         
-        // Debug: print all administrators
         List<Administrator> allAdmins = administratorRepository.findAll();
         System.out.println("ALL ADMINISTRATORS IN DB:");
         for (Administrator admin : allAdmins) {

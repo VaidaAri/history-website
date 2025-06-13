@@ -147,7 +147,7 @@ export class RezervariComponent implements OnInit {
     };
     
     const createTimeInterval = (startMinutes: number): string => {
-      const endMinutes = startMinutes + 120; // 2 ore
+      const endMinutes = startMinutes + 120;
       const startTime = minutesToTimeString(startMinutes);
       const endTime = minutesToTimeString(endMinutes);
       return `${startTime}-${endTime}`;

@@ -58,26 +58,15 @@ public class EvenimentService {
                 -> new RuntimeException("Nu s-a gasit eveniment cu ID-ul:" + eventId));
     }
 
-    /**
-     * Calculează densitatea evenimentelor pentru calendar heat-map
-     * @param year Anul pentru care se calculează
-     * @param month Luna pentru care se calculează (1-12)
-     * @return Map cu datele și densitatea pentru fiecare zi
-     */
     public Map<String, Map<String, Object>> getEventDensityForMonth(int year, int month) {
         Map<String, Map<String, Object>> calendarData = new HashMap<>();
-        
-        // Calculăm prima și ultima zi a lunii
         LocalDate firstDay = LocalDate.of(year, month, 1);
         LocalDate lastDay = firstDay.withDayOfMonth(firstDay.lengthOfMonth());
         
-        // Pentru fiecare zi din lună
         for (LocalDate date = firstDay; !date.isAfter(lastDay); date = date.plusDays(1)) {
-            // Găsim toate evenimentele din această zi
             List<Eveniment> eventsOnDate = evenimentRepository.findEventsByDate(date);
             
             if (eventsOnDate.isEmpty()) {
-                // Zi fără evenimente
                 Map<String, Object> dayData = new HashMap<>();
                 dayData.put("status", "no-events");
                 dayData.put("events", List.of());
@@ -85,8 +74,6 @@ public class EvenimentService {
                 calendarData.put(date.toString(), dayData);
                 continue;
             }
-            
-            // Calculăm statusul pentru fiecare eveniment
             int totalEvents = eventsOnDate.size();
             int fullEvents = 0;
             int partialEvents = 0;
@@ -100,25 +87,25 @@ public class EvenimentService {
                 
                 String eventStatus;
                 if (percentage >= 85) {
-                    eventStatus = "full";        // 85-100% - Roșu închis
+                    eventStatus = "full";
                     fullEvents++;
                 } else if (percentage >= 70) {
-                    eventStatus = "very-high";   // 70-84% - Portocaliu închis  
+                    eventStatus = "very-high";
                     partialEvents++;
                 } else if (percentage >= 55) {
-                    eventStatus = "high";        // 55-69% - Portocaliu
+                    eventStatus = "high";
                     partialEvents++;
                 } else if (percentage >= 40) {
-                    eventStatus = "medium";      // 40-54% - Galben-portocaliu
+                    eventStatus = "medium";
                     partialEvents++;
                 } else if (percentage >= 25) {
-                    eventStatus = "low";         // 25-39% - Galben
+                    eventStatus = "low";
                     partialEvents++;
                 } else if (percentage >= 10) {
-                    eventStatus = "very-low";    // 10-24% - Verde-galben
+                    eventStatus = "very-low";
                     availableEvents++;
                 } else {
-                    eventStatus = "available";   // 0-9% - Verde
+                    eventStatus = "available";
                     availableEvents++;
                 }
                 
@@ -133,8 +120,6 @@ public class EvenimentService {
                 
                 eventDetails.add(eventInfo);
             }
-            
-            // Determinăm statusul general al zilei pe baza procentajului mediu de ocupare
             String dayStatus;
             double totalCapacity = totalEvents * MAX_PARTICIPANTS_PER_EVENT;
             double totalParticipants = eventDetails.stream()
@@ -157,13 +142,9 @@ public class EvenimentService {
             } else {
                 dayStatus = "available";
             }
-            
-            // Verificăm dacă data este în trecut
             if (date.isBefore(LocalDate.now())) {
                 dayStatus = "past";
             }
-            
-            // Adăugăm în rezultat
             Map<String, Object> dayData = new HashMap<>();
             dayData.put("status", dayStatus);
             dayData.put("events", eventDetails);

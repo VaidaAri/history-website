@@ -21,7 +21,6 @@ public class ExpozitieService {
     }
 
     public void createExhibition(Expozitie newExhibition){
-        // Setează tipul TEMPORARA ca valoare implicită dacă nu este specificat
         if (newExhibition.getTip() == null) {
             newExhibition.setTip(Expozitie.TipExpozitie.TEMPORARA);
         }
@@ -29,10 +28,8 @@ public class ExpozitieService {
     }
 
     public void updateExhibition(Expozitie updatedExhibition){
-        // Verifică dacă expozitia există
         Expozitie existingExhibition = findExhibitionById(updatedExhibition.getId());
         
-        // Păstrează tipul existent dacă nu este specificat în actualizare
         if (updatedExhibition.getTip() == null) {
             updatedExhibition.setTip(existingExhibition.getTip());
         }

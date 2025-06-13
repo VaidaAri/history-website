@@ -29,12 +29,12 @@ public class RezervareController {
 
     @GetMapping
     public List<Rezervare> getAllBookings(){
-        return rezervareService.getConfirmedBookings(); // Doar rezervările confirmate pentru admin
+        return rezervareService.getConfirmedBookings();
     }
 
     @GetMapping("/all")
     public List<Rezervare> getAllBookingsForStatistics(){
-        return rezervareService.getAllBookings(); // Toate rezervările pentru statistici
+        return rezervareService.getAllBookings();
     }
 
     @GetMapping("/{id}")
@@ -61,9 +61,6 @@ public class RezervareController {
         rezervareService.deleteBooking(id);
     }
     
-    /**
-     * Endpoint pentru obținerea numărului de rezervări confirmate pentru o anumită dată și interval orar
-     */
     @GetMapping("/confirmed-count")
     public Map<String, Object> getConfirmedBookingsCount(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
@@ -73,14 +70,12 @@ public class RezervareController {
         Map<String, Object> response = new HashMap<>();
         response.put("date", date.toString());
         
-        // Dacă sunt specificate startHour și endHour, returnăm contorul pentru intervalul specificat
         if (startHour != null && endHour != null) {
             int count = rezervareService.getConfirmedBookingsCountForTimeInterval(date, startHour, endHour);
             response.put("startHour", startHour);
             response.put("endHour", endHour);
             response.put("count", count);
         } 
-        // Altfel, returnăm contoarele pentru toate intervalele de 2 ore din ziua respectivă
         else {
             Map<String, Integer> timeSlotCounts = rezervareService.getConfirmedBookingsCountByTimeSlots(date);
             response.put("timeSlots", timeSlotCounts);
@@ -106,9 +101,6 @@ public class RezervareController {
         }
     }
     
-    /**
-     * Endpoint pentru calendar heat-map - returnează densitatea rezervărilor pe luni
-     */
     @GetMapping("/calendar-density/{year}/{month}")
     public Map<String, Map<String, Object>> getCalendarDensity(
             @PathVariable int year, 

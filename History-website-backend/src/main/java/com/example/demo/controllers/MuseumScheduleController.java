@@ -39,18 +39,15 @@ public class MuseumScheduleController {
         return scheduleService.updateSchedule(updatedSchedule);
     }
     
-    // Endpoint temporar pentru actualizarea textului programului de vară
     @GetMapping("/update-summer-text")
     public Map<String, String> updateSummerText() {
         Map<String, String> response = new HashMap<>();
         
         try {
-            // Găsim programul de vară după nume
             List<MuseumSchedule> allSchedules = scheduleRepository.findAll();
             
             for (MuseumSchedule schedule : allSchedules) {
                 if ("Vară".equals(schedule.getSeasonName())) {
-                    // Actualizăm direct textul notelor speciale
                     schedule.setSpecialNotes("Muzeul este ÎNCHIS LUNEA pentru activități administrative.");
                     scheduleRepository.save(schedule);
                     

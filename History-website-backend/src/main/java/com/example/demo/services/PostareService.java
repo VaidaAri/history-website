@@ -36,7 +36,6 @@ public class PostareService {
     }
 
     public void createPost(Postare newPost){
-        // Asigurăm că createdAt e setat
         if (newPost.getCreatedAt() == null) {
             newPost.setCreatedAt(LocalDateTime.now());
         }
@@ -45,7 +44,6 @@ public class PostareService {
 
     public void updatePost(Postare updatedPost){
         Postare existent = findPostByID(updatedPost.getId());
-        // Păstrăm legătura cu secțiunea dacă nu e specificată în update
         if (updatedPost.getSectiune() == null) {
             updatedPost.setSectiune(existent.getSectiune());
         }

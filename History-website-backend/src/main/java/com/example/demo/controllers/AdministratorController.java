@@ -56,8 +56,6 @@ public class AdministratorController {
         System.out.println("AUTHENTICATION RESULT: " + isAuthenticated);
         
         if (isAuthenticated) {
-            // Generăm un token simplu pentru acest exemplu
-            // În producție, am folosi JWT sau alt mecanism securizat
             String token = generateSimpleToken(username);
             return ResponseEntity.ok(token);
         } else {
@@ -69,17 +67,11 @@ public class AdministratorController {
     public ResponseEntity<Boolean> validateToken(@RequestHeader("Authorization") String authHeader) {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
-            // Pentru acest exemplu, considerăm orice token valid
-            // În producție, am verifica semnătura JWT sau altă metodă de validare
             return ResponseEntity.ok(true);
         }
         return ResponseEntity.ok(false);
     }
     
-    /**
-     * Generează un token simplu pentru demonstrație
-     * Nu folosi acest cod în producție - este doar pentru demo!
-     */
     private String generateSimpleToken(String username) {
         String tokenId = UUID.randomUUID().toString();
         String timestamp = String.valueOf(new Date().getTime());
