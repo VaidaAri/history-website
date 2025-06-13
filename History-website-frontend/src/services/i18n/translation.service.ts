@@ -10,7 +10,6 @@ export class TranslationService {
   private currentLangSubject = new BehaviorSubject<SupportedLanguages>('ro');
   public currentLang$ = this.currentLangSubject.asObservable();
 
-  // Adaugă aici toate textele care trebuie traduse din pagina istoric
   private translations: Record<string, Record<string, string>> = {
     'istoricTitle': {
       'ro': 'Istoric și Publicații',
@@ -133,7 +132,6 @@ export class TranslationService {
       'de': 'In der von den Museumsgründern gemachten Schenkungsurkunde wurde festgelegt, dass sowohl das Archiv als auch das Museum und die Bibliothek, die gespendet werden sollten, niemals veräußert werden sollten, nicht in eine andere Ortschaft gebracht werden sollten, sondern für immer in der Stadt Năsăud verbleiben sollten. Das wichtigste Publizitätsorgan des Museums war die Zeitschrift Arhiva Someșană, die nun unter der Leitung von Virgil Șotropa stand. Der pensionierte Professor Iuliu Moisil erfüllte ohne Vergütung die Funktion des Museumsdirektors.'
     },
     
-    // Tarife page translations
     'tarifeTitle': {
       'ro': 'Tarife',
       'en': 'Prices',
@@ -190,7 +188,6 @@ export class TranslationService {
       'de': 'Freier Eintritt für Kinder unter 7 Jahren und Menschen mit Behinderungen.'
     },
     
-    // Contact page translations
     'contactTitle': {
       'ro': 'Contact',
       'en': 'Contact',
@@ -227,7 +224,6 @@ export class TranslationService {
       'de': 'Museumsstraße Nr. 1, Näsäuder Grenzschutzmuseum'
     },
     
-    // Rezervari page translations
     'rezervariTitle': {
       'ro': 'Rezervă o Vizită la Muzeu',
       'en': 'Book a Museum Visit',
@@ -314,7 +310,6 @@ export class TranslationService {
       'de': 'Besuch buchen'
     },
     
-    // Menu translations
     'menuMuseumName': {
       'ro': 'Muzeul Grăniceresc Năsăudean',
       'en': 'Năsăud Border Guard Museum',
@@ -346,7 +341,6 @@ export class TranslationService {
       'de': 'Preise & Kontakt'
     },
     
-    // Home page translations
     'welcomeTitle': {
       'ro': 'Bine ați venit la Muzeul Grăniceresc Năsăudean',
       'en': 'Welcome to the Năsăud Border Guard Museum',
@@ -398,7 +392,6 @@ export class TranslationService {
       'de': 'Momentan sind keine Beiträge verfügbar.'
     },
     
-    // Events page translations
     'eventsCalendarTitle': {
       'ro': 'Calendar Evenimente',
       'en': 'Events Calendar',
@@ -520,7 +513,6 @@ export class TranslationService {
       'de': 'Überprüfen Sie regelmäßig Neuigkeiten und wichtige Ankündigungen zum Museumsprogramm.'
     },
     
-    // Additional reservations translations
     'rezervariListTitle': {
       'ro': 'Lista Rezervărilor',
       'en': 'Reservations List',
@@ -627,7 +619,6 @@ export class TranslationService {
       'de': 'Vielen Dank und wir freuen uns darauf, Sie im Museum begrüßen zu dürfen!'
     },
     
-    // Publications page translations
     'publicationsBackToHistory': {
       'ro': 'Înapoi la Istoric',
       'en': 'Back to History',
@@ -689,7 +680,6 @@ export class TranslationService {
       'de': 'Zoom zurücksetzen'
     },
     
-    // Restul paragrafelor din pagina istoric
     'istoricP15': {
       'ro': 'În perioada ocupaţiei maghiare a Ardealului (1940-1944), şi apoi în timpul retragerii trupelor horthyste (în toamna anului 1944), colecţiile muzeului au fost devastate, distruse şi chiar înstrăinate de către ocupanţii străini.',
       'en': 'During the period of Hungarian occupation of Transylvania (1940-1944), and then during the retreat of Horthy troops (in the fall of 1944), the museum collections were devastated, destroyed and even alienated by foreign occupiers.',
@@ -731,7 +721,6 @@ export class TranslationService {
       'de': 'Erst 1967, nach anhaltenden Bemühungen des Schriftstellers Anton Coșbuc, wurde die Enthüllung der Büste von Vasile Nașcu erreicht, ein Bronzewerk des renommierten Bildhauers Corneliu Medrea. Die jeweilige Büste befindet sich im Haupthof des Năsăuder Grenzwachtmuseums.'
     },
     
-    // Footer translations
     'footerLocation': {
       'ro': 'Locația',
       'en': 'Location',
@@ -743,7 +732,6 @@ export class TranslationService {
       'de': 'Grănicerilor Straße, Nr. 19'
     },
 
-    // Permanent Exhibitions translations
     'exhibitionsBackHome': {
       'ro': '← Înapoi la pagina principală',
       'en': '← Back to main page',
@@ -870,7 +858,6 @@ export class TranslationService {
       'de': 'Für organisierte Gruppen bitten wir um eine Voranmeldung.'
     },
 
-    // Museum Landscapes (Peisaje Muzeu) translations
     'landscapesBackHome': {
       'ro': '← Înapoi la pagina principală',
       'en': '← Back to main page',
@@ -987,7 +974,6 @@ export class TranslationService {
       'de': 'Vollbild verlassen (Esc)'
     },
 
-    // Friends of the Museum (Prietenii Muzeului) translations
     'friendsBackHome': {
       'ro': '← Înapoi la pagina principală',
       'en': '← Back to main page',
@@ -1104,7 +1090,6 @@ export class TranslationService {
       'de': 'Vollbild verlassen (Esc)'
     },
 
-    // Footer Motto translations
     'footerMotto': {
       'ro': 'Intri bun, ieși și mai bun',
       'en': 'Enter good, leave even better',
@@ -1118,12 +1103,10 @@ export class TranslationService {
   };
 
   constructor() {
-    // Inițializează limba curentă
     this.initLanguage();
   }
 
   private initLanguage() {
-    // Verifică dacă avem parametrul lang în URL
     if (typeof window !== 'undefined') {
       const urlParams = new URLSearchParams(window.location.search);
       const langParam = urlParams.get('lang') as SupportedLanguages;
@@ -1133,14 +1116,12 @@ export class TranslationService {
         return;
       }
       
-      // Verifică localStorage
       const savedLang = localStorage.getItem('selectedLanguage') as SupportedLanguages;
       if (savedLang && this.isValidLanguage(savedLang)) {
         this.setLanguage(savedLang);
         return;
       }
       
-      // Folosește limba browser-ului
       const browserLang = navigator.language.split('-')[0] as SupportedLanguages;
       if (this.isValidLanguage(browserLang)) {
         this.setLanguage(browserLang);
@@ -1148,7 +1129,6 @@ export class TranslationService {
       }
     }
     
-    // Default la română
     this.setLanguage('ro');
   }
 
@@ -1168,12 +1148,10 @@ export class TranslationService {
   public translate(key: string): string {
     const lang = this.getLanguage();
     
-    // Verifică dacă cheia există
     if (this.translations[key] && this.translations[key][lang]) {
       return this.translations[key][lang];
     }
     
-    // Returnează cheia dacă nu există traducere
     return key;
   }
 }

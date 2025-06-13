@@ -21,7 +21,6 @@ export interface MuseumSchedule {
 export class MuseumScheduleService {
   private apiUrl = 'http://localhost:8080/api/museum-schedule';
   
-  // Fallback program în caz că API-ul nu este disponibil
   private fallbackSchedules: MuseumSchedule[] = [
     {
       id: 1,
@@ -32,7 +31,7 @@ export class MuseumScheduleService {
       weekendClose: '16:00',
       specialNotes: 'Muzeul este ÎNCHIS LUNEA pentru activități administrative.',
       isActive: true,
-      validMonths: [3, 4, 5, 6, 7, 8, 9] // Apr-Oct
+      validMonths: [3, 4, 5, 6, 7, 8, 9]
     },
     {
       id: 2,
@@ -43,17 +42,15 @@ export class MuseumScheduleService {
       weekendClose: '15:00',
       specialNotes: 'Muzeul este ÎNCHIS LUNEA pentru activități administrative. Închis în zilele de 25, 26 decembrie și 1, 2 ianuarie.',
       isActive: true,
-      validMonths: [0, 1, 2, 10, 11] // Nov-Mar
+      validMonths: [0, 1, 2, 10, 11] 
     }
   ];
 
   constructor(private http: HttpClient) { }
 
-  // Obține programul curent de la server sau folosește fallback-ul
   getCurrentSchedule(): Observable<MuseumSchedule> {
     return this.http.get<MuseumSchedule>(`${this.apiUrl}/current`).pipe(
       catchError(() => {
-        // Dacă API-ul nu răspunde, folosim logica locală
         const currentMonth = new Date().getMonth();
         const schedule = this.fallbackSchedules.find(s => 
           s.validMonths.includes(currentMonth)
@@ -64,14 +61,12 @@ export class MuseumScheduleService {
     );
   }
 
-  // Obține toate programele
   getAllSchedules(): Observable<MuseumSchedule[]> {
     return this.http.get<MuseumSchedule[]>(this.apiUrl).pipe(
       catchError(() => of(this.fallbackSchedules))
     );
   }
 
-  // Actualizează un program
   updateSchedule(schedule: MuseumSchedule): Observable<MuseumSchedule> {
     return this.http.put<MuseumSchedule>(`${this.apiUrl}/${schedule.id}`, schedule);
   }

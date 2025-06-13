@@ -24,9 +24,6 @@ export class NotificationService {
 
   constructor() {}
 
-  /**
-   * Afișează o notificare de succes
-   */
   showSuccess(title: string, message: string, duration: number = 4000): void {
     this.addNotification({
       id: this.generateId(),
@@ -37,9 +34,7 @@ export class NotificationService {
     });
   }
 
-  /**
-   * Afișează o notificare de eroare
-   */
+
   showError(title: string, message: string, duration: number = 5000): void {
     this.addNotification({
       id: this.generateId(),
@@ -50,9 +45,7 @@ export class NotificationService {
     });
   }
 
-  /**
-   * Afișează o notificare de avertizare
-   */
+
   showWarning(title: string, message: string, duration: number = 4000): void {
     this.addNotification({
       id: this.generateId(),
@@ -63,9 +56,6 @@ export class NotificationService {
     });
   }
 
-  /**
-   * Afișează o notificare informativă
-   */
   showInfo(title: string, message: string, duration: number = 3000): void {
     this.addNotification({
       id: this.generateId(),
@@ -76,9 +66,7 @@ export class NotificationService {
     });
   }
 
-  /**
-   * Afișează un dialog de confirmare
-   */
+
   showConfirm(
     title: string, 
     message: string, 
@@ -107,38 +95,29 @@ export class NotificationService {
     });
   }
 
-  /**
-   * Răspunde la un dialog de confirmare
-   */
+
   respondToConfirm(id: string, confirmed: boolean): void {
     this.confirmSubject.next({ id, confirmed });
     this.removeNotification(id);
   }
 
-  /**
-   * Elimină o notificare
-   */
+
   removeNotification(id: string): void {
     const currentNotifications = this.notificationsSubject.value;
     const updatedNotifications = currentNotifications.filter(n => n.id !== id);
     this.notificationsSubject.next(updatedNotifications);
   }
 
-  /**
-   * Elimină toate notificările
-   */
+
   clearAll(): void {
     this.notificationsSubject.next([]);
   }
 
-  /**
-   * Adaugă o notificare în sistem
-   */
+
   private addNotification(notification: Notification): void {
     const currentNotifications = this.notificationsSubject.value;
     this.notificationsSubject.next([...currentNotifications, notification]);
 
-    // Auto-eliminare pentru notificările cu duration
     if (notification.duration && notification.duration > 0 && !notification.showConfirm) {
       setTimeout(() => {
         this.removeNotification(notification.id);
@@ -146,9 +125,7 @@ export class NotificationService {
     }
   }
 
-  /**
-   * Generează un ID unic pentru notificare
-   */
+
   private generateId(): string {
     return Date.now().toString(36) + Math.random().toString(36).substr(2);
   }
