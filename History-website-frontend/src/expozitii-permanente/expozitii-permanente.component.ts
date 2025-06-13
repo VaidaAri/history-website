@@ -25,27 +25,22 @@ export class ExpozitiiPermanenteComponent implements OnInit {
 
   constructor(private translationService: TranslationService) {}
 
-  // Gallery functionality
   showGallery: boolean = false;
   currentImage: ExhibitionImage | null = null;
   currentImageIndex: number = 0;
   currentImages: ExhibitionImage[] = [];
   
-  // Zoom and drag functionality
   zoomLevel: number = 1;
   isDragging: boolean = false;
   dragStart: { x: number, y: number } = { x: 0, y: 0 };
   imagePosition: { x: number, y: number } = { x: 0, y: 0 };
   
-  // Fullscreen functionality
   isFullscreen: boolean = false;
 
-  // Pagination functionality
   currentPage: number = 1;
-  imagesPerPage: number = 4; // Reduce number of images per page for better performance
+  imagesPerPage: number = 4; 
   totalPages: number = 1;
 
-  // Sample images for each section - these would be loaded from backend
   istorieImages: ExhibitionImage[] = [
     {
       url: 'http://localhost:8080/images/Sectia istorie/IMG_9613_1_compressed.jpg',
@@ -291,7 +286,7 @@ export class ExpozitiiPermanenteComponent implements OnInit {
 
   switchSection(section: string) {
     this.selectedSection = section;
-    this.currentPage = 1; // Reset to first page when switching sections
+    this.currentPage = 1; 
     this.updatePagination();
   }
 
@@ -444,7 +439,6 @@ export class ExpozitiiPermanenteComponent implements OnInit {
       .replace('{totalImages}', this.getCurrentSectionImages().length.toString());
   }
 
-  // Zoom functionality
   zoomIn() {
     this.zoomLevel = Math.min(this.zoomLevel * 1.2, 3);
   }
@@ -458,7 +452,6 @@ export class ExpozitiiPermanenteComponent implements OnInit {
     this.imagePosition = { x: 0, y: 0 };
   }
 
-  // Fullscreen functionality
   toggleFullscreen() {
     this.isFullscreen = !this.isFullscreen;
   }
@@ -475,7 +468,6 @@ export class ExpozitiiPermanenteComponent implements OnInit {
     };
   }
 
-  // Drag functionality
   startDrag(event: MouseEvent) {
     if (this.zoomLevel > 1) {
       this.isDragging = true;

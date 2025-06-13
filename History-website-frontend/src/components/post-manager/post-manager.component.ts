@@ -216,26 +216,22 @@ export class PostManagerComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  // Gestionează selecția de fișiere
   onFileSelected(event: any) {
     const files = event.target.files;
     if (files) {
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         
-        // Verifică dacă fișierul este o imagine
         if (file.type.match(/image\/*/) == null) {
           alert('Doar fișierele de tip imagine sunt permise!');
           continue;
         }
         
-        // Limitează numărul de imagini la 30 per postare
         if (this.images.length >= 30) {
           alert('Poți adăuga maxim 30 de imagini la o postare.');
           break;
         }
         
-        // Citește fișierul și adaugă-l la lista de imagini
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = () => {
@@ -247,16 +243,13 @@ export class PostManagerComponent implements OnInit {
       }
     }
     
-    // Resetează input-ul pentru a permite reîncărcarea aceluiași fișier
     event.target.value = '';
   }
 
-  // Elimină o imagine din lista de imagini selectate
   removeImage(index: number) {
     this.images.splice(index, 1);
   }
 
-  // Creează o postare nouă
   createPost() {
     if (!this.description.trim()) {
       alert('Descrierea nu poate fi goală!');
@@ -268,7 +261,6 @@ export class PostManagerComponent implements OnInit {
       images: this.images
     };
 
-    // Afișăm un indicator de încărcare sau un mesaj
     const loadingMessage = 'Se încarcă postarea...';
     console.log(loadingMessage);
 
@@ -277,7 +269,6 @@ export class PostManagerComponent implements OnInit {
         alert('Postare adăugată cu succes!');
         this.description = '';
         this.images = [];
-        // Emite eveniment pentru a notifica componenta părinte
         this.postCreated.emit();
       },
       error: (err) => {

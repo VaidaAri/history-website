@@ -15,7 +15,6 @@ import { PostService } from '../../services/post.service';
       <div class="post-form-container">
         <textarea [(ngModel)]="description" placeholder="Editează textul postării..." class="post-textarea"></textarea>
         
-        <!-- Afișează imaginile existente -->
         <div *ngIf="existingImages.length > 0" class="existing-images">
           <h5>Imagini existente ({{ existingImages.length }}):</h5>
           <div class="image-previews">
@@ -26,7 +25,6 @@ import { PostService } from '../../services/post.service';
           </div>
         </div>
         
-        <!-- Adaugă imagini noi -->
         <div class="file-upload-container">
           <label for="edit-file-upload" class="file-upload-label">
             <span class="file-icon">📷</span>
@@ -270,7 +268,6 @@ export class PostEditorComponent implements OnInit {
     }
   }
 
-  // Încarcă detaliile postării pentru editare
   loadPost() {
     this.postService.getPostById(this.postId).subscribe({
       next: (post) => {
@@ -286,42 +283,34 @@ export class PostEditorComponent implements OnInit {
     });
   }
 
-  // Metoda pentru a construi URL-ul pentru imaginea de pe server
   getImageUrl(imagePath: string): string {
-    // Verificăm dacă imagePath este definit
     if (!imagePath) {
       return '';
     }
     
-    // Verificăm dacă imagePath este deja un URL complet
     if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
       return imagePath;
     }
     
-    // Altfel construim URL-ul pentru imaginea de pe server
     return `http://localhost:8080/api/images/uploads/${imagePath}`;
   }
 
-  // Gestionează selecția de fișiere noi
   onFileSelected(event: any) {
     const files = event.target.files;
     if (files) {
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         
-        // Verifică dacă fișierul este o imagine
         if (file.type.match(/image\/*/) == null) {
           alert('Doar fișierele de tip imagine sunt permise!');
           continue;
         }
         
-        // Limitează numărul de imagini la 5 per postare (existente + noi)
         if (this.existingImages.length + this.newImages.length >= 5) {
           alert('Poți avea maxim 5 imagini la o postare.');
           break;
         }
         
-        // Citește fișierul și adaugă-l la lista de imagini noi
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = () => {
@@ -333,21 +322,17 @@ export class PostEditorComponent implements OnInit {
       }
     }
     
-    // Resetează input-ul pentru a permite reîncărcarea aceluiași fișier
     event.target.value = '';
   }
 
-  // Elimină o imagine existentă
   removeExistingImage(index: number) {
     this.existingImages.splice(index, 1);
   }
 
-  // Elimină o imagine nouă
   removeNewImage(index: number) {
     this.newImages.splice(index, 1);
   }
 
-  // Actualizează postarea
   updatePost() {
     if (!this.description.trim()) {
       alert('Descrierea nu poate fi goală!');
@@ -358,7 +343,7 @@ export class PostEditorComponent implements OnInit {
       description: this.description,
       existingImages: this.existingImages,
       images: this.newImages, 
-      createdAt: this.originalPost?.createdAt // Păstrăm data originală
+      createdAt: this.originalPost?.createdAt 
     };
 
     this.postService.updatePost(this.postId, updatedPost).subscribe({
@@ -373,7 +358,6 @@ export class PostEditorComponent implements OnInit {
     });
   }
 
-  // Anulează editarea
   cancelEdit() {
     this.editCancelled.emit();
   }

@@ -10,10 +10,10 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
   styleUrl: './smart-event-calendar.component.css'
 })
 export class SmartEventCalendarComponent implements OnInit {
-  @Input() isVisible: boolean = true; // Always visible now
-  @Input() isParticipantMode: boolean = false; // false = admin mode, true = participant mode
+  @Input() isVisible: boolean = true; 
+  @Input() isParticipantMode: boolean = false; 
   @Input() maxCapacityPerEvent: number = 100;
-  @Input() isEmbedded: boolean = false; // New: true for embedded mode, false for popup mode
+  @Input() isEmbedded: boolean = false; 
   
   @Output() daySelected = new EventEmitter<any>();
   @Output() eventSelected = new EventEmitter<any>();
@@ -64,16 +64,13 @@ export class SmartEventCalendarComponent implements OnInit {
     const firstDay = new Date(this.currentYear, this.currentMonth - 1, 1);
     const lastDay = new Date(this.currentYear, this.currentMonth, 0);
     
-    // Convertim de la Duminică=0 la Luni=0
     let firstDayWeek = firstDay.getDay();
     firstDayWeek = firstDayWeek === 0 ? 6 : firstDayWeek - 1;
     
-    // Adăugăm zile goale la început
     for (let i = 0; i < firstDayWeek; i++) {
       this.calendarDays.push({ day: '', isEmpty: true });
     }
     
-    // Adăugăm zilele din lună
     for (let day = 1; day <= lastDay.getDate(); day++) {
       const dateStr = `${this.currentYear}-${String(this.currentMonth).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
       const dayData = this.densityData[dateStr] || { status: 'no-events', events: [], totalEvents: 0 };
@@ -132,9 +129,7 @@ export class SmartEventCalendarComponent implements OnInit {
     }
 
     if (dayData.totalEvents === 0) {
-      // Zi fără evenimente
       if (!this.isParticipantMode) {
-        // Admin poate crea evenimente
         this.daySelected.emit({
           date: dayData.date,
           canCreateEvent: true
@@ -143,13 +138,11 @@ export class SmartEventCalendarComponent implements OnInit {
       return;
     }
 
-    // În modul embedded pentru participanți, dacă ziua are un singur eveniment, îl deschidem direct
     if (this.isEmbedded && this.isParticipantMode && dayData.events.length === 1) {
       this.onEventClick(dayData.events[0]);
       return;
     }
 
-    // Zi cu evenimente - afișăm popup cu detalii doar în modul non-embedded
     if (!this.isEmbedded) {
       this.selectedDayData = dayData;
       this.showDayDetails = true;
@@ -176,15 +169,14 @@ export class SmartEventCalendarComponent implements OnInit {
     if (dayData.isEmpty) return '';
     if (dayData.isPast) return 'past-day';
     
-    // Returnăm clasa sezonieră pentru zilele normale
     return `season-${dayData.season}`;
   }
 
   getSeason(month: number): string {
-    if (month >= 3 && month <= 5) return 'spring';    // Primăvara: Martie-Mai
-    if (month >= 6 && month <= 8) return 'summer';    // Vara: Iunie-August  
-    if (month >= 9 && month <= 11) return 'autumn';   // Toamna: Septembrie-Noiembrie
-    return 'winter';                                  // Iarna: Decembrie-Februarie
+    if (month >= 3 && month <= 5) return 'spring';    
+    if (month >= 6 && month <= 8) return 'summer';   
+    if (month >= 9 && month <= 11) return 'autumn';   
+    return 'winter';                                  
   }
 
   getEventStatusClass(event: any): string {
