@@ -70,7 +70,9 @@
 }
 
 ::ng-deep .fc-daygrid-day-frame {
-  min-height: 90px; 
+  min-height: 90px;
+  max-height: 90px;
+  overflow: hidden;
 }
 
 ::ng-deep .fc-daygrid-day-number {
@@ -109,6 +111,10 @@
   font-size: 0.9em !important;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease;
+  width: calc(100% - 6px) !important;
+  max-width: calc(100% - 6px) !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
 }
 
 ::ng-deep .fc-event:hover {
@@ -120,6 +126,10 @@
 ::ng-deep .fc-event-title {
   color: white !important;
   font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 ::ng-deep .fc-event-selected {
@@ -129,6 +139,13 @@
 ::ng-deep .fc-event-main-frame {
   display: flex;
   align-items: center;
+  width: 100% !important;
+  overflow: hidden !important;
+}
+
+::ng-deep .fc-daygrid-day-events {
+  overflow: hidden !important;
+  max-height: 60px !important;
 }
 
 .event-modal, .event-details-modal {

@@ -201,15 +201,18 @@
 .calendar-day {
   background-color: white;
   min-height: 100px;
+  max-height: 100px;
   padding: 8px;
   position: relative;
   display: flex;
   flex-direction: column;
   transition: all 0.2s ease;
+  overflow: hidden;
 }
 
 .embedded .calendar-day {
   min-height: 120px;
+  max-height: 120px;
 }
 
 .calendar-day.clickable {
@@ -278,6 +281,8 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+  overflow: hidden;
+  max-height: 60px;
 }
 
 .events-count {
@@ -345,6 +350,8 @@
   flex-direction: column;
   gap: 2px;
   flex: 1;
+  overflow: hidden;
+  max-height: 50px;
 }
 
 .event-item-mini {
@@ -357,6 +364,9 @@
   transition: all 0.2s ease;
   line-height: 1.2;
   overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
+  display: block;
 }
 
 .event-item-mini:hover {
