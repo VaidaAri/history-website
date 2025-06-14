@@ -37,18 +37,7 @@ public class AdministratorService {
     }
 
     public boolean authenticate(String username, String password) {
-        System.out.println("SEARCHING FOR: username=" + username + ", password=" + password);
-        
-        List<Administrator> allAdmins = administratorRepository.findAll();
-        System.out.println("ALL ADMINISTRATORS IN DB:");
-        for (Administrator admin : allAdmins) {
-            System.out.println("  ID=" + admin.getId() + ", username='" + admin.getUsername() + "', password='" + admin.getPassword() + "'");
-        }
-        
         Optional<Administrator> admin = administratorRepository.findByUsernameAndPassword(username, password);
-        boolean found = admin.isPresent();
-        System.out.println("FOUND ADMINISTRATOR: " + found);
-        
-        return found;
+        return admin.isPresent();
     }
 }

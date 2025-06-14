@@ -57,46 +57,33 @@ public class ImagineController {
     public ResponseEntity<Map<String, String>> uploadImage(@RequestParam("image") MultipartFile file, @RequestParam("description") String description) {
         try {
             if (file.isEmpty()) {
-                System.err.println("Eroare: Fișierul este gol");
                 return ResponseEntity.badRequest().body(Map.of("error", "Fișierul este gol"));
             }
             
             String originalFilename = file.getOriginalFilename();
             String fileName = System.currentTimeMillis() + "_" + originalFilename;
             
-            System.out.println("Încărcare fișier: " + fileName + ", dimensiune: " + file.getSize() + " bytes");
-            
             Path uploadPath = Paths.get(UPLOAD_DIR).toAbsolutePath().normalize();
-            System.out.println("Cale director upload: " + uploadPath);
             
             if (!Files.exists(uploadPath)) {
-                System.out.println("Creează director upload: " + uploadPath);
                 Files.createDirectories(uploadPath);
             }
             
             Path targetLocation = uploadPath.resolve(fileName);
-            System.out.println("Destinație fișier: " + targetLocation);
-            
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-            System.out.println("Fișier încărcat cu succes la: " + targetLocation);
             
             Imagine image = new Imagine();
             image.setPath(fileName);
             image.setDescription(description);
             imagineService.createImage(image);
-            System.out.println("Imagine salvată în baza de date cu id: " + image.getId());
 
             Map<String, String> response = new HashMap<>();
             response.put("imagePath", image.getPath());
             return ResponseEntity.ok(response);
         } catch (IOException e) {
-            System.err.println("Eroare la încărcarea fișierului: " + e.getMessage());
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Map.of("error", "Eroare la încărcarea fișierului: " + e.getMessage()));
         } catch (Exception e) {
-            System.err.println("Eroare neașteptată: " + e.getMessage());
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Map.of("error", "Eroare neașteptată: " + e.getMessage()));
         }

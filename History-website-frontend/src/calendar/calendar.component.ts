@@ -131,7 +131,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
   
   handleEventDeleted(e: any) {
-    console.log('Event deleted event received in calendar:', e.detail);
     this.loadEvents();
   }
   
@@ -184,7 +183,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
   loadEvents() {
     this.http.get<any[]>('http://localhost:8080/api/events').subscribe({
       next: (data) => {
-        console.log('Events loaded successfully:', data);
         this.events = data.map(event => {
           const startDate = new Date(event.startDate);
           const endDate = new Date(event.endDate);

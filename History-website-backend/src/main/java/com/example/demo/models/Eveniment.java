@@ -27,7 +27,7 @@ public class Eveniment {
     private LocalDateTime endDate;
     private String location;
     
-    @Column(length = 2000)
+    @Column(length = 5000)
     private String description;
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

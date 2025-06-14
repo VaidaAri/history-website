@@ -18,16 +18,7 @@ public class EvenimentController {
 
     @GetMapping
     public List<Eveniment> getAllEvents(){
-        try {
-            System.out.println("Getting all events...");
-            List<Eveniment> events = evenimentService.getAllEvents();
-            System.out.println("Found " + events.size() + " events");
-            return events;
-        } catch (Exception e) {
-            System.err.println("Error getting events: " + e.getMessage());
-            e.printStackTrace();
-            throw e;
-        }
+        return evenimentService.getAllEvents();
     }
 
     @GetMapping("/{id}")
@@ -53,15 +44,6 @@ public class EvenimentController {
 
     @GetMapping("/calendar-density/{year}/{month}")
     public Map<String, Map<String, Object>> getEventDensity(@PathVariable int year, @PathVariable int month) {
-        try {
-            System.out.println("Getting event density for " + year + "/" + month);
-            Map<String, Map<String, Object>> density = evenimentService.getEventDensityForMonth(year, month);
-            System.out.println("Calculated density for " + density.size() + " days");
-            return density;
-        } catch (Exception e) {
-            System.err.println("Error calculating event density: " + e.getMessage());
-            e.printStackTrace();
-            throw e;
-        }
+        return evenimentService.getEventDensityForMonth(year, month);
     }
 }

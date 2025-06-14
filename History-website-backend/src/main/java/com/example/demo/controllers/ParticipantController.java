@@ -20,8 +20,6 @@ public class ParticipantController {
     @PostMapping("/inscriere")
     public ResponseEntity<?> inscriereEveniment(@RequestBody Map<String, Object> request) {
         try {
-            System.out.println("Request received: " + request);
-            
             Integer evenimentId;
             Object evenimentIdObj = request.get("evenimentId");
             if (evenimentIdObj instanceof String) {
@@ -36,7 +34,6 @@ public class ParticipantController {
             String prenume = (String) request.get("prenume");
             String email = (String) request.get("email");
             
-            System.out.println("Parsed data - evenimentId: " + evenimentId + ", nume: " + nume + ", prenume: " + prenume + ", email: " + email);
             
             if (evenimentId == null || nume == null || prenume == null || email == null) {
                 throw new RuntimeException("Toate câmpurile sunt obligatorii");
@@ -50,8 +47,6 @@ public class ParticipantController {
                 "participant", participant
             ));
         } catch (Exception e) {
-            System.err.println("Error in inscriereEveniment: " + e.getMessage());
-            e.printStackTrace();
             return ResponseEntity.badRequest().body(Map.of(
                 "success", false,
                 "message", e.getMessage()

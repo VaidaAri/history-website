@@ -22,18 +22,12 @@ public class ParticipantService {
     private EmailService emailService;
     
     public Participant inscriereEveniment(Integer evenimentId, String nume, String prenume, String email) {
-        System.out.println("ParticipantService - inscriereEveniment called with: evenimentId=" + evenimentId + ", nume=" + nume + ", prenume=" + prenume + ", email=" + email);
-        
         Eveniment eveniment = evenimentRepository.findById(evenimentId)
             .orElseThrow(() -> new RuntimeException("Evenimentul cu ID-ul " + evenimentId + " nu a fost găsit"));
-        
-        System.out.println("Eveniment găsit: " + eveniment.getName());
         
         if (participantRepository.existsByEvenimentIdAndEmail(evenimentId, email)) {
             throw new RuntimeException("Sunteti deja inscris la acest eveniment");
         }
-        
-        System.out.println("Utilizatorul nu este deja înscris, continuăm...");
         
         Participant participant = new Participant();
         participant.setNume(nume);
@@ -41,14 +35,10 @@ public class ParticipantService {
         participant.setEmail(email);
         participant.setEveniment(eveniment);
         
-        System.out.println("Salvăm participantul în baza de date...");
         Participant savedParticipant = participantRepository.save(participant);
-        System.out.println("Participant salvat cu ID: " + savedParticipant.getId());
         
         try {
-            System.out.println("Trimitem email-ul de invitație...");
             emailService.sendEventInvitationEmail(savedParticipant);
-            System.out.println("Email trimis cu succes!");
         } catch (Exception e) {
             System.err.println("Eroare la trimiterea email-ului: " + e.getMessage());
         }

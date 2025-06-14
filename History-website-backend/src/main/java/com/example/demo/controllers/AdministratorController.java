@@ -49,11 +49,7 @@ public class AdministratorController {
         String username = credentials.get("username");
         String password = credentials.get("password");
         
-        System.out.println("LOGIN ATTEMPT: username=" + username + ", password=" + password);
-        
         boolean isAuthenticated = administratorService.authenticate(username, password);
-        
-        System.out.println("AUTHENTICATION RESULT: " + isAuthenticated);
         
         if (isAuthenticated) {
             String token = generateSimpleToken(username);
