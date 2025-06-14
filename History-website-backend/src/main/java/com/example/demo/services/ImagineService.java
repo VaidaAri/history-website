@@ -5,6 +5,10 @@ import com.example.demo.repos.ImagineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Service
@@ -25,6 +29,19 @@ public class ImagineService {
     }
 
     public void deleteImage(Integer imageId){
+        Imagine imagine = findImageById(imageId);
+        
+        if (imagine.getPath() != null) {
+            try {
+                Path filePath = Paths.get("uploads/").resolve(imagine.getPath()).normalize();
+                Files.deleteIfExists(filePath);
+                System.out.println("Fișier șters de pe disk: " + filePath);
+            } catch (IOException e) {
+                System.err.println("Eroare la ștergerea fișierului: " + imagine.getPath());
+                e.printStackTrace();
+            }
+        }
+        
         imagineRepository.deleteById(imageId);
     }
 

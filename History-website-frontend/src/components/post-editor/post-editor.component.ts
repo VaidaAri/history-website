@@ -306,8 +306,8 @@ export class PostEditorComponent implements OnInit {
           continue;
         }
         
-        if (this.existingImages.length + this.newImages.length >= 5) {
-          alert('Poți avea maxim 5 imagini la o postare.');
+        if (this.existingImages.length + this.newImages.length >= 30) {
+          alert('Poți avea maxim 30 de imagini la o postare.');
           break;
         }
         
