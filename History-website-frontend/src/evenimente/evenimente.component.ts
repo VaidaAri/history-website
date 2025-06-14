@@ -146,7 +146,6 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
         });
         window.dispatchEvent(eventDeletedEvent);
       }, error => {
-        console.error('Eroare la ștergerea evenimentului:', error);
         alert('Eroare la ștergerea evenimentului!');
       });
     }
@@ -216,8 +215,6 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
       email: this.registrationForm.email.trim()
     };
 
-    console.log('Trimitem datele de înregistrare:', registrationData);
-    console.log('selectedEvent:', this.selectedEvent);
 
     this.http.post('http://localhost:8080/api/participants/inscriere', registrationData)
       .subscribe({
@@ -260,7 +257,6 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
   }
 
   onSmartCalendarEventSelected(event: any) {
-    console.log('Event selected from smart calendar:', event);
     if (!this.isAdmin) {
       this.loadFullEventDetails(event);
     }
@@ -269,7 +265,6 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
   loadFullEventDetails(calendarEvent: any) {
     this.http.get(`http://localhost:8080/api/events/${calendarEvent.id}`).subscribe({
       next: (fullEvent: any) => {
-        console.log('Full event details loaded:', fullEvent);
         this.showEventDetails({
           ...fullEvent,
           participants: calendarEvent.participants,
@@ -280,37 +275,30 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
         });
       },
       error: (error) => {
-        console.error('Error loading full event details:', error);
         this.showNotification('error', 'Eroare', 'Nu s-au putut încărca detaliile evenimentului.');
       }
     });
   }
 
   loadEventStats() {
-    console.log('Loading event stats...');
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
     const currentMonth = currentDate.getMonth() + 1;
     
-    console.log(`Loading density for ${currentYear}/${currentMonth}`);
     
     this.http.get<any>(`http://localhost:8080/api/events/calendar-density/${currentYear}/${currentMonth}`).subscribe({
       next: (densityData) => {
-        console.log('Received density data:', densityData);
         this.calculateStatsFromDensity(densityData);
       },
       error: (error) => {
-        console.error('Error loading event stats:', error);
       }
     });
     
     this.http.get<any[]>('http://localhost:8080/api/events').subscribe({
       next: (allEvents) => {
-        console.log('Received all events:', allEvents);
         this.findNextAndPopularEvents(allEvents);
       },
       error: (error) => {
-        console.error('Error loading all events:', error);
       }
     });
   }
@@ -339,7 +327,6 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
     this.eventStats.fullEvents = fullEvents;
     this.statsLoaded = true;
     
-    console.log('Updated stats:', this.eventStats);
   }
 
   findNextAndPopularEvents(allEvents: any[]) {
