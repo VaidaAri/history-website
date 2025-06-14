@@ -90,7 +90,6 @@ export class AdministratorComponent implements OnInit {
           this.loadAdmins();
         },
         error: (err) => {
-          console.error("Eroare la ștergere:", err);
           alert("Eroare la ștergere. Încearcă din nou.");
         }
       });
@@ -118,7 +117,6 @@ export class AdministratorComponent implements OnInit {
         });
         window.dispatchEvent(eventDeletedEvent);
       }, error => {
-        console.error('Eroare la ștergerea evenimentului:', error);
         alert('Eroare la ștergerea evenimentului!');
       });
     }

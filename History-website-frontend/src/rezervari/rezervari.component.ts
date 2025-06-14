@@ -105,7 +105,7 @@ export class RezervariComponent implements OnInit {
         this.setDateTimeRestrictions();
       },
       error: (err) => {
-        console.error('Eroare la încărcarea programului muzeului:', err);
+        this.notificationService.showError('Eroare', 'Nu s-a putut încărca programul muzeului. Vă rugăm reîncărcați pagina.');
         this.isLoading = false;
       }
     });
@@ -226,7 +226,6 @@ export class RezervariComponent implements OnInit {
     
     this.newBooking.datetime = `${this.selectedDate}T${startTime}`;
     
-    console.log('Formatted datetime for backend:', this.newBooking.datetime);
   }
 
   validateDateTime() {
@@ -246,7 +245,6 @@ export class RezervariComponent implements OnInit {
     this.http.get("http://localhost:8080/api/bookings").subscribe((data: any) => {
       this.bookings = data;
       
-      console.log('Bookings data received:', this.bookings);
     });
   }
 
@@ -255,7 +253,6 @@ export class RezervariComponent implements OnInit {
       return;
     }
 
-    console.log("Sending booking with datetime:", this.newBooking.datetime);
     
     this.reservationService.createReservation(this.newBooking).subscribe({
       next: (response) => {
@@ -273,7 +270,6 @@ export class RezervariComponent implements OnInit {
         
       },
       error: (err) => {
-        console.error("Error adding booking:", err);
         const errorMessage = err.error?.message || "Eroare la adăugarea rezervării. Vă rugăm să încercați din nou.";
         this.notificationService.showError('Eroare rezervare', errorMessage);
       }
@@ -349,7 +345,6 @@ export class RezervariComponent implements OnInit {
           }, 1500);
         },
         error: (err) => {
-          console.error("Error deleting booking:", err);
           const errorMessage = err.error?.message || "Eroare la ștergerea rezervării. Vă rugăm să încercați din nou.";
           this.notificationService.showError('Eroare ștergere', errorMessage);
         }

@@ -291,6 +291,7 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
         this.calculateStatsFromDensity(densityData);
       },
       error: (error) => {
+        this.showNotification('error', 'Eroare', 'Nu s-au putut încărca statisticile evenimentelor.');
       }
     });
     
@@ -299,6 +300,7 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
         this.findNextAndPopularEvents(allEvents);
       },
       error: (error) => {
+        this.showNotification('error', 'Eroare', 'Nu s-au putut încărca evenimentele.');
       }
     });
   }

@@ -89,7 +89,7 @@ export class AcasaComponent implements OnInit {
         });
       },
       error: (err) => {
-        console.error('Eroare la încărcarea postărilor:', err);
+        alert('Eroare la încărcarea postărilor. Vă rugăm reîncărcați pagina.');
       }
     });
   }
@@ -106,7 +106,6 @@ export class AcasaComponent implements OnInit {
           this.loadPosts();
         },
         error: (err) => {
-          console.error('Eroare la ștergerea postării:', err);
           alert('A apărut o eroare la ștergerea postării.');
         }
       });
@@ -200,7 +199,6 @@ export class AcasaComponent implements OnInit {
         this.loadPosts();
       },
       error: (err) => {
-        console.error('Eroare la crearea postării:', err);
         alert('A apărut o eroare la crearea postării. Vă rugăm să încercați din nou.');
       }
     });
