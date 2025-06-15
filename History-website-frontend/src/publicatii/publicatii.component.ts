@@ -47,7 +47,7 @@ export class PublicatiiComponent implements OnInit {
     const folderName = 'Coperti Arhiva Somesana';
     const encodedFolder = encodeURIComponent(folderName);
     
-    for (let i = 100; i <= 178; i++) {
+    for (let i = 100; i <= 108; i++) {
       const filename = `img${i}.jpg`;
       const encodedFilename = encodeURIComponent(filename);
       this.arhivaSomesanaImages.push({
