@@ -71,7 +71,7 @@ export class PublicatiiComponent implements OnInit {
     const folderName = 'Scan coperti';
     const encodedFolder = encodeURIComponent(folderName);
     
-    for (let i = 1; i <= 23; i++) {
+    for (let i = 1; i <= 10; i++) {
       const filename = `scan${i.toString().padStart(3, '0')}.jpg`;
       const encodedFilename = encodeURIComponent(filename);
       this.scanCopertiImages.push({
