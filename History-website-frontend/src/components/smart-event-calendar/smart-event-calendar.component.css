@@ -305,7 +305,7 @@
 }
 
 .event-available {
-  background-color: #28a745;
+  background-color: #1e7e34;
 }
 
 .event-very-low {
@@ -375,7 +375,7 @@
 }
 
 .event-item-mini.event-available {
-  background-color: #28a745;
+  background-color: #1e7e34;
 }
 
 .event-item-mini.event-very-low {
@@ -561,7 +561,7 @@
 }
 
 .event-item.event-available {
-  border-left: 4px solid #28a745;
+  border-left: 4px solid #1e7e34;
   background-color: #f8fff9;
 }
 
@@ -597,7 +597,7 @@
 }
 
 .event-item.event-available .event-status-message {
-  color: #28a745;
+  color: #1e7e34;
 }
 
 .event-item.event-partial .event-status-message {
