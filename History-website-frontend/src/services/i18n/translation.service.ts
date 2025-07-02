@@ -219,9 +219,9 @@ export class TranslationService {
       'de': 'Sie finden uns hier'
     },
     'contactAddress': {
-      'ro': 'Str. Muzeului Nr. 1, Muzeul Grăniceresc Năsăudean',
-      'en': 'Museum Street No. 1, Năsăud Border Guard Museum',
-      'de': 'Museumsstraße Nr. 1, Näsäuder Grenzschutzmuseum'
+      'ro': 'Strada Grănicerilor, nr 19',
+      'en': 'Grănicerilor Street, no. 19',
+      'de': 'Grănicerilor Straße, Nr. 19'
     },
     
     'rezervariTitle': {
