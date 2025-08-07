@@ -1,0 +1,78 @@
+package com.museumhistory.model;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+import java.time.LocalDateTime;
+
+
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@ToString
+public class Rezervare {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    private String nume;
+
+    private String prenume;
+
+    private String email;
+
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    private LocalDateTime datetime;
+
+    private Integer numberOfPersons;
+
+    private boolean guideRequired;
+
+    @Enumerated(EnumType.STRING)
+    private ReservationStatus status = ReservationStatus.NECONFIRMATA;
+
+    private String confirmationToken;
+    
+    private LocalDateTime tokenExpiry;
+    
+    private LocalDateTime confirmedAt;
+    
+    private String ageGroup;
+
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
+
+    public enum ReservationStatus {
+        NECONFIRMATA("Neconfirmată"),
+        CONFIRMATA("Confirmată"),
+        RESPINSA("Respinsă");
+
+        private final String displayName;
+
+        ReservationStatus(String displayName) {
+            this.displayName = displayName;
+        }
+
+        public String getDisplayName() {
+            return displayName;
+        }
+    }
+}
