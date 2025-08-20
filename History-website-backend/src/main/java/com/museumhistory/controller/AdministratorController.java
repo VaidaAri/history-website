@@ -28,8 +28,18 @@ public class AdministratorController {
     private AdministratorService administratorService;
 
     @GetMapping
-    public List<Administrator> getAllAdministrators(){
-        return administratorService.getAllAdministrators();
+    public ResponseEntity<Object> getAllAdministrators(){
+        try {
+            logger.debug("Fetching all administrators");
+            List<Administrator> administrators = administratorService.getAllAdministrators();
+            return ResponseEntity.ok(administrators);
+        } catch (Exception e) {
+            logger.error("Error fetching all administrators", e);
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("error", "Nu s-au putut încărca administratorii");
+            errorResponse.put("status", "error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
     }
 
     @GetMapping("/{id}")
@@ -65,18 +75,233 @@ public class AdministratorController {
     }
 
     @PostMapping
-    public void createAdministrator(@RequestBody Administrator newAdministrator) {
-        administratorService.createAdministrator(newAdministrator);
+    public ResponseEntity<Map<String, Object>> createAdministrator(@RequestBody Administrator newAdministrator) {
+        try {
+            // Validate input
+            if (newAdministrator == null) {
+                logger.warn("Attempt to create administrator with null data");
+                Map<String, Object> errorResponse = new HashMap<>();
+                errorResponse.put("error", "Datele administratorului nu pot fi null");
+                errorResponse.put("status", "error");
+                return ResponseEntity.badRequest().body(errorResponse);
+            }
+            
+            // Validate required fields
+            Map<String, String> validationErrors = new HashMap<>();
+            if (newAdministrator.getFirstName() == null || newAdministrator.getFirstName().trim().isEmpty()) {
+                validationErrors.put("firstName", "Prenumele este obligatoriu");
+            }
+            if (newAdministrator.getLastName() == null || newAdministrator.getLastName().trim().isEmpty()) {
+                validationErrors.put("lastName", "Numele este obligatoriu");
+            }
+            if (newAdministrator.getUsername() == null || newAdministrator.getUsername().trim().isEmpty()) {
+                validationErrors.put("username", "Username-ul este obligatoriu");
+            }
+            if (newAdministrator.getPassword() == null || newAdministrator.getPassword().trim().isEmpty()) {
+                validationErrors.put("password", "Parola este obligatorie");
+            }
+            if (newAdministrator.getEmail() == null || newAdministrator.getEmail().trim().isEmpty()) {
+                validationErrors.put("email", "Email-ul este obligatoriu");
+            }
+            
+            // Additional validation for username and email format
+            if (newAdministrator.getUsername() != null && newAdministrator.getUsername().trim().length() < 3) {
+                validationErrors.put("username", "Username-ul trebuie să aibă cel puțin 3 caractere");
+            }
+            if (newAdministrator.getPassword() != null && newAdministrator.getPassword().trim().length() < 6) {
+                validationErrors.put("password", "Parola trebuie să aibă cel puțin 6 caractere");
+            }
+            if (newAdministrator.getEmail() != null && !newAdministrator.getEmail().contains("@")) {
+                validationErrors.put("email", "Email-ul trebuie să aibă un format valid");
+            }
+            
+            if (!validationErrors.isEmpty()) {
+                logger.warn("Validation failed for administrator creation: {}", validationErrors);
+                Map<String, Object> errorResponse = new HashMap<>();
+                errorResponse.put("error", "Datele administratorului nu sunt complete sau valide");
+                errorResponse.put("validationErrors", validationErrors);
+                errorResponse.put("status", "error");
+                return ResponseEntity.badRequest().body(errorResponse);
+            }
+            
+            logger.info("Creating new administrator: {} {} - {}", 
+                newAdministrator.getFirstName(), newAdministrator.getLastName(), newAdministrator.getUsername());
+            
+            administratorService.createAdministrator(newAdministrator);
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "Administrator a fost creat cu succes");
+            response.put("status", "success");
+            response.put("username", newAdministrator.getUsername());
+            
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+            
+        } catch (DataIntegrityViolationException e) {
+            logger.error("Data integrity violation while creating administrator", e);
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("error", "Există deja un administrator cu acest username sau email");
+            errorResponse.put("status", "error");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+        } catch (IllegalArgumentException e) {
+            logger.error("Invalid argument while creating administrator", e);
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
+            errorResponse.put("status", "error");
+            return ResponseEntity.badRequest().body(errorResponse);
+        } catch (Exception e) {
+            logger.error("Unexpected error while creating administrator", e);
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("error", "Eroare la crearea administratorului. Vă rugăm să încercați din nou.");
+            errorResponse.put("status", "error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
     }
 
     @PutMapping
-    public void updateAdministrator(@RequestBody Administrator updatedAdministrator){
-        administratorService.updateAdministrator(updatedAdministrator);
+    public ResponseEntity<Map<String, Object>> updateAdministrator(@RequestBody Administrator updatedAdministrator){
+        try {
+            // Validate input
+            if (updatedAdministrator == null) {
+                logger.warn("Attempt to update administrator with null data");
+                Map<String, Object> errorResponse = new HashMap<>();
+                errorResponse.put("error", "Datele administratorului nu pot fi null");
+                errorResponse.put("status", "error");
+                return ResponseEntity.badRequest().body(errorResponse);
+            }
+            
+            if (updatedAdministrator.getId() == null || updatedAdministrator.getId() <= 0) {
+                logger.warn("Invalid administrator ID for update: {}", updatedAdministrator.getId());
+                Map<String, Object> errorResponse = new HashMap<>();
+                errorResponse.put("error", "ID-ul administratorului trebuie să fie un număr pozitiv");
+                errorResponse.put("status", "error");
+                return ResponseEntity.badRequest().body(errorResponse);
+            }
+            
+            // Validate required fields
+            Map<String, String> validationErrors = new HashMap<>();
+            if (updatedAdministrator.getFirstName() == null || updatedAdministrator.getFirstName().trim().isEmpty()) {
+                validationErrors.put("firstName", "Prenumele este obligatoriu");
+            }
+            if (updatedAdministrator.getLastName() == null || updatedAdministrator.getLastName().trim().isEmpty()) {
+                validationErrors.put("lastName", "Numele este obligatoriu");
+            }
+            if (updatedAdministrator.getUsername() == null || updatedAdministrator.getUsername().trim().isEmpty()) {
+                validationErrors.put("username", "Username-ul este obligatoriu");
+            }
+            if (updatedAdministrator.getEmail() == null || updatedAdministrator.getEmail().trim().isEmpty()) {
+                validationErrors.put("email", "Email-ul este obligatoriu");
+            }
+            
+            // Additional validation
+            if (updatedAdministrator.getUsername() != null && updatedAdministrator.getUsername().trim().length() < 3) {
+                validationErrors.put("username", "Username-ul trebuie să aibă cel puțin 3 caractere");
+            }
+            if (updatedAdministrator.getEmail() != null && !updatedAdministrator.getEmail().contains("@")) {
+                validationErrors.put("email", "Email-ul trebuie să aibă un format valid");
+            }
+            
+            if (!validationErrors.isEmpty()) {
+                logger.warn("Validation failed for administrator update: {}", validationErrors);
+                Map<String, Object> errorResponse = new HashMap<>();
+                errorResponse.put("error", "Datele administratorului nu sunt complete sau valide");
+                errorResponse.put("validationErrors", validationErrors);
+                errorResponse.put("status", "error");
+                return ResponseEntity.badRequest().body(errorResponse);
+            }
+            
+            // Check if administrator exists before trying to update
+            Administrator existingAdmin = administratorService.findAdministratorById(updatedAdministrator.getId());
+            if (existingAdmin == null) {
+                logger.warn("Attempted to update non-existent administrator with ID: {}", updatedAdministrator.getId());
+                Map<String, Object> errorResponse = new HashMap<>();
+                errorResponse.put("error", "Administratorul cu ID-ul " + updatedAdministrator.getId() + " nu a fost găsit");
+                errorResponse.put("status", "error");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+            }
+            
+            logger.info("Updating administrator with ID: {} - {}", 
+                updatedAdministrator.getId(), updatedAdministrator.getUsername());
+            
+            administratorService.updateAdministrator(updatedAdministrator);
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "Administrator a fost actualizat cu succes");
+            response.put("status", "success");
+            response.put("username", updatedAdministrator.getUsername());
+            
+            return ResponseEntity.ok(response);
+            
+        } catch (DataIntegrityViolationException e) {
+            logger.error("Data integrity violation while updating administrator: " + updatedAdministrator.getId(), e);
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("error", "Există deja un administrator cu acest username sau email");
+            errorResponse.put("status", "error");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+        } catch (IllegalArgumentException e) {
+            logger.error("Invalid argument while updating administrator: " + updatedAdministrator.getId(), e);
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
+            errorResponse.put("status", "error");
+            return ResponseEntity.badRequest().body(errorResponse);
+        } catch (Exception e) {
+            logger.error("Unexpected error while updating administrator: " + updatedAdministrator.getId(), e);
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("error", "Eroare la actualizarea administratorului. Vă rugăm să încercați din nou.");
+            errorResponse.put("status", "error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
     }
 
     @DeleteMapping("/{id}")
-    public void deleteAdministrator(@PathVariable Integer id){
-        administratorService.deleteAdministrator(id);
+    public ResponseEntity<Map<String, Object>> deleteAdministrator(@PathVariable Integer id){
+        try {
+            if (id == null || id <= 0) {
+                logger.warn("Invalid administrator ID for deletion: {}", id);
+                Map<String, Object> errorResponse = new HashMap<>();
+                errorResponse.put("error", "ID-ul administratorului trebuie să fie un număr pozitiv");
+                errorResponse.put("status", "error");
+                return ResponseEntity.badRequest().body(errorResponse);
+            }
+            
+            // Check if administrator exists before trying to delete
+            Administrator existingAdmin = administratorService.findAdministratorById(id);
+            if (existingAdmin == null) {
+                logger.warn("Attempted to delete non-existent administrator with ID: {}", id);
+                Map<String, Object> errorResponse = new HashMap<>();
+                errorResponse.put("error", "Administratorul cu ID-ul " + id + " nu a fost găsit");
+                errorResponse.put("status", "error");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+            }
+            
+            logger.info("Deleting administrator with ID: {} - {}", 
+                id, existingAdmin.getUsername());
+            
+            administratorService.deleteAdministrator(id);
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "Administrator a fost șters cu succes");
+            response.put("status", "success");
+            return ResponseEntity.ok(response);
+            
+        } catch (EmptyResultDataAccessException e) {
+            logger.error("Administrator not found for deletion: " + id, e);
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("error", "Administratorul nu a fost găsit");
+            errorResponse.put("status", "error");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        } catch (DataIntegrityViolationException e) {
+            logger.error("Data integrity violation while deleting administrator: " + id, e);
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("error", "Nu se poate șterge administratorul din cauza restricțiilor de integritate");
+            errorResponse.put("status", "error");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+        } catch (Exception e) {
+            logger.error("Unexpected error while deleting administrator: " + id, e);
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("error", "Eroare la ștergerea administratorului. Vă rugăm să încercați din nou.");
+            errorResponse.put("status", "error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
     }
 
     @PostMapping("/login")
