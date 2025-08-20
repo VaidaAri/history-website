@@ -51,7 +51,7 @@ export class SmartCalendarComponent implements OnInit {
           this.generateCalendarDays(); 
         },
         error: (err) => {
-          console.error('Eroare la încărcarea densității:', err);
+          // Error handling for loading calendar density can be implemented here
         }
       });
   }

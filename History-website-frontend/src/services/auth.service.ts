@@ -49,7 +49,7 @@ export class AuthService {
         }
       }),
       catchError((error) => {
-        console.warn('Eroare la validarea token-ului:', error);
+        // Token validation error handled silently
         return of(true);
       })
     );

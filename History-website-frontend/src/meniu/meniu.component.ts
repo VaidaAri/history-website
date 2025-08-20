@@ -23,7 +23,7 @@ export class MeniuComponent {
   
   changeLanguage(lang: SupportedLanguages): void {
     this.translationService.setLanguage(lang);
-    console.log(`Limba a fost schimbată în: ${lang}`);
+    // Language changed successfully
     
     const currentPath = window.location.pathname;
     const currentSearch = window.location.search;

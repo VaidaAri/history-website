@@ -52,7 +52,7 @@ export class SmartEventCalendarComponent implements OnInit {
         this.isLoading = false;
       },
       error: (error) => {
-        console.error('Error loading event density:', error);
+        // Error handling for loading event density can be implemented here
         this.isLoading = false;
       }
     });

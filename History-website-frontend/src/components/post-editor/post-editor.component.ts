@@ -276,7 +276,6 @@ export class PostEditorComponent implements OnInit {
         this.existingImages = post.images || [];
       },
       error: (err) => {
-        console.error('Eroare la încărcarea postării:', err);
         alert('A apărut o eroare la încărcarea postării pentru editare.');
         this.cancelEdit();
       }
@@ -352,7 +351,6 @@ export class PostEditorComponent implements OnInit {
         this.postUpdated.emit();
       },
       error: (err) => {
-        console.error('Eroare la actualizarea postării:', err);
         alert('A apărut o eroare la actualizarea postării. Vă rugăm să încercați din nou.');
       }
     });

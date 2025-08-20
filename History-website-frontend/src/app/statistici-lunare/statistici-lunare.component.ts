@@ -61,7 +61,7 @@ export class StatisticiLunareComponent implements OnInit {
           }));
       },
       error: (err) => {
-        console.error('Eroare la încărcarea statisticilor vizite:', err);
+        // Error handling for loading visit statistics can be implemented here
       }
     });
   }
@@ -141,7 +141,7 @@ export class StatisticiLunareComponent implements OnInit {
 
       },
       error: (err) => {
-        console.error('Eroare la încărcarea evenimentelor:', err);
+        // Error handling for loading events can be implemented here
       }
     });
   }

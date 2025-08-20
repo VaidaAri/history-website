@@ -160,7 +160,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
         }
       },
       (error) => {
-        console.error('Eroare la încărcarea imaginii:', error);
         alert('Eroare la încărcarea imaginii. Vă rugăm să încercați din nou.');
         this.uploadProgress = 0;
       }
@@ -202,14 +201,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
         this.updateCalendar();
       },
       error: (error) => {
-        console.error('Error loading events:', error);
-        console.error('Error details:', {
-          status: error.status,
-          statusText: error.statusText,
-          message: error.message,
-          url: error.url,
-          ok: error.ok
-        });
+        // Error handling for loading events can be implemented here
       }
     });
   }
@@ -324,7 +316,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
         }
       },
       (error) => {
-        console.error('Eroare la încărcarea imaginii:', error);
         alert('Eroare la încărcarea imaginii. Vă rugăm să încercați din nou.');
         this.editUploadProgress = 0;
       }

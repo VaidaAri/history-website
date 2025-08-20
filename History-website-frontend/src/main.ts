@@ -13,4 +13,4 @@ registerLocaleData(localeEn, 'en');
 registerLocaleData(localeDe, 'de');
 
 bootstrapApplication(AppComponent, appConfig)
-  .catch((err) => console.error(err));
+  .catch((err) => {});

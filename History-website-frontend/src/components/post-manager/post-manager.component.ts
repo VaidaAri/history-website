@@ -262,7 +262,7 @@ export class PostManagerComponent implements OnInit {
     };
 
     const loadingMessage = 'Se încarcă postarea...';
-    console.log(loadingMessage);
+    // Processing post creation
 
     this.postService.addPost(newPost).subscribe({
       next: () => {
@@ -272,7 +272,7 @@ export class PostManagerComponent implements OnInit {
         this.postCreated.emit();
       },
       error: (err) => {
-        console.error('Eroare la crearea postării:', err);
+        // Error handling for post creation can be implemented here
         alert('A apărut o eroare la crearea postării. Vă rugăm să încercați din nou.');
       }
     });

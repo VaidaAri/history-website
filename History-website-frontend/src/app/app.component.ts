@@ -79,7 +79,6 @@ export class AppComponent implements OnInit, OnDestroy {
           this.loadAdmins();
         },
         error: (err) => {
-          console.error("Eroare la ștergere:", err);
           alert("Eroare la ștergere. Încearcă din nou.");
         }
       });

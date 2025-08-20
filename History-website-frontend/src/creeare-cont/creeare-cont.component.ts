@@ -56,7 +56,6 @@ export class CreeareContComponent {
         this.passwordError = '';
       },
       error: (err) => {
-        console.error("Eroare la adăugarea administratorului:", err);
         alert("Eroare la adăugare. Încearcă din nou.");
       }
     });
