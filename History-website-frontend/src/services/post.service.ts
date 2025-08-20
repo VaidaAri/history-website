@@ -33,16 +33,15 @@ export class PostService {
       return this.http.post<any>(this.apiUrl, newPost);
     }
 
-    console.log('Încărcăm imagini:', postData.images.length);
+    // Processing images for upload
     
     try {
       const imageUploads: Observable<ImageUploadResponse>[] = postData.images.map((imageObj: any) => {
         if (!imageObj.file) {
-          console.error('Lipsește fișierul pentru imagine:', imageObj);
           return of({ imagePath: '', error: 'Fișier lipsă' });
         }
         
-        console.log('Încărcare imagine:', imageObj.file.name);
+        // Uploading image file
         
         const formData = new FormData();
         formData.append('image', imageObj.file);
@@ -53,7 +52,7 @@ export class PostService {
 
       return forkJoin<ImageUploadResponse[]>(imageUploads).pipe(
         switchMap((responses: ImageUploadResponse[]) => {
-          console.log('Răspunsuri încărcare imagini:', responses);
+          // Processing upload responses
           
           const validResponses = responses.filter(resp => resp && resp.imagePath);
           
@@ -64,7 +63,7 @@ export class PostService {
             };
           });
 
-          console.log('Referințe imagini pentru postare:', imageReferences);
+          // Creating image references for post
 
           const newPost = {
             description: postData.description,
@@ -75,7 +74,6 @@ export class PostService {
         })
       );
     } catch (error) {
-      console.error('Eroare în procesul de încărcare a imaginilor:', error);
       throw error;
     }
   }
@@ -136,7 +134,6 @@ export class PostService {
         })
       );
     } catch (error) {
-      console.error('Eroare în procesul de actualizare a postării:', error);
       throw error;
     }
   }

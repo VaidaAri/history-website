@@ -69,8 +69,7 @@ export class PeisajeMuzeuComponent implements OnInit {
     setTimeout(() => {
       const input = document.getElementById('image-upload') as HTMLInputElement;
       if (input) {
-        console.log('Input găsit, multiple attribute:', input.hasAttribute('multiple'));
-        console.log('Input multiple property:', input.multiple);
+        // Input validation logic can be added here if needed
       }
     }, 1000);
   }
@@ -92,7 +91,7 @@ export class PeisajeMuzeuComponent implements OnInit {
         this.updatePagination();
       },
       error: (err) => {
-        console.error('Eroare la încărcarea imaginilor:', err);
+        // Error handling for image loading can be implemented here
       }
     });
   }
@@ -109,10 +108,8 @@ export class PeisajeMuzeuComponent implements OnInit {
   
   onFileSelected(event: any) {
     const files = Array.from(event.target.files) as File[];
-    console.log('Fișiere selectate:', files.length, files);
     if (files.length > 0) {
       this.selectedFiles = [...this.selectedFiles, ...files];
-      console.log('Total fișiere în listă:', this.selectedFiles.length);
     }
     
     event.target.value = '';
@@ -123,7 +120,6 @@ export class PeisajeMuzeuComponent implements OnInit {
   }
   
   uploadImages() {
-    console.log('uploadImages apelat, fișiere selectate:', this.selectedFiles.length);
     if (this.selectedFiles.length === 0) {
       this.showUploadMessage = true;
       this.uploadMessage = 'Selectați cel puțin un fișier pentru încărcare.';
@@ -133,7 +129,6 @@ export class PeisajeMuzeuComponent implements OnInit {
     
     this.isUploading = true;
     this.currentUploadIndex = 0;
-    console.log('Începe încărcarea fișierelor...');
     this.uploadNextImage();
   }
   
@@ -166,7 +161,6 @@ export class PeisajeMuzeuComponent implements OnInit {
         this.uploadNextImage();
       },
       error: (err) => {
-        console.error(`Eroare la încărcarea imaginii ${this.currentUploadIndex + 1}:`, err);
         this.showUploadMessage = true;
         this.uploadMessage = `Eroare la încărcarea imaginii ${currentFile.name}. Încarcările s-au oprit.`;
         setTimeout(() => this.showUploadMessage = false, 5000);
@@ -197,7 +191,6 @@ export class PeisajeMuzeuComponent implements OnInit {
           this.loadImages();
         },
         error: (err) => {
-          console.error('Eroare la ștergerea imaginii:', err);
           this.showUploadMessage = true;
           this.uploadMessage = 'A apărut o eroare la ștergerea imaginii.';
           setTimeout(() => this.showUploadMessage = false, 3000);
