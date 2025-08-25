@@ -17,7 +17,7 @@ public class ImagineService {
     ImagineRepository imagineRepository;
 
     public List<Imagine> getAllImages(){
-        return imagineRepository.findAll();
+        return imagineRepository.findAllByOrderByPositionAsc();
     }
 
     public void createImage(Imagine newImage){

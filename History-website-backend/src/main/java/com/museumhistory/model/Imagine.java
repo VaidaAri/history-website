@@ -20,4 +20,5 @@ public class Imagine {
     private Integer id;
     private String path;
     private String description;
+    private Integer position = 0; // Default position for ordering images
 }

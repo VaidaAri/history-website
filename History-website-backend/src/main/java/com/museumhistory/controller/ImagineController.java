@@ -244,7 +244,10 @@ public class ImagineController {
 
     private static final String UPLOAD_DIR = "uploads/";
     @PostMapping("/upload-image")
-    public ResponseEntity<Map<String, String>> uploadImage(@RequestParam("image") MultipartFile file, @RequestParam("description") String description) {
+    public ResponseEntity<Map<String, String>> uploadImage(
+            @RequestParam("image") MultipartFile file, 
+            @RequestParam("description") String description,
+            @RequestParam(value = "position", defaultValue = "0") Integer position) {
         try {
             if (file.isEmpty()) {
                 return ResponseEntity.badRequest().body(Map.of("error", "Fișierul este gol"));
@@ -265,6 +268,7 @@ public class ImagineController {
             Imagine image = new Imagine();
             image.setPath(fileName);
             image.setDescription(description);
+            image.setPosition(position);
             imagineService.createImage(image);
 
             Map<String, String> response = new HashMap<>();

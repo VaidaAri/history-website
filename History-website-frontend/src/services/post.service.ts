@@ -36,7 +36,7 @@ export class PostService {
     // Processing images for upload
     
     try {
-      const imageUploads: Observable<ImageUploadResponse>[] = postData.images.map((imageObj: any) => {
+      const imageUploads: Observable<ImageUploadResponse>[] = postData.images.map((imageObj: any, index: number) => {
         if (!imageObj.file) {
           return of({ imagePath: '', error: 'Fișier lipsă' });
         }
@@ -46,6 +46,7 @@ export class PostService {
         const formData = new FormData();
         formData.append('image', imageObj.file);
         formData.append('description', 'Imagine pentru postare');
+        formData.append('position', index.toString());
         
         return this.http.post<ImageUploadResponse>(this.imageUploadUrl, formData);
       });
@@ -92,10 +93,12 @@ export class PostService {
     }
     
     try {
-      const imageUploads: Observable<ImageUploadResponse>[] = newImages.map((imageObj: any) => {
+      const existingImagesCount = postData.existingImages ? postData.existingImages.length : 0;
+      const imageUploads: Observable<ImageUploadResponse>[] = newImages.map((imageObj: any, index: number) => {
         const formData = new FormData();
         formData.append('image', imageObj.file);
         formData.append('description', 'Imagine pentru postare');
+        formData.append('position', (existingImagesCount + index).toString());
         
         return this.http.post<ImageUploadResponse>(this.imageUploadUrl, formData);
       });
