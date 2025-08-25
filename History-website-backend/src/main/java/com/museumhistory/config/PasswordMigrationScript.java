@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
+// @Component - Disabled after successful password migration
 public class PasswordMigrationScript implements CommandLineRunner {
 
     @Autowired
