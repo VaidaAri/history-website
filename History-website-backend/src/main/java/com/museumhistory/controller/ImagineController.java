@@ -71,10 +71,23 @@ public class ImagineController {
             }
             
             return ResponseEntity.ok(image);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
+            if (e.getMessage().contains("Nu s-a gasit imagine cu ID-ul")) {
+                logger.warn("Image not found with ID: {}", id);
+                Map<String, Object> errorResponse = new HashMap<>();
+                errorResponse.put("error", "Imaginea cu ID-ul " + id + " nu a fost găsită");
+                errorResponse.put("status", "error");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+            }
             logger.error("Error fetching image with ID: " + id, e);
             Map<String, Object> errorResponse = new HashMap<>();
             errorResponse.put("error", "Eroare la căutarea imaginii");
+            errorResponse.put("status", "error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        } catch (Exception e) {
+            logger.error("Unexpected error fetching image with ID: " + id, e);
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("error", "Eroare neașteptată la căutarea imaginii");
             errorResponse.put("status", "error");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }

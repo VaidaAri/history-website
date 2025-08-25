@@ -31,7 +31,7 @@ public class ImagineService {
     public void deleteImage(Integer imageId){
         Imagine imagine = findImageById(imageId);
         
-        if (imagine.getPath() != null) {
+        if (imagine.getPath() != null && !imagine.getPath().trim().isEmpty()) {
             try {
                 Path filePath = Paths.get("uploads/").resolve(imagine.getPath()).normalize();
                 Files.deleteIfExists(filePath);
