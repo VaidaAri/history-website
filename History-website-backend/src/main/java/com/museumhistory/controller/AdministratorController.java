@@ -2,6 +2,7 @@ package com.museumhistory.controller;
 
 import com.museumhistory.model.Administrator;
 import com.museumhistory.service.AdministratorService;
+import com.museumhistory.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,12 +12,9 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Base64;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/administrators")
@@ -26,6 +24,9 @@ public class AdministratorController {
 
     @Autowired
     private AdministratorService administratorService;
+    
+    @Autowired
+    private JwtService jwtService;
 
     @GetMapping
     public ResponseEntity<Object> getAllAdministrators(){
@@ -344,7 +345,7 @@ public class AdministratorController {
             boolean isAuthenticated = administratorService.authenticate(username, password);
             
             if (isAuthenticated) {
-                String token = generateSimpleToken(username);
+                String token = jwtService.generateToken(username);
                 logger.info("Successful login for user: {}", username);
                 
                 // Return just the token as text (for compatibility with frontend)
@@ -401,8 +402,8 @@ public class AdministratorController {
                 return ResponseEntity.ok(response);
             }
             
-            // Basic token validation (decode and check format)
-            boolean isValidToken = validateTokenFormat(token);
+            // JWT token validation
+            boolean isValidToken = jwtService.validateToken(token);
             
             if (isValidToken) {
                 logger.debug("Token validation successful");
@@ -423,53 +424,6 @@ public class AdministratorController {
             response.put("valid", false);
             response.put("error", "Eroare la validarea token-ului");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-        }
-    }
-    
-    private String generateSimpleToken(String username) {
-        try {
-            String tokenId = UUID.randomUUID().toString();
-            String timestamp = String.valueOf(new Date().getTime());
-            String tokenData = username + ":" + timestamp + ":" + tokenId;
-            return Base64.getEncoder().encodeToString(tokenData.getBytes());
-        } catch (Exception e) {
-            logger.error("Error generating token for user: " + username, e);
-            throw new RuntimeException("Nu s-a putut genera token-ul de autentificare");
-        }
-    }
-    
-    private boolean validateTokenFormat(String token) {
-        try {
-            // Decode the token
-            byte[] decodedBytes = Base64.getDecoder().decode(token);
-            String tokenData = new String(decodedBytes);
-            
-            // Check if token has the expected format: username:timestamp:tokenId
-            String[] parts = tokenData.split(":");
-            if (parts.length != 3) {
-                return false;
-            }
-            
-            // Validate timestamp (basic check - not expired if less than 24 hours old)
-            try {
-                long timestamp = Long.parseLong(parts[1]);
-                long currentTime = new Date().getTime();
-                long tokenAge = currentTime - timestamp;
-                
-                // Token expires after 24 hours (in milliseconds)
-                long maxAge = 24 * 60 * 60 * 1000L;
-                
-                return tokenAge <= maxAge;
-            } catch (NumberFormatException e) {
-                return false;
-            }
-            
-        } catch (IllegalArgumentException e) {
-            // Base64 decoding failed
-            return false;
-        } catch (Exception e) {
-            logger.error("Error validating token format", e);
-            return false;
         }
     }
 }

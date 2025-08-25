@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../services/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { ReservationService } from '../services/reservation.service';
+import { NotificationService } from '../services/notification.service';
 import { Subscription, interval } from 'rxjs';
 import { NotificationContainerComponent } from '../components/notification-container/notification-container.component';
 import { TranslatePipe } from '../services/i18n/translate.pipe';
@@ -30,7 +31,8 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService, 
     private http: HttpClient,
-    private reservationService: ReservationService
+    private reservationService: ReservationService,
+    private notificationService: NotificationService
   ) {}
   
   @HostListener('window:beforeunload', ['$event'])
@@ -66,20 +68,34 @@ export class AppComponent implements OnInit, OnDestroy {
   }
   
   loadAdmins() {
-    this.http.get<any[]>('http://localhost:8080/api/administrators').subscribe(data => {
-      this.admins = data;
+    this.http.get<any[]>('http://localhost:8080/api/administrators').subscribe({
+      next: (data) => {
+        this.admins = data;
+      },
+      error: (err) => {
+        const errorMessage = err.error?.message || 'Eroare la încărcarea administratorilor.';
+        this.notificationService.showError('Eroare încărcare', errorMessage);
+      }
     });
   }
   
-  deleteAdmin(adminId: number) {
-    if (confirm("Sigur vrei să ștergi acest administrator?")) {
+  async deleteAdmin(adminId: number) {
+    const confirmed = await this.notificationService.showConfirm(
+      'Confirmare ștergere',
+      'Sigur vrei să ștergi acest administrator? Această acțiune nu poate fi anulată.',
+      'Șterge',
+      'Anulează'
+    );
+    
+    if (confirmed) {
       this.http.delete(`http://localhost:8080/api/administrators/${adminId}`).subscribe({
         next: () => {
-          alert("Administrator șters cu succes!");
+          this.notificationService.showSuccess('Administrator șters', 'Administrator șters cu succes!');
           this.loadAdmins();
         },
         error: (err) => {
-          alert("Eroare la ștergere. Încearcă din nou.");
+          const errorMessage = err.error?.message || 'Eroare la ștergere. Încearcă din nou.';
+          this.notificationService.showError('Eroare ștergere', errorMessage);
         }
       });
     }

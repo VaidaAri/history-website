@@ -7,6 +7,7 @@ import { CalendarOptions } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { AuthService } from '../services/auth.service';
+import { NotificationService } from '../services/notification.service';
 
 @Component({
   selector: 'app-calendar',
@@ -88,7 +89,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
   constructor(
     private http: HttpClient,
     private authService: AuthService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private notificationService: NotificationService
   ) {
     this.eventForm = this.fb.group({
       name: ['', [Validators.required]],
@@ -160,7 +162,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
         }
       },
       (error) => {
-        alert('Eroare la încărcarea imaginii. Vă rugăm să încercați din nou.');
+        this.notificationService.showError('Eroare imagine', 'Eroare la încărcarea imaginii. Vă rugăm să încercați din nou.');
         this.uploadProgress = 0;
       }
     );
@@ -316,7 +318,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
         }
       },
       (error) => {
-        alert('Eroare la încărcarea imaginii. Vă rugăm să încercați din nou.');
+        this.notificationService.showError('Eroare imagine', 'Eroare la încărcarea imaginii. Vă rugăm să încercați din nou.');
         this.editUploadProgress = 0;
       }
     );
@@ -362,7 +364,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     };
 
     this.http.put(`http://localhost:8080/api/events/${this.selectedEventId}`, updatedEvent).subscribe(() => {
-      alert('Eveniment actualizat cu succes!');
+      this.notificationService.showSuccess('Eveniment actualizat', 'Eveniment actualizat cu succes!');
       this.loadEvents();
       this.closeEditModal();
 
@@ -371,7 +373,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
       });
       window.dispatchEvent(eventUpdatedEvent);
     }, error => {
-      alert('Eroare la actualizarea evenimentului!');
+      this.notificationService.showError('Eroare actualizare', 'Eroare la actualizarea evenimentului!');
     });
   }
 
@@ -385,7 +387,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     
     const validRange = this.getValidDateRange();
     if (startDate < validRange.start || endDate > validRange.end) {
-      alert(`Poți selecta doar date între ${this.formatDate(validRange.start.toISOString())} și ${this.formatDate(validRange.end.toISOString())}`);
+      this.notificationService.showWarning('Interval invalid', `Poți selecta doar date între ${this.formatDate(validRange.start.toISOString())} și ${this.formatDate(validRange.end.toISOString())}`);
       return;
     }
     
@@ -396,7 +398,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     });
     
     if (eventsOnSelectedDate.length >= 3) {
-      alert('Limita maximă de 3 evenimente pe zi a fost atinsă pentru această dată. Vă rugăm să selectați o altă zi.');
+      this.notificationService.showWarning('Limită atinsă', 'Limita maximă de 3 evenimente pe zi a fost atinsă pentru această dată. Vă rugăm să selectați o altă zi.');
       return;
     }
     
@@ -516,7 +518,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     };
     
     this.http.post('http://localhost:8080/api/events', newEvent).subscribe(() => {
-      alert('Eveniment adăugat cu succes!');
+      this.notificationService.showSuccess('Eveniment adăugat', 'Eveniment adăugat cu succes!');
       this.loadEvents();
       this.closeModal();
       
@@ -525,7 +527,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
       });
       window.dispatchEvent(eventAddedEvent);
     }, error => {
-      alert('Eroare la salvarea evenimentului!');
+      this.notificationService.showError('Eroare salvare', 'Eroare la salvarea evenimentului!');
     });
   }
   
@@ -553,7 +555,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     };
     
     this.http.post('http://localhost:8080/api/exhibitions', newExhibition).subscribe(() => {
-      alert('Expoziție adăugată cu succes!');
+      this.notificationService.showSuccess('Expoziție adăugată', 'Expoziție adăugată cu succes!');
       this.loadEvents();
       this.closeModal();
       
@@ -562,7 +564,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
       });
       window.dispatchEvent(eventAddedEvent);
     }, error => {
-      alert('Eroare la salvarea expoziției!');
+      this.notificationService.showError('Eroare expoziție', 'Eroare la salvarea expoziției!');
     });
   }
 }

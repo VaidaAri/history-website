@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslatePipe } from '../services/i18n/translate.pipe';
 import { TranslationService } from '../services/i18n/translation.service';
+import { NotificationService } from '../services/notification.service';
 
 @Component({
   selector: 'app-evenimente',
@@ -61,7 +62,8 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
     private authService: AuthService, 
     private router: Router,
     private http: HttpClient,
-    private translationService: TranslationService
+    private translationService: TranslationService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit() {
@@ -135,18 +137,29 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
     this.calendarComponent.editEvent();
   }
   
-  deleteEvent(id: number) {
-    if (confirm('Sigur vrei să ștergi acest eveniment?')) {
-      this.http.delete(`http://localhost:8080/api/events/${id}`).subscribe(() => {
-        alert('Eveniment șters cu succes!');
-        this.loadEvents();
-        
-        const eventDeletedEvent = new CustomEvent('eventDeleted', { 
-          detail: { eventId: id }
-        });
-        window.dispatchEvent(eventDeletedEvent);
-      }, error => {
-        alert('Eroare la ștergerea evenimentului!');
+  async deleteEvent(id: number) {
+    const confirmed = await this.notificationService.showConfirm(
+      'Confirmare ștergere',
+      'Sigur vrei să ștergi acest eveniment? Această acțiune nu poate fi anulată.',
+      'Șterge',
+      'Anulează'
+    );
+    
+    if (confirmed) {
+      this.http.delete(`http://localhost:8080/api/events/${id}`).subscribe({
+        next: () => {
+          this.notificationService.showSuccess('Eveniment șters', 'Eveniment șters cu succes!');
+          this.loadEvents();
+          
+          const eventDeletedEvent = new CustomEvent('eventDeleted', { 
+            detail: { eventId: id }
+          });
+          window.dispatchEvent(eventDeletedEvent);
+        },
+        error: (error) => {
+          const errorMessage = error.error?.message || 'Eroare la ștergerea evenimentului!';
+          this.notificationService.showError('Eroare ștergere', errorMessage);
+        }
       });
     }
   }
@@ -198,13 +211,13 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
   registerForEvent() {
     if (!this.selectedEvent || !this.registrationForm.nume.trim() || 
         !this.registrationForm.prenume.trim() || !this.registrationForm.email.trim()) {
-      alert('Vă rugăm să completați toate câmpurile!');
+      this.notificationService.showWarning('Câmpuri obligatorii', 'Vă rugăm să completați toate câmpurile!');
       return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(this.registrationForm.email)) {
-      alert('Vă rugăm să introduceți o adresă de email validă!');
+      this.notificationService.showWarning('Email invalid', 'Vă rugăm să introduceți o adresă de email validă!');
       return;
     }
 
@@ -220,19 +233,19 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (response: any) => {
           if (response.success) {
-            this.showNotification('success', 'Înscrierea reușită!', 'Înscrierea s-a făcut cu succes! Veți primi un email cu invitația dumneavoastră.');
+            this.notificationService.showSuccess('Înscrierea reușită!', 'Înscrierea s-a făcut cu succes! Veți primi un email cu invitația dumneavoastră.', 6000);
             this.closeRegistrationModal();
           } else {
-            this.showNotification('error', 'Eroare la înscriere', response.message);
+            this.notificationService.showError('Eroare la înscriere', response.message);
           }
         },
         error: (error) => {
           const message = error.error?.message || '';
           
           if (message.includes('deja inscris') || message.includes('deja înscris')) {
-            this.showNotification('warning', 'Deja înscris', 'Sunteți deja înscris la acest eveniment! Verificați email-ul pentru invitația dumneavoastră.');
+            this.notificationService.showWarning('Deja înscris', 'Sunteți deja înscris la acest eveniment! Verificați email-ul pentru invitația dumneavoastră.');
           } else {
-            this.showNotification('error', 'Eroare', message || 'A apărut o eroare la înregistrare.');
+            this.notificationService.showError('Eroare înregistrare', message || 'A apărut o eroare la înregistrare.');
           }
         }
       });
@@ -275,7 +288,7 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
         });
       },
       error: (error) => {
-        this.showNotification('error', 'Eroare', 'Nu s-au putut încărca detaliile evenimentului.');
+        this.notificationService.showError('Eroare încărcare', 'Nu s-au putut încărca detaliile evenimentului.');
       }
     });
   }
@@ -291,7 +304,7 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
         this.calculateStatsFromDensity(densityData);
       },
       error: (error) => {
-        this.showNotification('error', 'Eroare', 'Nu s-au putut încărca statisticile evenimentelor.');
+        this.notificationService.showError('Eroare statistici', 'Nu s-au putut încărca statisticile evenimentelor.');
       }
     });
     
@@ -300,7 +313,7 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
         this.findNextAndPopularEvents(allEvents);
       },
       error: (error) => {
-        this.showNotification('error', 'Eroare', 'Nu s-au putut încărca evenimentele.');
+        this.notificationService.showError('Eroare evenimente', 'Nu s-au putut încărca evenimentele.');
       }
     });
   }

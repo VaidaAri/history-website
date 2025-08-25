@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { PostareComponent } from '../postare/postare.component';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { NotificationService } from '../services/notification.service';
 
 @Component({
   selector: 'app-administrator',
@@ -23,7 +24,7 @@ export class AdministratorComponent implements OnInit {
   images: any[] = [];
   currentSection: string = 'posts';
 
-  constructor(private http: HttpClient, private router: Router, private authService: AuthService) {}
+  constructor(private http: HttpClient, private router: Router, private authService: AuthService, private notificationService: NotificationService) {}
 
   ngOnInit() {
     this.checkAuthentication();
@@ -39,8 +40,14 @@ export class AdministratorComponent implements OnInit {
   }
 
   loadPosts() {
-    this.http.get<any[]>('http://localhost:8080/api/posts').subscribe(data => {
-      this.posts = data;
+    this.http.get<any[]>('http://localhost:8080/api/posts').subscribe({
+      next: (data) => {
+        this.posts = data;
+      },
+      error: (err) => {
+        const errorMessage = err.error?.message || 'Eroare la încărcarea postărilor.';
+        this.notificationService.showError('Eroare încărcare', errorMessage);
+      }
     });
   }
 
@@ -53,71 +60,122 @@ export class AdministratorComponent implements OnInit {
 
   createPost() {
     if (!this.description.trim()) {
-      alert('Descrierea nu poate fi goală!');
+      this.notificationService.showWarning('Câmp obligatoriu', 'Descrierea nu poate fi goală!');
       return;
     }
 
     const newPost = { description: this.description, images: this.images };
 
-    this.http.post('http://localhost:8080/api/posts', newPost).subscribe(() => {
-      alert('Postare adăugată cu succes!');
-      this.description = '';
-      this.images = [];
-      this.loadPosts();
+    this.http.post('http://localhost:8080/api/posts', newPost).subscribe({
+      next: (response: any) => {
+        const successMessage = response?.message || 'Postare adăugată cu succes!';
+        this.notificationService.showSuccess('Postare adăugată', successMessage);
+        this.description = '';
+        this.images = [];
+        this.loadPosts();
+      },
+      error: (err) => {
+        const errorMessage = err.error?.message || 'Eroare la adăugarea postării.';
+        this.notificationService.showError('Eroare postare', errorMessage);
+      }
     });
   }
 
-  deletePost(id: number) {
-    if (confirm('Sigur vrei să ștergi această postare?')) {
-      this.http.delete(`http://localhost:8080/api/posts/${id}`).subscribe(() => {
-        alert('Postare ștearsă!');
-        this.loadPosts();
+  async deletePost(id: number) {
+    const confirmed = await this.notificationService.showConfirm(
+      'Confirmare ștergere',
+      'Sigur vrei să ștergi această postare? Această acțiune nu poate fi anulată.',
+      'Șterge',
+      'Anulează'
+    );
+    
+    if (confirmed) {
+      this.http.delete(`http://localhost:8080/api/posts/${id}`).subscribe({
+        next: () => {
+          this.notificationService.showSuccess('Postare ștearsă', 'Postarea a fost ștearsă cu succes!');
+          this.loadPosts();
+        },
+        error: (err) => {
+          const errorMessage = err.error?.message || 'Eroare la ștergerea postării.';
+          this.notificationService.showError('Eroare ștergere', errorMessage);
+        }
       });
     }
   }
 
   loadAdmins() {
-    this.http.get<any[]>('http://localhost:8080/api/administrators').subscribe(data => {
-      this.admins = data;
+    this.http.get<any[]>('http://localhost:8080/api/administrators').subscribe({
+      next: (data) => {
+        this.admins = data;
+      },
+      error: (err) => {
+        const errorMessage = err.error?.message || 'Eroare la încărcarea administratorilor.';
+        this.notificationService.showError('Eroare încărcare', errorMessage);
+      }
     });
   }
 
-  deleteAdmin(adminId: number) {
-    if (confirm("Sigur vrei să ștergi acest administrator?")) {
+  async deleteAdmin(adminId: number) {
+    const confirmed = await this.notificationService.showConfirm(
+      'Confirmare ștergere',
+      'Sigur vrei să ștergi acest administrator? Această acțiune nu poate fi anulată.',
+      'Șterge',
+      'Anulează'
+    );
+    
+    if (confirmed) {
       this.http.delete(`http://localhost:8080/api/administrators/${adminId}`).subscribe({
         next: () => {
-          alert("Administrator șters cu succes!");
+          this.notificationService.showSuccess('Administrator șters', 'Administrator șters cu succes!');
           this.loadAdmins();
         },
         error: (err) => {
-          alert("Eroare la ștergere. Încearcă din nou.");
+          const errorMessage = err.error?.message || 'Eroare la ștergere. Încearcă din nou.';
+          this.notificationService.showError('Eroare ștergere', errorMessage);
         }
       });
     }
   }
 
   loadEvents() {
-    this.http.get<any[]>('http://localhost:8080/api/events').subscribe(data => {
-      this.events = data;
+    this.http.get<any[]>('http://localhost:8080/api/events').subscribe({
+      next: (data) => {
+        this.events = data;
+      },
+      error: (err) => {
+        const errorMessage = err.error?.message || 'Eroare la încărcarea evenimentelor.';
+        this.notificationService.showError('Eroare încărcare', errorMessage);
+      }
     });
   }
   
   editEvent(event: any) {
-    alert('Funcționalitatea de editare a evenimentelor va fi disponibilă în curând!');
+    this.notificationService.showInfo('Funcționalitate în dezvoltare', 'Funcționalitatea de editare a evenimentelor va fi disponibilă în curând!');
   }
   
-  deleteEvent(id: number) {
-    if (confirm('Sigur vrei să ștergi acest eveniment?')) {
-      this.http.delete(`http://localhost:8080/api/events/${id}`).subscribe(() => {
-        alert('Eveniment șters cu succes!');
-        this.loadEvents();
-        
-        const eventDeletedEvent = new CustomEvent('eventDeleted', { 
-          detail: { eventId: id }
-        });
-        window.dispatchEvent(eventDeletedEvent);
-      }, error => {
-        alert('Eroare la ștergerea evenimentului!');
+  async deleteEvent(id: number) {
+    const confirmed = await this.notificationService.showConfirm(
+      'Confirmare ștergere',
+      'Sigur vrei să ștergi acest eveniment? Această acțiune nu poate fi anulată.',
+      'Șterge',
+      'Anulează'
+    );
+    
+    if (confirmed) {
+      this.http.delete(`http://localhost:8080/api/events/${id}`).subscribe({
+        next: () => {
+          this.notificationService.showSuccess('Eveniment șters', 'Eveniment șters cu succes!');
+          this.loadEvents();
+          
+          const eventDeletedEvent = new CustomEvent('eventDeleted', { 
+            detail: { eventId: id }
+          });
+          window.dispatchEvent(eventDeletedEvent);
+        },
+        error: (error) => {
+          const errorMessage = error.error?.message || 'Eroare la ștergerea evenimentului!';
+          this.notificationService.showError('Eroare ștergere', errorMessage);
+        }
       });
     }
   }
