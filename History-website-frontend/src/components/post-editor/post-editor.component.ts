@@ -16,7 +16,7 @@ import { PostService } from '../../services/post.service';
         <textarea [(ngModel)]="description" placeholder="Editează textul postării..." class="post-textarea"></textarea>
         
         <div *ngIf="existingImages.length > 0" class="existing-images">
-          <h5>Imagini existente ({{ existingImages.length }}) - Drag & Drop pentru reordonare:</h5>
+          <h5>Imagini existente ({{ existingImages.length }}):</h5>
           <div class="image-previews draggable-container">
             <div *ngFor="let image of existingImages; let i = index" 
                  class="image-preview-container draggable-item"
@@ -26,6 +26,7 @@ import { PostService } from '../../services/post.service';
                  (drop)="onDrop($event, i)"
                  (dragenter)="onDragEnter($event)"
                  (dragleave)="onDragLeave($event)"
+                 (dragend)="onDragEnd($event)"
                  [attr.data-index]="i">
               <div class="drag-handle">⋮⋮</div>
               <img [src]="getImageUrl(image.path)" alt="Imagine existentă" class="image-preview" />
@@ -43,7 +44,7 @@ import { PostService } from '../../services/post.service';
         </div>
         
         <div *ngIf="newImages.length > 0" class="selected-images">
-          <h5>Imagini noi selectate ({{ newImages.length }}) - Drag & Drop pentru reordonare:</h5>
+          <h5>Imagini noi selectate ({{ newImages.length }}):</h5>
           <div class="image-previews draggable-container">
             <div *ngFor="let image of newImages; let i = index" 
                  class="image-preview-container draggable-item"
@@ -53,6 +54,7 @@ import { PostService } from '../../services/post.service';
                  (drop)="onDropNew($event, i)"
                  (dragenter)="onDragEnter($event)"
                  (dragleave)="onDragLeave($event)"
+                 (dragend)="onDragEnd($event)"
                  [attr.data-index]="i">
               <div class="drag-handle">⋮⋮</div>
               <img [src]="image.url" alt="Preview" class="image-preview" />
@@ -147,11 +149,11 @@ import { PostService } from '../../services/post.service';
 
     .draggable-item.dragging {
       opacity: 0.5;
-      transform: rotate(5deg);
+      transition: opacity 0.2s ease;
     }
 
     .draggable-item.drag-over {
-      border: 2px dashed #7D5A50;
+      border: 2px solid #7D5A50;
       background-color: rgba(125, 90, 80, 0.1);
     }
 
@@ -294,17 +296,6 @@ import { PostService } from '../../services/post.service';
       position: relative;
     }
 
-    .draggable-container::before {
-      content: 'Apasă și trage pentru a reordona';
-      position: absolute;
-      top: -25px;
-      left: 0;
-      font-size: 0.8em;
-      color: #7D5A50;
-      opacity: 0.7;
-      font-style: italic;
-    }
-
     @media (max-width: 768px) {
       .post-editor {
         padding: 15px;
@@ -314,9 +305,6 @@ import { PostService } from '../../services/post.service';
         flex-direction: column;
       }
 
-      .draggable-container::before {
-        content: 'Trage pentru a reordona';
-      }
     }
   `]
 })
@@ -472,7 +460,12 @@ export class PostEditorComponent implements OnInit {
     this.draggedIndex = index;
     this.draggedType = 'existing';
     const target = event.target as HTMLElement;
-    target.classList.add('dragging');
+    const container = target.closest('.image-preview-container') as HTMLElement;
+    
+    if (container) {
+      container.classList.add('dragging');
+    }
+    
     event.dataTransfer!.effectAllowed = 'move';
   }
 
@@ -480,7 +473,12 @@ export class PostEditorComponent implements OnInit {
     this.draggedIndex = index;
     this.draggedType = 'new';
     const target = event.target as HTMLElement;
-    target.classList.add('dragging');
+    const container = target.closest('.image-preview-container') as HTMLElement;
+    
+    if (container) {
+      container.classList.add('dragging');
+    }
+    
     event.dataTransfer!.effectAllowed = 'move';
   }
 
@@ -518,10 +516,7 @@ export class PostEditorComponent implements OnInit {
       this.reorderExistingImages(this.draggedIndex, dropIndex);
     }
 
-    // Clean up dragging state
-    document.querySelectorAll('.dragging').forEach(el => {
-      el.classList.remove('dragging');
-    });
+    this.cleanupDragState();
   }
 
   onDropNew(event: DragEvent, dropIndex: number) {
@@ -536,10 +531,12 @@ export class PostEditorComponent implements OnInit {
       this.reorderNewImages(this.draggedIndex, dropIndex);
     }
 
-    // Clean up dragging state
-    document.querySelectorAll('.dragging').forEach(el => {
-      el.classList.remove('dragging');
-    });
+    this.cleanupDragState();
+  }
+
+  onDragEnd(event: DragEvent) {
+    // Ensure cleanup happens even if drop didn't occur
+    setTimeout(() => this.cleanupDragState(), 100);
   }
 
   private reorderExistingImages(fromIndex: number, toIndex: number) {
@@ -555,5 +552,20 @@ export class PostEditorComponent implements OnInit {
   private reorderNewImages(fromIndex: number, toIndex: number) {
     const item = this.newImages.splice(fromIndex, 1)[0];
     this.newImages.splice(toIndex, 0, item);
+  }
+
+  private cleanupDragState() {
+    // Remove dragging state
+    document.querySelectorAll('.dragging').forEach(el => {
+      el.classList.remove('dragging');
+    });
+
+    // Remove drag-over state
+    document.querySelectorAll('.drag-over').forEach(el => {
+      el.classList.remove('drag-over');
+    });
+
+    // Reset drag state
+    this.draggedIndex = -1;
   }
 }
