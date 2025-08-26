@@ -16,9 +16,18 @@ import { PostService } from '../../services/post.service';
         <textarea [(ngModel)]="description" placeholder="Editează textul postării..." class="post-textarea"></textarea>
         
         <div *ngIf="existingImages.length > 0" class="existing-images">
-          <h5>Imagini existente ({{ existingImages.length }}):</h5>
-          <div class="image-previews">
-            <div *ngFor="let image of existingImages; let i = index" class="image-preview-container">
+          <h5>Imagini existente ({{ existingImages.length }}) - Drag & Drop pentru reordonare:</h5>
+          <div class="image-previews draggable-container">
+            <div *ngFor="let image of existingImages; let i = index" 
+                 class="image-preview-container draggable-item"
+                 draggable="true"
+                 (dragstart)="onDragStart($event, i)"
+                 (dragover)="onDragOver($event)"
+                 (drop)="onDrop($event, i)"
+                 (dragenter)="onDragEnter($event)"
+                 (dragleave)="onDragLeave($event)"
+                 [attr.data-index]="i">
+              <div class="drag-handle">⋮⋮</div>
               <img [src]="getImageUrl(image.path)" alt="Imagine existentă" class="image-preview" />
               <button (click)="removeExistingImage(i)" class="remove-image-btn" title="Elimină imaginea">×</button>
             </div>
@@ -34,9 +43,18 @@ import { PostService } from '../../services/post.service';
         </div>
         
         <div *ngIf="newImages.length > 0" class="selected-images">
-          <h5>Imagini noi selectate ({{ newImages.length }}):</h5>
-          <div class="image-previews">
-            <div *ngFor="let image of newImages; let i = index" class="image-preview-container">
+          <h5>Imagini noi selectate ({{ newImages.length }}) - Drag & Drop pentru reordonare:</h5>
+          <div class="image-previews draggable-container">
+            <div *ngFor="let image of newImages; let i = index" 
+                 class="image-preview-container draggable-item"
+                 draggable="true"
+                 (dragstart)="onDragStartNew($event, i)"
+                 (dragover)="onDragOver($event)"
+                 (drop)="onDropNew($event, i)"
+                 (dragenter)="onDragEnter($event)"
+                 (dragleave)="onDragLeave($event)"
+                 [attr.data-index]="i">
+              <div class="drag-handle">⋮⋮</div>
               <img [src]="image.url" alt="Preview" class="image-preview" />
               <button (click)="removeNewImage(i)" class="remove-image-btn" title="Elimină imaginea">×</button>
             </div>
@@ -115,6 +133,39 @@ import { PostService } from '../../services/post.service';
       border-radius: 8px;
       overflow: hidden;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .draggable-item {
+      cursor: move;
+    }
+
+    .draggable-item:hover {
+      transform: scale(1.02);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .draggable-item.dragging {
+      opacity: 0.5;
+      transform: rotate(5deg);
+    }
+
+    .draggable-item.drag-over {
+      border: 2px dashed #7D5A50;
+      background-color: rgba(125, 90, 80, 0.1);
+    }
+
+    .drag-handle {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      color: rgba(255, 255, 255, 0.8);
+      background-color: rgba(0, 0, 0, 0.5);
+      border-radius: 3px;
+      padding: 2px 4px;
+      font-size: 12px;
+      z-index: 10;
+      cursor: move;
     }
 
     .image-preview {
@@ -239,6 +290,21 @@ import { PostService } from '../../services/post.service';
       box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     }
 
+    .draggable-container {
+      position: relative;
+    }
+
+    .draggable-container::before {
+      content: 'Apasă și trage pentru a reordona';
+      position: absolute;
+      top: -25px;
+      left: 0;
+      font-size: 0.8em;
+      color: #7D5A50;
+      opacity: 0.7;
+      font-style: italic;
+    }
+
     @media (max-width: 768px) {
       .post-editor {
         padding: 15px;
@@ -246,6 +312,10 @@ import { PostService } from '../../services/post.service';
       
       .button-group {
         flex-direction: column;
+      }
+
+      .draggable-container::before {
+        content: 'Trage pentru a reordona';
       }
     }
   `]
@@ -259,6 +329,10 @@ export class PostEditorComponent implements OnInit {
   existingImages: any[] = [];
   newImages: any[] = [];
   originalPost: any = null;
+  
+  // Drag & Drop state
+  draggedIndex: number = -1;
+  draggedType: 'existing' | 'new' = 'existing';
 
   constructor(private postService: PostService) {}
 
@@ -338,6 +412,39 @@ export class PostEditorComponent implements OnInit {
       return;
     }
 
+    // First update image positions if they changed
+    if (this.existingImages.length > 0) {
+      this.updateImagePositions().then(() => {
+        this.savePost();
+      }).catch(() => {
+        this.savePost(); // Continue even if position update fails
+      });
+    } else {
+      this.savePost();
+    }
+  }
+
+  private updateImagePositions(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const imagePositions = this.existingImages.map((img, index) => ({
+        id: img.id,
+        position: index
+      }));
+
+      this.postService.reorderImages(imagePositions).subscribe({
+        next: () => {
+          console.log('Image positions updated successfully');
+          resolve();
+        },
+        error: (err) => {
+          console.error('Error updating image positions:', err);
+          reject(err);
+        }
+      });
+    });
+  }
+
+  private savePost() {
     const updatedPost = { 
       description: this.description,
       existingImages: this.existingImages,
@@ -358,5 +465,95 @@ export class PostEditorComponent implements OnInit {
 
   cancelEdit() {
     this.editCancelled.emit();
+  }
+
+  // Drag & Drop methods for existing images
+  onDragStart(event: DragEvent, index: number) {
+    this.draggedIndex = index;
+    this.draggedType = 'existing';
+    const target = event.target as HTMLElement;
+    target.classList.add('dragging');
+    event.dataTransfer!.effectAllowed = 'move';
+  }
+
+  onDragStartNew(event: DragEvent, index: number) {
+    this.draggedIndex = index;
+    this.draggedType = 'new';
+    const target = event.target as HTMLElement;
+    target.classList.add('dragging');
+    event.dataTransfer!.effectAllowed = 'move';
+  }
+
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+    event.dataTransfer!.dropEffect = 'move';
+  }
+
+  onDragEnter(event: DragEvent) {
+    event.preventDefault();
+    const target = event.target as HTMLElement;
+    const container = target.closest('.image-preview-container');
+    if (container) {
+      container.classList.add('drag-over');
+    }
+  }
+
+  onDragLeave(event: DragEvent) {
+    const target = event.target as HTMLElement;
+    const container = target.closest('.image-preview-container');
+    if (container && !container.contains(event.relatedTarget as Node)) {
+      container.classList.remove('drag-over');
+    }
+  }
+
+  onDrop(event: DragEvent, dropIndex: number) {
+    event.preventDefault();
+    const target = event.target as HTMLElement;
+    const container = target.closest('.image-preview-container');
+    if (container) {
+      container.classList.remove('drag-over');
+    }
+
+    if (this.draggedType === 'existing' && this.draggedIndex !== dropIndex) {
+      this.reorderExistingImages(this.draggedIndex, dropIndex);
+    }
+
+    // Clean up dragging state
+    document.querySelectorAll('.dragging').forEach(el => {
+      el.classList.remove('dragging');
+    });
+  }
+
+  onDropNew(event: DragEvent, dropIndex: number) {
+    event.preventDefault();
+    const target = event.target as HTMLElement;
+    const container = target.closest('.image-preview-container');
+    if (container) {
+      container.classList.remove('drag-over');
+    }
+
+    if (this.draggedType === 'new' && this.draggedIndex !== dropIndex) {
+      this.reorderNewImages(this.draggedIndex, dropIndex);
+    }
+
+    // Clean up dragging state
+    document.querySelectorAll('.dragging').forEach(el => {
+      el.classList.remove('dragging');
+    });
+  }
+
+  private reorderExistingImages(fromIndex: number, toIndex: number) {
+    const item = this.existingImages.splice(fromIndex, 1)[0];
+    this.existingImages.splice(toIndex, 0, item);
+    
+    // Update positions
+    this.existingImages.forEach((img, index) => {
+      img.position = index;
+    });
+  }
+
+  private reorderNewImages(fromIndex: number, toIndex: number) {
+    const item = this.newImages.splice(fromIndex, 1)[0];
+    this.newImages.splice(toIndex, 0, item);
   }
 }

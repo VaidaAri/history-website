@@ -13,6 +13,7 @@ interface ImageUploadResponse {
 export class PostService {
   private apiUrl = 'http://localhost:8080/api/posts';
   private imageUploadUrl = 'http://localhost:8080/api/images/upload-image';
+  private imageReorderUrl = 'http://localhost:8080/api/images/reorder';
 
   constructor(private http: HttpClient) {}
 
@@ -143,5 +144,9 @@ export class PostService {
 
   deletePost(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
+  }
+
+  reorderImages(imagePositions: {id: number, position: number}[]): Observable<any> {
+    return this.http.post<any>(this.imageReorderUrl, imagePositions);
   }
 }

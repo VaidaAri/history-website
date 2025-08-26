@@ -296,6 +296,50 @@ public class ImagineController {
         }
     }
 
+    @PostMapping("/reorder")
+    public ResponseEntity<Map<String, Object>> reorderImages(@RequestBody List<Map<String, Object>> imagePositions) {
+        try {
+            logger.debug("Reordering images with new positions");
+            
+            if (imagePositions == null || imagePositions.isEmpty()) {
+                Map<String, Object> errorResponse = new HashMap<>();
+                errorResponse.put("error", "Lista de poziții nu poate fi goală");
+                errorResponse.put("status", "error");
+                return ResponseEntity.badRequest().body(errorResponse);
+            }
+            
+            for (Map<String, Object> imagePosition : imagePositions) {
+                Integer imageId = (Integer) imagePosition.get("id");
+                Integer newPosition = (Integer) imagePosition.get("position");
+                
+                if (imageId == null || newPosition == null) {
+                    Map<String, Object> errorResponse = new HashMap<>();
+                    errorResponse.put("error", "ID-ul imaginii și poziția sunt obligatorii");
+                    errorResponse.put("status", "error");
+                    return ResponseEntity.badRequest().body(errorResponse);
+                }
+                
+                Imagine image = imagineService.findImageById(imageId);
+                if (image != null) {
+                    image.setPosition(newPosition);
+                    imagineService.updateImage(image);
+                }
+            }
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "Ordinea imaginilor a fost actualizată cu succes");
+            response.put("status", "success");
+            return ResponseEntity.ok(response);
+            
+        } catch (Exception e) {
+            logger.error("Error reordering images", e);
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("error", "Eroare la reordonarea imaginilor");
+            errorResponse.put("status", "error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
+    }
+
     @GetMapping("/uploads/{filename}")
     public ResponseEntity<Resource> getImage(@PathVariable String filename) {
         try {
