@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { MeniuComponent } from '../../meniu/meniu.component';
 
 @Component({
   selector: 'app-statistici-lunare',
   standalone: true,
-  imports: [MeniuComponent, CommonModule, HttpClientModule],
+  imports: [MeniuComponent, CommonModule],
   templateUrl: './statistici-lunare.component.html',
   styleUrl: './statistici-lunare.component.css'
 })

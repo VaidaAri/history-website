@@ -1,13 +1,13 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
 import { PostService } from '../../services/post.service';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-post-editor',
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule],
+  imports: [CommonModule, FormsModule],
   template: `
     <div class="post-editor">
       <h4>Editează postarea</h4>
@@ -322,7 +322,10 @@ export class PostEditorComponent implements OnInit {
   draggedIndex: number = -1;
   draggedType: 'existing' | 'new' = 'existing';
 
-  constructor(private postService: PostService) {}
+  constructor(
+    private postService: PostService,
+    private notificationService: NotificationService
+  ) {}
 
   ngOnInit(): void {
     if (this.postId) {
@@ -338,7 +341,7 @@ export class PostEditorComponent implements OnInit {
         this.existingImages = post.images || [];
       },
       error: (err) => {
-        alert('A apărut o eroare la încărcarea postării pentru editare.');
+        this.notificationService.showError('Eroare încărcare', 'A apărut o eroare la încărcarea postării pentru editare.');
         this.cancelEdit();
       }
     });
@@ -363,12 +366,12 @@ export class PostEditorComponent implements OnInit {
         const file = files[i];
         
         if (file.type.match(/image\/*/) == null) {
-          alert('Doar fișierele de tip imagine sunt permise!');
+          this.notificationService.showWarning('Tip fișier invalid', 'Doar fișierele de tip imagine sunt permise!');
           continue;
         }
         
         if (this.existingImages.length + this.newImages.length >= 30) {
-          alert('Poți avea maxim 30 de imagini la o postare.');
+          this.notificationService.showWarning('Limită atinsă', 'Poți avea maxim 30 de imagini la o postare.');
           break;
         }
         
@@ -396,7 +399,7 @@ export class PostEditorComponent implements OnInit {
 
   updatePost() {
     if (!this.description.trim()) {
-      alert('Descrierea nu poate fi goală!');
+      this.notificationService.showWarning('Câmp obligatoriu', 'Descrierea postării nu poate fi goală!');
       return;
     }
 
@@ -442,11 +445,11 @@ export class PostEditorComponent implements OnInit {
 
     this.postService.updatePost(this.postId, updatedPost).subscribe({
       next: () => {
-        alert('Postare actualizată cu succes!');
+        this.notificationService.showSuccess('Salvare reușită!', 'Postarea a fost actualizată cu succes!');
         this.postUpdated.emit();
       },
       error: (err) => {
-        alert('A apărut o eroare la actualizarea postării. Vă rugăm să încercați din nou.');
+        this.notificationService.showError('Eroare salvare', 'A apărut o eroare la actualizarea postării. Vă rugăm să încercați din nou.');
       }
     });
   }

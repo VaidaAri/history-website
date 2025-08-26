@@ -8,7 +8,7 @@ import { SmartEventCalendarComponent } from '../components/smart-event-calendar/
 import { CadranComponent } from "../cadran/cadran.component";
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { TranslatePipe } from '../services/i18n/translate.pipe';
 import { TranslationService } from '../services/i18n/translation.service';
 import { NotificationService } from '../services/notification.service';
@@ -16,7 +16,7 @@ import { NotificationService } from '../services/notification.service';
 @Component({
   selector: 'app-evenimente',
   standalone: true,
-  imports: [CommonModule, RouterModule, HttpClientModule, FormsModule, MeniuComponent, CalendarComponent, SmartEventCalendarComponent, CadranComponent, TranslatePipe],
+  imports: [CommonModule, RouterModule, FormsModule, MeniuComponent, CalendarComponent, SmartEventCalendarComponent, CadranComponent, TranslatePipe],
   templateUrl: './evenimente.component.html',
   styleUrl: './evenimente.component.css',
   providers: [TranslationService]

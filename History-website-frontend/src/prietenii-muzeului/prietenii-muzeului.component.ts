@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { MeniuComponent } from '../meniu/meniu.component';
 import { CadranComponent } from '../cadran/cadran.component';
 import { AuthService } from '../services/auth.service';
@@ -19,7 +19,7 @@ interface PrieteniImage {
 @Component({
   selector: 'app-prietenii-muzeului',
   standalone: true,
-  imports: [RouterModule, CommonModule, MeniuComponent, CadranComponent, FormsModule, HttpClientModule, TranslatePipe],
+  imports: [RouterModule, CommonModule, MeniuComponent, CadranComponent, FormsModule, TranslatePipe],
   templateUrl: './prietenii-muzeului.component.html',
   styleUrl: './prietenii-muzeului.component.css'
 })

@@ -1,13 +1,12 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
 import { PostService } from '../../services/post.service';
 
 @Component({
   selector: 'app-post-manager',
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule],
+  imports: [CommonModule, FormsModule],
   template: `
     <div class="post-manager">
       <h4>Adaugă o postare nouă</h4>

@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { FullCalendarModule } from '@fullcalendar/angular'; 
 import { CalendarOptions } from '@fullcalendar/core';
@@ -12,7 +12,7 @@ import { NotificationService } from '../services/notification.service';
 @Component({
   selector: 'app-calendar',
   standalone: true,
-  imports: [CommonModule, HttpClientModule, FullCalendarModule, ReactiveFormsModule],
+  imports: [CommonModule, FullCalendarModule, ReactiveFormsModule],
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.css'
 })

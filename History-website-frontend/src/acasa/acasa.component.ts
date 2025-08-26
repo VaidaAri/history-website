@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { MeniuComponent } from '../meniu/meniu.component';
 import { PostareComponent } from '../postare/postare.component';
-import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CadranComponent } from "../cadran/cadran.component";
@@ -30,7 +29,6 @@ interface Section {
     CadranComponent,
     CommonModule,
     FormsModule,
-    HttpClientModule,
     PostManagerComponent,
     PostEditorComponent,
     TranslatePipe
