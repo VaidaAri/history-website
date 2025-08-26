@@ -9,25 +9,30 @@
     <div class="modal-body">
       <form [formGroup]="eventForm">
         <div class="form-group">
-          <label for="eventName">Numele evenimentului:</label>
+          <label for="eventName" class="required-label">
+            Numele evenimentului:
+            <span class="required-asterisk">*</span>
+          </label>
           <input 
             type="text" 
             id="eventName" 
             formControlName="name" 
             placeholder="Introdu numele evenimentului"
-            class="form-control">
-          <div class="error-message" *ngIf="eventForm.get('name')?.invalid && eventForm.get('name')?.touched">
-            Numele evenimentului este obligatoriu
-          </div>
+            [class.form-control]="true"
+            [class.error-field]="eventForm.get('name')?.invalid && eventForm.get('name')?.touched">
         </div>
         
         <div class="form-group">
-          <label for="eventDescription">Descriere:</label>
+          <label for="eventDescription" class="required-label">
+            Descriere:
+            <span class="required-asterisk">*</span>
+          </label>
           <textarea 
             id="eventDescription" 
             formControlName="description" 
             placeholder="Descriere eveniment"
-            class="form-control"
+            [class.form-control]="true"
+            [class.error-field]="eventForm.get('description')?.invalid && eventForm.get('description')?.touched"
             rows="3"></textarea>
         </div>
         
@@ -50,30 +55,34 @@
         </div>
         
         <div class="form-group">
-          <label for="startDate">Data început:</label>
+          <label for="startDate" class="required-label">
+            Data început:
+            <span class="required-asterisk">*</span>
+          </label>
           <input 
             type="date" 
             id="startDate" 
             formControlName="startDate" 
-            class="form-control date-input">
-          <div class="error-message" *ngIf="eventForm.get('startDate')?.invalid && eventForm.get('startDate')?.touched">
-            Data de început este obligatorie
-          </div>
+            [class.form-control]="true"
+            [class.date-input]="true"
+            [class.error-field]="eventForm.get('startDate')?.invalid && eventForm.get('startDate')?.touched">
           <div class="error-message" *ngIf="eventForm.errors?.['startDateOutOfRange']">
             Data de început trebuie să fie în intervalul permis
           </div>
         </div>
         
         <div class="form-group">
-          <label for="endDate">Data sfârșit:</label>
+          <label for="endDate" class="required-label">
+            Data sfârșit:
+            <span class="required-asterisk">*</span>
+          </label>
           <input 
             type="date" 
             id="endDate" 
             formControlName="endDate" 
-            class="form-control date-input">
-          <div class="error-message" *ngIf="eventForm.get('endDate')?.invalid && eventForm.get('endDate')?.touched">
-            Data de sfârșit este obligatorie
-          </div>
+            [class.form-control]="true"
+            [class.date-input]="true"
+            [class.error-field]="eventForm.get('endDate')?.invalid && eventForm.get('endDate')?.touched">
           <div class="error-message" *ngIf="eventForm.errors?.['dateOrder']">
             Data de sfârșit trebuie să fie după data de început
           </div>
@@ -121,6 +130,12 @@
         </div>
         
       </form>
+    </div>
+    
+    <div class="form-error" *ngIf="formError">
+      <div class="error-message-box">
+        <pre class="error-content">{{ formError }}</pre>
+      </div>
     </div>
     
     <div class="form-actions">

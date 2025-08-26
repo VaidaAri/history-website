@@ -34,6 +34,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   editUploadProgress: number = 0;
   currentImageIndex: number = 0;
   selectedEventId: string | null = null;
+  formError: string = '';
   
   readonly MONTHS_IN_PAST = 3;
   readonly MONTHS_IN_FUTURE = 12;
@@ -94,7 +95,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   ) {
     this.eventForm = this.fb.group({
       name: ['', [Validators.required]],
-      description: [''],
+      description: ['', [Validators.required]],
       location: [''],
       eventType: ['eveniment'],
       startDate: ['', [Validators.required]],
@@ -106,7 +107,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
     this.editEventForm = this.fb.group({
       name: ['', [Validators.required]],
-      description: [''],
+      description: ['', [Validators.required]],
       location: [''],
       startDate: ['', [Validators.required]],
       endDate: ['', [Validators.required]]
@@ -467,6 +468,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.selectedImages = [];
     this.selectedFile = null;
     this.uploadProgress = 0;
+    this.formError = '';
   }
   
   addImage() {
@@ -482,9 +484,12 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
   saveEvent() {
     if (this.eventForm.invalid || !this.selectedDateInfo) {
+      this.markFormGroupTouched(this.eventForm);
+      this.formError = 'Completați toate câmpurile obligatorii pentru a continua.';
       return;
     }
     
+    this.formError = '';
     const formValue = this.eventForm.value;
     const eventType = formValue.eventType;
     
@@ -493,6 +498,24 @@ export class CalendarComponent implements OnInit, OnDestroy {
     } else if (eventType === 'expozitie') {
       this.saveExhibition(formValue);
     }
+  }
+  
+  private markFormGroupTouched(formGroup: FormGroup) {
+    Object.keys(formGroup.controls).forEach(key => {
+      const control = formGroup.get(key);
+      control?.markAsTouched();
+    });
+  }
+  
+  private getFieldDisplayName(field: string): string {
+    const fieldNames: { [key: string]: string } = {
+      'name': 'Numele evenimentului',
+      'description': 'Descrierea',
+      'location': 'Locația',
+      'startDate': 'Data început',
+      'endDate': 'Data sfârșit'
+    };
+    return fieldNames[field] || field;
   }
   
   saveRegularEvent(formValue: any) {
@@ -517,17 +540,28 @@ export class CalendarComponent implements OnInit, OnDestroy {
       images: processedImages
     };
     
-    this.http.post('http://localhost:8080/api/events', newEvent).subscribe(() => {
-      this.notificationService.showSuccess('Eveniment adăugat', 'Eveniment adăugat cu succes!');
-      this.loadEvents();
-      this.closeModal();
-      
-      const eventAddedEvent = new CustomEvent('eventAdded', { 
-        detail: { event: newEvent }
-      });
-      window.dispatchEvent(eventAddedEvent);
-    }, error => {
-      this.notificationService.showError('Eroare salvare', 'Eroare la salvarea evenimentului!');
+    this.http.post('http://localhost:8080/api/events', newEvent).subscribe({
+      next: () => {
+        this.notificationService.showSuccess('Eveniment adăugat', 'Eveniment adăugat cu succes!');
+        this.loadEvents();
+        this.closeModal();
+        
+        const eventAddedEvent = new CustomEvent('eventAdded', { 
+          detail: { event: newEvent }
+        });
+        window.dispatchEvent(eventAddedEvent);
+      },
+      error: (error) => {
+        if (error.error?.validationErrors) {
+          const validationErrors = error.error.validationErrors;
+          const errorMessages = Object.keys(validationErrors).map(field => 
+            `${this.getFieldDisplayName(field)}: ${validationErrors[field]}`
+          ).join('\n');
+          this.formError = `Verificați următoarele câmpuri:\n${errorMessages}`;
+        } else {
+          this.formError = error.error?.error || 'Eroare la salvarea evenimentului';
+        }
+      }
     });
   }
   
@@ -563,8 +597,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
         detail: { event: newExhibition }
       });
       window.dispatchEvent(eventAddedEvent);
-    }, error => {
-      this.notificationService.showError('Eroare expoziție', 'Eroare la salvarea expoziției!');
     });
   }
 }

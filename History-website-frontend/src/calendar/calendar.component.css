@@ -423,6 +423,73 @@
   margin-top: 5px;
 }
 
+.form-error {
+  margin: 15px 0;
+}
+
+.error-message-box {
+  background-color: #ffebee;
+  border: 1px solid #f44336;
+  border-radius: 4px;
+  padding: 12px;
+  color: #c62828;
+  font-size: 0.9em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.error-message-box::before {
+  content: '⚠️';
+  font-size: 1.1em;
+}
+
+.required-label {
+  font-weight: 600;
+  color: #5D4037;
+}
+
+.required-asterisk {
+  color: #f44336;
+  margin-left: 3px;
+  font-weight: bold;
+}
+
+.error-field {
+  border-color: #f44336 !important;
+  box-shadow: 0 0 0 2px rgba(244, 67, 54, 0.2) !important;
+  background-color: #fefefe;
+}
+
+.error-field:focus {
+  border-color: #f44336 !important;
+  box-shadow: 0 0 0 3px rgba(244, 67, 54, 0.3) !important;
+}
+
+@keyframes shake {
+  0%, 20%, 40%, 60%, 80% {
+    transform: translateX(-2px);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(2px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+.error-content {
+  margin: 0;
+  font-family: inherit;
+  font-size: inherit;
+  white-space: pre-line;
+  line-height: 1.4;
+}
+
 .date-input {
   font-family: 'Merriweather', serif;
   cursor: pointer;
