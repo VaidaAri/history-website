@@ -47,7 +47,6 @@ export class PostareComponent implements OnInit {
   }
   
   openFullImage(image: any) {
-    const url = this.getImageUrl(image.path);
-    window.open(url, '_blank');
+    // Functionality removed - no automatic tab opening
   }
 }
