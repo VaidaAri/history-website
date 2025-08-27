@@ -26,11 +26,11 @@ public interface RezervareRepository extends JpaRepository<Rezervare, Integer> {
     Optional<Rezervare> findByConfirmationToken(String confirmationToken);
     List<Rezervare> findByStatusIn(List<ReservationStatus> statuses);
     
-    // Find reservations where visit datetime + 24h is before current time
+    // Find reservations where visit datetime + 3 days is before current time
     @Query("SELECT r FROM Rezervare r WHERE r.datetime < :cutoffDateTime")
     List<Rezervare> findExpiredReservations(@Param("cutoffDateTime") LocalDateTime cutoffDateTime);
     
-    // Delete reservations where visit datetime + 24h is before current time
+    // Delete reservations where visit datetime + 3 days is before current time
     @Modifying
     @Query("DELETE FROM Rezervare r WHERE r.datetime < :cutoffDateTime")
     int deleteExpiredReservations(@Param("cutoffDateTime") LocalDateTime cutoffDateTime);

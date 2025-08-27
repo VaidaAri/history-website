@@ -84,12 +84,12 @@ public class EventCleanupService {
     }
     
     /**
-     * Clean up expired reservations (visit datetime + 24h is in the past)
+     * Clean up expired reservations (visit datetime + 3 days is in the past)
      */
     @Transactional
     public void cleanupExpiredReservations() {
         try {
-            logger.info("Starting cleanup of expired reservations (24h after visit time)");
+            logger.info("Starting cleanup of expired reservations (3 days after visit time)");
             
             // Get reservations that will be deleted for logging
             List<Rezervare> expiredReservations = rezervareService.getExpiredReservations();
@@ -113,7 +113,7 @@ public class EventCleanupService {
             // Delete expired reservations
             int deletedCount = rezervareService.deleteExpiredReservations();
             
-            logger.info("Successfully cleaned up {} expired reservations (24h after visit time)", deletedCount);
+            logger.info("Successfully cleaned up {} expired reservations (3 days after visit time)", deletedCount);
             
         } catch (Exception e) {
             logger.error("Error during expired reservations cleanup", e);
