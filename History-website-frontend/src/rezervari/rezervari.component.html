@@ -83,31 +83,17 @@
                     <div class="date-time-selector">
                         <div class="date-select">
                             <label for="date">{{ 'rezervariDate' | translate }}:</label>
-                            <input type="date" 
+                            <input type="text" 
                                    id="date" 
                                    name="date"
                                    [(ngModel)]="selectedDate"
-                                   (change)="onDateSelected()"
                                    required
-                                   [min]="minDate"
-                                   [max]="maxDate">
+                                   readonly
+                                   placeholder="Selectează din calendar..."
+                                   class="date-display-readonly">
                         </div>
 
-                        <div class="time-select" *ngIf="availableHours.length > 0">
-                            <label for="time">{{ 'rezervariTime' | translate }}:</label>
-                            <select id="time" 
-                                    name="time"
-                                    [(ngModel)]="selectedTime"
-                                    (change)="onTimeSelected()"
-                                    required>
-                                <option value="">Selectează intervalul orar...</option>
-                                <option *ngFor="let hour of availableHours" [value]="hour">
-                                    {{ hour }}
-                                </option>
-                            </select>
-                        </div>
-                        
-                        <div class="time-select" *ngIf="availableHours.length === 0 && selectedDate">
+                        <div class="time-select">
                             <label for="time">{{ 'rezervariTime' | translate }}:</label>
                             <input type="text" 
                                    id="time" 
@@ -115,31 +101,17 @@
                                    [(ngModel)]="selectedTime"
                                    required
                                    readonly
-                                   placeholder="Nu sunt ore disponibile..."
+                                   placeholder="Selectează din calendar..."
                                    class="time-display-readonly">
                         </div>
+                    </div>
+                    
+                    <div class="calendar-instruction" *ngIf="!selectedDate || !selectedTime">
+                        <p><em>👆 Folosește calendarul de mai sus pentru a selecta data și ora rezervării</em></p>
                     </div>
 
                     <div *ngIf="dateTimeError" class="error-message">
                         {{ dateTimeError }}
-                    </div>
-                    
-                    <!-- Debug info - temporary -->
-                    <div *ngIf="selectedDate" class="debug-info" style="background: #f0f0f0; padding: 10px; margin: 10px 0; border-radius: 5px;">
-                        <small>
-                            <strong>Debug:</strong><br>
-                            Data selectată: {{ selectedDate }}<br>
-                            Ora selectată: {{ selectedTime }}<br>
-                            Ore disponibile: {{ availableHours.length }} ({{ availableHours.join(', ') }})
-                        </small>
-                    </div>
-
-                    <div class="booking-time-info" *ngIf="currentSchedule">
-                        <p>{{ 'rezervariBookingNote' | translate }}:</p>
-                        <ul>
-                            <li>{{ 'rezervariWeekdays' | translate }}: {{ currentSchedule.weekdaysOpen }} - {{ currentSchedule.weekdaysClose }}</li>
-                            <li>{{ 'rezervariWeekend' | translate }}: {{ currentSchedule.weekendOpen }} - {{ currentSchedule.weekendClose }}</li>
-                        </ul>
                     </div>
 
                     <input type="hidden" name="datetime" [(ngModel)]="newBooking.datetime">

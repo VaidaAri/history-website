@@ -29,7 +29,6 @@ export class RezervariComponent implements OnInit {
   
   selectedDate: string = '';
   selectedTime: string = '';
-  availableHours: string[] = [];
   
   newBooking = {
     nume: '',
@@ -125,96 +124,6 @@ export class RezervariComponent implements OnInit {
     this.maxDate = maxDate.toISOString().split('T')[0];   
   }
   
-  generateAvailableHours(date: Date): string[] {
-    if (!this.currentSchedule || !date) return [];
-    
-    const dayOfWeek = date.getDay();
-    
-    if (dayOfWeek === 1) {
-      this.dateTimeError = "Muzeul este închis lunea. Vă rugăm să selectați o altă zi.";
-      return [];
-    }
-    
-    const parseTimeToMinutes = (timeStr: string): number => {
-      const [hours, minutes] = timeStr.split(':').map(Number);
-      return hours * 60 + minutes;
-    };
-    
-    const minutesToTimeString = (minutes: number): string => {
-      const hours = Math.floor(minutes / 60);
-      const mins = minutes % 60;
-      return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
-    };
-    
-    const createTimeInterval = (startMinutes: number): string => {
-      const endMinutes = startMinutes + 120;
-      const startTime = minutesToTimeString(startMinutes);
-      const endTime = minutesToTimeString(endMinutes);
-      return `${startTime}-${endTime}`;
-    };
-    
-    let openTime, closeTime;
-    
-    if (dayOfWeek >= 2 && dayOfWeek <= 5) {
-      openTime = parseTimeToMinutes(this.currentSchedule.weekdaysOpen);
-      closeTime = parseTimeToMinutes(this.currentSchedule.weekdaysClose);
-    } else {
-      openTime = parseTimeToMinutes(this.currentSchedule.weekendOpen);
-      closeTime = parseTimeToMinutes(this.currentSchedule.weekendClose);
-    }
-    
-    const hours: string[] = [];
-    
-    const today = new Date();
-    const isToday = date.getDate() === today.getDate() && 
-                    date.getMonth() === today.getMonth() && 
-                    date.getFullYear() === today.getFullYear();
-    
-    let startMinutes = openTime;
-    if (isToday) {
-      const currentMinutes = today.getHours() * 60 + today.getMinutes();
-      const nextHourMinutes = Math.ceil(currentMinutes / 60) * 60;
-      startMinutes = Math.max(openTime, nextHourMinutes);
-    }
-    
-    for (let timeMinutes = startMinutes; timeMinutes <= closeTime - 120; timeMinutes += 120) {
-      hours.push(createTimeInterval(timeMinutes));
-    }
-    
-    return hours;
-  }
-  
-  onDateSelected() {
-    if (!this.selectedDate) {
-      this.availableHours = [];
-      this.selectedTime = '';
-      this.dateTimeError = '';
-      this.newBooking.datetime = '';
-      return;
-    }
-    
-    const selectedDate = new Date(this.selectedDate);
-    
-    this.availableHours = this.generateAvailableHours(selectedDate);
-    
-    this.selectedTime = '';
-    this.dateTimeError = '';
-    
-    if (this.availableHours.length === 0 && this.selectedDate) {
-      if (selectedDate.getDay() === 1) {
-        this.dateTimeError = "Muzeul este închis lunea. Vă rugăm să selectați o altă zi.";
-      } else {
-        this.dateTimeError = "Nu există ore disponibile pentru rezervare în această zi.";
-      }
-    }
-    
-    this.updateDateTime();
-  }
-  
-  onTimeSelected() {
-    this.dateTimeError = '';
-    this.updateDateTime();
-  }
   
   updateDateTime() {
     if (!this.selectedDate || !this.selectedTime) {
@@ -320,7 +229,6 @@ export class RezervariComponent implements OnInit {
     };
     this.selectedDate = '';
     this.selectedTime = '';
-    this.availableHours = [];
     this.dateTimeError = '';
     this.emailValidationError = '';
     this.emailValidationSuccess = false;
@@ -377,25 +285,15 @@ export class RezervariComponent implements OnInit {
 
   onDateSelectedFromCalendar(dateStr: string) {
     this.selectedDate = dateStr;
-    this.onDateSelected(); 
+    this.updateDateTime(); 
     this.showSmartCalendar = false;
   }
 
   onDateTimeSelectedFromCalendar(selection: {date: string, time: string}) {
     this.selectedDate = selection.date;
-    
-    // Populate available hours for the selected date
-    this.onDateSelected();
-    
-    // Set the selected time
     this.selectedTime = selection.time;
     
-    // If selectedTime is not in availableHours, add it to ensure it's available
-    if (this.selectedTime && this.availableHours.indexOf(this.selectedTime) === -1) {
-      this.availableHours.push(this.selectedTime);
-    }
-    
-    this.onTimeSelected(); 
+    this.updateDateTime(); 
     this.showSmartCalendar = false;
   }
   
