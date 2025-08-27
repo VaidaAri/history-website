@@ -49,8 +49,12 @@ export class AuthService {
         }
       }),
       catchError((error) => {
-        // Token validation error handled silently
-        return of(true);
+        // If token validation fails, the user is not authenticated
+        this.isAuthenticatedSubject.next(false);
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('adminName');
+        this.adminNameSubject.next('');
+        return of(false);
       })
     );
   }

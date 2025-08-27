@@ -424,11 +424,9 @@ export class PostEditorComponent implements OnInit {
 
       this.postService.reorderImages(imagePositions).subscribe({
         next: () => {
-          console.log('Image positions updated successfully');
           resolve();
         },
         error: (err) => {
-          console.error('Error updating image positions:', err);
           reject(err);
         }
       });
