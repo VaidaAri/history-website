@@ -200,8 +200,7 @@
 
 .calendar-day {
   background-color: white;
-  min-height: 100px;
-  max-height: 100px;
+  min-height: 85px;
   padding: 8px;
   position: relative;
   display: flex;
@@ -211,8 +210,7 @@
 }
 
 .embedded .calendar-day {
-  min-height: 120px;
-  max-height: 120px;
+  min-height: 95px;
 }
 
 .calendar-day.clickable {
@@ -227,8 +225,8 @@
 
 .day-number {
   font-weight: bold;
-  font-size: 1.1em;
-  margin-bottom: 5px;
+  font-size: 1em;
+  margin-bottom: 4px;
 }
 
 .season-spring {
@@ -280,9 +278,9 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
   overflow: hidden;
-  max-height: 60px;
+  max-height: 50px;
 }
 
 .events-count {
@@ -351,7 +349,7 @@
   gap: 2px;
   flex: 1;
   overflow: hidden;
-  max-height: 50px;
+  max-height: 45px;
 }
 
 .event-item-mini {
@@ -419,37 +417,6 @@
   font-weight: 400;
 }
 
-.calendar-legend {
-  padding: 20px;
-  background-color: #f8f9fa;
-  border-radius: 0 0 15px 15px;
-}
-
-.legend-title {
-  font-weight: bold;
-  margin-bottom: 10px;
-  color: #333;
-}
-
-.legend-items {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-}
-
-.legend-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.9em;
-}
-
-.legend-color {
-  width: 16px;
-  height: 16px;
-  border-radius: 3px;
-  border-left: 3px solid;
-}
 
 .day-details-popup {
   position: fixed;
@@ -649,8 +616,8 @@
   }
   
   .calendar-day {
-    min-height: 80px;
-    padding: 5px;
+    min-height: 70px;
+    padding: 6px;
   }
   
   .day-header {
@@ -658,10 +625,6 @@
     font-size: 0.8em;
   }
   
-  .legend-items {
-    flex-direction: column;
-    gap: 8px;
-  }
   
   .popup-content {
     width: 95%;

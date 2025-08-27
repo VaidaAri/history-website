@@ -71,7 +71,6 @@
 
 ::ng-deep .fc-daygrid-day-frame {
   min-height: 90px;
-  max-height: 90px;
   overflow: hidden;
 }
 

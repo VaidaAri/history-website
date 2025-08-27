@@ -244,8 +244,7 @@
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
     margin-bottom: 25px;
     border: 1px solid rgba(234, 209, 150, 0.5);
-    overflow: hidden;
-    height: 70vh;
+    overflow: visible;
     min-height: 580px;
 }
 
@@ -315,7 +314,6 @@
     }
     
     .calendar-container {
-        height: 65vh;
         min-height: 450px;
     }
 }

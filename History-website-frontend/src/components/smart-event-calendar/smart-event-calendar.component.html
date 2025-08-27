@@ -94,43 +94,6 @@
       </div>
     </div>
 
-    <div class="calendar-legend" *ngIf="!isLoading">
-      <div class="legend-title">Legendă ocupare evenimente:</div>
-      <div class="legend-items">
-        <div class="legend-item">
-          <div class="legend-color available-day"></div>
-          <span>Disponibil (0-9%)</span>
-        </div>
-        <div class="legend-item">
-          <div class="legend-color very-low-day"></div>
-          <span>Foarte puțin (10-24%)</span>
-        </div>
-        <div class="legend-item">
-          <div class="legend-color low-day"></div>
-          <span>Puțin ocupat (25-39%)</span>
-        </div>
-        <div class="legend-item">
-          <div class="legend-color medium-day"></div>
-          <span>Moderat (40-54%)</span>
-        </div>
-        <div class="legend-item">
-          <div class="legend-color high-day"></div>
-          <span>Foarte ocupat (55-69%)</span>
-        </div>
-        <div class="legend-item">
-          <div class="legend-color very-high-day"></div>
-          <span>Aproape plin (70-84%)</span>
-        </div>
-        <div class="legend-item">
-          <div class="legend-color full-day"></div>
-          <span>Complet (85-100%)</span>
-        </div>
-        <div class="legend-item">
-          <div class="legend-color past-day"></div>
-          <span>Date trecute</span>
-        </div>
-      </div>
-    </div>
   </div>
 
   <div class="day-details-popup" *ngIf="!isEmbedded && showDayDetails && selectedDayData" (click)="closeDayDetails()">
