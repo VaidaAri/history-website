@@ -64,6 +64,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/rezervari").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/participanti").permitAll()
                 .requestMatchers("/api/rezervari/confirm/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/bookings/calendar-density/**").permitAll()
                 
                 // Static resources and uploads
                 .requestMatchers("/uploads/**").permitAll()
