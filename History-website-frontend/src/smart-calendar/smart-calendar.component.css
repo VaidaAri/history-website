@@ -156,14 +156,18 @@
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(6, 1fr);
   gap: 1px;
   background: #e9ecef;
   padding: 1px;
+  aspect-ratio: 7/5.5;
+  width: 100%;
 }
 
 .calendar-day {
   background: white;
   min-height: 80px;
+  height: 100%;
   padding: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -171,10 +175,11 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  box-sizing: border-box;
 }
 
 .calendar-day:hover:not(.day-past):not(.day-full) {
-  transform: scale(1.05);
+  transform: scale(1.02);
   z-index: 2;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
@@ -182,6 +187,7 @@
 .empty-day {
   background: #f8f9fa;
   min-height: 80px;
+  height: 100%;
 }
 
 .day-available {
@@ -463,19 +469,36 @@
 }
 
 @media (max-width: 768px) {
+  .calendar-container {
+    width: 95%;
+    max-height: 95vh;
+  }
+  
   .calendar-header {
     flex-direction: column;
     gap: 10px;
+    padding: 15px;
   }
   
   .calendar-legend {
     flex-direction: column;
     gap: 10px;
+    padding: 10px;
+  }
+  
+  .legend-item {
+    justify-content: center;
+  }
+  
+  .calendar-grid {
+    aspect-ratio: 7/5.2;
   }
   
   .calendar-day {
     min-height: 60px;
+    height: 100%;
     padding: 4px;
+    font-size: 12px;
   }
   
   .day-number {
@@ -485,5 +508,59 @@
   .day-indicator {
     flex-direction: column;
     gap: 2px;
+    margin-top: 2px;
+  }
+  
+  .status-emoji {
+    font-size: 12px;
+  }
+  
+  .available-count {
+    font-size: 10px;
+    padding: 1px 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .calendar-container {
+    width: 98%;
+  }
+  
+  .calendar-header {
+    padding: 10px;
+  }
+  
+  .month-title {
+    font-size: 18px;
+    min-width: 150px;
+  }
+  
+  .nav-btn, .close-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 18px;
+  }
+  
+  .today-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+  
+  .calendar-day {
+    min-height: 50px;
+    padding: 2px;
+  }
+  
+  .day-number {
+    font-size: 12px;
+  }
+  
+  .status-emoji {
+    font-size: 10px;
+  }
+  
+  .available-count {
+    font-size: 9px;
+    padding: 1px 3px;
   }
 }
