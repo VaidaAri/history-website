@@ -384,9 +384,16 @@ export class RezervariComponent implements OnInit {
   onDateTimeSelectedFromCalendar(selection: {date: string, time: string}) {
     this.selectedDate = selection.date;
     
+    // Populate available hours for the selected date
     this.onDateSelected();
     
+    // Set the selected time
     this.selectedTime = selection.time;
+    
+    // If selectedTime is not in availableHours, add it to ensure it's available
+    if (this.selectedTime && this.availableHours.indexOf(this.selectedTime) === -1) {
+      this.availableHours.push(this.selectedTime);
+    }
     
     this.onTimeSelected(); 
     this.showSmartCalendar = false;

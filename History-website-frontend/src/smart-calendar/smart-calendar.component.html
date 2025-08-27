@@ -60,7 +60,7 @@
           <div class="status-badge" [class]="'badge-' + selectedDay.status">
             {{ getStatusEmoji(selectedDay.status) }} {{ getStatusText(selectedDay.status) }}
           </div>
-          <p><strong>{{ selectedDay.availableSlots }}</strong> locuri disponibile din <strong>{{ selectedDay.totalSlots }}</strong></p>
+          <p><strong>{{ selectedDay.availableSlots || 0 }}</strong> locuri disponibile din <strong>{{ selectedDay.totalSlots || 'N/A' }}</strong></p>
         </div>
 
         <div class="time-slots" *ngIf="selectedDay.timeSlots">
@@ -79,6 +79,13 @@
               </span>
               <span *ngIf="isReservationMode && getSlotValue(slot.value) < 2" class="click-hint">👆 Click pentru selecție</span>
             </div>
+          </div>
+        </div>
+        
+        <div class="time-slots" *ngIf="!selectedDay.timeSlots">
+          <h4>{{ isReservationMode ? 'Selectează un interval orar:' : 'Disponibilitate pe intervale:' }}</h4>
+          <div class="no-time-slots">
+            <p><em>Nu sunt disponibile intervalele orare pentru această dată.</em></p>
           </div>
         </div>
 

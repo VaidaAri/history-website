@@ -46,8 +46,9 @@ export class SmartCalendarComponent implements OnInit {
     
     this.http.get<any>(`http://localhost:8080/api/bookings/calendar-density/${year}/${month}`)
       .subscribe({
-        next: (data) => {
-          this.densityData = data;
+        next: (response) => {
+          // Extract the densityData from the wrapped response
+          this.densityData = response.densityData || response;
           this.generateCalendarDays(); 
         },
         error: (err) => {
