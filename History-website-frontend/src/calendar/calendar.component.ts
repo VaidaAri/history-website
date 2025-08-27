@@ -36,7 +36,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   selectedEventId: string | null = null;
   formError: string = '';
   
-  readonly MONTHS_IN_PAST = 3;
+  readonly MONTHS_IN_PAST = 1;
   readonly MONTHS_IN_FUTURE = 12;
   
   calendarOptions: CalendarOptions = {

@@ -20,4 +20,11 @@ public interface EvenimentRepository extends JpaRepository<Eveniment, Integer> {
     
     @Query("SELECT e FROM Eveniment e WHERE DATE(e.startDate) = :date")
     List<Eveniment> findEventsByDate(@Param("date") LocalDate date);
+    
+    @Query("SELECT e FROM Eveniment e WHERE e.endDate < :cutoffDate")
+    List<Eveniment> findEventsOlderThan(@Param("cutoffDate") LocalDate cutoffDate);
+    
+    @Query("DELETE FROM Eveniment e WHERE e.endDate < :cutoffDate")
+    @org.springframework.data.jpa.repository.Modifying
+    int deleteEventsOlderThan(@Param("cutoffDate") LocalDate cutoffDate);
 }

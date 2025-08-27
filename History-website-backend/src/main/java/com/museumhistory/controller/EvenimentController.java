@@ -2,6 +2,7 @@ package com.museumhistory.controller;
 
 import com.museumhistory.model.Eveniment;
 import com.museumhistory.service.EvenimentService;
+import com.museumhistory.service.EventCleanupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,9 @@ public class EvenimentController {
 
     @Autowired
     private EvenimentService evenimentService;
+    
+    @Autowired
+    private EventCleanupService eventCleanupService;
 
     @GetMapping
     public ResponseEntity<Object> getAllEvents(){
@@ -277,6 +281,54 @@ public class EvenimentController {
             logger.error("Error fetching event density for year: " + year + ", month: " + month, e);
             Map<String, Object> errorResponse = new HashMap<>();
             errorResponse.put("error", "Nu s-a putut încărca densitatea evenimentelor pentru luna specificată");
+            errorResponse.put("status", "error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
+    }
+    
+    @PostMapping("/cleanup")
+    public ResponseEntity<Object> manualCleanupOldEvents() {
+        try {
+            logger.info("Manual cleanup of old events requested");
+            
+            int deletedCount = eventCleanupService.manualCleanupOldEvents();
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "Cleanup completed successfully");
+            response.put("deletedEventsCount", deletedCount);
+            response.put("status", "success");
+            
+            return ResponseEntity.ok(response);
+            
+        } catch (Exception e) {
+            logger.error("Error during manual event cleanup", e);
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("error", "Eroare la curățarea evenimentelor vechi");
+            errorResponse.put("status", "error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
+    }
+    
+    @GetMapping("/cleanup/preview")
+    public ResponseEntity<Object> previewEventsToDelete() {
+        try {
+            logger.debug("Preview of events to be deleted requested");
+            
+            List<Eveniment> eventsToDelete = eventCleanupService.getEventsToBeDeleted();
+            int retentionMonths = eventCleanupService.getRetentionMonths();
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("eventsToBeDeleted", eventsToDelete);
+            response.put("totalCount", eventsToDelete.size());
+            response.put("retentionPeriodMonths", retentionMonths);
+            response.put("status", "success");
+            
+            return ResponseEntity.ok(response);
+            
+        } catch (Exception e) {
+            logger.error("Error previewing events to delete", e);
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("error", "Eroare la încărcarea preview-ului evenimentelor");
             errorResponse.put("status", "error");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }

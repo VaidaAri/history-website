@@ -20,4 +20,6 @@ public interface ParticipantRepository extends JpaRepository<Participant, Intege
     boolean existsByEvenimentIdAndEmail(Integer evenimentId, String email);
     
     long countByEvenimentId(Integer evenimentId);
+    
+    void deleteByEvenimentId(Integer evenimentId);
 }
