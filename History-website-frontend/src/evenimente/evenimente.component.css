@@ -240,12 +240,12 @@
 
 .calendar-container {
     background-color: rgba(248, 244, 227, 0.98);
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 25px;
     border: 1px solid rgba(234, 209, 150, 0.5);
     overflow: visible;
-    min-height: 580px;
+    min-height: 480px;
 }
 
 .events-info {
@@ -314,7 +314,7 @@
     }
     
     .calendar-container {
-        min-height: 450px;
+        min-height: 400px;
     }
 }
 
