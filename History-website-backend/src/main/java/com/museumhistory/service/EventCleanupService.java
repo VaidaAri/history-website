@@ -1,6 +1,7 @@
 package com.museumhistory.service;
 
 import com.museumhistory.model.Eveniment;
+import com.museumhistory.model.Rezervare;
 import com.museumhistory.repository.EvenimentRepository;
 import com.museumhistory.repository.ParticipantRepository;
 import org.slf4j.Logger;
@@ -26,17 +27,24 @@ public class EventCleanupService {
     
     @Autowired
     private ParticipantRepository participantRepository;
+    
+    @Autowired
+    private RezervareService rezervareService;
 
     /**
-     * Scheduled job that runs daily at 2:00 AM to clean up old events
+     * Scheduled job that runs daily at 2:00 AM to clean up old events and expired reservations
      * Cron format: second, minute, hour, day, month, weekday
      */
     @Scheduled(cron = "0 0 2 * * *")
     @Transactional
     public void cleanupOldEvents() {
-        logger.info("Starting scheduled cleanup of old events");
+        logger.info("Starting scheduled cleanup of old events and expired reservations");
         
         try {
+            // First cleanup expired reservations (visit datetime + 24h past)
+            cleanupExpiredReservations();
+            
+            // Then cleanup old events (existing logic)
             LocalDate cutoffDate = LocalDate.now().minusMonths(RETENTION_MONTHS);
             logger.info("Cleaning up events older than: {}", cutoffDate);
             
@@ -71,7 +79,44 @@ public class EventCleanupService {
                        deletedCount, participantsDeleted);
             
         } catch (Exception e) {
-            logger.error("Error during scheduled event cleanup", e);
+            logger.error("Error during scheduled cleanup", e);
+        }
+    }
+    
+    /**
+     * Clean up expired reservations (visit datetime + 24h is in the past)
+     */
+    @Transactional
+    public void cleanupExpiredReservations() {
+        try {
+            logger.info("Starting cleanup of expired reservations (24h after visit time)");
+            
+            // Get reservations that will be deleted for logging
+            List<Rezervare> expiredReservations = rezervareService.getExpiredReservations();
+            
+            if (expiredReservations.isEmpty()) {
+                logger.info("No expired reservations found for cleanup");
+                return;
+            }
+            
+            logger.info("Found {} expired reservations to delete", expiredReservations.size());
+            
+            // Log details for audit purposes
+            for (Rezervare reservation : expiredReservations) {
+                logger.debug("Deleting expired reservation: ID={}, Email={}, VisitDateTime={}, Status={}", 
+                    reservation.getId(), 
+                    reservation.getEmail(), 
+                    reservation.getDatetime(),
+                    reservation.getStatus().getDisplayName());
+            }
+            
+            // Delete expired reservations
+            int deletedCount = rezervareService.deleteExpiredReservations();
+            
+            logger.info("Successfully cleaned up {} expired reservations (24h after visit time)", deletedCount);
+            
+        } catch (Exception e) {
+            logger.error("Error during expired reservations cleanup", e);
         }
     }
 
@@ -120,5 +165,34 @@ public class EventCleanupService {
      */
     public int getRetentionMonths() {
         return RETENTION_MONTHS;
+    }
+    
+    /**
+     * Manual cleanup method for expired reservations
+     * @return number of reservations deleted
+     */
+    @Transactional
+    public int manualCleanupExpiredReservations() {
+        logger.info("Manual cleanup of expired reservations requested");
+        
+        List<Rezervare> expiredReservations = rezervareService.getExpiredReservations();
+        
+        if (expiredReservations.isEmpty()) {
+            logger.info("No expired reservations found for manual cleanup");
+            return 0;
+        }
+        
+        int deletedCount = rezervareService.deleteExpiredReservations();
+        logger.info("Manual cleanup completed: {} expired reservations deleted", deletedCount);
+        
+        return deletedCount;
+    }
+    
+    /**
+     * Get information about reservations that would be deleted in the next cleanup
+     * @return list of expired reservations that are candidates for deletion
+     */
+    public List<Rezervare> getExpiredReservationsToBeDeleted() {
+        return rezervareService.getExpiredReservations();
     }
 }

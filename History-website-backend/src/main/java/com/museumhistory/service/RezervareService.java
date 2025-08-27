@@ -180,5 +180,22 @@ public class RezervareService {
         
         return calendarData;
     }
+    
+    /**
+     * Get expired reservations (visit datetime + 24h is in the past)
+     */
+    public List<Rezervare> getExpiredReservations() {
+        LocalDateTime cutoffDateTime = LocalDateTime.now().minusHours(24);
+        return rezervareRepository.findExpiredReservations(cutoffDateTime);
+    }
+    
+    /**
+     * Delete expired reservations (visit datetime + 24h is in the past)
+     * @return number of reservations deleted
+     */
+    public int deleteExpiredReservations() {
+        LocalDateTime cutoffDateTime = LocalDateTime.now().minusHours(24);
+        return rezervareRepository.deleteExpiredReservations(cutoffDateTime);
+    }
 }
 
