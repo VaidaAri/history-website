@@ -40,7 +40,7 @@ public class ParticipantService {
         try {
             emailService.sendEventInvitationEmail(savedParticipant);
         } catch (Exception e) {
-            logger.error("Eroare la trimiterea email-ului: {}", e.getMessage());
+            System.err.println("Eroare la trimiterea email-ului: " + e.getMessage());
         }
         
         return savedParticipant;

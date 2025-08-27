@@ -15,6 +15,7 @@ import java.util.Optional;
 
 @Service
 public class RezervareService {
+    
     @Autowired
     RezervareRepository rezervareRepository;
     
@@ -36,7 +37,7 @@ public class RezervareService {
         try {
             emailService.sendConfirmationEmail(savedReservation);
         } catch (Exception e) {
-            logger.error("Eroare la trimiterea email-ului de confirmare: {}", e.getMessage());
+            System.err.println("Eroare la trimiterea email-ului de confirmare: " + e.getMessage());
         }
     }
 
@@ -61,7 +62,7 @@ public class RezervareService {
         try {
             emailService.sendApprovalEmail(booking);
         } catch (Exception e) {
-            logger.error("Eroare la trimiterea email-ului de aprobare: {}", e.getMessage());
+            System.err.println("Eroare la trimiterea email-ului de aprobare: " + e.getMessage());
         }
     }
     
@@ -110,7 +111,7 @@ public class RezervareService {
         try {
             emailService.sendApprovalEmail(reservation);
         } catch (Exception e) {
-            logger.error("Eroare la trimiterea email-ului de confirmare: {}", e.getMessage());
+            System.err.println("Eroare la trimiterea email-ului de confirmare: " + e.getMessage());
         }
         
         return true;
@@ -129,7 +130,7 @@ public class RezervareService {
         try {
             emailService.sendRejectionEmail(booking, reason);
         } catch (Exception e) {
-            logger.error("Eroare la trimiterea email-ului de respingere: {}", e.getMessage());
+            System.err.println("Eroare la trimiterea email-ului de respingere: " + e.getMessage());
         }
     }
     
