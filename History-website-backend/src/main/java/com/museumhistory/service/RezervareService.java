@@ -36,7 +36,7 @@ public class RezervareService {
         try {
             emailService.sendConfirmationEmail(savedReservation);
         } catch (Exception e) {
-            System.err.println("Eroare la trimiterea email-ului de confirmare: " + e.getMessage());
+            logger.error("Eroare la trimiterea email-ului de confirmare: {}", e.getMessage());
         }
     }
 
@@ -61,7 +61,7 @@ public class RezervareService {
         try {
             emailService.sendApprovalEmail(booking);
         } catch (Exception e) {
-            System.err.println("Eroare la trimiterea email-ului de aprobare: " + e.getMessage());
+            logger.error("Eroare la trimiterea email-ului de aprobare: {}", e.getMessage());
         }
     }
     
@@ -110,7 +110,7 @@ public class RezervareService {
         try {
             emailService.sendApprovalEmail(reservation);
         } catch (Exception e) {
-            System.err.println("Eroare la trimiterea email-ului de confirmare: " + e.getMessage());
+            logger.error("Eroare la trimiterea email-ului de confirmare: {}", e.getMessage());
         }
         
         return true;
@@ -129,7 +129,7 @@ public class RezervareService {
         try {
             emailService.sendRejectionEmail(booking, reason);
         } catch (Exception e) {
-            System.err.println("Eroare la trimiterea email-ului de respingere: " + e.getMessage());
+            logger.error("Eroare la trimiterea email-ului de respingere: {}", e.getMessage());
         }
     }
     

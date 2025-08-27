@@ -21,11 +21,6 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
       if (error.status === 401 || error.status === 403) {
         // Check if this is not the login endpoint to avoid infinite loops
         if (!req.url.includes('/login') && !req.url.includes('/validate-token')) {
-          // Log for debugging purposes (can be removed in production)
-          console.info('Session expired - automatic logout', {
-            url: req.url.split('?')[0], // Don't log query parameters
-            status: error.status
-          });
           
           // Show notification if service is available
           if (notificationService) {

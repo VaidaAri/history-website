@@ -35,7 +35,7 @@ public class ImagineService {
             try {
                 Path filePath = Paths.get("uploads/").resolve(imagine.getPath()).normalize();
                 Files.deleteIfExists(filePath);
-                System.out.println("Fișier șters de pe disk: " + filePath);
+                logger.info("Fișier șters de pe disk: {}", filePath);
             } catch (IOException e) {
                 System.err.println("Eroare la ștergerea fișierului: " + imagine.getPath());
                 e.printStackTrace();
