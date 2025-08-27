@@ -212,7 +212,8 @@
       
       <div class="event-actions">
         <div class="availability-status" 
-             [ngClass]="selectedEvent.availableSpots === 0 ? 'full' : (selectedEvent.availableSpots <= 5 ? 'limited' : 'available')">
+             [ngClass]="selectedEvent.availableSpots === 0 ? 'full' : (selectedEvent.availableSpots <= 5 ? 'limited' : 'available')"
+             *ngIf="!isEventExpired(selectedEvent)">
           <span *ngIf="selectedEvent.availableSpots === 0" class="status-message">
             🚫 Eveniment complet
           </span>
@@ -225,10 +226,10 @@
         </div>
         
         <button class="register-btn" 
-                [disabled]="selectedEvent.availableSpots === 0"
+                [disabled]="!canRegisterForEvent(selectedEvent)"
                 (click)="showEventRegistration()">
           <i class="btn-icon">✉️</i>
-          {{ selectedEvent.availableSpots === 0 ? 'Complet' : 'Înscrie-te la eveniment' }}
+          {{ getEventStatusMessage(selectedEvent) }}
         </button>
       </div>
     </div>

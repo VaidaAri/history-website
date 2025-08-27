@@ -82,7 +82,7 @@
               </div>
             </div>
             
-            <div class="available-spots" *ngIf="dayData.totalAvailableSpots > 0">
+            <div class="available-spots" *ngIf="dayData.totalAvailableSpots > 0 && !dayData.isPast">
               {{ dayData.totalAvailableSpots }} locuri
             </div>
           </div>
@@ -163,12 +163,12 @@
             
             <div class="event-info">
               <div class="event-name">{{ event.name }}</div>
-              <div class="event-capacity">
+              <div class="event-capacity" *ngIf="!isEventExpired(event)">
                 {{ event.participants }}/{{ event.capacity }} participanți 
                 ({{ event.percentage }}%)
               </div>
               <div class="event-status-message">
-                {{ getEventStatusMessage(event) }}
+                {{ getEventMessage(event) }}
               </div>
             </div>
             

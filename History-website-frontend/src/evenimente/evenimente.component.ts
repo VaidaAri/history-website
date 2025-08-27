@@ -293,6 +293,38 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
     });
   }
 
+  isEventExpired(event: any): boolean {
+    if (!event || !event.endDate) return false;
+    
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    const eventEndDate = new Date(event.endDate);
+    eventEndDate.setHours(0, 0, 0, 0);
+    
+    return eventEndDate < today;
+  }
+
+  canRegisterForEvent(event: any): boolean {
+    return !this.isEventExpired(event) && event.availableSpots > 0;
+  }
+
+  getEventStatusMessage(event: any): string {
+    if (this.isEventExpired(event)) {
+      return 'Perioada de înscriere a expirat';
+    }
+    
+    if (event.availableSpots === 0) {
+      return 'Eveniment complet';
+    }
+    
+    if (event.availableSpots <= 5) {
+      return 'Înscrie-te acum!';
+    }
+    
+    return 'Înscrie-te la eveniment';
+  }
+
   loadEventStats() {
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();

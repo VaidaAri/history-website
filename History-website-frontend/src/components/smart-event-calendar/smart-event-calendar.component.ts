@@ -47,7 +47,8 @@ export class SmartEventCalendarComponent implements OnInit {
     
     this.http.get<any>(url).subscribe({
       next: (data) => {
-        this.densityData = data;
+        // Extract densityData from the wrapped response
+        this.densityData = data.densityData || data;
         this.generateCalendarDays();
         this.isLoading = false;
       },
@@ -202,7 +203,29 @@ export class SmartEventCalendarComponent implements OnInit {
   }
 
   canParticipate(event: any): boolean {
-    return this.isParticipantMode && event.status !== 'full' && !this.selectedDayData?.isPast;
+    return this.isParticipantMode && event.status !== 'full' && !this.selectedDayData?.isPast && !this.isEventExpired(event);
+  }
+
+  isEventExpired(event: any): boolean {
+    if (!event || !event.id) return false;
+    
+    // Get today's date without time
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    // Get event date from the selected day data
+    const eventDate = new Date(this.selectedDayData?.date || '');
+    eventDate.setHours(0, 0, 0, 0);
+    
+    return eventDate < today;
+  }
+
+  getEventMessage(event: any): string {
+    if (this.isEventExpired(event)) {
+      return 'Perioada de înscriere a expirat';
+    }
+    
+    return this.getEventStatusMessage(event);
   }
 
   getMonthName(): string {
