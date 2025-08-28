@@ -22,6 +22,7 @@ public class Postare {
     
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "postare_id")
+    @OrderBy("position ASC")
     private List<Imagine> images;
     
     @Column(columnDefinition = "TEXT")

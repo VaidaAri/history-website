@@ -417,16 +417,25 @@ export class PostEditorComponent implements OnInit {
 
   private updateImagePositions(): Promise<void> {
     return new Promise((resolve, reject) => {
-      const imagePositions = this.existingImages.map((img, index) => ({
-        id: img.id,
-        position: index
-      }));
+      // Filter out any invalid images and create position updates
+      const imagePositions = this.existingImages
+        .filter(img => img && img.id)
+        .map((img, index) => ({
+          id: img.id,
+          position: index
+        }));
+
+      if (imagePositions.length === 0) {
+        resolve();
+        return;
+      }
 
       this.postService.reorderImages(imagePositions).subscribe({
         next: () => {
           resolve();
         },
         error: (err) => {
+          console.error('Error updating image positions:', err);
           reject(err);
         }
       });
@@ -434,9 +443,15 @@ export class PostEditorComponent implements OnInit {
   }
 
   private savePost() {
+    // Ensure positions are correctly set for existing images
+    const existingImagesWithCorrectPositions = this.existingImages.map((img, index) => ({
+      ...img,
+      position: index
+    }));
+
     const updatedPost = { 
       description: this.description,
-      existingImages: this.existingImages,
+      existingImages: existingImagesWithCorrectPositions,
       images: this.newImages, 
       createdAt: this.originalPost?.createdAt 
     };
@@ -447,6 +462,7 @@ export class PostEditorComponent implements OnInit {
         this.postUpdated.emit();
       },
       error: (err) => {
+        console.error('Error saving post:', err);
         this.notificationService.showError('Eroare salvare', 'A apărut o eroare la actualizarea postării. Vă rugăm să încercați din nou.');
       }
     });
@@ -541,18 +557,30 @@ export class PostEditorComponent implements OnInit {
   }
 
   private reorderExistingImages(fromIndex: number, toIndex: number) {
+    // Remove item from old position
     const item = this.existingImages.splice(fromIndex, 1)[0];
+    // Insert item at new position
     this.existingImages.splice(toIndex, 0, item);
     
-    // Update positions
+    // Update all positions to maintain correct order
     this.existingImages.forEach((img, index) => {
-      img.position = index;
+      if (img && typeof img === 'object') {
+        img.position = index;
+      }
     });
+    
+    // Force Angular change detection
+    this.existingImages = [...this.existingImages];
   }
 
   private reorderNewImages(fromIndex: number, toIndex: number) {
+    // Remove item from old position
     const item = this.newImages.splice(fromIndex, 1)[0];
+    // Insert item at new position
     this.newImages.splice(toIndex, 0, item);
+    
+    // Force Angular change detection
+    this.newImages = [...this.newImages];
   }
 
   private cleanupDragState() {
