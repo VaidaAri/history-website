@@ -2,19 +2,23 @@
   display: block;
   width: 100%;
   height: 100%;
-  padding: 15px;
+  padding: 4px;
 }
 
 ::ng-deep .fc {
   font-family: 'Merriweather', serif;
   height: 100%;
-  min-height: 480px;
+  min-height: 320px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 6px rgba(125, 90, 80, 0.08);
+  border: 1px solid rgba(125, 90, 80, 0.1);
 }
 
 ::ng-deep .fc-header-toolbar {
-  margin-bottom: 1.5em !important;
+  margin-bottom: 1em !important;
   background-color: rgba(93, 64, 55, 0.08);
-  padding: 15px;
+  padding: 12px;
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
@@ -48,16 +52,16 @@
 
 ::ng-deep .fc-col-header-cell {
   background-color: #EAD196;
-  padding: 10px 0;
+  padding: 6px 0;
 }
 
 ::ng-deep .fc-col-header-cell-cushion {
   color: #5D4037;
   font-weight: bold;
   text-transform: uppercase;
-  font-size: 0.85em;
+  font-size: 0.8em;
   letter-spacing: 0.05em;
-  padding: 8px;
+  padding: 4px;
   text-decoration: none !important;
 }
 
@@ -66,12 +70,13 @@
 }
 
 ::ng-deep .fc-daygrid-day:hover {
-  background-color: rgba(234, 209, 150, 0.2);
+  background-color: rgba(234, 209, 150, 0.15) !important;
 }
 
 ::ng-deep .fc-daygrid-day-frame {
-  min-height: 95px;
+  min-height: 65px;
   overflow: hidden;
+  position: relative;
 }
 
 ::ng-deep .fc-daygrid-day-number {
@@ -88,7 +93,7 @@
 }
 
 ::ng-deep .fc-day-today {
-  background-color: rgba(234, 209, 150, 0.3) !important;
+  background-color: rgba(234, 209, 150, 0.25) !important;
 }
 
 ::ng-deep .fc-day-today .fc-daygrid-day-number {
@@ -106,27 +111,29 @@
 ::ng-deep .fc-event {
   background-color: #7D5A50 !important;
   border: none !important;
-  border-radius: 5px !important;
-  padding: 3px 5px !important;
-  font-size: 0.9em !important;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease;
+  border-radius: 6px !important;
+  padding: 3px 6px !important;
+  font-size: 0.85em !important;
+  box-shadow: 0 1px 3px rgba(125, 90, 80, 0.2) !important;
+  transition: all 0.2s ease !important;
   width: calc(100% - 6px) !important;
   max-width: calc(100% - 6px) !important;
   box-sizing: border-box !important;
   overflow: hidden !important;
+  cursor: pointer !important;
 }
 
 ::ng-deep .fc-event:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px) !important;
+  box-shadow: 0 2px 6px rgba(125, 90, 80, 0.25) !important;
+  background-color: #6A4C42 !important;
 }
 
 ::ng-deep .fc-event-time,
 ::ng-deep .fc-event-title {
   color: white !important;
-  font-weight: 500;
-  font-size: 0.65em !important;
+  font-weight: 500 !important;
+  font-size: 0.7em !important;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -146,8 +153,9 @@
 
 ::ng-deep .fc-daygrid-day-events {
   overflow: hidden !important;
-  max-height: 50px !important;
-  padding: 2px 4px !important;
+  max-height: 42px !important;
+  padding: 1px 3px !important;
+  margin-top: 0px !important;
 }
 
 .event-modal, .event-details-modal {
@@ -718,10 +726,190 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   box-shadow: none;
 }
 
+/* User registration styles */
+.event-actions {
+  margin-top: 20px;
+  padding: 15px;
+  border-top: 1px solid #e0e0e0;
+  background-color: #f8f9fa;
+  border-radius: 0 0 10px 10px;
+}
+
+.availability-status {
+  margin-bottom: 15px;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.availability-status.available {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.availability-status.limited {
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeaa7;
+}
+
+.availability-status.full {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.register-btn {
+  width: 100%;
+  padding: 12px 20px;
+  background-color: #7D5A50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.1em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.register-btn:hover:not(:disabled) {
+  background-color: #5D4037;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.register-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.registration-form .form-group {
+  margin-bottom: 15px;
+}
+
+.registration-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #5D4037;
+}
+
+.registration-form input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1em;
+  transition: border-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+.registration-form input:focus {
+  outline: none;
+  border-color: #7D5A50;
+  box-shadow: 0 0 5px rgba(125, 90, 80, 0.3);
+}
+
+.registration-form .form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.registration-form .cancel-btn,
+.registration-form .submit-btn {
+  flex: 1;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.registration-form .cancel-btn {
+  background-color: #6c757d;
+  color: white;
+}
+
+.registration-form .cancel-btn:hover {
+  background-color: #5a6268;
+}
+
+.registration-form .submit-btn {
+  background-color: #7D5A50;
+  color: white;
+}
+
+.registration-form .submit-btn:hover {
+  background-color: #5D4037;
+}
+
+.event-details {
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  border: 1px solid #e0e0e0;
+}
+
+.event-details h4 {
+  color: #7D5A50;
+  margin-bottom: 10px;
+  font-size: 1.2em;
+}
+
+.event-details p {
+  margin: 5px 0;
+  color: #333;
+}
+
+@media (max-width: 1024px) {
+  ::ng-deep .fc-daygrid-day-frame {
+    min-height: 58px;
+  }
+  
+  ::ng-deep .fc-event {
+    font-size: 0.8em !important;
+    padding: 3px 6px !important;
+  }
+  
+  ::ng-deep .fc-event-time,
+  ::ng-deep .fc-event-title {
+    font-size: 0.7em !important;
+  }
+}
+
 @media (max-width: 768px) {
+  ::ng-deep .fc {
+    min-height: 300px;
+  }
+  
   ::ng-deep .fc-header-toolbar {
     flex-direction: column;
     gap: 10px;
+    padding: 10px;
   }
   
   ::ng-deep .fc-toolbar-title {
@@ -737,9 +925,59 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     font-size: 0.75em;
   }
   
+  ::ng-deep .fc-daygrid-day-frame {
+    min-height: 55px;
+  }
+  
+  ::ng-deep .fc-event {
+    font-size: 0.75em !important;
+    padding: 2px 4px !important;
+    border-radius: 6px !important;
+    margin: 1px 2px !important;
+  }
+  
+  ::ng-deep .fc-event-time,
+  ::ng-deep .fc-event-title {
+    font-size: 0.65em !important;
+  }
+  
+  ::ng-deep .fc-daygrid-day-events {
+    max-height: 50px !important;
+    padding: 2px 3px !important;
+  }
+  
   .modal-content {
     width: 95%;
     max-height: 90vh;
     overflow-y: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  :host {
+    padding: 3px;
+  }
+  
+  ::ng-deep .fc {
+    min-height: 280px;
+  }
+  
+  ::ng-deep .fc-daygrid-day-frame {
+    min-height: 50px;
+  }
+  
+  ::ng-deep .fc-event {
+    font-size: 0.7em !important;
+    padding: 1px 3px !important;
+    margin: 0.5px 1px !important;
+  }
+  
+  ::ng-deep .fc-event-time,
+  ::ng-deep .fc-event-title {
+    font-size: 0.6em !important;
+  }
+  
+  ::ng-deep .fc-daygrid-day-events {
+    max-height: 45px !important;
   }
 }

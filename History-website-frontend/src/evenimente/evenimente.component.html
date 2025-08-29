@@ -71,16 +71,7 @@
       </div>
       
       <div class="calendar-container">
-        <app-calendar *ngIf="isAdmin"></app-calendar>
-        
-        <app-smart-event-calendar
-          *ngIf="!isAdmin"
-          [isVisible]="true"
-          [isEmbedded]="true"
-          [isParticipantMode]="true"
-          [maxCapacityPerEvent]="70"
-          (eventSelected)="onSmartCalendarEventSelected($event)">
-        </app-smart-event-calendar>
+        <app-calendar></app-calendar>
       </div>
     
     </div>

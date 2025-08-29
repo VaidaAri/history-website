@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors, ValidatorFn, FormsModule } from '@angular/forms';
 import { FullCalendarModule } from '@fullcalendar/angular'; 
 import { CalendarOptions } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -12,7 +12,7 @@ import { NotificationService } from '../services/notification.service';
 @Component({
   selector: 'app-calendar',
   standalone: true,
-  imports: [CommonModule, FullCalendarModule, ReactiveFormsModule],
+  imports: [CommonModule, FullCalendarModule, ReactiveFormsModule, FormsModule],
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.css'
 })
@@ -35,6 +35,14 @@ export class CalendarComponent implements OnInit, OnDestroy {
   currentImageIndex: number = 0;
   selectedEventId: string | null = null;
   formError: string = '';
+  
+  // User registration properties
+  showRegistrationModal: boolean = false;
+  registrationForm = {
+    nume: '',
+    prenume: '',
+    email: ''
+  };
   
   readonly MONTHS_IN_PAST = 1;
   readonly MONTHS_IN_FUTURE = 12;
@@ -221,20 +229,10 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.currentImageIndex = 0; 
     this.showEventDetailsModal = true;
     
+    // For non-admin users, we handle the event click differently
     if (!this.isAdmin) {
-      const eventData = {
-        id: info.event.id,
-        name: info.event.title,
-        startDate: info.event.start,
-        endDate: info.event.end,
-        location: info.event.extendedProps?.location,
-        description: info.event.extendedProps?.description
-      };
-      
-      const customEvent = new CustomEvent('eventClicked', { 
-        detail: eventData 
-      });
-      window.dispatchEvent(customEvent);
+      // Load full event details with participant info
+      this.loadEventWithParticipantInfo(info.event.id);
     }
     
     return;
@@ -598,5 +596,115 @@ export class CalendarComponent implements OnInit, OnDestroy {
       });
       window.dispatchEvent(eventAddedEvent);
     });
+  }
+
+  // Methods for user registration functionality
+  loadEventWithParticipantInfo(eventId: string) {
+    this.http.get(`http://localhost:8080/api/events/${eventId}`).subscribe({
+      next: (fullEvent: any) => {
+        // Add participant info to selected event for display
+        this.selectedEvent.extendedProps = {
+          ...this.selectedEvent.extendedProps,
+          fullEventData: fullEvent,
+          participants: fullEvent.participants || 0,
+          capacity: fullEvent.capacity || 100,
+          availableSpots: (fullEvent.capacity || 100) - (fullEvent.participants || 0)
+        };
+      },
+      error: (error) => {
+        this.notificationService.showError('Eroare încărcare', 'Nu s-au putut încărca detaliile evenimentului.');
+      }
+    });
+  }
+
+  showEventRegistration() {
+    this.showEventDetailsModal = false;
+    this.showRegistrationModal = true;
+    this.registrationForm = { nume: '', prenume: '', email: '' };
+  }
+
+  closeRegistrationModal() {
+    this.showRegistrationModal = false;
+    if (!this.showEventDetailsModal) {
+      this.selectedEvent = null;
+    }
+  }
+
+  registerForEvent() {
+    if (!this.selectedEvent || !this.registrationForm.nume.trim() || 
+        !this.registrationForm.prenume.trim() || !this.registrationForm.email.trim()) {
+      this.notificationService.showWarning('Câmpuri obligatorii', 'Vă rugăm să completați toate câmpurile!');
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(this.registrationForm.email)) {
+      this.notificationService.showWarning('Email invalid', 'Vă rugăm să introduceți o adresă de email validă!');
+      return;
+    }
+
+    const registrationData = {
+      evenimentId: this.selectedEvent.id,
+      nume: this.registrationForm.nume.trim(),
+      prenume: this.registrationForm.prenume.trim(),
+      email: this.registrationForm.email.trim()
+    };
+
+    this.http.post('http://localhost:8080/api/participants/inscriere', registrationData)
+      .subscribe({
+        next: (response: any) => {
+          if (response.success) {
+            this.notificationService.showSuccess('Înscrierea reușită!', 'Înscrierea s-a făcut cu succes! Veți primi un email cu invitația dumneavoastră.', 6000);
+            this.closeRegistrationModal();
+            this.loadEvents(); // Refresh events to show updated participant count
+          } else {
+            this.notificationService.showError('Eroare la înscriere', response.message);
+          }
+        },
+        error: (error) => {
+          const message = error.error?.message || '';
+          
+          if (message.includes('deja inscris') || message.includes('deja înscris')) {
+            this.notificationService.showWarning('Deja înscris', 'Sunteți deja înscris la acest eveniment! Verificați email-ul pentru invitația dumneavoastră.');
+          } else {
+            this.notificationService.showError('Eroare înregistrare', message || 'A apărut o eroare la înregistrare.');
+          }
+        }
+      });
+  }
+
+  isEventExpired(event: any): boolean {
+    if (!event || !event.end) return false;
+    
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    const eventEndDate = new Date(event.end);
+    eventEndDate.setHours(0, 0, 0, 0);
+    
+    return eventEndDate < today;
+  }
+
+  canRegisterForEvent(event: any): boolean {
+    if (!event?.extendedProps?.fullEventData) return false;
+    return !this.isEventExpired(event) && (event.extendedProps.availableSpots > 0);
+  }
+
+  getEventStatusMessage(event: any): string {
+    if (this.isEventExpired(event)) {
+      return 'Perioada de înscriere a expirat';
+    }
+    
+    const availableSpots = event.extendedProps?.availableSpots || 0;
+    
+    if (availableSpots === 0) {
+      return 'Eveniment complet';
+    }
+    
+    if (availableSpots <= 5) {
+      return 'Înscrie-te acum!';
+    }
+    
+    return 'Înscrie-te la eveniment';
   }
 }

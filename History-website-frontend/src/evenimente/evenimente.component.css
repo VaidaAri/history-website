@@ -239,13 +239,16 @@
 }
 
 .calendar-container {
-    background-color: rgba(248, 244, 227, 0.98);
-    border-radius: 15px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background-color: rgba(248, 244, 227, 0.95);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(125, 90, 80, 0.1);
     margin-bottom: 25px;
-    border: 1px solid rgba(234, 209, 150, 0.5);
+    border: 1px solid rgba(125, 90, 80, 0.15);
     overflow: visible;
-    min-height: 480px;
+    min-height: 340px;
+    max-width: 1100px;
+    margin: 0 auto 25px auto;
+    padding: 6px;
 }
 
 .events-info {
@@ -314,7 +317,10 @@
     }
     
     .calendar-container {
-        min-height: 400px;
+        min-height: 300px;
+        max-width: 100%;
+        margin: 0 10px 25px 10px;
+        padding: 4px;
     }
 }
 

@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MeniuComponent } from "../meniu/meniu.component";
 import { CalendarComponent } from '../calendar/calendar.component';
-import { SmartEventCalendarComponent } from '../components/smart-event-calendar/smart-event-calendar.component';
 import { CadranComponent } from "../cadran/cadran.component";
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
@@ -16,7 +15,7 @@ import { NotificationService } from '../services/notification.service';
 @Component({
   selector: 'app-evenimente',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, MeniuComponent, CalendarComponent, SmartEventCalendarComponent, CadranComponent, TranslatePipe],
+  imports: [CommonModule, RouterModule, FormsModule, MeniuComponent, CalendarComponent, CadranComponent, TranslatePipe],
   templateUrl: './evenimente.component.html',
   styleUrl: './evenimente.component.css',
   providers: [TranslationService]
@@ -85,16 +84,11 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
 
     window.addEventListener('eventAdded', this.handleEventAdded.bind(this));
     window.addEventListener('eventUpdated', this.handleEventAdded.bind(this));
-    
-    if (!this.isAdmin) {
-      window.addEventListener('eventClicked', this.handleEventClicked.bind(this));
-    }
   }
   
   ngOnDestroy() {
     window.removeEventListener('eventAdded', this.handleEventAdded.bind(this));
     window.removeEventListener('eventUpdated', this.handleEventAdded.bind(this));
-    window.removeEventListener('eventClicked', this.handleEventClicked.bind(this));
   }
   
   handleEventAdded(e: any) {
@@ -103,11 +97,6 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
     }
   }
 
-  handleEventClicked(e: any) {
-    if (!this.isAdmin && e.detail) {
-      this.loadFullEventDetails(e.detail);
-    }
-  }
   
   loadEvents() {
     this.http.get<any[]>('http://localhost:8080/api/events').subscribe(data => {
@@ -269,11 +258,6 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
     this.notification.show = false;
   }
 
-  onSmartCalendarEventSelected(event: any) {
-    if (!this.isAdmin) {
-      this.loadFullEventDetails(event);
-    }
-  }
 
   loadFullEventDetails(calendarEvent: any) {
     this.http.get(`http://localhost:8080/api/events/${calendarEvent.id}`).subscribe({
