@@ -27,26 +27,9 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
   
   
   selectedEvent: any = null;
-  showRegistrationModal: boolean = false;
   showEventDetailsModal: boolean = false;
   showImageModal: boolean = false;
   selectedImage: any = null;
-  
-  eventStats = {
-    nextEvent: null as any,
-    popularEvent: null as any,
-    totalEventsThisMonth: 0,
-    totalAvailableSpots: 0,
-    fullEvents: 0
-  };
-  
-  statsLoaded = false;
-  
-  registrationForm = {
-    nume: '',
-    prenume: '',
-    email: ''
-  };
   
   notification = {
     show: false,
@@ -80,7 +63,6 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
       this.loadEvents();
     }
     
-    this.loadEventStats();
 
     window.addEventListener('eventAdded', this.handleEventAdded.bind(this));
     window.addEventListener('eventUpdated', this.handleEventAdded.bind(this));
@@ -166,14 +148,6 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
     this.showEventDetailsModal = true;
   }
 
-  showEventRegistration(event: any = null) {
-    if (event) {
-      this.selectedEvent = event;
-    }
-    this.showEventDetailsModal = false;
-    this.showRegistrationModal = true;
-    this.registrationForm = { nume: '', prenume: '', email: '' };
-  }
 
   closeEventDetailsModal() {
     this.showEventDetailsModal = false;
@@ -190,55 +164,6 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
     this.selectedImage = null;
   }
 
-  closeRegistrationModal() {
-    this.showRegistrationModal = false;
-    if (!this.showEventDetailsModal) {
-      this.selectedEvent = null;
-    }
-  }
-
-  registerForEvent() {
-    if (!this.selectedEvent || !this.registrationForm.nume.trim() || 
-        !this.registrationForm.prenume.trim() || !this.registrationForm.email.trim()) {
-      this.notificationService.showWarning('Câmpuri obligatorii', 'Vă rugăm să completați toate câmpurile!');
-      return;
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(this.registrationForm.email)) {
-      this.notificationService.showWarning('Email invalid', 'Vă rugăm să introduceți o adresă de email validă!');
-      return;
-    }
-
-    const registrationData = {
-      evenimentId: this.selectedEvent.id,
-      nume: this.registrationForm.nume.trim(),
-      prenume: this.registrationForm.prenume.trim(),
-      email: this.registrationForm.email.trim()
-    };
-
-
-    this.http.post('http://localhost:8080/api/participants/inscriere', registrationData)
-      .subscribe({
-        next: (response: any) => {
-          if (response.success) {
-            this.notificationService.showSuccess('Înscrierea reușită!', 'Înscrierea s-a făcut cu succes! Veți primi un email cu invitația dumneavoastră.', 6000);
-            this.closeRegistrationModal();
-          } else {
-            this.notificationService.showError('Eroare la înscriere', response.message);
-          }
-        },
-        error: (error) => {
-          const message = error.error?.message || '';
-          
-          if (message.includes('deja inscris') || message.includes('deja înscris')) {
-            this.notificationService.showWarning('Deja înscris', 'Sunteți deja înscris la acest eveniment! Verificați email-ul pentru invitația dumneavoastră.');
-          } else {
-            this.notificationService.showError('Eroare înregistrare', message || 'A apărut o eroare la înregistrare.');
-          }
-        }
-      });
-  }
 
   showNotification(type: 'success' | 'error' | 'warning', title: string, message: string) {
     this.notification = {
@@ -262,14 +187,7 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
   loadFullEventDetails(calendarEvent: any) {
     this.http.get(`http://localhost:8080/api/events/${calendarEvent.id}`).subscribe({
       next: (fullEvent: any) => {
-        this.showEventDetails({
-          ...fullEvent,
-          participants: calendarEvent.participants,
-          capacity: calendarEvent.capacity,
-          availableSpots: calendarEvent.availableSpots,
-          percentage: calendarEvent.percentage,
-          status: calendarEvent.status
-        });
+        this.showEventDetails(fullEvent);
       },
       error: (error) => {
         this.notificationService.showError('Eroare încărcare', 'Nu s-au putut încărca detaliile evenimentului.');
@@ -289,92 +207,7 @@ export class EvenimenteComponent implements OnInit, OnDestroy {
     return eventEndDate < today;
   }
 
-  canRegisterForEvent(event: any): boolean {
-    return !this.isEventExpired(event) && event.availableSpots > 0;
-  }
 
-  getEventStatusMessage(event: any): string {
-    if (this.isEventExpired(event)) {
-      return 'Perioada de înscriere a expirat';
-    }
-    
-    if (event.availableSpots === 0) {
-      return 'Eveniment complet';
-    }
-    
-    if (event.availableSpots <= 5) {
-      return 'Înscrie-te acum!';
-    }
-    
-    return 'Înscrie-te la eveniment';
-  }
-
-  loadEventStats() {
-    const currentDate = new Date();
-    const currentYear = currentDate.getFullYear();
-    const currentMonth = currentDate.getMonth() + 1;
-    
-    
-    this.http.get<any>(`http://localhost:8080/api/events/calendar-density/${currentYear}/${currentMonth}`).subscribe({
-      next: (densityData) => {
-        this.calculateStatsFromDensity(densityData);
-      },
-      error: (error) => {
-        this.notificationService.showError('Eroare statistici', 'Nu s-au putut încărca statisticile evenimentelor.');
-      }
-    });
-    
-    this.http.get<any[]>('http://localhost:8080/api/events').subscribe({
-      next: (allEvents) => {
-        this.findNextAndPopularEvents(allEvents);
-      },
-      error: (error) => {
-        this.notificationService.showError('Eroare evenimente', 'Nu s-au putut încărca evenimentele.');
-      }
-    });
-  }
-
-  calculateStatsFromDensity(densityData: any) {
-    let totalEvents = 0;
-    let totalAvailable = 0;
-    let fullEvents = 0;
-    
-    Object.values(densityData).forEach((dayData: any) => {
-      if (dayData.events && Array.isArray(dayData.events)) {
-        totalEvents += dayData.events.length;
-        
-        dayData.events.forEach((event: any) => {
-          totalAvailable += event.availableSpots || 0;
-          
-          if (event.status === 'full' || event.status === 'very-high') {
-            fullEvents++;
-          }
-        });
-      }
-    });
-    
-    this.eventStats.totalEventsThisMonth = totalEvents;
-    this.eventStats.totalAvailableSpots = totalAvailable;
-    this.eventStats.fullEvents = fullEvents;
-    this.statsLoaded = true;
-    
-  }
-
-  findNextAndPopularEvents(allEvents: any[]) {
-    const now = new Date();
-    
-    const futureEvents = allEvents
-      .filter(event => new Date(event.startDate) > now)
-      .sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
-    
-    this.eventStats.nextEvent = futureEvents.length > 0 ? futureEvents[0] : null;
-
-    const popularEvents = allEvents
-      .filter(event => new Date(event.startDate) > now)
-      .sort((a, b) => b.id - a.id);
-    
-    this.eventStats.popularEvent = popularEvents.length > 0 ? popularEvents[0] : null;
-  }
 
   scrollToCalendarAndHighlight(eventDate?: string) {
     const calendarElement = document.querySelector('.calendar-container');

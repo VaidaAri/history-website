@@ -62,9 +62,7 @@ public class SecurityConfig {
                 
                 // Public endpoints for visitors to make reservations
                 .requestMatchers(HttpMethod.POST, "/api/rezervari").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/participanti").permitAll()
                 .requestMatchers("/api/rezervari/confirm/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/bookings/calendar-density/**").permitAll()
                 
                 // Static resources and uploads
                 .requestMatchers("/uploads/**").permitAll()
@@ -97,9 +95,6 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/rezervari/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/api/rezervari/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/rezervari/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.GET, "/api/participanti/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.PUT, "/api/participanti/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/api/participanti/**").hasRole("ADMIN")
                 .requestMatchers("/api/museum-schedule/**").hasRole("ADMIN")
                 
                 // All other requests require authentication

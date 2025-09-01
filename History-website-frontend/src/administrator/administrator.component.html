@@ -21,7 +21,7 @@
         <div *ngIf="images.length > 0">
           <h4>Imagini selectate:</h4>
           <div class="image-container">
-            <img *ngFor="let image of images" [src]="image.url" alt="Preview" />
+            <img *ngFor="let image of images" [src]="image.url" alt="Preview" loading="lazy" />
           </div>
         </div>
 

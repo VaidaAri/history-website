@@ -13,7 +13,7 @@
     <div class="carousel-wrapper">
       <div class="carousel-slides" [ngStyle]="{'transform': 'translateX(' + (-currentImageIndex * 100) + '%)'}">
         <div *ngFor="let image of post.images" class="carousel-slide">
-          <img [src]="getImageUrl(image.path)" alt="{{ image.description || 'Imagine postare' }}" (click)="openFullImage(image)" />
+          <img [src]="getImageUrl(image.path)" alt="{{ image.description || 'Imagine postare' }}" (click)="openFullImage(image)" loading="lazy" />
         </div>
       </div>
       

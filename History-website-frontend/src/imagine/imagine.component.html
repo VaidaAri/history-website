@@ -15,7 +15,7 @@
 
 <div class="image-gallery">
   <div class="image-card" *ngFor="let image of images">
-    <img [src]="'http://localhost:8080/api/images/uploads/' + image.path" [alt]="image.description" />
+    <img [src]="'http://localhost:8080/api/images/uploads/' + image.path" [alt]="image.description" loading="lazy" />
     <p>{{ image.description }}</p>
   </div>
 </div>

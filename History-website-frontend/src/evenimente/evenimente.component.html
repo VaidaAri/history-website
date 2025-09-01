@@ -76,49 +76,7 @@
     
     </div>
     
-    <div class="events-info">
-      <div class="event-info-box interactive-box next-event" 
-           [class.has-event]="eventStats.nextEvent"
-           (click)="eventStats.nextEvent && loadFullEventDetails(eventStats.nextEvent)">
-        <div class="event-icon">🗓️</div>
-        <h3>Următorul eveniment</h3>
-        
-        <div *ngIf="eventStats.nextEvent; else noNextEvent" class="event-preview">
-          <div class="event-name">{{ eventStats.nextEvent.name }}</div>
-          <div class="event-date">{{ eventStats.nextEvent.startDate | date:'dd MMM yyyy, HH:mm' }}</div>
-          <div class="event-location" *ngIf="eventStats.nextEvent.location">
-            📍 {{ eventStats.nextEvent.location }}
-          </div>
-          <div class="cta-text">Click pentru detalii complete</div>
-        </div>
-        
-        <ng-template #noNextEvent>
-          <p>Nu există evenimente programate în perioada următoare.</p>
-          <div class="cta-text">Verifică calendarul pentru actualizări</div>
-        </ng-template>
-      </div>
-      
-      <div class="event-info-box interactive-box popular-event"
-           [class.has-event]="eventStats.popularEvent"
-           (click)="eventStats.popularEvent && loadFullEventDetails(eventStats.popularEvent)">
-        <div class="event-icon">🎯</div>
-        <h3>Eveniment recomandat</h3>
-        
-        <div *ngIf="eventStats.popularEvent; else noPopularEvent" class="event-preview">
-          <div class="event-name">{{ eventStats.popularEvent.name }}</div>
-          <div class="event-date">{{ eventStats.popularEvent.startDate | date:'dd MMM yyyy' }}</div>
-          <div class="popularity-indicator">
-            <span class="trending-badge">🔥 Trending</span>
-          </div>
-          <div class="cta-text">Descoperă de ce este popular</div>
-        </div>
-        
-        <ng-template #noPopularEvent>
-          <p>Explorează calendarul pentru a găsi evenimente interesante.</p>
-          <div class="cta-text">Vezi toate evenimentele</div>
-        </ng-template>
-      </div>
-      
+    <div class="events-info">      
       <div class="event-info-box interactive-box follow-us-box">
         <div class="event-icon">🌟</div>
         <h3>Rămâi conectat!</h3>
@@ -169,17 +127,6 @@
             <span class="value">{{ selectedEvent.location }}</span>
           </div>
           
-          <div class="meta-item" *ngIf="selectedEvent.capacity">
-            <i class="icon">👥</i>
-            <span class="label">Capacitate:</span>
-            <span class="value">{{ selectedEvent.participants || 0 }}/{{ selectedEvent.capacity }} participanți</span>
-          </div>
-          
-          <div class="meta-item" *ngIf="selectedEvent.availableSpots !== undefined">
-            <i class="icon">✅</i>
-            <span class="label">Locuri disponibile:</span>
-            <span class="value">{{ selectedEvent.availableSpots }}</span>
-          </div>
         </div>
         
         <div class="event-description" *ngIf="selectedEvent.description">
@@ -201,94 +148,10 @@
         </div>
       </div>
       
-      <div class="event-actions">
-        <div class="availability-status" 
-             [ngClass]="selectedEvent.availableSpots === 0 ? 'full' : (selectedEvent.availableSpots <= 5 ? 'limited' : 'available')"
-             *ngIf="!isEventExpired(selectedEvent)">
-          <span *ngIf="selectedEvent.availableSpots === 0" class="status-message">
-            🚫 Eveniment complet
-          </span>
-          <span *ngIf="selectedEvent.availableSpots > 0 && selectedEvent.availableSpots <= 5" class="status-message">
-            ⚠️ Doar {{ selectedEvent.availableSpots }} locuri rămase!
-          </span>
-          <span *ngIf="selectedEvent.availableSpots > 5" class="status-message">
-            ✅ {{ selectedEvent.availableSpots }} locuri disponibile
-          </span>
-        </div>
-        
-        <button class="register-btn" 
-                [disabled]="!canRegisterForEvent(selectedEvent)"
-                (click)="showEventRegistration()">
-          <i class="btn-icon">✉️</i>
-          {{ getEventStatusMessage(selectedEvent) }}
-        </button>
-      </div>
     </div>
   </div>
 </div>
 
-<div *ngIf="showRegistrationModal" class="modal-overlay" (click)="closeRegistrationModal()">
-  <div class="modal-content" (click)="$event.stopPropagation()">
-    <div class="modal-header">
-      <h3>Înregistrare la eveniment</h3>
-      <button class="close-btn" (click)="closeRegistrationModal()">&times;</button>
-    </div>
-    
-    <div *ngIf="selectedEvent" class="event-details">
-      <h4>{{ selectedEvent.name }}</h4>
-      <p><strong>📅 Data:</strong> {{ selectedEvent.startDate | date:'dd.MM.yyyy HH:mm' }}</p>
-      <p><strong>📍 Locația:</strong> {{ selectedEvent.location }}</p>
-      <p *ngIf="selectedEvent.description"><strong>📝 Descriere:</strong> {{ selectedEvent.description }}</p>
-    </div>
-    
-    <form (ngSubmit)="registerForEvent()" class="registration-form">
-      <div class="form-group">
-        <label for="nume">Nume *</label>
-        <input
-          type="text"
-          id="nume"
-          [(ngModel)]="registrationForm.nume"
-          name="nume"
-          required
-          placeholder="Introduceți numele dumneavoastră"
-        />
-      </div>
-      
-      <div class="form-group">
-        <label for="prenume">Prenume *</label>
-        <input
-          type="text"
-          id="prenume"
-          [(ngModel)]="registrationForm.prenume"
-          name="prenume"
-          required
-          placeholder="Introduceți prenumele dumneavoastră"
-        />
-      </div>
-      
-      <div class="form-group">
-        <label for="email">Email *</label>
-        <input
-          type="email"
-          id="email"
-          [(ngModel)]="registrationForm.email"
-          name="email"
-          required
-          placeholder="nume@exemplu.com"
-        />
-      </div>
-      
-      <div class="form-actions">
-        <button type="button" class="cancel-btn" (click)="closeRegistrationModal()">
-          Anulează
-        </button>
-        <button type="submit" class="submit-btn">
-          Înscrie-te
-        </button>
-      </div>
-    </form>
-  </div>
-</div>
 
 
 <div *ngIf="showImageModal" class="image-modal-overlay" (click)="closeImageModal()">
@@ -296,7 +159,7 @@
     <button class="image-close-btn" (click)="closeImageModal()">&times;</button>
     <img [src]="'http://localhost:8080/api/images/uploads/' + selectedImage?.path" 
          [alt]="selectedImage?.description || 'Imagine din eveniment'"
-         class="modal-image">
+         class="modal-image" loading="lazy">
   </div>
 </div>
 

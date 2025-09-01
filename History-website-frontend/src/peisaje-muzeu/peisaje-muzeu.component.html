@@ -9,8 +9,8 @@
     <div class="container">
       <div class="header-nav">
         <button class="back-button" routerLink="/">{{ 'landscapesBackHome' | translate }}</button>
-        <h1 class="title">{{ 'landscapesTitle' | translate }}</h1>
       </div>
+      <h2>{{ 'landscapesTitle' | translate }}</h2>
       
       <p class="intro-text">
         {{ 'landscapesIntroText' | translate }}
@@ -146,7 +146,8 @@
                [alt]="currentImage.description" 
                class="gallery-image" 
                [ngStyle]="getImageStyle()" 
-               draggable="false" />
+               draggable="false" 
+               loading="lazy" />
         </div>
         
         <div class="gallery-controls">

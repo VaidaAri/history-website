@@ -34,7 +34,4 @@ public class Eveniment {
     @JoinColumn(name = "eveniment_id")
     private List<Imagine> images = new ArrayList<>();
     
-    @OneToMany(mappedBy = "eveniment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
-    private List<Participant> participanti = new ArrayList<>();
 }

@@ -7,7 +7,6 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-  font-family: Arial, sans-serif;
 }
 
 .header-nav {
@@ -38,13 +37,6 @@
   transform: translateX(-3px);
 }
 
-.title {
-  text-align: center;
-  color: #7D5A50;
-  font-size: 2.5rem;
-  margin: 0 auto;
-  width: 100%;
-}
 
 .intro-text {
   text-align: center;
@@ -471,9 +463,6 @@
     padding: 15px;
   }
   
-  .title {
-    font-size: 1.7em;
-  }
   
   .intro-text, .section-description p {
     font-size: 1em;

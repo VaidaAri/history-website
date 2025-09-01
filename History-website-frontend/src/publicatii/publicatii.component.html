@@ -7,8 +7,8 @@
   
   <div class="header-nav">
     <button class="back-button" routerLink="/istoric">← {{ 'publicationsBackToHistory' | translate }}</button>
-    <h1 class="title">{{ 'publicationsTitle' | translate }}</h1>
   </div>
+  <h2>{{ 'publicationsTitle' | translate }}</h2>
   
   <div class="category-selector">
     <button [class.active]="selectedCategory === 'arhivaSomesana'" (click)="switchCategory('arhivaSomesana')">{{ 'publicationsArhivaSomesana' | translate }}</button>
@@ -28,7 +28,7 @@
   <div class="publications-grid" *ngIf="selectedCategory === 'arhivaSomesana'">
     <div class="publication-item" *ngFor="let image of arhivaSomesanaImages" (click)="openGallery(image)">
       <div class="publication-image-container">
-        <img [src]="image.url" [alt]="image.filename" class="publication-image" />
+        <img [src]="image.url" [alt]="image.filename" class="publication-image" loading="lazy" />
       </div>
       <div class="publication-info">
         <p>{{ image.index >= 0 ? (('publicationsPage' | translate) + ' ' + (image.index + 1)) : ('publicationsCover' | translate) }}</p>
@@ -39,7 +39,7 @@
   <div class="publications-grid" *ngIf="selectedCategory === 'scanCoperti'">
     <div class="publication-item" *ngFor="let image of scanCopertiImages" (click)="openGallery(image)">
       <div class="publication-image-container">
-        <img [src]="image.url" [alt]="image.filename" class="publication-image" />
+        <img [src]="image.url" [alt]="image.filename" class="publication-image" loading="lazy" />
       </div>
       <div class="publication-info">
         <p>{{ ('publicationsMagazine' | translate) + ' ' + (image.index + 1) }}</p>
