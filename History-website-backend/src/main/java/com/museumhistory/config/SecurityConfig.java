@@ -61,6 +61,9 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/museum-schedule/**").permitAll()
                 
                 // Public endpoints for visitors to make reservations
+                .requestMatchers(HttpMethod.POST, "/api/bookings").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/public/bookings").permitAll()
+                .requestMatchers("/api/bookings/confirm/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/rezervari").permitAll()
                 .requestMatchers("/api/rezervari/confirm/**").permitAll()
                 

@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReservationService {
   private apiUrl = 'http://localhost:8080/api/bookings';
+  private publicApiUrl = 'http://localhost:8080/api/bookings';
   
   private reservationCreatedSubject = new Subject<void>();
   private reservationUpdatedSubject = new Subject<void>();
@@ -41,7 +42,12 @@ export class ReservationService {
   }
 
   createReservation(reservation: any): Observable<any> {
-    return this.http.post<any>(this.apiUrl, reservation).pipe(
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'X-Skip-Interceptor': 'true'
+    });
+    
+    return this.http.post<any>(this.publicApiUrl, reservation, { headers }).pipe(
       tap(() => {
         this.reservationCreatedSubject.next();
       })
