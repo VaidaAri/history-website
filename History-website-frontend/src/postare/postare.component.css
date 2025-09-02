@@ -28,27 +28,29 @@
 
 .post-content {
   margin-bottom: 20px;
-  max-height: 300px;
-  overflow-y: auto;
-  padding-right: 10px;
 }
 
-.post-content::-webkit-scrollbar {
-  width: 8px;
+.toggle-btn {
+  background-color: transparent;
+  border: none;
+  color: #7D5A50;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: 'Merriweather', serif;
+  cursor: pointer;
+  padding: 8px 0;
+  margin-top: 15px;
+  transition: all 0.3s ease;
+  text-decoration: underline;
+  display: block;
+  letter-spacing: 0.3px;
+  line-height: 1.6;
 }
 
-.post-content::-webkit-scrollbar-track {
-  background: rgba(234, 209, 150, 0.3);
-  border-radius: 4px;
-}
-
-.post-content::-webkit-scrollbar-thumb {
-  background: #7D5A50;
-  border-radius: 4px;
-}
-
-.post-content::-webkit-scrollbar-thumb:hover {
-  background: #5D4037;
+.toggle-btn:hover {
+  color: #5D4037;
+  text-decoration-thickness: 2px;
+  transform: translateY(-1px);
 }
 
 .post p {
@@ -191,8 +193,10 @@
     line-height: 1.8;
   }
   
-  .post-content {
-    max-height: 300px;
+  .toggle-btn {
+    font-size: 1.1em;
+    padding: 10px 0;
+    margin-top: 20px;
   }
   
   .post-date {

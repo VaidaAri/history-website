@@ -391,6 +391,16 @@ export class TranslationService {
       'en': 'No posts available at the moment.',
       'de': 'Momentan sind keine Beiträge verfügbar.'
     },
+    'showMore': {
+      'ro': 'Afișează mai mult',
+      'en': 'Show more',
+      'de': 'Mehr anzeigen'
+    },
+    'showLess': {
+      'ro': 'Afișează mai puțin',
+      'en': 'Show less',
+      'de': 'Weniger anzeigen'
+    },
     
     'eventsCalendarTitle': {
       'ro': 'Calendar Evenimente',

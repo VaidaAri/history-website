@@ -6,7 +6,13 @@
   </div>
   
   <div class="post-content">
-    <p>{{ post.description }}</p>
+    <p>{{ displayText }}</p>
+    <button 
+      *ngIf="shouldShowToggle" 
+      (click)="toggleExpand()" 
+      class="toggle-btn">
+      {{ (isExpanded ? 'showLess' : 'showMore') | translate }}
+    </button>
   </div>
 
   <div *ngIf="post.images?.length > 0" class="carousel-container">
