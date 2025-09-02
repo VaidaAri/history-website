@@ -123,16 +123,6 @@ public class RezervareService {
         ));
     }
     
-    public void rejectBooking(Integer bookingId, String reason) {
-        Rezervare booking = findBookingById(bookingId);
-        booking.setStatus(ReservationStatus.RESPINSA);
-        rezervareRepository.save(booking);
-        try {
-            emailService.sendRejectionEmail(booking, reason);
-        } catch (Exception e) {
-            System.err.println("Eroare la trimiterea email-ului de respingere: " + e.getMessage());
-        }
-    }
     
     public Map<String, Map<String, Object>> getCalendarDensityForMonth(int year, int month) {
         Map<String, Map<String, Object>> calendarData = new HashMap<>();

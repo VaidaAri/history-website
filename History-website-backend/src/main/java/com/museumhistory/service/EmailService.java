@@ -68,23 +68,6 @@ public class EmailService {
         }
     }
 
-    public void sendRejectionEmail(Rezervare rezervare, String reason) {
-        try {
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-
-            helper.setFrom(fromEmail, museumName);
-            helper.setTo(rezervare.getEmail());
-            helper.setSubject("Rezervarea dumneavoastră nu a putut fi aprobată - " + museumName);
-
-            String htmlContent = createRejectionEmailTemplate(rezervare, reason);
-            helper.setText(htmlContent, true);
-
-            mailSender.send(message);
-        } catch (Exception e) {
-            throw new RuntimeException("Eroare la trimiterea email-ului de respingere", e);
-        }
-    }
 
     private String createConfirmationEmailTemplate(Rezervare rezervare) {
         String confirmationUrl = frontendUrl + "/confirm-reservation/" + rezervare.getConfirmationToken();
@@ -211,61 +194,6 @@ public class EmailService {
             );
     }
 
-    private String createRejectionEmailTemplate(Rezervare rezervare, String reason) {
-        return """
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <meta charset="UTF-8">
-                <title>Rezervarea nu a putut fi aprobată</title>
-                <style>
-                    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }
-                    .header { background-color: #C14953; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0; }
-                    .content { background-color: #f9f9f9; padding: 30px; border-radius: 0 0 8px 8px; }
-                    .details { background-color: white; padding: 15px; border-left: 4px solid #C14953; margin: 20px 0; }
-                    .footer { text-align: center; margin-top: 30px; font-size: 12px; color: #666; }
-                </style>
-            </head>
-            <body>
-                <div class="header">
-                    <h1>Rezervarea nu a putut fi aprobată</h1>
-                    <p>%s</p>
-                </div>
-                
-                <div class="content">
-                    <p>Bună ziua <strong>%s %s</strong>,</p>
-                    
-                    <p>Ne pare rău să vă informăm că rezervarea dumneavoastră pentru data de <strong>%s</strong> nu a putut fi aprobată.</p>
-                    
-                    <div class="details">
-                        <h3>Motivul:</h3>
-                        <p>%s</p>
-                    </div>
-                    
-                    <p>Vă încurajăm să faceți o nouă rezervare pentru o altă dată sau să ne contactați pentru a discuta alternative.</p>
-                    
-                    <p>Ne cerem scuze pentru neplăcerile create și vă mulțumim pentru înțelegere.</p>
-                    
-                    <p>Pentru orice întrebări sau pentru a face o nouă rezervare, ne puteți contacta la %s.</p>
-                    
-                    <p>Cu stimă,<br><strong>Echipa %s</strong></p>
-                </div>
-                
-                <div class="footer">
-                    <p>Acest email a fost trimis automat. Pentru întrebări, contactați-ne la %s</p>
-                </div>
-            </body>
-            </html>
-            """.formatted(
-                museumName,
-                rezervare.getNume(), rezervare.getPrenume(),
-                rezervare.getDatetime().format(dateFormatter),
-                reason != null ? reason : "Intervalul orar solicitat nu este disponibil.",
-                fromEmail,
-                museumName,
-                fromEmail
-            );
-    }
 
     private String getAgeGroupDisplayName(String ageGroup) {
         if (ageGroup == null || ageGroup.trim().isEmpty()) {
