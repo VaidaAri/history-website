@@ -151,9 +151,18 @@ export class RezervariComponent implements OnInit {
   }
 
   fetchBookings() {
-    this.http.get("http://localhost:8080/api/bookings").subscribe((data: any) => {
-      this.bookings = data;
-      
+    if (!this.isAdmin) {
+      return;
+    }
+    
+    this.http.get("http://localhost:8080/api/bookings").subscribe({
+      next: (data: any) => {
+        this.bookings = data;
+      },
+      error: (err) => {
+        console.error('Error fetching bookings:', err);
+        // Silent error for better user experience
+      }
     });
   }
 

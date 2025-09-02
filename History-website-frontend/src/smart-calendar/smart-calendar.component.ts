@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-smart-calendar',
@@ -23,6 +24,7 @@ export class SmartCalendarComponent implements OnInit {
   currentMonth = this.currentDate.getMonth(); 
   calendarDays: any[] = [];
   densityData: any = {};
+  isAdmin: boolean = false;
   monthNames = [
     'Ianuarie', 'Februarie', 'Martie', 'Aprilie', 'Mai', 'Iunie',
     'Iulie', 'August', 'Septembrie', 'Octombrie', 'Noiembrie', 'Decembrie'
@@ -32,15 +34,33 @@ export class SmartCalendarComponent implements OnInit {
   selectedDay: any = null;
   showDayDetails = false;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router, private authService: AuthService) {}
 
   ngOnInit() {
-    this.loadCalendarDensity();
-    this.generateCalendarDays();
+    this.isAdmin = this.authService.isAuthenticated();
+    
+    this.authService.isAuthenticated$.subscribe(isAuth => {
+      this.isAdmin = isAuth;
+      if (this.isAdmin) {
+        this.loadCalendarDensity();
+      } else {
+        this.generateCalendarDays();
+      }
+    });
+    
+    if (this.isAdmin) {
+      this.loadCalendarDensity();
+    } else {
+      this.generateCalendarDays();
+    }
   }
 
-
   loadCalendarDensity() {
+    if (!this.isAdmin) {
+      this.generateCalendarDays();
+      return;
+    }
+    
     const year = this.currentYear;
     const month = this.currentMonth + 1;
     
@@ -52,7 +72,8 @@ export class SmartCalendarComponent implements OnInit {
           this.generateCalendarDays(); 
         },
         error: (err) => {
-          // Error handling for loading calendar density can be implemented here
+          // For non-admin users or errors, just generate basic calendar
+          this.generateCalendarDays();
         }
       });
   }
@@ -78,11 +99,20 @@ export class SmartCalendarComponent implements OnInit {
       const currentDayDate = new Date(this.currentYear, this.currentMonth, day);
       const isPastOrToday = currentDayDate <= today;
       
-      const dayData = this.densityData[dateStr] || { status: 'available', availableSlots: 0 };
+      // For non-admin users, provide default values
+      const dayData = this.densityData[dateStr] || { 
+        status: 'available', 
+        availableSlots: this.isAdmin ? 0 : 8, // Default to 8 slots for non-admin users
+        totalSlots: this.isAdmin ? undefined : 8,
+        timeSlots: this.isAdmin ? undefined : this.generateDefaultTimeSlots()
+      };
       
       let calculatedStatus = 'available';
-      if (!isPastOrToday && dayData.timeSlots) {
+      if (!isPastOrToday && dayData.timeSlots && this.isAdmin) {
         calculatedStatus = this.calculateDayStatus(dayData.timeSlots);
+      } else if (!isPastOrToday && !this.isAdmin) {
+        // For non-admin users, show all future days as available
+        calculatedStatus = 'available';
       }
       
       this.calendarDays.push({
@@ -108,7 +138,12 @@ export class SmartCalendarComponent implements OnInit {
     } else {
       this.currentMonth--;
     }
-    this.loadCalendarDensity();
+    
+    if (this.isAdmin) {
+      this.loadCalendarDensity();
+    } else {
+      this.generateCalendarDays();
+    }
   }
 
   nextMonth() {
@@ -118,14 +153,24 @@ export class SmartCalendarComponent implements OnInit {
     } else {
       this.currentMonth++;
     }
-    this.loadCalendarDensity();
+    
+    if (this.isAdmin) {
+      this.loadCalendarDensity();
+    } else {
+      this.generateCalendarDays();
+    }
   }
 
   goToToday() {
     const today = new Date();
     this.currentYear = today.getFullYear();
     this.currentMonth = today.getMonth();
-    this.loadCalendarDensity();
+    
+    if (this.isAdmin) {
+      this.loadCalendarDensity();
+    } else {
+      this.generateCalendarDays();
+    }
   }
 
   onDayClick(dayData: any) {
@@ -200,6 +245,20 @@ export class SmartCalendarComponent implements OnInit {
 
   getSlotValue(value: any): number {
     return Number(value) || 0;
+  }
+
+  generateDefaultTimeSlots(): any {
+    // Generate default time slots for non-admin users
+    return {
+      '09:00-10:00': 0,
+      '10:00-11:00': 0,
+      '11:00-12:00': 0,
+      '12:00-13:00': 0,
+      '13:00-14:00': 0,
+      '14:00-15:00': 0,
+      '15:00-16:00': 0,
+      '16:00-17:00': 0
+    };
   }
 
   calculateDayStatus(timeSlots: any): string {
