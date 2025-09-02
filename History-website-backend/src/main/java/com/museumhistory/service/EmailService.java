@@ -113,7 +113,7 @@ public class EmailService {
                 <div class="content">
                     <p>Bună ziua <strong>%s %s</strong>,</p>
                     
-                    <p>Mulțumim pentru rezervarea făcută la muzeul nostru! Pentru a finaliza rezervarea, vă rugăm să confirmați adresa de email făcând click pe butonul de mai jos:</p>
+                    <p>Vă mulțumim pentru rezervarea făcută! Pentru a finaliza rezervarea, vă rugăm să confirmați adresa de email făcând click pe butonul de mai jos:</p>
                     
                     <div style="text-align: center;">
                         <a href="%s" class="button">CONFIRMĂ REZERVAREA</a>
@@ -125,14 +125,13 @@ public class EmailService {
                         <p><strong>Numărul de persoane:</strong> %d</p>
                         <p><strong>Categoria de vârstă:</strong> %s</p>
                         <p><strong>Ghid solicitat:</strong> %s</p>
-                        <p><strong>Email contact:</strong> %s</p>
                     </div>
                     
                     <p><strong>Important:</strong> Acest link este valabil timp de 24 de ore. Dacă nu confirmați rezervarea în acest interval, aceasta va fi anulată automat.</p>
                     
                     <p>Pentru întrebări sau modificări, ne puteți contacta la adresa de email %s.</p>
                     
-                    <p>Vă mulțumim și vă așteptăm cu drag la muzeu!</p>
+                    <p>Vă așteptăm cu drag la muzeu!</p>
                 </div>
                 
                 <div class="footer">
@@ -149,7 +148,6 @@ public class EmailService {
                 rezervare.getNumberOfPersons(),
                 getAgeGroupDisplayName(rezervare.getAgeGroup()),
                 rezervare.isGuideRequired() ? "Da" : "Nu",
-                rezervare.getEmail(),
                 fromEmail,
                 museumName
             );
@@ -179,12 +177,13 @@ public class EmailService {
                 <div class="content">
                     <p>Bună ziua <strong>%s %s</strong>,</p>
                     
-                    <p>Vă informăm cu bucurie că rezervarea dumneavoastră a fost <strong>aprobată</strong>!</p>
+                    <p>Vă informăm că rezervarea dumneavoastră a fost <strong>aprobată</strong>!</p>
                     
                     <div class="details">
                         <h3>Detaliile vizitei confirmate:</h3>
                         <p><strong>Data și ora vizitei:</strong> %s</p>
                         <p><strong>Numărul de persoane:</strong> %d</p>
+                        <p><strong>Categoria de vârstă:</strong> %s</p>
                         <p><strong>Ghid inclus:</strong> %s</p>
                     </div>
                     
@@ -192,7 +191,7 @@ public class EmailService {
                     
                     <p>Vă mulțumim pentru interesul acordat muzeului nostru și vă așteptăm cu mare drag!</p>
                     
-                    <p>Cu stimă,<br><strong>Echipa %s</strong></p>
+                    <p>Cu stimă,<br><strong>Echipa muzeului</strong></p>
                 </div>
                 
                 <div class="footer">
@@ -205,9 +204,9 @@ public class EmailService {
                 rezervare.getNume(), rezervare.getPrenume(),
                 rezervare.getDatetime().format(dateFormatter),
                 rezervare.getNumberOfPersons(),
+                getAgeGroupDisplayName(rezervare.getAgeGroup()),
                 rezervare.isGuideRequired() ? "Da" : "Nu",
                 fromEmail,
-                museumName,
                 fromEmail
             );
     }
