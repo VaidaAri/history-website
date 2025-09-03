@@ -609,14 +609,14 @@ export class TranslationService {
       'de': 'Wichtig:'
     },
     'rezervariConfirmationEmail': {
-      'ro': 'După trimiterea formularului, veți primi un email de confirmare.',
-      'en': 'After submitting the form, you will receive a confirmation email.',
-      'de': 'Nach dem Absenden des Formulars erhalten Sie eine Bestätigungs-E-Mail.'
+      'ro': '',
+      'en': '',
+      'de': ''
     },
     'rezervariActivation': {
-      'ro': 'Rezervarea va deveni activă doar după confirmarea email-ului prin click pe link-ul primit.',
-      'en': 'The reservation will become active only after confirming the email by clicking on the received link.',
-      'de': 'Die Reservierung wird erst aktiv, nachdem Sie die E-Mail durch Klicken auf den erhaltenen Link bestätigt haben.'
+      'ro': 'După ce formularul a fost completat și trimis, veți primi imediat un email cu toate detaliile vizitei și confirmarea că rezervarea a fost înregistrată cu succes.',
+      'en': 'After the form has been completed and submitted, you will immediately receive an email with all visit details and confirmation that the reservation has been successfully registered.',
+      'de': 'Nachdem das Formular ausgefüllt und abgesendet wurde, erhalten Sie sofort eine E-Mail mit allen Besuchsdetails und der Bestätigung, dass die Reservierung erfolgreich registriert wurde.'
     },
     'rezervariChanges': {
       'ro': 'Pentru modificări sau anulări, vă rugăm să contactați muzeul la numărul de telefon afișat pe pagina de contact.',
