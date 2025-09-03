@@ -1,13 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 import { MeniuComponent } from '../meniu/meniu.component';
 import { CadranComponent } from '../cadran/cadran.component';
+import { AuthService } from '../services/auth.service';
 import { TranslatePipe } from '../services/i18n/translate.pipe';
 import { TranslationService } from '../services/i18n/translation.service';
 
 interface ExhibitionImage {
-  url: string;
+  id?: number;
+  url?: string;
+  path?: string;
   filename: string;
   description?: string;
   index: number;
@@ -16,14 +21,27 @@ interface ExhibitionImage {
 @Component({
   selector: 'app-expozitii-permanente',
   standalone: true,
-  imports: [RouterModule, CommonModule, MeniuComponent, CadranComponent, TranslatePipe],
+  imports: [RouterModule, CommonModule, FormsModule, MeniuComponent, CadranComponent, TranslatePipe],
   templateUrl: './expozitii-permanente.component.html',
   styleUrl: './expozitii-permanente.component.css'
 })
 export class ExpozitiiPermanenteComponent implements OnInit {
   selectedSection: string = 'istorie';
+  
+  isAdmin: boolean = false;
+  
+  selectedFiles: File[] = [];
+  currentUploadIndex: number = 0;
+  imageDescription: string = '';
+  isUploading: boolean = false;
+  uploadMessage: string = '';
+  showUploadMessage: boolean = false;
 
-  constructor(private translationService: TranslationService) {}
+  constructor(
+    private translationService: TranslationService,
+    private http: HttpClient,
+    private authService: AuthService
+  ) {}
 
   showGallery: boolean = false;
   currentImage: ExhibitionImage | null = null;
@@ -307,7 +325,191 @@ export class ExpozitiiPermanenteComponent implements OnInit {
     return Array.from({length: this.totalPages}, (_, i) => i + 1);
   }
 
+  loadDynamicImages() {
+    this.http.get<any[]>('http://localhost:8080/api/images').subscribe({
+      next: (images) => {
+        const istorieImages = images.filter(img => 
+          img.description && img.description.startsWith('EXPOZITIE_ISTORIE:')
+        ).map(img => ({
+          id: img.id,
+          path: img.path,
+          url: this.getImageUrl(img.path),
+          filename: img.path,
+          description: img.description.replace('EXPOZITIE_ISTORIE:', '').trim(),
+          index: 0
+        }));
+        
+        const etnografieImages = images.filter(img => 
+          img.description && img.description.startsWith('EXPOZITIE_ETNOGRAFIE:')
+        ).map(img => ({
+          id: img.id,
+          path: img.path,
+          url: this.getImageUrl(img.path),
+          filename: img.path,
+          description: img.description.replace('EXPOZITIE_ETNOGRAFIE:', '').trim(),
+          index: 0
+        }));
+        
+        const aerLiberImages = images.filter(img => 
+          img.description && img.description.startsWith('EXPOZITIE_AER_LIBER:')
+        ).map(img => ({
+          id: img.id,
+          path: img.path,
+          url: this.getImageUrl(img.path),
+          filename: img.path,
+          description: img.description.replace('EXPOZITIE_AER_LIBER:', '').trim(),
+          index: 0
+        }));
+
+        this.istorieImages = [...this.istorieImages, ...istorieImages];
+        this.etnografieImages = [...this.etnografieImages, ...etnografieImages];
+        this.aerLiberImages = [...this.aerLiberImages, ...aerLiberImages];
+        
+        this.updatePagination();
+      },
+      error: (err) => {
+        // Error handling can be added here
+      }
+    });
+  }
+
+  getImageUrl(imagePath: string): string {
+    if (!imagePath) return '';
+    
+    if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+      return imagePath;
+    }
+    
+    return `http://localhost:8080/api/images/uploads/${imagePath}`;
+  }
+
+  onFileSelected(event: any) {
+    const files = Array.from(event.target.files) as File[];
+    if (files.length > 0) {
+      this.selectedFiles = [...this.selectedFiles, ...files];
+    }
+    
+    event.target.value = '';
+  }
+
+  removeFile(index: number) {
+    this.selectedFiles.splice(index, 1);
+  }
+
+  uploadImages() {
+    if (this.selectedFiles.length === 0) {
+      this.showUploadMessage = true;
+      this.uploadMessage = 'Selectați cel puțin un fișier pentru încărcare.';
+      setTimeout(() => this.showUploadMessage = false, 3000);
+      return;
+    }
+    
+    this.isUploading = true;
+    this.currentUploadIndex = 0;
+    this.uploadNextImage();
+  }
+
+  private uploadNextImage() {
+    if (this.currentUploadIndex >= this.selectedFiles.length) {
+      this.showUploadMessage = true;
+      this.uploadMessage = `Toate imaginile (${this.selectedFiles.length}) au fost încărcate cu succes!`;
+      setTimeout(() => this.showUploadMessage = false, 3000);
+      this.selectedFiles = [];
+      this.imageDescription = '';
+      this.isUploading = false;
+      this.currentUploadIndex = 0;
+      this.loadDynamicImages();
+      return;
+    }
+    
+    const currentFile = this.selectedFiles[this.currentUploadIndex];
+    
+    const description = this.imageDescription.trim();
+    let prefix = '';
+    
+    switch(this.selectedSection) {
+      case 'istorie':
+        prefix = 'EXPOZITIE_ISTORIE: ';
+        break;
+      case 'etnografie':
+        prefix = 'EXPOZITIE_ETNOGRAFIE: ';
+        break;
+      case 'aerLiber':
+        prefix = 'EXPOZITIE_AER_LIBER: ';
+        break;
+    }
+    
+    const formData = new FormData();
+    formData.append('image', currentFile);
+    formData.append('description', prefix + (description || 'Expoziție permanentă'));
+    
+    this.http.post('http://localhost:8080/api/images/upload-image', formData).subscribe({
+      next: () => {
+        this.currentUploadIndex++;
+        this.uploadNextImage();
+      },
+      error: (err) => {
+        this.showUploadMessage = true;
+        this.uploadMessage = `Eroare la încărcarea imaginii ${currentFile.name}. Încarcările s-au oprit.`;
+        setTimeout(() => this.showUploadMessage = false, 5000);
+        this.isUploading = false;
+        this.currentUploadIndex = 0;
+      }
+    });
+  }
+
+  deleteImage(imageId: number | undefined) {
+    if (!imageId) return;
+    
+    if (confirm('Sigur doriți să ștergeți această imagine?')) {
+      this.http.delete(`http://localhost:8080/api/images/${imageId}`).subscribe({
+        next: () => {
+          this.showUploadMessage = true;
+          this.uploadMessage = 'Imaginea a fost ștearsă cu succes!';
+          setTimeout(() => this.showUploadMessage = false, 3000);
+          
+          if (this.showGallery && this.currentImage && this.currentImage.id === imageId) {
+            this.closeGallery();
+          }
+          
+          this.loadDynamicImages();
+        },
+        error: (err) => {
+          this.showUploadMessage = true;
+          this.uploadMessage = 'A apărut o eroare la ștergerea imaginii.';
+          setTimeout(() => this.showUploadMessage = false, 3000);
+        }
+      });
+    }
+  }
+
+  getSelectedFilesText(): string {
+    const template = this.translationService.translate('landscapesSelectedFiles') || 'Fișiere selectate: {count}';
+    return template.replace('{count}', this.selectedFiles.length.toString());
+  }
+
+  getUploadButtonText(): string {
+    const template = this.translationService.translate('landscapesUploadImages') || 'Încarcă {count} imagini';
+    return template.replace('{count}', this.selectedFiles.length.toString());
+  }
+
+  getUploadingText(): string {
+    const template = this.translationService.translate('landscapesUploading') || 'Se încarcă {current}/{total}...';
+    return template
+      .replace('{current}', (this.currentUploadIndex + 1).toString())
+      .replace('{total}', this.selectedFiles.length.toString());
+  }
+
+  getFullscreenTitle(): string {
+    return this.isFullscreen ? 'Ieși din fullscreen (F)' : 'Fullscreen (F)';
+  }
+
   ngOnInit() {
+    this.authService.isAuthenticated$.subscribe(isAuth => {
+      this.isAdmin = isAuth;
+    });
+    
+    this.loadDynamicImages();
     this.updatePagination();
     this.setupKeyboardListeners();
   }

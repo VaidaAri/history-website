@@ -28,10 +28,81 @@
         <p>
           {{ 'exhibitionsHistoryDescription' | translate }}
         </p>
-        <div class="exhibitions-grid">
-          <div class="exhibition-item" *ngFor="let image of getPaginatedImages()" (click)="openGallery(image)">
-            <div class="exhibition-image-container">
-              <img [src]="image.url" [alt]="image.filename" class="exhibition-image" loading="lazy" />
+
+        <div *ngIf="isAdmin" class="admin-section">
+          <div class="admin-header">
+            <h3>{{ 'landscapesAdminSection' | translate }}</h3>
+          </div>
+          
+          <div class="upload-form">
+            <div class="upload-status" *ngIf="showUploadMessage" [class.success]="uploadMessage.includes('succes')" [class.error]="!uploadMessage.includes('succes')">
+              {{ uploadMessage }}
+            </div>
+            
+            <div class="form-group">
+              <label for="image-description-istorie">{{ 'landscapesImageDescription' | translate }}</label>
+              <input 
+                type="text" 
+                id="image-description-istorie" 
+                [(ngModel)]="imageDescription" 
+                [placeholder]="'landscapesImageDescriptionPlaceholder' | translate"
+                class="description-input"
+              >
+            </div>
+            
+            <div class="form-group">
+              <label for="image-upload-istorie" class="file-upload-label">
+                <span class="upload-icon">📷</span>
+                <span>{{ 'landscapesSelectImages' | translate }}</span>
+              </label>
+              <input 
+                type="file" 
+                id="image-upload-istorie" 
+                (change)="onFileSelected($event)" 
+                accept="image/*" 
+                multiple
+                class="file-input"
+              >
+              <div *ngIf="selectedFiles.length > 0" class="selected-files-info">
+                <div class="selected-files-header">
+                  {{ getSelectedFilesText() }}
+                </div>
+                <div class="selected-files-list">
+                  <div *ngFor="let file of selectedFiles; let i = index" class="selected-file-item">
+                    <span class="file-name">{{ file.name }}</span>
+                    <button type="button" class="remove-file-btn" (click)="removeFile(i)" [title]="'landscapesRemoveFile' | translate">
+                      ×
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <button 
+              (click)="uploadImages()" 
+              [disabled]="isUploading || selectedFiles.length === 0" 
+              class="upload-btn"
+            >
+              <span *ngIf="!isUploading">{{ getUploadButtonText() }}</span>
+              <span *ngIf="isUploading">{{ getUploadingText() }}</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="images-grid">
+          <div class="image-item" *ngFor="let image of getPaginatedImages()" (click)="openGallery(image)">
+            <div class="image-container">
+              <img [src]="image.url || getImageUrl(image.path!)" [alt]="image.filename" class="gallery-image" loading="lazy" />
+              
+              <div *ngIf="isAdmin && image.id" class="admin-overlay">
+                <button 
+                  (click)="deleteImage(image.id); $event.stopPropagation()" 
+                  class="admin-delete-btn" 
+                  [title]="'landscapesDeleteImage' | translate"
+                >
+                  <span class="delete-icon">🗑️</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -67,10 +138,81 @@
         <p>
           {{ 'exhibitionsEthnographyDescription' | translate }}
         </p>
-        <div class="exhibitions-grid">
-          <div class="exhibition-item" *ngFor="let image of getPaginatedImages()" (click)="openGallery(image)">
-            <div class="exhibition-image-container">
-              <img [src]="image.url" [alt]="image.filename" class="exhibition-image" loading="lazy" />
+
+        <div *ngIf="isAdmin" class="admin-section">
+          <div class="admin-header">
+            <h3>{{ 'landscapesAdminSection' | translate }}</h3>
+          </div>
+          
+          <div class="upload-form">
+            <div class="upload-status" *ngIf="showUploadMessage" [class.success]="uploadMessage.includes('succes')" [class.error]="!uploadMessage.includes('succes')">
+              {{ uploadMessage }}
+            </div>
+            
+            <div class="form-group">
+              <label for="image-description-etnografie">{{ 'landscapesImageDescription' | translate }}</label>
+              <input 
+                type="text" 
+                id="image-description-etnografie" 
+                [(ngModel)]="imageDescription" 
+                [placeholder]="'landscapesImageDescriptionPlaceholder' | translate"
+                class="description-input"
+              >
+            </div>
+            
+            <div class="form-group">
+              <label for="image-upload-etnografie" class="file-upload-label">
+                <span class="upload-icon">📷</span>
+                <span>{{ 'landscapesSelectImages' | translate }}</span>
+              </label>
+              <input 
+                type="file" 
+                id="image-upload-etnografie" 
+                (change)="onFileSelected($event)" 
+                accept="image/*" 
+                multiple
+                class="file-input"
+              >
+              <div *ngIf="selectedFiles.length > 0" class="selected-files-info">
+                <div class="selected-files-header">
+                  {{ getSelectedFilesText() }}
+                </div>
+                <div class="selected-files-list">
+                  <div *ngFor="let file of selectedFiles; let i = index" class="selected-file-item">
+                    <span class="file-name">{{ file.name }}</span>
+                    <button type="button" class="remove-file-btn" (click)="removeFile(i)" [title]="'landscapesRemoveFile' | translate">
+                      ×
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <button 
+              (click)="uploadImages()" 
+              [disabled]="isUploading || selectedFiles.length === 0" 
+              class="upload-btn"
+            >
+              <span *ngIf="!isUploading">{{ getUploadButtonText() }}</span>
+              <span *ngIf="isUploading">{{ getUploadingText() }}</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="images-grid">
+          <div class="image-item" *ngFor="let image of getPaginatedImages()" (click)="openGallery(image)">
+            <div class="image-container">
+              <img [src]="image.url || getImageUrl(image.path!)" [alt]="image.filename" class="gallery-image" loading="lazy" />
+              
+              <div *ngIf="isAdmin && image.id" class="admin-overlay">
+                <button 
+                  (click)="deleteImage(image.id); $event.stopPropagation()" 
+                  class="admin-delete-btn" 
+                  [title]="'landscapesDeleteImage' | translate"
+                >
+                  <span class="delete-icon">🗑️</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -106,10 +248,81 @@
         <p>
           {{ 'exhibitionsOutdoorDescription' | translate }}
         </p>
-        <div class="exhibitions-grid">
-          <div class="exhibition-item" *ngFor="let image of getPaginatedImages()" (click)="openGallery(image)">
-            <div class="exhibition-image-container">
-              <img [src]="image.url" [alt]="image.filename" class="exhibition-image" loading="lazy" />
+
+        <div *ngIf="isAdmin" class="admin-section">
+          <div class="admin-header">
+            <h3>{{ 'landscapesAdminSection' | translate }}</h3>
+          </div>
+          
+          <div class="upload-form">
+            <div class="upload-status" *ngIf="showUploadMessage" [class.success]="uploadMessage.includes('succes')" [class.error]="!uploadMessage.includes('succes')">
+              {{ uploadMessage }}
+            </div>
+            
+            <div class="form-group">
+              <label for="image-description-aer-liber">{{ 'landscapesImageDescription' | translate }}</label>
+              <input 
+                type="text" 
+                id="image-description-aer-liber" 
+                [(ngModel)]="imageDescription" 
+                [placeholder]="'landscapesImageDescriptionPlaceholder' | translate"
+                class="description-input"
+              >
+            </div>
+            
+            <div class="form-group">
+              <label for="image-upload-aer-liber" class="file-upload-label">
+                <span class="upload-icon">📷</span>
+                <span>{{ 'landscapesSelectImages' | translate }}</span>
+              </label>
+              <input 
+                type="file" 
+                id="image-upload-aer-liber" 
+                (change)="onFileSelected($event)" 
+                accept="image/*" 
+                multiple
+                class="file-input"
+              >
+              <div *ngIf="selectedFiles.length > 0" class="selected-files-info">
+                <div class="selected-files-header">
+                  {{ getSelectedFilesText() }}
+                </div>
+                <div class="selected-files-list">
+                  <div *ngFor="let file of selectedFiles; let i = index" class="selected-file-item">
+                    <span class="file-name">{{ file.name }}</span>
+                    <button type="button" class="remove-file-btn" (click)="removeFile(i)" [title]="'landscapesRemoveFile' | translate">
+                      ×
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <button 
+              (click)="uploadImages()" 
+              [disabled]="isUploading || selectedFiles.length === 0" 
+              class="upload-btn"
+            >
+              <span *ngIf="!isUploading">{{ getUploadButtonText() }}</span>
+              <span *ngIf="isUploading">{{ getUploadingText() }}</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="images-grid">
+          <div class="image-item" *ngFor="let image of getPaginatedImages()" (click)="openGallery(image)">
+            <div class="image-container">
+              <img [src]="image.url || getImageUrl(image.path!)" [alt]="image.filename" class="gallery-image" loading="lazy" />
+              
+              <div *ngIf="isAdmin && image.id" class="admin-overlay">
+                <button 
+                  (click)="deleteImage(image.id); $event.stopPropagation()" 
+                  class="admin-delete-btn" 
+                  [title]="'landscapesDeleteImage' | translate"
+                >
+                  <span class="delete-icon">🗑️</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -193,7 +406,7 @@
                   <button class="control-button" (click)="resetImageTransforms()" title="Resetează transformările">
                     🔄
                   </button>
-                  <button class="control-button fullscreen-btn" (click)="toggleFullscreen()" [title]="isFullscreen ? 'Ieși din fullscreen (F)' : 'Fullscreen (F)'">
+                  <button class="control-button fullscreen-btn" (click)="toggleFullscreen()" [title]="getFullscreenTitle()">
                     <span *ngIf="!isFullscreen">⛶</span>
                     <span *ngIf="isFullscreen">⧉</span>
                   </button>
