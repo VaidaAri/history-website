@@ -361,9 +361,14 @@ export class ExpozitiiPermanenteComponent implements OnInit {
           index: 0
         }));
 
-        this.istorieImages = [...this.istorieImages, ...istorieImages];
-        this.etnografieImages = [...this.etnografieImages, ...etnografieImages];
-        this.aerLiberImages = [...this.aerLiberImages, ...aerLiberImages];
+        // Păstrăm imaginile statice (fără id) și înlocuim cele dinamice  
+        const staticIstorieImages = this.istorieImages.filter(img => !img.id);
+        const staticEtnografieImages = this.etnografieImages.filter(img => !img.id);
+        const staticAerLiberImages = this.aerLiberImages.filter(img => !img.id);
+        
+        this.istorieImages = [...staticIstorieImages, ...istorieImages];
+        this.etnografieImages = [...staticEtnografieImages, ...etnografieImages];
+        this.aerLiberImages = [...staticAerLiberImages, ...aerLiberImages];
         
         this.updatePagination();
       },
