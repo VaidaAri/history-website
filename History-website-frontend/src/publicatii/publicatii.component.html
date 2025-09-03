@@ -15,15 +15,6 @@
     <button [class.active]="selectedCategory === 'scanCoperti'" (click)="switchCategory('scanCoperti')">{{ 'publicationsReviste' | translate }}</button>
   </div>
   
-  <div class="publication-description" *ngIf="selectedCategory === 'arhivaSomesana'">
-    <h2>{{ 'publicationsArhivaSomesana' | translate }}</h2>
-    <p>{{ 'publicationsArhivaSomesanaDesc' | translate }}</p>
-  </div>
-  
-  <div class="publication-description" *ngIf="selectedCategory === 'scanCoperti'">
-    <h2>{{ 'publicationsReviste' | translate }}</h2>
-    <p>{{ 'publicationsRevisteDesc' | translate }}</p>
-  </div>
   
   <div class="publications-grid" *ngIf="selectedCategory === 'arhivaSomesana'">
     <div class="publication-item" *ngFor="let image of arhivaSomesanaImages" (click)="openGallery(image)">

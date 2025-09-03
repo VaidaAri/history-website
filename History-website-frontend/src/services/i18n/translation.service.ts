@@ -753,9 +753,9 @@ export class TranslationService {
       'de': 'Dauerausstellungen'
     },
     'exhibitionsIntroText': {
-      'ro': 'Muzeul Grăniceresc Năsăudean găzduiește trei expoziții permanente care pun în valoare istoria, cultura și tradițiile regiunii. Vă invităm să descoperiți bogăția patrimoniului nostru prin intermediul acestor colecții valoroase.',
-      'en': 'The Năsăud Border Guard Museum hosts three permanent exhibitions that highlight the history, culture and traditions of the region. We invite you to discover the richness of our heritage through these valuable collections.',
-      'de': 'Das Năsăuder Grenzwacht-Museum beherbergt drei Dauerausstellungen, die die Geschichte, Kultur und Traditionen der Region hervorheben. Wir laden Sie ein, den Reichtum unseres Erbes durch diese wertvollen Sammlungen zu entdecken.'
+      'ro': 'Muzeul Grăniceresc Năsăudean găzduiește trei expoziții permanente care pun în valoare istoria, cultura și tradițiile regiunii. Vă invităm să descoperiți bogăția patrimoniului nostru prin intermediul acestor colecții.',
+      'en': 'The Năsăud Border Guard Museum hosts three permanent exhibitions that highlight the history, culture and traditions of the region. We invite you to discover the richness of our heritage through these collections.',
+      'de': 'Das Năsăuder Grenzwacht-Museum beherbergt drei Dauerausstellungen, die die Geschichte, Kultur und Traditionen der Region hervorheben. Wir laden Sie ein, den Reichtum unseres Erbes durch diese Sammlungen zu entdecken.'
     },
     'exhibitionsHistoryBtn': {
       'ro': 'Expoziția de Istorie',
@@ -995,9 +995,9 @@ export class TranslationService {
       'de': 'Freunde des Museums'
     },
     'friendsIntroText': {
-      'ro': 'Prietenii Muzeului sunt toți cei care ne vizitează și sprijină activitatea noastră culturală. Îi invităm pe toți să facă parte din familia muzeului și să contribuie la păstrarea patrimoniului local!',
-      'en': 'Friends of the Museum are all those who visit us and support our cultural activities. We invite everyone to be part of the museum family and contribute to preserving local heritage!',
-      'de': 'Freunde des Museums sind alle, die uns besuchen und unsere kulturellen Aktivitäten unterstützen. Wir laden alle ein, Teil der Museumsfamilie zu sein und zur Erhaltung des lokalen Erbes beizutragen!'
+      'ro': 'Prietenii Muzeului sunt toți cei care ne vizitează și sprijină activitatea noastră culturală. Îi invităm pe toți să facă parte din familia muzeului și să contribuie la păstrarea vie a tradiției locale!',
+      'en': 'Friends of the Museum are all those who visit us and support our cultural activities. We invite everyone to be part of the museum family and contribute to keeping alive local tradition!',
+      'de': 'Freunde des Museums sind alle, die uns besuchen und unsere kulturellen Aktivitäten unterstützen. Wir laden alle ein, Teil der Museumsfamilie zu sein und dazu beizutragen, die lokalen Traditionen am Leben zu erhalten!'
     },
     'friendsAdminSection': {
       'ro': 'Administrare imagini',
