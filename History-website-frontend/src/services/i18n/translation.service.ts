@@ -148,9 +148,9 @@ export class TranslationService {
       'de': 'Schüler & Studenten'
     },
     'tarifeStudentsDesc': {
-      'ro': 'Cu prezentarea carnetului de elev/student',
-      'en': 'With student/pupil ID presentation',
-      'de': 'Mit Vorlage des Schüler-/Studentenausweises'
+      'ro': '',
+      'en': '',
+      'de': ''
     },
     'tarifePensioners': {
       'ro': 'Pensionari',
@@ -158,9 +158,9 @@ export class TranslationService {
       'de': 'Rentner'
     },
     'tarifePensionersDesc': {
-      'ro': 'Cu prezentarea cuponului de pensie',
-      'en': 'With pension certificate presentation',
-      'de': 'Mit Vorlage des Rentenbescheids'
+      'ro': '',
+      'en': '',
+      'de': ''
     },
     'tarifeAdults': {
       'ro': 'Adulți',
@@ -168,9 +168,9 @@ export class TranslationService {
       'de': 'Erwachsene'
     },
     'tarifeAdultsDesc': {
-      'ro': 'Bilet standard de intrare',
-      'en': 'Standard entrance ticket',
-      'de': 'Standard-Eintrittskarte'
+      'ro': '',
+      'en': '',
+      'de': ''
     },
     'tarifeCurrency': {
       'ro': 'lei',
@@ -488,9 +488,9 @@ export class TranslationService {
       'de': 'Keine registrierten Veranstaltungen'
     },
     'eventsUserDescription': {
-      'ro': 'Descoperiți evenimentele organizate de Muzeul Grăniceresc Năsăudean. Faceți click pe un eveniment pentru a vedea detaliile.',
-      'en': 'Discover the events organized by the Năsăud Border Guard Museum. Click on an event to see the details.',
-      'de': 'Entdecken Sie die vom Năsăuder Grenzwacht-Museum organisierten Veranstaltungen. Klicken Sie auf eine Veranstaltung, um die Details zu sehen.'
+      'ro': 'Descoperiți evenimentele organizate la Muzeul Grăniceresc Năsăudean. Faceți click pe un eveniment pentru a vedea detaliile.',
+      'en': 'Discover the events organized at the Năsăud Border Guard Museum. Click on an event to see the details.',
+      'de': 'Entdecken Sie die im Năsăuder Grenzwacht-Museum organisierten Veranstaltungen. Klicken Sie auf eine Veranstaltung, um die Details zu sehen.'
     },
     'eventsVisitUsTitle': {
       'ro': 'Vizitați-ne',
