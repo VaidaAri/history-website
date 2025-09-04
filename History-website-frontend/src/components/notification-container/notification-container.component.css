@@ -41,9 +41,37 @@
 }
 
 .notification-confirm {
-  max-width: 450px;
-  position: relative;
-  z-index: 10000;
+  max-width: 550px;
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 10001;
+  animation: zoomIn 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+  box-shadow: 0 20px 60px rgba(93, 64, 55, 0.4) !important;
+  border: 3px solid #7D5A50 !important;
+  pointer-events: all;
+}
+
+.notification-confirm .notification-content {
+  padding: 25px;
+}
+
+.notification-confirm .notification-title {
+  font-size: 20px;
+  margin-bottom: 12px;
+}
+
+.notification-confirm .notification-message {
+  font-size: 16px;
+  line-height: 1.7;
+  margin-bottom: 8px;
+}
+
+.notification-confirm .btn {
+  padding: 12px 25px;
+  font-size: 15px;
+  min-width: 120px;
 }
 
 .notification-content {
@@ -175,6 +203,19 @@
   }
 }
 
+@keyframes zoomIn {
+  from {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+
+
 .notification:hover {
   transform: translateY(-3px);
   box-shadow: 0 12px 35px rgba(93, 64, 55, 0.2);
@@ -212,6 +253,13 @@
   
   .btn {
     width: 100%;
+  }
+
+  /* Popup de confirmare pe mobile */
+  .notification-confirm {
+    max-width: calc(100vw - 40px);
+    left: 50% !important;
+    top: 50% !important;
   }
 }
 

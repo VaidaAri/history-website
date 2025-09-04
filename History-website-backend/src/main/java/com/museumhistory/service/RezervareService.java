@@ -1,7 +1,6 @@
 package com.museumhistory.service;
 
 import com.museumhistory.model.Rezervare;
-import com.museumhistory.model.Rezervare.ReservationStatus;
 import com.museumhistory.repository.RezervareRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +10,6 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class RezervareService {
@@ -27,15 +25,10 @@ public class RezervareService {
     }
 
     public void createBooking(Rezervare newBooking){
-        String confirmationToken = emailService.generateConfirmationToken();
-        newBooking.setConfirmationToken(confirmationToken);
-        newBooking.setTokenExpiry(LocalDateTime.now().plusHours(24));
-        newBooking.setStatus(ReservationStatus.NECONFIRMATA);
-        
         Rezervare savedReservation = rezervareRepository.save(newBooking);
         
         try {
-            emailService.sendConfirmationEmail(savedReservation);
+            emailService.sendApprovalEmail(savedReservation);
         } catch (Exception e) {
             System.err.println("Eroare la trimiterea email-ului de confirmare: " + e.getMessage());
         }
@@ -55,20 +48,7 @@ public class RezervareService {
                 -> new RuntimeException("Nu s-a gasit rezervare cu ID-ul" + bookingId));
     }
     
-    public void approveBooking(Integer bookingId) {
-        Rezervare booking = findBookingById(bookingId);
-        booking.setStatus(ReservationStatus.CONFIRMATA);
-        rezervareRepository.save(booking);
-        try {
-            emailService.sendApprovalEmail(booking);
-        } catch (Exception e) {
-            System.err.println("Eroare la trimiterea email-ului de aprobare: " + e.getMessage());
-        }
-    }
     
-    public int getPendingBookingsCount() {
-        return rezervareRepository.countByStatus(ReservationStatus.NECONFIRMATA);
-    }
     
     public int getConfirmedBookingsCountForTimeInterval(LocalDate date, int startHour, int endHour) {
         return rezervareRepository.countConfirmedBookingsByDateAndTimeInterval(date, startHour, endHour);
@@ -85,42 +65,8 @@ public class RezervareService {
         return counters;
     }
     
-    public Optional<Rezervare> findByConfirmationToken(String token) {
-        return rezervareRepository.findByConfirmationToken(token);
-    }
-    
-    public boolean confirmReservation(String token) {
-        Optional<Rezervare> optionalReservation = findByConfirmationToken(token);
-        
-        if (optionalReservation.isEmpty()) {
-            return false;
-        }
-        
-        Rezervare reservation = optionalReservation.get();
-        
-        if (reservation.getTokenExpiry().isBefore(LocalDateTime.now())) {
-            return false;
-        }
-        
-        if (reservation.getStatus() != ReservationStatus.NECONFIRMATA) {
-            return false;
-        }
-        reservation.setStatus(ReservationStatus.CONFIRMATA);
-        reservation.setConfirmedAt(LocalDateTime.now());
-        rezervareRepository.save(reservation);
-        try {
-            emailService.sendApprovalEmail(reservation);
-        } catch (Exception e) {
-            System.err.println("Eroare la trimiterea email-ului de confirmare: " + e.getMessage());
-        }
-        
-        return true;
-    }
-    
-    public List<Rezervare> getConfirmedBookings() {
-        return rezervareRepository.findByStatusIn(List.of(
-            ReservationStatus.CONFIRMATA
-        ));
+    public List<Rezervare> getAllConfirmedBookings() {
+        return rezervareRepository.findAll();
     }
     
     

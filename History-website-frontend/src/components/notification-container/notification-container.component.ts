@@ -57,12 +57,26 @@ export class NotificationContainerComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscription = this.notificationService.notifications$.subscribe(
-      notifications => this.notifications = notifications
+      notifications => {
+        this.notifications = notifications;
+        this.handleBodyBlocking(notifications);
+      }
     );
+  }
+
+  private handleBodyBlocking(notifications: Notification[]) {
+    const hasConfirmDialog = notifications.some(n => n.showConfirm);
+    
+    if (hasConfirmDialog) {
+      document.body.classList.add('modal-open');
+    } else {
+      document.body.classList.remove('modal-open');
+    }
   }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    document.body.classList.remove('modal-open');
   }
 
   closeNotification(id: string) {

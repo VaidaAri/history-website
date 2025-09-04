@@ -37,7 +37,6 @@ export class RezervariComponent implements OnInit {
     datetime: '',
     numberOfPersons: 1,
     guideRequired: false,
-    status: 'NECONFIRMATA',
     ageGroup: ''
   };
   
@@ -166,17 +165,27 @@ export class RezervariComponent implements OnInit {
     });
   }
 
-  addBooking() {
+  async addBooking() {
     if (!this.validateDateTime()) {
       return;
     }
 
+    const confirmed = await this.notificationService.showConfirm(
+      'Confirmare rezervare',
+      'Ești sigur că dorești să rezervi această vizită la muzeu? Vei primi un email cu confirmarea rezervării și toate detaliile vizitei.',
+      'Da, confirmă rezervarea',
+      'Nu, anulează'
+    );
+
+    if (!confirmed) {
+      return;
+    }
     
     this.reservationService.createReservation(this.newBooking).subscribe({
       next: (response) => {
         const successMessage = response && response.message
           ? response.message
-          : "Rezervarea a fost înregistrată cu succes! Vă rugăm să verificați email-ul pentru confirmare.";
+          : "Rezervarea a fost înregistrată cu succes! Veți primi un email de confirmare în scurt timp.";
 
         this.notificationService.showSuccess('Rezervare înregistrată', successMessage, 7000);
 
@@ -233,7 +242,6 @@ export class RezervariComponent implements OnInit {
       datetime: '',
       numberOfPersons: 1,
       guideRequired: false,
-      status: 'NECONFIRMATA',
       ageGroup: ''
     };
     this.selectedDate = '';
@@ -270,14 +278,6 @@ export class RezervariComponent implements OnInit {
   }
   
   
-  getStatusDisplayName(status: string): string {
-    switch(status) {
-      case 'NECONFIRMATA': return 'Neconfirmată';
-      case 'CONFIRMATA': return 'Confirmată';
-      case 'RESPINSA': return 'Respinsă';
-      default: return 'Neconfirmată';
-    }
-  }
 
   getAgeGroupDisplayName(ageGroup: string): string {
     const option = this.ageGroupOptions.find(opt => opt.value === ageGroup);

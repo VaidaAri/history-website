@@ -12,6 +12,36 @@ html, body {
   scrollbar-color: #7D5A50 #EFE3C8;
 }
 
+/* Blochează aplicația când popup-ul de confirmare este deschis */
+body.modal-open {
+  overflow: hidden;
+}
+
+/* Overlay care blochează și întunecă restul aplicației */
+body.modal-open::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 9999;
+  pointer-events: all;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Popup-ul de confirmare rămâne deasupra și funcțional */
+body.modal-open .notification-confirm {
+  z-index: 10001 !important;
+  pointer-events: all !important;
+}
+
 * {
   box-sizing: border-box;
 }

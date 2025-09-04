@@ -26,32 +26,15 @@ public class RezervareController {
     @Autowired
     private RezervareService rezervareService;
     
-    @GetMapping("/pending-count")
-    public ResponseEntity<Map<String, Object>> getPendingBookingsCount() {
-        try {
-            logger.debug("Fetching pending bookings count");
-            int count = rezervareService.getPendingBookingsCount();
-            Map<String, Object> response = new HashMap<>();
-            response.put("count", count);
-            response.put("status", "success");
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            logger.error("Error fetching pending bookings count", e);
-            Map<String, Object> errorResponse = new HashMap<>();
-            errorResponse.put("error", "Nu s-a putut obține numărul de rezervări în așteptare");
-            errorResponse.put("status", "error");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
-        }
-    }
 
     @GetMapping
     public ResponseEntity<List<Rezervare>> getAllBookings(){
         try {
-            logger.debug("Fetching all confirmed bookings");
-            List<Rezervare> bookings = rezervareService.getConfirmedBookings();
+            logger.debug("Fetching all bookings");
+            List<Rezervare> bookings = rezervareService.getAllConfirmedBookings();
             return ResponseEntity.ok(bookings);
         } catch (Exception e) {
-            logger.error("Error fetching confirmed bookings", e);
+            logger.error("Error fetching bookings", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -145,9 +128,8 @@ public class RezervareController {
             rezervareService.createBooking(newBooking);
             
             Map<String, Object> response = new HashMap<>();
-            response.put("message", "Rezervarea a fost înregistrată cu succes! Vă rugăm să verificați email-ul pentru confirmare.");
+            response.put("message", "Rezervarea a fost înregistrată cu succes! Veți primi un email de confirmare în scurt timp.");
             response.put("status", "success");
-            response.put("bookingStatus", newBooking.getStatus().getDisplayName());
             
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
             
@@ -384,61 +366,6 @@ public class RezervareController {
         }
     }
     
-    @PostMapping("/confirm/{token}")
-    public ResponseEntity<Map<String, Object>> confirmReservation(@PathVariable String token) {
-        try {
-            // Validate token
-            if (token == null || token.trim().isEmpty()) {
-                logger.warn("Reservation confirmation attempted with empty token");
-                Map<String, Object> errorResponse = new HashMap<>();
-                errorResponse.put("error", "Token-ul de confirmare este obligatoriu");
-                errorResponse.put("status", "error");
-                return ResponseEntity.badRequest().body(errorResponse);
-            }
-            
-            // Sanitize token
-            token = token.trim();
-            
-            if (token.length() < 10) { // Basic validation for token format
-                logger.warn("Reservation confirmation attempted with invalid token format: {}", token);
-                Map<String, Object> errorResponse = new HashMap<>();
-                errorResponse.put("error", "Format invalid pentru token-ul de confirmare");
-                errorResponse.put("status", "error");
-                return ResponseEntity.badRequest().body(errorResponse);
-            }
-            
-            logger.info("Attempting to confirm reservation with token: {}", token.substring(0, 8) + "...");
-            
-            boolean confirmed = rezervareService.confirmReservation(token);
-            
-            if (confirmed) {
-                logger.info("Reservation confirmed successfully with token: {}", token.substring(0, 8) + "...");
-                Map<String, Object> response = new HashMap<>();
-                response.put("message", "Rezervarea a fost confirmată cu succes!");
-                response.put("status", "success");
-                return ResponseEntity.ok(response);
-            } else {
-                logger.warn("Failed to confirm reservation with token: {}", token.substring(0, 8) + "...");
-                Map<String, Object> errorResponse = new HashMap<>();
-                errorResponse.put("error", "Token invalid sau expirat. Vă rugăm să verificați email-ul sau să faceți o nouă rezervare.");
-                errorResponse.put("status", "error");
-                return ResponseEntity.badRequest().body(errorResponse);
-            }
-            
-        } catch (IllegalArgumentException e) {
-            logger.error("Invalid argument while confirming reservation", e);
-            Map<String, Object> errorResponse = new HashMap<>();
-            errorResponse.put("error", "Token invalid: " + e.getMessage());
-            errorResponse.put("status", "error");
-            return ResponseEntity.badRequest().body(errorResponse);
-        } catch (Exception e) {
-            logger.error("Unexpected error while confirming reservation with token: " + token, e);
-            Map<String, Object> errorResponse = new HashMap<>();
-            errorResponse.put("error", "Eroare la confirmarea rezervării. Vă rugăm să încercați din nou.");
-            errorResponse.put("status", "error");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
-        }
-    }
     
     @GetMapping("/calendar-density/{year}/{month}")
     public ResponseEntity<Object> getCalendarDensity(
