@@ -50,14 +50,15 @@ public class RezervareService {
     
     
     
-    public int getConfirmedBookingsCountForTimeInterval(LocalDate date, int startHour, int endHour) {
-        return rezervareRepository.countConfirmedBookingsByDateAndTimeInterval(date, startHour, endHour);
+    public int getBookingsCountForTimeInterval(LocalDate date, int startHour, int endHour) {
+        return rezervareRepository.countBookingsByDateAndTimeInterval(date, startHour, endHour);
     }
     
-    public Map<String, Integer> getConfirmedBookingsCountByTimeSlots(LocalDate date) {
+    public Map<String, Integer> getBookingsCountByTimeSlots(LocalDate date) {
         Map<String, Integer> counters = new HashMap<>();
         for (int hour = 8; hour < 18; hour += 2) {
-            int count = rezervareRepository.countConfirmedBookingsByDateAndTimeInterval(date, hour, hour + 1);
+            // Pentru un slot de 2 ore (ex: 08:00-10:00), verificăm orele 8 și 9
+            int count = rezervareRepository.countBookingsByDateAndTimeInterval(date, hour, hour + 1);
             String timeSlot = String.format("%02d:00-%02d:00", hour, hour + 2);
             counters.put(timeSlot, count);
         }
@@ -65,7 +66,7 @@ public class RezervareService {
         return counters;
     }
     
-    public List<Rezervare> getAllConfirmedBookings() {
+    public List<Rezervare> getAllBookings() {
         return rezervareRepository.findAll();
     }
     
@@ -76,7 +77,7 @@ public class RezervareService {
         LocalDate lastDay = firstDay.withDayOfMonth(firstDay.lengthOfMonth());
         
         for (LocalDate date = firstDay; !date.isAfter(lastDay); date = date.plusDays(1)) {
-            Map<String, Integer> timeSlots = getConfirmedBookingsCountByTimeSlots(date);
+            Map<String, Integer> timeSlots = getBookingsCountByTimeSlots(date);
             
             int totalSlots = timeSlots.size();
             int fullSlots = 0;

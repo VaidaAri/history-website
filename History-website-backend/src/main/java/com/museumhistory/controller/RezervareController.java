@@ -31,7 +31,7 @@ public class RezervareController {
     public ResponseEntity<List<Rezervare>> getAllBookings(){
         try {
             logger.debug("Fetching all bookings");
-            List<Rezervare> bookings = rezervareService.getAllConfirmedBookings();
+            List<Rezervare> bookings = rezervareService.getAllBookings();
             return ResponseEntity.ok(bookings);
         } catch (Exception e) {
             logger.error("Error fetching bookings", e);
@@ -291,8 +291,8 @@ public class RezervareController {
         }
     }
     
-    @GetMapping("/confirmed-count")
-    public ResponseEntity<Map<String, Object>> getConfirmedBookingsCount(
+    @GetMapping("/count")
+    public ResponseEntity<Map<String, Object>> getBookingsCount(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
             @RequestParam(required = false) Integer startHour,
             @RequestParam(required = false) Integer endHour) {
@@ -332,7 +332,7 @@ public class RezervareController {
                 }
             }
             
-            logger.debug("Fetching confirmed bookings count for date: {}, startHour: {}, endHour: {}", 
+            logger.debug("Fetching bookings count for date: {}, startHour: {}, endHour: {}", 
                 date, startHour, endHour);
             
             Map<String, Object> response = new HashMap<>();
@@ -340,25 +340,25 @@ public class RezervareController {
             response.put("status", "success");
             
             if (startHour != null && endHour != null) {
-                int count = rezervareService.getConfirmedBookingsCountForTimeInterval(date, startHour, endHour);
+                int count = rezervareService.getBookingsCountForTimeInterval(date, startHour, endHour);
                 response.put("startHour", startHour);
                 response.put("endHour", endHour);
                 response.put("count", count);
             } else {
-                Map<String, Integer> timeSlotCounts = rezervareService.getConfirmedBookingsCountByTimeSlots(date);
+                Map<String, Integer> timeSlotCounts = rezervareService.getBookingsCountByTimeSlots(date);
                 response.put("timeSlots", timeSlotCounts);
             }
             
             return ResponseEntity.ok(response);
             
         } catch (IllegalArgumentException e) {
-            logger.error("Invalid argument while fetching confirmed bookings count", e);
+            logger.error("Invalid argument while fetching bookings count", e);
             Map<String, Object> errorResponse = new HashMap<>();
             errorResponse.put("error", "Date sau interval orar invalid: " + e.getMessage());
             errorResponse.put("status", "error");
             return ResponseEntity.badRequest().body(errorResponse);
         } catch (Exception e) {
-            logger.error("Error fetching confirmed bookings count for date: " + date, e);
+            logger.error("Error fetching bookings count for date: " + date, e);
             Map<String, Object> errorResponse = new HashMap<>();
             errorResponse.put("error", "Nu s-au putut încărca statisticile rezervărilor pentru data specificată");
             errorResponse.put("status", "error");

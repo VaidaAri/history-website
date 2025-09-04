@@ -17,5 +17,4 @@ export const routes: Routes = [
     {path: 'peisaje-muzeu', loadComponent: () => import('../peisaje-muzeu/peisaje-muzeu.component').then(m => m.PeisajeMuzeuComponent)},
     {path: 'expozitii-permanente', loadComponent: () => import('../expozitii-permanente/expozitii-permanente.component').then(m => m.ExpozitiiPermanenteComponent)},
     {path: 'prietenii-muzeului', loadComponent: () => import('../prietenii-muzeului/prietenii-muzeului.component').then(m => m.PrieteniiMuzeuluiComponent)},
-    {path: 'confirm-reservation/:token', loadComponent: () => import('../confirm-reservation/confirm-reservation.component').then(m => m.ConfirmReservationComponent)},
 ];

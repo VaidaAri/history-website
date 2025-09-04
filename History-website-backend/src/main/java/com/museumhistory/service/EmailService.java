@@ -22,8 +22,6 @@ public class EmailService {
     @Value("${museum.email.name}")
     private String museumName;
 
-    @Value("${museum.frontend.url}")
-    private String frontendUrl;
 
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd MMMM yyyy, HH:mm");
 

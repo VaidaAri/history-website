@@ -14,8 +14,8 @@ import java.util.List;
 @Repository
 public interface RezervareRepository extends JpaRepository<Rezervare, Integer> {
     @Query("SELECT COUNT(r) FROM Rezervare r WHERE DATE(r.datetime) = :date " +
-           "AND HOUR(r.datetime) BETWEEN :startHour AND :endHour")
-    int countConfirmedBookingsByDateAndTimeInterval(
+           "AND HOUR(r.datetime) >= :startHour AND HOUR(r.datetime) <= :endHour")
+    int countBookingsByDateAndTimeInterval(
             @Param("date") LocalDate date, 
             @Param("startHour") int startHour, 
             @Param("endHour") int endHour);
