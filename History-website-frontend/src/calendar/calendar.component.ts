@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors, ValidatorFn, FormsModule } from '@angular/forms';
@@ -14,7 +14,8 @@ import { NotificationService } from '../services/notification.service';
   standalone: true,
   imports: [CommonModule, FullCalendarModule, ReactiveFormsModule, FormsModule],
   templateUrl: './calendar.component.html',
-  styleUrl: './calendar.component.css'
+  styleUrl: './calendar.component.css',
+  encapsulation: ViewEncapsulation.None
 })
 export class CalendarComponent implements OnInit, OnDestroy {
   events: any[] = [];
