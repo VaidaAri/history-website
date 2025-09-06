@@ -1,8 +1,24 @@
+.publicatii-main {
+  width: 100%;
+  --primary-color: #7D5A50;
+  --secondary-color: #EAD196;
+  --accent-color: #B08968;
+  --light-bg: #F8F4E3;
+  --white: #FFFFFF;
+  --text-dark: #3E2723;
+  --text-light: #6A4A3F;
+  --shadow-sm: 0 4px 10px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 6px 15px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 8px 20px rgba(0, 0, 0, 0.15);
+  --transition: all 0.3s ease;
+  --gold: #D4AF37;
+}
+
 .publicatii-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-  font-family: Arial, sans-serif;
+  color: var(--text-dark);
 }
 
 .publicatii-container h2 {
@@ -84,20 +100,20 @@
   position: absolute;
   left: 0;
   padding: 8px 15px;
-  background-color: #f0f0f0;
-  color: #333;
+  background-color: var(--primary-color);
+  color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 0.9rem;
-  transition: all 0.3s ease;
+  transition: var(--transition);
   display: flex;
   align-items: center;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: var(--shadow-sm);
 }
 
 .back-button:hover {
-  background-color: #e0e0e0;
+  background-color: var(--text-light);
   transform: translateX(-3px);
 }
 
@@ -111,9 +127,10 @@
 
 .category-selector button {
   padding: 10px 20px;
-  margin: 0 10px;
+  margin: 0 5px;
   border: none;
-  background-color: #f0f0f0;
+  background-color: #EAD196;
+  color: #7D5A50;
   cursor: pointer;
   font-size: 1rem;
   border-radius: 5px;
@@ -121,7 +138,12 @@
 }
 
 .category-selector button.active {
-  background-color: #007bff;
+  background-color: #7D5A50;
+  color: white;
+}
+
+.category-selector button:hover {
+  background-color: #7D5A50;
   color: white;
 }
 
@@ -169,6 +191,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
 .publication-image {

@@ -1,42 +1,124 @@
-<div class="publicatii-container">
-  <div class="language-selector">
-    <div class="flag flag-ro" [class.active]="translationService.getLanguage() === 'ro'" (click)="translationService.setLanguage('ro')" title="Română"></div>
-    <div class="flag flag-en" [class.active]="translationService.getLanguage() === 'en'" (click)="translationService.setLanguage('en')" title="English"></div>
-    <div class="flag flag-de" [class.active]="translationService.getLanguage() === 'de'" (click)="translationService.setLanguage('de')" title="Deutsch"></div>
+<main class="publicatii-main">
+  <div class="decorative-borders">
+    <div class="decorative-border-left"></div>
+    <div class="decorative-border-right"></div>
   </div>
   
-  <div class="header-nav">
-    <button class="back-button" routerLink="/istoric">← {{ 'publicationsBackToHistory' | translate }}</button>
-  </div>
-  <h2>{{ 'publicationsTitle' | translate }}</h2>
-  
-  <div class="category-selector">
-    <button [class.active]="selectedCategory === 'arhivaSomesana'" (click)="switchCategory('arhivaSomesana')">{{ 'publicationsArhivaSomesana' | translate }}</button>
-    <button [class.active]="selectedCategory === 'scanCoperti'" (click)="switchCategory('scanCoperti')">{{ 'publicationsReviste' | translate }}</button>
-  </div>
-  
-  
-  <div class="publications-grid" *ngIf="selectedCategory === 'arhivaSomesana'">
-    <div class="publication-item" *ngFor="let image of arhivaSomesanaImages" (click)="openGallery(image)">
-      <div class="publication-image-container">
-        <img [src]="image.url" [alt]="image.filename" class="publication-image" loading="lazy" />
+  <app-meniu></app-meniu>
+  <app-cadran>
+    <div class="publicatii-container">
+      <div class="header-nav">
+        <button class="back-button" routerLink="/istoric">← {{ 'publicationsBackToHistory' | translate }}</button>
       </div>
-      <div class="publication-info">
-        <p>{{ image.index >= 0 ? (('publicationsPage' | translate) + ' ' + (image.index + 1)) : ('publicationsCover' | translate) }}</p>
+      <h2>{{ 'publicationsTitle' | translate }}</h2>
+      
+      <div class="category-selector">
+        <button [class.active]="selectedCategory === 'arhivaSomesana'" (click)="switchCategory('arhivaSomesana')">{{ 'publicationsArhivaSomesana' | translate }}</button>
+        <button [class.active]="selectedCategory === 'scanCoperti'" (click)="switchCategory('scanCoperti')">{{ 'publicationsReviste' | translate }}</button>
       </div>
-    </div>
-  </div>
   
-  <div class="publications-grid" *ngIf="selectedCategory === 'scanCoperti'">
-    <div class="publication-item" *ngFor="let image of scanCopertiImages" (click)="openGallery(image)">
-      <div class="publication-image-container">
-        <img [src]="image.url" [alt]="image.filename" class="publication-image" loading="lazy" />
+      <!-- Admin Section -->
+      <div *ngIf="isAdmin" class="admin-section">
+        <div class="admin-header">
+          <h3>{{ 'landscapesAdminSection' | translate }}</h3>
+        </div>
+        
+        <div class="upload-form">
+          <div class="upload-status" *ngIf="showUploadMessage" [class.success]="uploadMessage.includes('succes')" [class.error]="!uploadMessage.includes('succes')">
+            {{ uploadMessage }}
+          </div>
+          
+          <div class="form-group">
+            <label for="image-description-publicatie">{{ 'landscapesImageDescription' | translate }}</label>
+            <input 
+              type="text" 
+              id="image-description-publicatie" 
+              [(ngModel)]="imageDescription" 
+              [placeholder]="'landscapesImageDescriptionPlaceholder' | translate"
+              class="description-input"
+            >
+          </div>
+          
+          <div class="form-group">
+            <label for="image-upload-publicatie" class="file-upload-label">
+              <span class="upload-icon">📷</span>
+              <span>{{ 'landscapesSelectImages' | translate }}</span>
+            </label>
+            <input 
+              type="file" 
+              id="image-upload-publicatie" 
+              (change)="onFileSelected($event)" 
+              accept="image/*" 
+              multiple
+              class="file-input"
+            >
+            <div *ngIf="selectedFiles.length > 0" class="selected-files-info">
+              <div class="selected-files-header">
+                {{ getSelectedFilesText() }}
+              </div>
+              <div class="selected-files-list">
+                <div *ngFor="let file of selectedFiles; let i = index" class="selected-file-item">
+                  <span class="file-name">{{ file.name }}</span>
+                  <button type="button" class="remove-file-btn" (click)="removeFile(i)" [title]="'landscapesRemoveFile' | translate">
+                    ×
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <button 
+            (click)="uploadImages()" 
+            [disabled]="isUploading || selectedFiles.length === 0" 
+            class="upload-btn"
+          >
+            <span *ngIf="!isUploading">{{ getUploadButtonText() }}</span>
+            <span *ngIf="isUploading">{{ getUploadingText() }}</span>
+          </button>
+        </div>
       </div>
-      <div class="publication-info">
-        <p>{{ ('publicationsMagazine' | translate) + ' ' + (image.index + 1) }}</p>
+  
+      <div class="publications-grid" *ngIf="selectedCategory === 'arhivaSomesana'">
+        <div class="publication-item" *ngFor="let image of arhivaSomesanaImages" (click)="openGallery(image)">
+          <div class="publication-image-container">
+            <img [src]="image.url || getImageUrl(image.path!)" [alt]="image.filename" class="publication-image" loading="lazy" />
+            
+            <div *ngIf="isAdmin && image.id" class="admin-overlay">
+              <button 
+                (click)="deleteImage(image.id); $event.stopPropagation()" 
+                class="admin-delete-btn" 
+                [title]="'landscapesDeleteImage' | translate"
+              >
+                <span class="delete-icon">🗑️</span>
+              </button>
+            </div>
+          </div>
+          <div class="publication-info">
+            <p>{{ image.index >= 0 ? (('publicationsPage' | translate) + ' ' + (image.index + 1)) : ('publicationsCover' | translate) }}</p>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
+      
+      <div class="publications-grid" *ngIf="selectedCategory === 'scanCoperti'">
+        <div class="publication-item" *ngFor="let image of scanCopertiImages" (click)="openGallery(image)">
+          <div class="publication-image-container">
+            <img [src]="image.url || getImageUrl(image.path!)" [alt]="image.filename" class="publication-image" loading="lazy" />
+            
+            <div *ngIf="isAdmin && image.id" class="admin-overlay">
+              <button 
+                (click)="deleteImage(image.id); $event.stopPropagation()" 
+                class="admin-delete-btn" 
+                [title]="'landscapesDeleteImage' | translate"
+              >
+                <span class="delete-icon">🗑️</span>
+              </button>
+            </div>
+          </div>
+          <div class="publication-info">
+            <p>{{ ('publicationsMagazine' | translate) + ' ' + (image.index + 1) }}</p>
+          </div>
+        </div>
+      </div>
   
   <div class="gallery-modal" *ngIf="showGallery">
     <div class="gallery-overlay" (click)="closeGallery()"></div>
@@ -74,6 +156,7 @@
             <span class="zoom-level">{{ (zoomLevel * 100).toFixed(0) }}%</span>
             <button class="zoom-button" (click)="zoomIn()" [title]="'publicationsZoomIn' | translate">+</button>
             <button class="zoom-button" (click)="resetZoom()" [title]="'publicationsResetZoom' | translate">↺</button>
+            <button class="zoom-button" (click)="toggleFullscreen()" [title]="'publicationsFullscreen' | translate">⛶</button>
           </div>
         </div>
         
@@ -83,4 +166,6 @@
       </div>
     </div>
   </div>
-</div>
+    </div>
+  </app-cadran>
+</main>

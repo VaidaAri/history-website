@@ -66,11 +66,6 @@ public class RezervareService {
         return counters;
     }
     
-    public List<Rezervare> getAllBookings() {
-        return rezervareRepository.findAll();
-    }
-    
-    
     public Map<String, Map<String, Object>> getCalendarDensityForMonth(int year, int month) {
         Map<String, Map<String, Object>> calendarData = new HashMap<>();
         LocalDate firstDay = LocalDate.of(year, month, 1);

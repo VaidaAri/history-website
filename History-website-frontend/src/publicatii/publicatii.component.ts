@@ -1,21 +1,28 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NgFor, NgIf, CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { TranslatePipe } from '../services/i18n/translate.pipe';
 import { TranslationService } from '../services/i18n/translation.service';
+import { AuthService } from '../services/auth.service';
+import { MeniuComponent } from '../meniu/meniu.component';
+import { CadranComponent } from '../cadran/cadran.component';
 
 interface PublicationImage {
-  url: string;
-  folder: string;
+  id?: number;
+  url?: string;
+  path?: string;
+  folder?: string;
   filename: string;
+  description?: string;
   index: number;
 }
 
 @Component({
   selector: 'app-publicatii',
   standalone: true,
-  imports: [RouterModule, NgFor, NgIf, CommonModule, TranslatePipe],
+  imports: [RouterModule, NgFor, NgIf, CommonModule, FormsModule, TranslatePipe, MeniuComponent, CadranComponent],
   templateUrl: './publicatii.component.html',
   styleUrl: './publicatii.component.css',
   providers: [TranslationService]
@@ -25,6 +32,15 @@ export class PublicatiiComponent implements OnInit {
   scanCopertiImages: PublicationImage[] = [];
   selectedCategory: string = 'arhivaSomesana';
   apiBaseUrl = 'http://localhost:8080/api/staticresources';
+  
+  isAdmin: boolean = false;
+  
+  selectedFiles: File[] = [];
+  currentUploadIndex: number = 0;
+  imageDescription: string = '';
+  isUploading: boolean = false;
+  uploadMessage: string = '';
+  showUploadMessage: boolean = false;
   
   showGallery: boolean = false;
   currentImageIndex: number = 0;
@@ -36,11 +52,18 @@ export class PublicatiiComponent implements OnInit {
   imageTranslateX: number = 0;
   imageTranslateY: number = 0;
   
-  constructor(private http: HttpClient, public translationService: TranslationService) {}
+  isFullscreen: boolean = false;
+  
+  constructor(private http: HttpClient, public translationService: TranslationService, private authService: AuthService) {}
   
   ngOnInit() {
+    this.authService.isAuthenticated$.subscribe(isAuth => {
+      this.isAdmin = isAuth;
+    });
+    
     this.loadArhivaSomesanaImages();
     this.loadScanCopertiImages();
+    this.loadDynamicImages();
   }
   
   loadArhivaSomesanaImages() {
@@ -238,5 +261,170 @@ export class PublicatiiComponent implements OnInit {
       }
     }
     return '';
+  }
+
+  loadDynamicImages() {
+    this.http.get<any[]>('http://localhost:8080/api/images').subscribe({
+      next: (images) => {
+        const arhivaSomesanaImages = images.filter(img => 
+          img.description && img.description.startsWith('PUBLICATIE_ARHIVA_SOMESANA:')
+        ).map(img => ({
+          id: img.id,
+          path: img.path,
+          url: this.getImageUrl(img.path),
+          filename: img.path,
+          description: img.description.replace('PUBLICATIE_ARHIVA_SOMESANA:', '').trim(),
+          index: 0
+        }));
+        
+        const scanCopertiImages = images.filter(img => 
+          img.description && img.description.startsWith('PUBLICATIE_SCAN_COPERTI:')
+        ).map(img => ({
+          id: img.id,
+          path: img.path,
+          url: this.getImageUrl(img.path),
+          filename: img.path,
+          description: img.description.replace('PUBLICATIE_SCAN_COPERTI:', '').trim(),
+          index: 0
+        }));
+
+        const staticArhivaSomesanaImages = this.arhivaSomesanaImages.filter(img => !img.id);
+        const staticScanCopertiImages = this.scanCopertiImages.filter(img => !img.id);
+        
+        this.arhivaSomesanaImages = [...staticArhivaSomesanaImages, ...arhivaSomesanaImages];
+        this.scanCopertiImages = [...staticScanCopertiImages, ...scanCopertiImages];
+      },
+      error: (err) => {
+        // Error handling can be added here
+      }
+    });
+  }
+
+  getImageUrl(imagePath: string): string {
+    if (!imagePath) return '';
+    
+    if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+      return imagePath;
+    }
+    
+    return `http://localhost:8080/api/images/uploads/${imagePath}`;
+  }
+
+  onFileSelected(event: any) {
+    const files = Array.from(event.target.files) as File[];
+    if (files.length > 0) {
+      this.selectedFiles = [...this.selectedFiles, ...files];
+    }
+    
+    event.target.value = '';
+  }
+
+  removeFile(index: number) {
+    this.selectedFiles.splice(index, 1);
+  }
+
+  uploadImages() {
+    if (this.selectedFiles.length === 0) {
+      this.showUploadMessage = true;
+      this.uploadMessage = 'Selectați cel puțin un fișier pentru încărcare.';
+      setTimeout(() => this.showUploadMessage = false, 3000);
+      return;
+    }
+    
+    this.isUploading = true;
+    this.currentUploadIndex = 0;
+    this.uploadNextImage();
+  }
+
+  private uploadNextImage() {
+    if (this.currentUploadIndex >= this.selectedFiles.length) {
+      this.showUploadMessage = true;
+      this.uploadMessage = `Toate imaginile (${this.selectedFiles.length}) au fost încărcate cu succes!`;
+      setTimeout(() => this.showUploadMessage = false, 3000);
+      this.selectedFiles = [];
+      this.imageDescription = '';
+      this.isUploading = false;
+      this.currentUploadIndex = 0;
+      this.loadDynamicImages();
+      return;
+    }
+    
+    const currentFile = this.selectedFiles[this.currentUploadIndex];
+    
+    const description = this.imageDescription.trim();
+    let prefix = '';
+    
+    switch(this.selectedCategory) {
+      case 'arhivaSomesana':
+        prefix = 'PUBLICATIE_ARHIVA_SOMESANA: ';
+        break;
+      case 'scanCoperti':
+        prefix = 'PUBLICATIE_SCAN_COPERTI: ';
+        break;
+    }
+    
+    const formData = new FormData();
+    formData.append('image', currentFile);
+    formData.append('description', prefix + (description || 'Publicație'));
+    
+    this.http.post('http://localhost:8080/api/images/upload-image', formData).subscribe({
+      next: () => {
+        this.currentUploadIndex++;
+        this.uploadNextImage();
+      },
+      error: (err) => {
+        this.showUploadMessage = true;
+        this.uploadMessage = `Eroare la încărcarea imaginii ${currentFile.name}. Încarcările s-au oprit.`;
+        setTimeout(() => this.showUploadMessage = false, 5000);
+        this.isUploading = false;
+        this.currentUploadIndex = 0;
+      }
+    });
+  }
+
+  deleteImage(imageId: number | undefined) {
+    if (!imageId) return;
+    
+    if (confirm('Sigur doriți să ștergeți această imagine?')) {
+      this.http.delete(`http://localhost:8080/api/images/${imageId}`).subscribe({
+        next: () => {
+          this.showUploadMessage = true;
+          this.uploadMessage = 'Imaginea a fost ștearsă cu succes!';
+          setTimeout(() => this.showUploadMessage = false, 3000);
+          
+          if (this.showGallery && this.currentImages[this.currentImageIndex] && this.currentImages[this.currentImageIndex].id === imageId) {
+            this.closeGallery();
+          }
+          
+          this.loadDynamicImages();
+        },
+        error: (err) => {
+          this.showUploadMessage = true;
+          this.uploadMessage = 'A apărut o eroare la ștergerea imaginii.';
+          setTimeout(() => this.showUploadMessage = false, 3000);
+        }
+      });
+    }
+  }
+
+  getSelectedFilesText(): string {
+    const template = this.translationService.translate('landscapesSelectedFiles') || 'Fișiere selectate: {count}';
+    return template.replace('{count}', this.selectedFiles.length.toString());
+  }
+
+  getUploadButtonText(): string {
+    const template = this.translationService.translate('landscapesUploadImages') || 'Încarcă {count} imagini';
+    return template.replace('{count}', this.selectedFiles.length.toString());
+  }
+
+  getUploadingText(): string {
+    const template = this.translationService.translate('landscapesUploading') || 'Se încarcă {current}/{total}...';
+    return template
+      .replace('{current}', (this.currentUploadIndex + 1).toString())
+      .replace('{total}', this.selectedFiles.length.toString());
+  }
+
+  toggleFullscreen() {
+    this.isFullscreen = !this.isFullscreen;
   }
 }
