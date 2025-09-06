@@ -93,12 +93,69 @@
     background: #f8f9fa;
     cursor: not-allowed;
     color: #6c757d;
+    transition: all 0.3s ease;
 }
 
 .date-display-readonly:focus, .time-display-readonly:focus {
     outline: none;
     border-color: #7D5A50;
     background: #fff;
+}
+
+.date-display-readonly.filled, .time-display-readonly.filled {
+    background: #E8F5E8;
+    border-color: #28a745;
+    color: #155724;
+    font-weight: bold;
+    box-shadow: 0 0 5px rgba(40, 167, 69, 0.3);
+}
+
+.date-display-readonly.filled::before, .time-display-readonly.filled::before {
+    content: "✓ ";
+    color: #28a745;
+    font-weight: bold;
+}
+
+.selection-confirmation {
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    border: 1px solid #28a745;
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-top: 10px;
+    text-align: center;
+    animation: slideIn 0.5s ease-out;
+    box-shadow: 0 2px 4px rgba(40, 167, 69, 0.15);
+}
+
+.selection-confirmation p {
+    margin: 0;
+    color: #155724;
+    font-size: 0.9em;
+}
+
+.calendar-instruction {
+    background-color: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 6px;
+    padding: 10px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.calendar-instruction p {
+    margin: 0;
+    color: #856404;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .schedule-row {
@@ -845,4 +902,119 @@ input[type="date"]:focus, select:focus {
   margin: 0;
   font-size: 0.9rem;
   color: #5D4037;
+}
+
+.checkbox-group-enhanced {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.checkbox-label {
+  color: #5D4037;
+  font-weight: bold;
+  font-size: 1em;
+  margin: 0;
+  cursor: pointer;
+}
+
+.large-checkbox {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: #7D5A50;
+  transform: scale(1);
+  transition: transform 0.2s ease;
+}
+
+.large-checkbox:hover {
+  transform: scale(1.1);
+}
+
+.large-checkbox:checked {
+  transform: scale(1);
+}
+
+.number-input-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  max-width: 200px;
+  margin: 0 auto;
+}
+
+.number-input-wrapper input[type="number"] {
+  width: 80px;
+  padding: 10px;
+  border: 1px solid #EAD196;
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+  background-color: #FFF9E6;
+  font-family: 'Merriweather', serif;
+  font-size: 1em;
+  box-sizing: border-box;
+  color: #5D4037;
+  text-align: center;
+  font-weight: bold;
+  height: 42px;
+}
+
+.number-input-wrapper input[type="number"]:focus {
+  outline: none;
+  border-color: #EAD196;
+  box-shadow: 0 0 4px rgba(234, 209, 150, 0.6);
+}
+
+.number-btn {
+  background-color: #7D5A50;
+  color: white;
+  border: 1px solid #EAD196;
+  font-size: 1.2em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 42px;
+  margin: 0;
+}
+
+.number-btn:hover:not(:disabled) {
+  background-color: #5D4037;
+}
+
+.number-btn:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.number-btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.minus-btn {
+  border-radius: 6px 0 0 6px;
+  border-right: none;
+}
+
+.plus-btn {
+  border-radius: 0 6px 6px 0;
+  border-left: none;
+}
+
+/* Hide default number input arrows */
+.number-input-wrapper input[type="number"]::-webkit-outer-spin-button,
+.number-input-wrapper input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.number-input-wrapper input[type="number"] {
+  -moz-appearance: textfield;
 }

@@ -305,5 +305,17 @@ export class RezervariComponent implements OnInit {
     this.updateDateTime(); 
     this.showSmartCalendar = false;
   }
+
+  increasePersons() {
+    if (this.newBooking.numberOfPersons < 50) {
+      this.newBooking.numberOfPersons++;
+    }
+  }
+
+  decreasePersons() {
+    if (this.newBooking.numberOfPersons > 1) {
+      this.newBooking.numberOfPersons--;
+    }
+  }
   
 }

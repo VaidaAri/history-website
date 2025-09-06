@@ -90,7 +90,8 @@
                                    required
                                    readonly
                                    placeholder="Selectează din calendar..."
-                                   class="date-display-readonly">
+                                   class="date-display-readonly"
+                                   [class.filled]="selectedDate">
                         </div>
 
                         <div class="time-select">
@@ -102,12 +103,17 @@
                                    required
                                    readonly
                                    placeholder="Selectează din calendar..."
-                                   class="time-display-readonly">
+                                   class="time-display-readonly"
+                                   [class.filled]="selectedTime">
                         </div>
                     </div>
                     
                     <div class="calendar-instruction" *ngIf="!selectedDate || !selectedTime">
                         <p><em>👆 Folosește calendarul de mai sus pentru a selecta data și ora rezervării</em></p>
+                    </div>
+                    
+                    <div class="selection-confirmation" *ngIf="selectedDate && selectedTime">
+                        <p><strong>✅ Data și ora au fost selectate!</strong></p>
                     </div>
 
                     <div *ngIf="dateTimeError" class="error-message">
@@ -119,7 +125,11 @@
                 
                 <div class="form-group">
                     <label for="numberOfPersons">{{ 'rezervariNumberOfPersons' | translate }}:</label>
-                    <input type="number" id="numberOfPersons" name="numberOfPersons" [(ngModel)]="newBooking.numberOfPersons" required min="1" max="50">
+                    <div class="number-input-wrapper">
+                        <button type="button" class="number-btn minus-btn" (click)="decreasePersons()" [disabled]="newBooking.numberOfPersons <= 1">-</button>
+                        <input type="number" id="numberOfPersons" name="numberOfPersons" [(ngModel)]="newBooking.numberOfPersons" required min="1" max="50" readonly>
+                        <button type="button" class="number-btn plus-btn" (click)="increasePersons()" [disabled]="newBooking.numberOfPersons >= 50">+</button>
+                    </div>
                 </div>
                 
                 <div class="form-group">
@@ -135,9 +145,9 @@
                     </div>
                 </div>
                 
-                <div class="form-group checkbox-group">
-                    <label for="guideRequired">{{ 'rezervariGuideRequired' | translate }} </label>
-                    <input type="checkbox" id="guideRequired" name="guideRequired" [(ngModel)]="newBooking.guideRequired">
+                <div class="form-group checkbox-group-enhanced">
+                    <label for="guideRequired" class="checkbox-label">{{ 'rezervariGuideRequired' | translate }}</label>
+                    <input type="checkbox" id="guideRequired" name="guideRequired" [(ngModel)]="newBooking.guideRequired" class="large-checkbox">
                 </div>
 
                 <button type="submit" [disabled]="!bookingForm.form.valid">{{ 'rezervariSubmit' | translate }}</button>
