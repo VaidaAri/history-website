@@ -140,7 +140,21 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
   
   onFileSelected(event: any) {
-    this.selectedFile = event.target.files[0] || null;
+    const file = event.target.files[0];
+    if (file) {
+      const maxSizeInMB = 5;
+      const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
+      
+      if (file.size > maxSizeInBytes) {
+        this.notificationService.showWarning('Fișier prea mare', `Imaginea selectată (${(file.size / 1024 / 1024).toFixed(1)}MB) depășește limita de ${maxSizeInMB}MB. Vă rugăm să selectați o imagine mai mică.`);
+        event.target.value = '';
+        return;
+      }
+      
+      this.selectedFile = file;
+    } else {
+      this.selectedFile = null;
+    }
     this.uploadProgress = 0;
   }
   
@@ -278,7 +292,21 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   onEditFileSelected(event: any) {
-    this.editSelectedFile = event.target.files[0] || null;
+    const file = event.target.files[0];
+    if (file) {
+      const maxSizeInMB = 5;
+      const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
+      
+      if (file.size > maxSizeInBytes) {
+        this.notificationService.showWarning('Fișier prea mare', `Imaginea selectată (${(file.size / 1024 / 1024).toFixed(1)}MB) depășește limita de ${maxSizeInMB}MB. Vă rugăm să selectați o imagine mai mică.`);
+        event.target.value = '';
+        return;
+      }
+      
+      this.editSelectedFile = file;
+    } else {
+      this.editSelectedFile = null;
+    }
     this.editUploadProgress = 0;
   }
 

@@ -391,7 +391,28 @@ export class ExpozitiiPermanenteComponent implements OnInit {
   onFileSelected(event: any) {
     const files = Array.from(event.target.files) as File[];
     if (files.length > 0) {
-      this.selectedFiles = [...this.selectedFiles, ...files];
+      const maxSizeInMB = 5;
+      const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
+      const validFiles: File[] = [];
+      const invalidFiles: string[] = [];
+      
+      files.forEach((file: File) => {
+        if (file.size > maxSizeInBytes) {
+          invalidFiles.push(`${file.name} (${(file.size / 1024 / 1024).toFixed(1)}MB)`);
+        } else {
+          validFiles.push(file);
+        }
+      });
+      
+      if (invalidFiles.length > 0) {
+        this.showUploadMessage = true;
+        this.uploadMessage = `Următoarele fișiere depășesc limita de ${maxSizeInMB}MB și nu vor fi încărcate: ${invalidFiles.join(', ')}`;
+        setTimeout(() => this.showUploadMessage = false, 5000);
+      }
+      
+      if (validFiles.length > 0) {
+        this.selectedFiles = [...this.selectedFiles, ...validFiles];
+      }
     }
     
     event.target.value = '';

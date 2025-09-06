@@ -226,6 +226,13 @@ export class PostManagerComponent implements OnInit {
           continue;
         }
         
+        const maxSizeInMB = 5;
+        const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
+        if (file.size > maxSizeInBytes) {
+          alert(`Imaginea ${file.name} (${(file.size / 1024 / 1024).toFixed(1)}MB) depășește limita de ${maxSizeInMB}MB și nu va fi adăugată.`);
+          continue;
+        }
+        
         if (this.images.length >= 30) {
           alert('Poți adăuga maxim 30 de imagini la o postare.');
           break;

@@ -370,6 +370,13 @@ export class PostEditorComponent implements OnInit {
           continue;
         }
         
+        const maxSizeInMB = 5;
+        const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
+        if (file.size > maxSizeInBytes) {
+          this.notificationService.showWarning('Fișier prea mare', `Imaginea ${file.name} (${(file.size / 1024 / 1024).toFixed(1)}MB) depășește limita de ${maxSizeInMB}MB și nu va fi adăugată.`);
+          continue;
+        }
+        
         if (this.existingImages.length + this.newImages.length >= 30) {
           this.notificationService.showWarning('Limită atinsă', 'Poți avea maxim 30 de imagini la o postare.');
           break;
